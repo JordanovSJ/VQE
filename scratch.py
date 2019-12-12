@@ -5,7 +5,7 @@ from scipy.linalg import eigh
 
 if __name__ == "__main__":
 
-    from examples.h2 import molecule
+    from src.example_molecules.h2 import molecule
 
     # choose basis for the molecular orbitals
     basis = 'sto-3g'
