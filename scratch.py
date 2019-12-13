@@ -2,6 +2,8 @@ from openfermion.hamiltonians import MolecularData
 from openfermionpsi4 import run_psi4
 from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
 from scipy.linalg import eigh
+from openfermion.utils import jw_hartree_fock_state
+
 
 if __name__ == "__main__":
 
@@ -21,6 +23,8 @@ if __name__ == "__main__":
 
     jw_ham_matrix = get_sparse_operator(jw_ham).todense()
     eigenvalues, eigenvectors = eigh(jw_ham_matrix)
+
+
 
     print(eigenvalues)
 

@@ -15,15 +15,15 @@ import abc
 #     @abc.abstractmethod
 #     def geometry():
 #         pass
+#
+#     def molecular_data(self, basis):
+#         return MolecularData((self.geometry(), basis, self.multiplicity, self.charge))
+#
+#     def molecule_psi4(self, basis):
+#         return run_psi4(self.molecular_data(basis))
 
-    # def molecular_data(self, basis):
-    #     return MolecularData((self.geometry(), basis, self.multiplicity, self.charge))
-    #
-    # def molecule_psi4(self, basis):
-    #     return run_psi4(self.molecular_data(basis))
 
-
-class H2():
+class H2:
     name: str = 'H2'
     multiplicity: int = 1
     charge: int = 0
@@ -38,7 +38,7 @@ class H2():
                 ['H', [0, 0, distance]]]
 
 
-class LiH():
+class LiH:
     name: str = 'LiH'
     multiplicity: int = 1
     charge: int = 0
@@ -50,7 +50,4 @@ class LiH():
         return [
             ['Li', [0, 0, 0]],
             ['H', [0, 0, distance]]]
-
-
-
 
