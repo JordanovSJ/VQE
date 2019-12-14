@@ -7,10 +7,12 @@ from openfermion.utils import jw_hartree_fock_state
 
 if __name__ == "__main__":
 
-    from src.example_molecules.h2 import molecule
+    from src.Molecules import H2
 
     # choose basis for the molecular orbitals
     basis = 'sto-3g'
+
+    molecule =H2
 
     h2_molecule = MolecularData(molecule.geometry(0.74), basis, molecule.multiplicity, molecule.charge)
 
@@ -24,7 +26,7 @@ if __name__ == "__main__":
     jw_ham_matrix = get_sparse_operator(jw_ham).todense()
     eigenvalues, eigenvectors = eigh(jw_ham_matrix)
 
-
+    assert len(jw_ham_matrix) == 2**h2_molecule_psi4.n_qubits
 
     print(eigenvalues)
 

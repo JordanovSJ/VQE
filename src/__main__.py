@@ -5,11 +5,13 @@ import logging
 if __name__ == "__main__":
 
     molecule = H2
+    max_n_interations = 100
+
     vqe_runner = VQERunner(molecule, molecule_geometry_params={'distance': 0.75})
 
-    logging.info('hello there')
+    result = vqe_runner.vqe_run(max_n_interations)
 
-    print(vqe_runner.E)
+    print(result)
 
     # TODO add stuff
     print('Pizza')

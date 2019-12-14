@@ -37,7 +37,7 @@ class UCCSD:
         return double_excitations
 
     def get_excitation_list(self):
-        return self.get_excitation_list() + self.get_double_excitation_list()
+        return self.get_single_excitation_list() + self.get_double_excitation_list()
 
 
 class UCCGSD:
@@ -61,6 +61,8 @@ class UCCGSD:
 
         return double_excitations
 
+    def get_excitation_list(self):
+        return self.get_single_excitation_list() + self.get_double_excitation_list()
 
 # class k-UpCCGSD:
 #     #TODO
