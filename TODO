@@ -1,12 +1,21 @@
-Create Backgrounds; classes to construct and calculate H, as either a matrix or as quantum_circuits/states on a quantum simulator or
+1. Create Backgrounds; classes to construct and calculate H, as either a matrix or as quantum_circuits/states on a quantum simulator or
     a real device.
 
-
-For the quantum simulator/devices backgrounds implement different methods for calculating <H>
+2.For the quantum simulator/devices backgrounds implement different methods for calculating <H>
      - UHU*
      - using the  overlap method
      - others?
 
-Search for best classical optimizer
+3. Add functionality to choose encoding method
 
-Add thresholds for convergence
+4.Search for best classical optimizer
+
+5.Add thresholds for convergence
+
+6. Counting number of gates/circuit depth functionality
+
+7. Custom ansatz functionality
+
+8.Excited states functionality
+
+9. Multi-threading

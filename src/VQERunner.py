@@ -66,6 +66,12 @@ class VQERunner:
 
         return excitation_matrix_list
 
+    def renormalize_sparse_statevector(self, statevector):
+        # divide the statevector by its module
+        statevector_module = numpy.sqrt(statevector.conj().dot(statevector.transpose()).todense().item())
+        assert statevector_module.imag == 0
+        return statevector / statevector_module
+
     # update the ansatz statevector with new value of the var. params
     def update_statevector(self, params):
 
@@ -84,10 +90,12 @@ class VQERunner:
             # sparse_statevector = scipy.sparse.linalg.expm_multiply( params[i] * qubit_operator_matrix, sparse_statevector)
 
         sparse_statevector = sparse_statevector.transpose()
+        # renormalize
+        sparse_statevector = self.renormalize_sparse_statevector(sparse_statevector)
 
         self.statevector = numpy.array(sparse_statevector.todense())[0]  # TODO: this is ugly -> fix
 
-        print('vector normalization: ', abs(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item()))
+        # print('vector normalization: ', abs(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item()))
 
         return sparse_statevector
 
@@ -117,10 +125,10 @@ class VQERunner:
         print('-----Number of orbitals {}-----'.format(self.n_orbitals))
         print('Qubit Hamiltonian: ', self.jw_ham_qubit_operator)
 
-        parameters = numpy.zeros(len(self.excitation_list))
+        parameters = numpy.zeros(len(self.excitation_list))+0.1
 
         self.iter = 1
         opt_energy = scipy.optimize.minimize(self.get_energy, parameters, method='Nelder-Mead', callback=self.callback,
-                                             options={'maxiter': max_n_iterations})  # TODO: find a suitable optimizer
+                                             options={'maxiter': max_n_iterations}, tol=1e-8)  # TODO: find a suitable optimizer
 
         return opt_energy
