@@ -19,3 +19,6 @@
 8.Excited states functionality
 
 9. Multi-threading
+    - the matrices for the exponents of the excitation operators can be calculated in parallel
+
+10.Logging

@@ -18,7 +18,7 @@ class UCCSD:
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
-                fermion_operator = FermionOperator('{}^ {}'.format(j, i))
+                fermion_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(j, i))
                 single_excitations.append(jordan_wigner(fermion_operator))
 
         # returns list of QubitOperators

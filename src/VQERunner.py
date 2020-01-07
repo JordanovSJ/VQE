@@ -53,57 +53,53 @@ class VQERunner:
         if n_qubits is None:
             n_qubits = self.n_qubits
         qubit_operator_matrix = get_sparse_operator(qubit_operator, n_qubits)
-        return scipy.sparse.linalg.expm(-1j * parameter * qubit_operator_matrix)  # TODO should we have 1j?
+        return scipy.sparse.linalg.expm(-1j * (parameter/2) * qubit_operator_matrix)  # TODO should we have 1j?
 
-    # get a list of compressed sparse row matrices, corresponding to the excitation list, including the var. params
-    def get_excitation_matrix_list(self, params):
+    # @staticmethod
+    # def get_sparse_vector_module(sparse_vector):
+    #     return numpy.sqrt(sparse_vector.conj().dot(sparse_vector.transpose()).todense().item())
 
-        assert len(self.excitation_list) == len(params)
+    @staticmethod
+    def renormalize_sparse_statevector(statevector):
 
-        excitation_matrix_list = []
-        for i, excitation in enumerate(self.excitation_list):
-            excitation_matrix_list.append(self.get_qubit_operator_exponent_matrix(params[i]*excitation))
-
-        return excitation_matrix_list
-
-    def renormalize_sparse_statevector(self, statevector):
-        # divide the statevector by its module
         statevector_module = numpy.sqrt(statevector.conj().dot(statevector.transpose()).todense().item())
         assert statevector_module.imag == 0
         return statevector / statevector_module
 
-    # update the ansatz statevector with new value of the var. params
-    def update_statevector(self, params):
+    # update the ansatz statevector with new values of the var. params
+    def update_statevector(self, params): # TODO change name of this method
 
-        excitation_matrix_list = self.get_excitation_matrix_list(params)
-
-        assert len(self.excitation_list) == len(excitation_matrix_list)
+        assert len(self.excitation_list) == len(params)
 
         sparse_statevector = scipy.sparse.csr_matrix(jw_hartree_fock_state(self.n_electrons, self.n_orbitals))
-        sparse_statevector = sparse_statevector.transpose()  # multiply excitation matrices on left
+        for i, excitation in enumerate(self.excitation_list):
 
-        for i, excitation_matrix in enumerate(excitation_matrix_list):
-            sparse_statevector = excitation_matrix.dot(sparse_statevector)
+            excitation_matrix = self.get_qubit_operator_exponent_matrix(excitation, parameter=params[i],
+                                                                        n_qubits=self.n_qubits)
+            sparse_statevector = sparse_statevector.dot(excitation_matrix.transpose())  # TODO: is transpose needed?
 
-            # # TODO testing!!!!!!!!!!!!!!!!!!
-            # qubit_operator_matrix = get_sparse_operator(self.excitation_list[i], self.n_qubits)
-            # sparse_statevector = scipy.sparse.linalg.expm_multiply( params[i] * qubit_operator_matrix, sparse_statevector)
-
-        sparse_statevector = sparse_statevector.transpose()
-        # renormalize
-        sparse_statevector = self.renormalize_sparse_statevector(sparse_statevector)
+            # renormalize
+            # print('State vector module = ', self.get_sparse_vector_module(sparse_statevector))
+            sparse_statevector = self.renormalize_sparse_statevector(sparse_statevector)
 
         self.statevector = numpy.array(sparse_statevector.todense())[0]  # TODO: this is ugly -> fix
-
-        # print('vector normalization: ', abs(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item()))
 
         return sparse_statevector
 
     # get the energy for new var. params
-    def get_energy(self, params):
-        sparse_statevector = self.update_statevector(params)
+    def get_energy(self, excitation_params):
+        sparse_statevector = self.update_statevector(excitation_params)
         bra = sparse_statevector.conj()
         ket = sparse_statevector.transpose()
+
+        # ############### testing #############
+        # print('bra')
+        # print(bra.todense())
+        # print('ham')
+        # print(self.jw_ham_sparse_matrix.todense())
+        # print('ket')
+        # print(ket.todense())
+        # #######################################
 
         energy = bra.dot(self.jw_ham_sparse_matrix).dot(ket)
         energy = energy.todense().item()
@@ -125,7 +121,15 @@ class VQERunner:
         print('-----Number of orbitals {}-----'.format(self.n_orbitals))
         print('Qubit Hamiltonian: ', self.jw_ham_qubit_operator)
 
-        parameters = numpy.zeros(len(self.excitation_list))+0.1
+        parameters = numpy.zeros(len(self.excitation_list))
+
+        # # ######## testing ##################
+        # parameters[4] = -0.2233  # test for H2
+        # print('####### testing ###########')
+        # print(self.excitation_list[4])
+        # self.get_energy(parameters)
+        # print('###########################')
+        # ##############################
 
         self.iter = 1
         opt_energy = scipy.optimize.minimize(self.get_energy, parameters, method='Nelder-Mead', callback=self.callback,

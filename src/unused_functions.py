@@ -32,6 +32,18 @@ def prepare_statevector_as_matrix(excitations_list, initial_statevector):
     return statevector
 
 
+# get a list of compressed sparse row matrices, corresponding to the excitation list, including the var. params
+def get_excitation_matrix_list(self, params):
+
+        assert len(self.excitation_list) == len(params)
+
+        excitation_matrix_list = []
+        for i, excitation in enumerate(self.excitation_list):
+            excitation_matrix_list.append(self.get_qubit_operator_exponent_matrix(params[i]*excitation))
+
+        return excitation_matrix_list
+
+
 def prepare_statevector_as_qcirq(excitations_list, initial_statevector=[]):
 
     # TODO: should return qasm qcirq to be executed on quantum simulator or real device
