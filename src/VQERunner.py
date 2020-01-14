@@ -33,7 +33,6 @@ class VQERunner:
         self.fermion_ham = get_fermion_operator(self.molecule_ham)
         self.jw_ham_qubit_operator = jordan_wigner(self.fermion_ham)
         self.jw_ham_sparse_matrix = get_sparse_operator(self.jw_ham_qubit_operator)  # need only this one
-
         self.energy = self.molecule_psi4.hf_energy.item()
         # logging.info('HF energy = {}'.format(self.energy))
 
@@ -53,7 +52,7 @@ class VQERunner:
         if n_qubits is None:
             n_qubits = self.n_qubits
         qubit_operator_matrix = get_sparse_operator(qubit_operator, n_qubits)
-        return scipy.sparse.linalg.expm(-1j * (parameter/2) * qubit_operator_matrix)  # TODO should we have 1j?
+        return scipy.sparse.linalg.expm((parameter/2) * qubit_operator_matrix)  # TODO should we have 1j: A-  "No"?
 
     # @staticmethod
     # def get_sparse_vector_module(sparse_vector):
@@ -73,6 +72,7 @@ class VQERunner:
 
         sparse_statevector = scipy.sparse.csr_matrix(jw_hartree_fock_state(self.n_electrons, self.n_orbitals))
         for i, excitation in enumerate(self.excitation_list):
+            print(i)
 
             excitation_matrix = self.get_qubit_operator_exponent_matrix(excitation, parameter=params[i],
                                                                         n_qubits=self.n_qubits)
@@ -80,7 +80,7 @@ class VQERunner:
 
             # renormalize
             # print('State vector module = ', self.get_sparse_vector_module(sparse_statevector))
-            sparse_statevector = self.renormalize_sparse_statevector(sparse_statevector)
+            # sparse_statevector = self.renormalize_sparse_statevector(sparse_statevector)
 
         self.statevector = numpy.array(sparse_statevector.todense())[0]  # TODO: this is ugly -> fix
 
@@ -119,7 +119,10 @@ class VQERunner:
         print('-----Running VQE for {}-----'.format(self.molecule_name))
         print('-----Number of electrons {}-----'.format(self.n_electrons))
         print('-----Number of orbitals {}-----'.format(self.n_orbitals))
-        print('Qubit Hamiltonian: ', self.jw_ham_qubit_operator)
+
+        # print('Number of excitations', len(self.excitation_list))
+
+        # print('Qubit Hamiltonian: ', self.jw_ham_qubit_operator)
 
         parameters = numpy.zeros(len(self.excitation_list))
 
