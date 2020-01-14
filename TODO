@@ -22,3 +22,8 @@
     - the matrices for the exponents of the excitation operators can be calculated in parallel
 
 10.Logging
+
+
+IDEAS for algorithms:
+-ADAPT based on energy contribution
+-fixed shape ansatz circuit
