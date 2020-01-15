@@ -29,7 +29,7 @@ class H2:
     charge: int = 0
     n_orbitals: int = 4
     n_electrons: int = 2
-    # ground_state_distance = 1.547
+    # ground_state_distance = 0.735
 
     @staticmethod
     def geometry(distance=1):
@@ -45,7 +45,8 @@ class LiH:
     charge: int = 0
     n_orbitals: int = 12
     n_electrons: int = 4
-    # ground_state_distance = 0.735
+
+    # ground_state_distance = 1.547
 
     @staticmethod
     def geometry(distance=1):
