@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
     qubit_operator_matrix_excitation = get_sparse_operator(excitation_list[exc_n], H2.n_orbitals)
 
-    parameter = -0.2215259843/2
+    parameter = 0.2215259843/2
 
     excitation_exponent_matrix_sparse = scipy.sparse.linalg.expm(-1j * parameter * qubit_operator_matrix_excitation)
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     for item in excitation_list[exc_n].terms.items():
         qubit_operator_item = item[1]*QubitOperator(item[0])
         qubit_operator_item_matrix = get_sparse_operator(qubit_operator_item, H2.n_orbitals)
-        m = scipy.sparse.linalg.expm_multiply(-1j*parameter*qubit_operator_item_matrix, m)
+        m = scipy.sparse.linalg.expm_multiply(parameter*qubit_operator_item_matrix, m)  # no 1j
     ###
 
     excitation_exponent_matrix_sparse = m

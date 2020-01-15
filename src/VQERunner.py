@@ -53,11 +53,11 @@ class VQERunner:
         if n_qubits is None:
             n_qubits = self.n_qubits
         qubit_operator_matrix = get_sparse_operator(qubit_operator, n_qubits)
-        return scipy.sparse.linalg.expm(-1j * (parameter/2) * qubit_operator_matrix)  # TODO should we have 1j?
+        return scipy.sparse.linalg.expm((parameter/2) * qubit_operator_matrix)  # TODO should we have 1j?
 
-    # @staticmethod
-    # def get_sparse_vector_module(sparse_vector):
-    #     return numpy.sqrt(sparse_vector.conj().dot(sparse_vector.transpose()).todense().item())
+    @staticmethod
+    def get_sparse_vector_module(sparse_vector):
+        return numpy.sqrt(sparse_vector.conj().dot(sparse_vector.transpose()).todense().item())
 
     @staticmethod
     def renormalize_sparse_statevector(statevector):
@@ -67,7 +67,7 @@ class VQERunner:
         return statevector / statevector_module
 
     # update the ansatz statevector with new values of the var. params
-    def update_statevector(self, params): # TODO change name of this method
+    def update_statevector(self, params):  # TODO change name of this method
 
         assert len(self.excitation_list) == len(params)
 
@@ -79,8 +79,8 @@ class VQERunner:
             sparse_statevector = sparse_statevector.dot(excitation_matrix.transpose())  # TODO: is transpose needed?
 
             # renormalize
-            # print('State vector module = ', self.get_sparse_vector_module(sparse_statevector))
-            sparse_statevector = self.renormalize_sparse_statevector(sparse_statevector)
+            print('State vector module = ', self.get_sparse_vector_module(sparse_statevector))
+            # sparse_statevector = self.renormalize_sparse_statevector(sparse_statevector)
 
         self.statevector = numpy.array(sparse_statevector.todense())[0]  # TODO: this is ugly -> fix
 
