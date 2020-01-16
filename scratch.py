@@ -5,12 +5,12 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from scipy.linalg import eigh
 from openfermion.utils import jw_hartree_fock_state
 import scipy
-from src.AnsatzType import UCCSD
+from src.ansatz_types import UCCSD
 import numpy
 
 if __name__ == "__main__":
 
-    from src.Molecules import H2
+    from src.molecules import H2
 
     # choose basis for the molecular orbitals
     basis = 'sto-3g'

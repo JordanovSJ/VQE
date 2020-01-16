@@ -1,6 +1,6 @@
 from src.VQERunner import VQERunner
-from src.Molecules import H2, LiH, HF
-from src.AnsatzType import UCCGSD
+from src.molecules import H2, LiH, HF
+from src.ansatz_types import UCCGSD
 
 import logging
 

@@ -9,7 +9,7 @@ import scipy
 import numpy
 
 import logging
-from src.AnsatzType import UCCSD
+from src.ansatz_types import UCCSD
 
 
 class VQERunner:

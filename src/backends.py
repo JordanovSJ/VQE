@@ -1,4 +1,5 @@
 from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
+from openfermion import QubitOperator
 from openfermionpsi4 import run_psi4
 from openfermion.hamiltonians import MolecularData
 from openfermion.utils import jw_hartree_fock_state
@@ -78,8 +79,35 @@ class QiskitSimulator:
     def get_qasm_header(n_qubits):
         return 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[{0}];\ncreg c[{0}];\n'.format(n_qubits)
 
+    # get a qasm circuit for a qubit operator consisting of Pauli gates only (used for the Hamiltonian)
+    @staticmethod
+    def get_qubit_operator_circuit(qubit_operator):
+        assert type(qubit_operator) == QubitOperator
+        assert len(qubit_operator.terms) == 1
+
+        operator = next(iter(qubit_operator.terms.keys()))
+        coeff = next(iter(qubit_operator.terms.values()))
+
+        assert coeff == 1
+
+        qasm_circuit = ['']
+
+        for gate in operator:
+            if gate[1] == 'X':
+                qasm_circuit.append('x q[{0}];\n'.format(gate[0]))
+            if gate[1] == 'Y':
+                qasm_circuit.append('y q[{0}];\n'.format(gate[0]))
+            if gate[1] == 'Z':
+                qasm_circuit.append('z q[{0}];\n'.format(gate[0]))
+
+        return ''.join(qasm_circuit)
+
+
+
     @staticmethod
     def get_excitation_circuit(excitation):
+        assert type(excitation) == QubitOperator
+
 
         return 'TODO'
 
