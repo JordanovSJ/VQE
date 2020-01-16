@@ -32,6 +32,7 @@ class MatrixCalculation:
     # returns the compressed sparse row matrix for the exponent of a qubit operator
     @staticmethod
     def get_qubit_operator_exponent_sparse_matrix(qubit_operator, n_qubits, parameter=1):
+        assert parameter.imag == 0  # TODO remove?
         qubit_operator_matrix = get_sparse_operator(qubit_operator, n_qubits)
         return scipy.sparse.linalg.expm((parameter/2) * qubit_operator_matrix)
 
@@ -117,6 +118,7 @@ class QiskitSimulation:
     def get_exponent_qasm(exponent_term, exponent_angle):
         assert type(exponent_term) == tuple  # TODO remove?
         assert exponent_angle.real == 0
+        exponent_angle = exponent_angle.imag
 
         # gate to rotate the qubits to the corresponding basis (Z by default)
         x_basis_correction = ['']
@@ -138,13 +140,14 @@ class QiskitSimulation:
             # add the core cnot gates
             if i > 0:
                 previous_qubit = exponent_term[i - 1][0]
-                cnots.append('rx q[{}],q[{}];\n'.format(previous_qubit, qubit))
+                cnots.append('cx q[{}],q[{}];\n'.format(previous_qubit, qubit))
 
         front_basis_correction = x_basis_correction + y_basis_correction_front
         back_basis_correction = x_basis_correction + y_basis_correction_back
 
-        # TODO make more readeble
-        cnots_module = cnots.append('rz({}) q[{}];\n'.format(exponent_angle, exponent_term[-1][0])) + cnots[::-1]
+        # TODO make it more readable
+        z_rotation = 'rz({}) q[{}];\n'.format(exponent_angle, exponent_term[-1][0])
+        cnots_module = cnots + [z_rotation] + cnots[::-1]
 
         return ''.join(front_basis_correction + cnots_module + back_basis_correction)
 

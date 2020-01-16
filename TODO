@@ -28,3 +28,7 @@ IDEAS for algorithms and papers:
 -ADAPT based on energy contribution
 -fixed shape ansatz circuit
 -computing excited states
+
+
+ISSUES
+-openfermion: reversed order of qubits?
