@@ -9,6 +9,7 @@ import itertools
 #
 
 
+# TODO change to static classes and methods?
 class UCCSD:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals

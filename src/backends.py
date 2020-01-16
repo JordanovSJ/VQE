@@ -73,7 +73,7 @@ class MatrixCalculation:
         return energy.real  # TODO: should we expect the energy to be real ?
 
 
-class QiskitSimulator:
+class QiskitSimulation:
 
     @staticmethod
     def get_qasm_header(n_qubits):
@@ -81,7 +81,7 @@ class QiskitSimulator:
 
     # get a qasm circuit for a qubit operator consisting of Pauli gates only (used for the Hamiltonian)
     @staticmethod
-    def get_qubit_operator_circuit(qubit_operator):
+    def get_qubit_operator_qasm(qubit_operator):
         assert type(qubit_operator) == QubitOperator
         assert len(qubit_operator.terms) == 1
 
@@ -90,52 +90,105 @@ class QiskitSimulator:
 
         assert coeff == 1
 
-        qasm_circuit = ['']
+        # joining a list of string in a single step is more efficient than appending each time to a string (?)
+        qasm = ['']
 
         for gate in operator:
             if gate[1] == 'X':
-                qasm_circuit.append('x q[{0}];\n'.format(gate[0]))
+                qasm.append('x q[{0}];\n'.format(gate[0]))
             if gate[1] == 'Y':
-                qasm_circuit.append('y q[{0}];\n'.format(gate[0]))
+                qasm.append('y q[{0}];\n'.format(gate[0]))
             if gate[1] == 'Z':
-                qasm_circuit.append('z q[{0}];\n'.format(gate[0]))
+                qasm.append('z q[{0}];\n'.format(gate[0]))
 
-        return ''.join(qasm_circuit)
+        return ''.join(qasm)
 
+    # return a qasm circuit for preparing the HF state for given number of qubits/orbitals and electrons, within JW
+    @staticmethod
+    def get_hf_state_qasm(n_qubits, n_electrons):
+        qasm = ['']
+        for i in range(n_electrons):
+            qasm.append('x q[{0}];\n'.format(n_qubits - i))
 
+        return ''.join(qasm)
+
+    # returns a qasm circuit for an exponent of pauli operators
+    @staticmethod
+    def get_exponent_qasm(exponent_term, exponent_angle):
+        assert type(exponent_term) == tuple  # TODO remove?
+        assert exponent_angle.real == 0
+
+        # gate to rotate the qubits to the corresponding basis (Z by default)
+        x_basis_correction = ['']
+        y_basis_correction_front = ['']
+        y_basis_correction_back = ['']
+        cnots = ['']
+
+        for i, operator in enumerate(exponent_term):
+            qubit = operator[0]
+            pauli_operator = operator[1]
+
+            # add basis rotations for X and Y
+            if pauli_operator == 'X':
+                x_basis_correction.append('h q[{}];\n'.format(qubit))
+            if pauli_operator == 'Y':
+                y_basis_correction_front.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit))
+                y_basis_correction_back.append('rx({}) q[{}];\n'.format(- numpy.pi / 2, qubit))
+
+            # add the core cnot gates
+            if i > 0:
+                previous_qubit = exponent_term[i - 1][0]
+                cnots.append('rx q[{}],q[{}];\n'.format(previous_qubit, qubit))
+
+        front_basis_correction = x_basis_correction + y_basis_correction_front
+        back_basis_correction = x_basis_correction + y_basis_correction_back
+
+        # TODO make more readeble
+        cnots_module = cnots.append('rz({}) q[{}];\n'.format(exponent_angle, exponent_term[-1][0])) + cnots[::-1]
+
+        return ''.join(front_basis_correction + cnots_module + back_basis_correction)
 
     @staticmethod
-    def get_excitation_circuit(excitation):
-        assert type(excitation) == QubitOperator
+    def get_excitation_list_qasm(excitation_list, excitation_parameters):
+        qasm = ['']
+        # iterate over all excitations (each excitation is represented by a sum of products of pauli operators)
+        for i, excitation in enumerate(excitation_list):
+            # iterate over the terms of each excitation (each term is a product of pauli operators, on different qubits)
+            for exponent_term in excitation.terms:
+                exponent_angle = excitation_parameters[i]*excitation.terms[exponent_term]
+                qasm.append(QiskitSimulation.get_exponent_qasm(exponent_term, exponent_angle))
 
+        return ''.join(qasm)
 
-        return 'TODO'
-
+    # return a statevector in the form of an array from a qasm circuit
     @staticmethod
-    def get_hf_state_circuit(n_qubits, n_electrons):
+    def get_statevector_from_qasm(qasm_circuit):
+        ansatz_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm_circuit)
+        backend = qiskit.BasicAer.get_backend('statevector_simulator')
+        result = qiskit.execute(ansatz_circuit, backend).result()
+        statevector = result.get_statevector(ansatz_circuit)
 
-        return 'TODO'
-
-    @staticmethod
-    def get_ansatz_circuit(excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
-        # create a list containing the qasm elements
-        qasm_circuit = [QiskitSimulator.get_qasm_header(n_qubits)]
-
-        if hf_initial_state:
-            dumy = 'dumy'
-
-        qasm_circuit.append('x q[0];\n')
-        return ''.join(qasm_circuit)
+        return statevector
 
     @staticmethod
     def get_energy(qubit_hamiltonian, excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
 
-        qasm_str = QiskitSimulator.get_ansatz_circuit(excitation_list, excitation_parameters, n_qubits, n_electrons)
-        ansatz_circ = qiskit.QuantumCircuit.from_qasm_str(qasm_str)
-        backend = qiskit.BasicAer.get_backend('statevector_simulator')
-        result = qiskit.execute(ansatz_circ, backend).result()
-        statevector = result.get_statevector(ansatz_circ)
+        # add a qasm header
+        qasm = [QiskitSimulation.get_qasm_header(n_qubits)]
 
-        return statevector
+        # add a circuit for HF state initialization
+        if hf_initial_state:
+            qasm.append(QiskitSimulation.get_hf_state_qasm(n_qubits, n_electrons))
+
+        # add circuit elements implementing the list of excitations
+        qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list, excitation_parameters))
+
+        # get the resulting statevector from the Qiskit simulator
+        statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
+
+        # get the Hamiltonian in the form of a matrix
+        hamiltonian_matrix = get_sparse_operator(qubit_hamiltonian).todense()
+
+        return statevector.conj().dot(hamiltonian_matrix).dot(statevector)[0, 0]
 
 # class RealDevice:
