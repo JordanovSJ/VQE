@@ -19,22 +19,22 @@ class MatrixCalculation:
 
     # NOT USED
     @staticmethod
-    def get_sparse_statevector_module(sparse_statevector):
+    def get_statevector_module(sparse_statevector):
         return numpy.sqrt(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item())
 
     # NOT USED
     @staticmethod
-    def renormalize_sparse_statevector(sparse_statevector):
+    def renormalize_statevector(sparse_statevector):
         statevector_module = numpy.sqrt(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item())
         assert statevector_module.imag == 0
         return sparse_statevector / statevector_module
 
     # returns the compressed sparse row matrix for the exponent of a qubit operator
     @staticmethod
-    def get_qubit_operator_exponent_sparse_matrix(qubit_operator, n_qubits, parameter=1):
+    def get_qubit_operator_exponent_matrix(qubit_operator, n_qubits, parameter=1):
         assert parameter.imag == 0  # TODO remove?
         qubit_operator_matrix = get_sparse_operator(qubit_operator, n_qubits)
-        return scipy.sparse.linalg.expm((parameter/2) * qubit_operator_matrix)
+        return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
 
     @staticmethod
     def prepare_statevector(excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
@@ -49,7 +49,7 @@ class MatrixCalculation:
 
         for i, excitation in enumerate(excitation_list):
             excitation_matrix = MatrixCalculation.\
-                get_qubit_operator_exponent_sparse_matrix(excitation, n_qubits, parameter=excitation_parameters[i])
+                get_qubit_operator_exponent_matrix(excitation, n_qubits, parameter=excitation_parameters[i])
             sparse_statevector = sparse_statevector.dot(excitation_matrix.transpose())  # TODO: is transpose needed?
 
             # renormalize
@@ -146,7 +146,8 @@ class QiskitSimulation:
         back_basis_correction = x_basis_correction + y_basis_correction_back
 
         # TODO make it more readable
-        z_rotation = 'rz({}) q[{}];\n'.format(exponent_angle, exponent_term[-1][0])
+        # add the Z-rotation to the last qubit of the cnot sequence
+        z_rotation = 'rz({}) q[{}];\n'.format(-2*exponent_angle, exponent_term[-1][0])  # exp(i*theta*Z) ~ Rz(-2*theta)
         cnots_module = cnots + [z_rotation] + cnots[::-1]
 
         return ''.join(front_basis_correction + cnots_module + back_basis_correction)
