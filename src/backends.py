@@ -3,7 +3,7 @@ from openfermion import QubitOperator
 from openfermionpsi4 import run_psi4
 from openfermion.hamiltonians import MolecularData
 from openfermion.utils import jw_hartree_fock_state
-
+import time
 
 # from qiskit.providers.aer import StatevectorSimulator
 import qiskit
@@ -47,14 +47,11 @@ class MatrixCalculation:
         else:
             sparse_statevector = scipy.sparse.csr_matrix(numpy.zeros(2**n_qubits))
 
+        # TODO check if more efficient ot add up all excitation matrices and calculate a single excitation
         for i, excitation in enumerate(excitation_list):
             excitation_matrix = MatrixCalculation.\
                 get_qubit_operator_exponent_matrix(excitation, n_qubits, parameter=excitation_parameters[i])
-            sparse_statevector = sparse_statevector.dot(excitation_matrix.transpose())  # TODO: is transpose needed?
-
-            # renormalize
-            # print('State vector module = ', self.get_sparse_vector_module(sparse_statevector))
-            # sparse_statevector = self.renormalize_sparse_statevector(sparse_statevector)
+            sparse_statevector = sparse_statevector.dot(excitation_matrix.transpose())
 
         return sparse_statevector
 
@@ -71,7 +68,9 @@ class MatrixCalculation:
         energy = bra.dot(sparse_matrix_hamiltonian).dot(ket)
         energy = energy.todense().item()
 
-        return energy.real  # TODO: should we expect the energy to be real ?
+        statevector = numpy.array(sparse_statevector.todense())[0]
+
+        return energy, statevector  # TODO: should we expect the energy to be real ?
 
 
 class QiskitSimulation:
@@ -106,10 +105,10 @@ class QiskitSimulation:
 
     # return a qasm circuit for preparing the HF state for given number of qubits/orbitals and electrons, within JW
     @staticmethod
-    def get_hf_state_qasm(n_qubits, n_electrons):
+    def get_hf_state_qasm(n_electrons):
         qasm = ['']
         for i in range(n_electrons):
-            qasm.append('x q[{0}];\n'.format(n_qubits - i))
+            qasm.append('x q[{0}];\n'.format(i))
 
         return ''.join(qasm)
 
@@ -117,13 +116,13 @@ class QiskitSimulation:
     @staticmethod
     def get_exponent_qasm(exponent_term, exponent_angle):
         assert type(exponent_term) == tuple  # TODO remove?
-        assert exponent_angle.real == 0
-        exponent_angle = exponent_angle.imag
+        assert exponent_angle.imag == 0
 
-        # gate to rotate the qubits to the corresponding basis (Z by default)
+        # gates for X and Y basis correction (Z by default)
         x_basis_correction = ['']
         y_basis_correction_front = ['']
         y_basis_correction_back = ['']
+        # CNOT ladder
         cnots = ['']
 
         for i, operator in enumerate(exponent_term):
@@ -145,8 +144,8 @@ class QiskitSimulation:
         front_basis_correction = x_basis_correction + y_basis_correction_front
         back_basis_correction = x_basis_correction + y_basis_correction_back
 
-        # TODO make it more readable
-        # add the Z-rotation to the last qubit of the cnot sequence
+        # TODO make this more readable
+        # add a Z-rotation between the two CNOT ladders
         z_rotation = 'rz({}) q[{}];\n'.format(-2*exponent_angle, exponent_term[-1][0])  # exp(i*theta*Z) ~ Rz(-2*theta)
         cnots_module = cnots + [z_rotation] + cnots[::-1]
 
@@ -157,9 +156,12 @@ class QiskitSimulation:
         qasm = ['']
         # iterate over all excitations (each excitation is represented by a sum of products of pauli operators)
         for i, excitation in enumerate(excitation_list):
+
             # iterate over the terms of each excitation (each term is a product of pauli operators, on different qubits)
             for exponent_term in excitation.terms:
                 exponent_angle = excitation_parameters[i]*excitation.terms[exponent_term]
+                assert exponent_angle.real == 0
+                exponent_angle = exponent_angle.imag
                 qasm.append(QiskitSimulation.get_exponent_qasm(exponent_term, exponent_angle))
 
         return ''.join(qasm)
@@ -174,6 +176,15 @@ class QiskitSimulation:
 
         return statevector
 
+    # get a circuit of SWAPs to reverse the order of qubits
+    @staticmethod
+    def reverse_qubits_qasm(n_qubits):
+        qasm = ['']
+        for i in range(int(n_qubits/2)):
+            qasm.append('swap q[{}], q[{}];\n'.format(i, n_qubits - i - 1))
+
+        return ''.join(qasm)
+
     @staticmethod
     def get_energy(qubit_hamiltonian, excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
 
@@ -182,10 +193,19 @@ class QiskitSimulation:
 
         # add a circuit for HF state initialization
         if hf_initial_state:
-            qasm.append(QiskitSimulation.get_hf_state_qasm(n_qubits, n_electrons))
+            assert n_qubits >= n_electrons
+            qasm.append(QiskitSimulation.get_hf_state_qasm(n_electrons))
 
         # add circuit elements implementing the list of excitations
         qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list, excitation_parameters))
+
+        # Get a circuit of SWAP gates to reverse the order of qubits. This is required in order the statevector to match
+        # the reversed order of qubits used by openfermion when obtaining the Hamiltonian Matrix. This is not required
+        # in the case of implementing the H as a circuit as well (when running on a real device)
+        qasm.append(QiskitSimulation.reverse_qubits_qasm(n_qubits))
+
+        # join the qasm elements into a single string
+        qasm = ''.join(qasm)
 
         # get the resulting statevector from the Qiskit simulator
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
@@ -193,6 +213,7 @@ class QiskitSimulation:
         # get the Hamiltonian in the form of a matrix
         hamiltonian_matrix = get_sparse_operator(qubit_hamiltonian).todense()
 
-        return statevector.conj().dot(hamiltonian_matrix).dot(statevector)[0, 0]
+        energy = statevector.conj().dot(hamiltonian_matrix).dot(statevector)[0, 0]
 
-# class RealDevice:
+        return energy, statevector
+

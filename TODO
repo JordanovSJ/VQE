@@ -1,5 +1,8 @@
 1. Create Backgrounds; classes to construct and calculate H, as either a matrix or as quantum_circuits/states on a quantum simulator or
     a real device.
+      - matrix  ----- DONE
+      - qiskit simulator
+      - real device (Rigetti)
 
 2.For the quantum simulator/devices backgrounds implement different methods for calculating <H>
      - UHU*
@@ -30,5 +33,12 @@ IDEAS for algorithms and papers:
 -computing excited states
 
 
-ISSUES
--openfermion: reversed order of qubits?
+Notes:
+1. QUBIT ORDER
+-qiskit uses the right most qubit as the MSB; statevector simulator produces correct statevector
+-openfermion produces statevector corresponding to reversed qubit order
+
+2. State preparation of QISKIT requires much more time than energy calculation
+=> therefore no point finding explicitly the <H> when simulating
+
+
