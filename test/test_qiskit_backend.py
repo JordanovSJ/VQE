@@ -1,19 +1,26 @@
+from src import molecules
+from src.backends import QiskitSimulation, MatrixCalculation
+from src.ansatz_types import UCCSD
+
+import openfermionpsi4
+import openfermion
+
+import scipy
 import unittest
 import qiskit
-import openfermion
-from src.backends import QiskitSimulation, MatrixCalculation
 import numpy
-from src import molecules
-import openfermionpsi4
-from src.ansatz_types import UCCSD
 
 
 class QiskitSimulationBackendTest(unittest.TestCase):
     # test that a circuit of pauli gates only produces a correct statevector
     def test_pauli_gates_circuit_statevector(self):
+        gate_counter = {}
+        for i in range(2):
+            gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
+
         qubit_operator = openfermion.QubitOperator('X0 Y1')
         qasm_circuit = QiskitSimulation.get_qasm_header(2)
-        qasm_circuit += QiskitSimulation.get_qubit_operator_qasm(qubit_operator)
+        qasm_circuit += QiskitSimulation.get_qubit_operator_qasm(qubit_operator, gate_counter)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm_circuit)
 
         expected_statevector = numpy.array([0, 0, 0, 1j])
@@ -25,9 +32,14 @@ class QiskitSimulationBackendTest(unittest.TestCase):
 
     # test that a circuit of for an exponent of pauli gates produces a correct statevector
     def test_exponent_statevector(self):
+
+        gate_counter = {}
+        for i in range(3):
+            gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
+
         exp_operator = ((0, 'X'), (1, 'Z'), (2, 'Z'))
         qasm = QiskitSimulation.get_qasm_header(3)
-        qasm += QiskitSimulation.get_exponent_qasm(exp_operator, -numpy.pi/2)
+        qasm += QiskitSimulation.get_exponent_qasm(exp_operator, -numpy.pi/2, gate_counter)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
 
         expected_statevector = numpy.zeros(8)
@@ -39,6 +51,7 @@ class QiskitSimulationBackendTest(unittest.TestCase):
             self.assertEqual(statevector[i], expected_statevector[i])
 
     # test that the the qiskit circuit simulator and a matrices calculation produce same statevector for an exponent
+    # TODO: this test is ugly ...
     def test_exponent_statevectors_of_different_backends(self):
 
         qubit_operators = []
@@ -52,12 +65,16 @@ class QiskitSimulationBackendTest(unittest.TestCase):
             qubit_operator_tuple = list(qubit_operator.terms.keys())[0]
             n_qubits = len(qubit_operator_tuple)
 
+            gate_counter = {}
+            for i in range(n_qubits):
+                gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
+
             for angle in range(10):
                 angle = 2*numpy.pi/10
 
                 # <<< create a statevector using QiskitSimulation.get_exponent_qasm >>>
                 qasm = QiskitSimulation.get_qasm_header(n_qubits)
-                qasm += QiskitSimulation.get_exponent_qasm(qubit_operator_tuple, angle)
+                qasm += QiskitSimulation.get_exponent_qasm(qubit_operator_tuple, angle, gate_counter)
                 qiskit_statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
                 qiskit_statevector = qiskit_statevector * numpy.exp(1j * angle)  # correct for a global phase
                 qiskit_statevector = qiskit_statevector.round(2)  # round for the purpose of testing
@@ -76,7 +93,7 @@ class QiskitSimulationBackendTest(unittest.TestCase):
                 for i in range(len(qiskit_statevector)):
                     self.assertEqual(qiskit_statevector[i], array_statevector[i])
 
-    # test that the qiskit and matrix backends produce same value for <H> for the same given excitation parameters
+    # test that the qiskit and the matrix backends produce same value for <H> for the same given excitation parameters
     def test_energies_of_different_backends(self):
         molecule = molecules.H2
         molecule_data = openfermion.hamiltonians.MolecularData(geometry=molecule.geometry({'distance': 0.735}),
@@ -100,10 +117,25 @@ class QiskitSimulationBackendTest(unittest.TestCase):
 
         self.assertEqual(round(energy_qiskit_sim, 3), round(energy_matrix_mult, 3))
 
-    # test that the qiskit and matrix backends produce the same HF statevector
+    # test that the qiskit and the matrix backends produce the same HF statevector
     def test_get_hf_state_of_two_backends(self):
+        n_qubits = 5
+        n_electrons = 3
 
-        self.assertEqual(True, True)
+        gate_counter = {}
+        for i in range(n_qubits):
+            gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
+
+        qasm = QiskitSimulation.get_qasm_header(n_qubits)
+        qasm += QiskitSimulation.get_hf_state_qasm(n_electrons, gate_counter)
+        qasm += QiskitSimulation.reverse_qubits_qasm(n_qubits)
+        qiskit_statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
+
+        sparse_statevector = scipy.sparse.csr_matrix(openfermion.utils.jw_hartree_fock_state(n_electrons, n_qubits))
+        array_statevector = numpy.array(sparse_statevector.todense())[0]
+
+        for i in range(len(qiskit_statevector)):
+            self.assertEqual(qiskit_statevector[i], array_statevector[i])
 
 
 if __name__ == '__main__':

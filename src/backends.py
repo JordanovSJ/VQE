@@ -1,19 +1,12 @@
 from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
 from openfermion import QubitOperator
-from openfermionpsi4 import run_psi4
-from openfermion.hamiltonians import MolecularData
 from openfermion.utils import jw_hartree_fock_state
 import time
 
-# from qiskit.providers.aer import StatevectorSimulator
 import qiskit
-
 import scipy
 import numpy
 
-
-# # Parent class
-# class Backend:
 
 class MatrixCalculation:
 
@@ -57,6 +50,13 @@ class MatrixCalculation:
 
     @staticmethod
     def get_energy(qubit_hamiltonian, excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
+
+        # TODO add gate counter
+        # # create a dictionary to keep count on the number of gates for each qubit
+        # gate_counter = {}
+        # for i in range(n_qubits):
+        #     gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
+
         sparse_matrix_hamiltonian = get_sparse_operator(qubit_hamiltonian)
 
         sparse_statevector = MatrixCalculation.\
@@ -70,7 +70,7 @@ class MatrixCalculation:
 
         statevector = numpy.array(sparse_statevector.todense())[0]
 
-        return energy, statevector  # TODO: should we expect the energy to be real ?
+        return energy, statevector, None
 
 
 class QiskitSimulation:
@@ -80,8 +80,9 @@ class QiskitSimulation:
         return 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[{0}];\ncreg c[{0}];\n'.format(n_qubits)
 
     # get a qasm circuit for a qubit operator consisting of Pauli gates only (used for the Hamiltonian)
+    # NOT USED
     @staticmethod
-    def get_qubit_operator_qasm(qubit_operator):
+    def get_qubit_operator_qasm(qubit_operator, gate_counter):
         assert type(qubit_operator) == QubitOperator
         assert len(qubit_operator.terms) == 1
 
@@ -90,31 +91,41 @@ class QiskitSimulation:
 
         assert coeff == 1
 
-        # joining a list of string in a single step is more efficient than appending each time to a string (?)
+        # represent the qasm as a list of strings
         qasm = ['']
 
+        # a dictionary to keep count on the number of gates applied to each qubit
+        gate_count = {}
+
         for gate in operator:
+            qubit = gate[0]
+
             if gate[1] == 'X':
-                qasm.append('x q[{0}];\n'.format(gate[0]))
-            if gate[1] == 'Y':
-                qasm.append('y q[{0}];\n'.format(gate[0]))
-            if gate[1] == 'Z':
-                qasm.append('z q[{0}];\n'.format(gate[0]))
+                qasm.append('x q[{0}];\n'.format(qubit))
+            elif gate[1] == 'Y':
+                qasm.append('y q[{0}];\n'.format(qubit))
+            elif gate[1] == 'Z':
+                qasm.append('z q[{0}];\n'.format(qubit))
+            else:
+                raise ValueError('Invalid qubit operator. {} is not a Pauli operator'.format(gate[1]))
+
+            gate_counter['q{}'.format(qubit)]['u1'] += 1
 
         return ''.join(qasm)
 
     # return a qasm circuit for preparing the HF state for given number of qubits/orbitals and electrons, within JW
     @staticmethod
-    def get_hf_state_qasm(n_electrons):
+    def get_hf_state_qasm(n_electrons, gate_counter):
         qasm = ['']
         for i in range(n_electrons):
             qasm.append('x q[{0}];\n'.format(i))
+            gate_counter['q{}'.format(i)]['u1'] += 1
 
         return ''.join(qasm)
 
     # returns a qasm circuit for an exponent of pauli operators
     @staticmethod
-    def get_exponent_qasm(exponent_term, exponent_angle):
+    def get_exponent_qasm(exponent_term, exponent_angle, gate_counter):
         assert type(exponent_term) == tuple  # TODO remove?
         assert exponent_angle.imag == 0
 
@@ -132,27 +143,39 @@ class QiskitSimulation:
             # add basis rotations for X and Y
             if pauli_operator == 'X':
                 x_basis_correction.append('h q[{}];\n'.format(qubit))
+
+                gate_counter['q{}'.format(qubit)]['u1'] += 2
             if pauli_operator == 'Y':
                 y_basis_correction_front.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit))
                 y_basis_correction_back.append('rx({}) q[{}];\n'.format(- numpy.pi / 2, qubit))
+
+                gate_counter['q{}'.format(qubit)]['u1'] += 2
 
             # add the core cnot gates
             if i > 0:
                 previous_qubit = exponent_term[i - 1][0]
                 cnots.append('cx q[{}],q[{}];\n'.format(previous_qubit, qubit))
 
+                gate_counter['q{}'.format(previous_qubit)]['cx'] += 2
+                gate_counter['q{}'.format(qubit)]['cx'] += 2
+
         front_basis_correction = x_basis_correction + y_basis_correction_front
         back_basis_correction = x_basis_correction + y_basis_correction_back
 
         # TODO make this more readable
-        # add a Z-rotation between the two CNOT ladders
-        z_rotation = 'rz({}) q[{}];\n'.format(-2*exponent_angle, exponent_term[-1][0])  # exp(i*theta*Z) ~ Rz(-2*theta)
+        # add a Z-rotation between the two CNOT ladders at the last qubit
+        last_qubit = exponent_term[-1][0]
+        z_rotation = 'rz({}) q[{}];\n'.format(-2*exponent_angle, last_qubit)  # exp(i*theta*Z) ~ Rz(-2*theta)
+
+        gate_counter['q{}'.format(last_qubit)]['u1'] += 1
+
+        # create the cnot module simulating a single Trotter step
         cnots_module = cnots + [z_rotation] + cnots[::-1]
 
         return ''.join(front_basis_correction + cnots_module + back_basis_correction)
 
     @staticmethod
-    def get_excitation_list_qasm(excitation_list, excitation_parameters):
+    def get_excitation_list_qasm(excitation_list, excitation_parameters, gate_counter):
         qasm = ['']
         # iterate over all excitations (each excitation is represented by a sum of products of pauli operators)
         for i, excitation in enumerate(excitation_list):
@@ -162,7 +185,7 @@ class QiskitSimulation:
                 exponent_angle = excitation_parameters[i]*excitation.terms[exponent_term]
                 assert exponent_angle.real == 0
                 exponent_angle = exponent_angle.imag
-                qasm.append(QiskitSimulation.get_exponent_qasm(exponent_term, exponent_angle))
+                qasm.append(QiskitSimulation.get_exponent_qasm(exponent_term, exponent_angle, gate_counter))
 
         return ''.join(qasm)
 
@@ -188,16 +211,21 @@ class QiskitSimulation:
     @staticmethod
     def get_energy(qubit_hamiltonian, excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
 
+        # create a dictionary to keep count on the number of gates for each qubit
+        gate_counter = {}
+        for i in range(n_qubits):
+            gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
+
         # add a qasm header
         qasm = [QiskitSimulation.get_qasm_header(n_qubits)]
 
-        # add a circuit for HF state initialization
+        # add a circuit for a HF state initialization
         if hf_initial_state:
             assert n_qubits >= n_electrons
-            qasm.append(QiskitSimulation.get_hf_state_qasm(n_electrons))
+            qasm.append(QiskitSimulation.get_hf_state_qasm(n_electrons, gate_counter))
 
         # add circuit elements implementing the list of excitations
-        qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list, excitation_parameters))
+        qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list, excitation_parameters, gate_counter))
 
         # Get a circuit of SWAP gates to reverse the order of qubits. This is required in order the statevector to match
         # the reversed order of qubits used by openfermion when obtaining the Hamiltonian Matrix. This is not required
@@ -215,5 +243,6 @@ class QiskitSimulation:
 
         energy = statevector.conj().dot(hamiltonian_matrix).dot(statevector)[0, 0]
 
-        return energy, statevector
+        return energy, statevector, gate_counter
+
 

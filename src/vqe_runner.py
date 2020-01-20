@@ -55,11 +55,11 @@ class VQERunner:
 
     # Todo: a prettier way to write this?
     def get_energy(self, excitation_parameters):
-        energy, statevector = self.backend.get_energy(excitation_parameters=excitation_parameters,
-                                                      qubit_hamiltonian=self.jw_ham_qubit_operator,
-                                                      excitation_list=self.excitation_list,
-                                                      n_qubits=self.n_qubits,
-                                                      n_electrons=self.n_electrons)
+        energy, statevector, gate_counter = self.backend.get_energy(excitation_parameters=excitation_parameters,
+                                                                    qubit_hamiltonian=self.jw_ham_qubit_operator,
+                                                                    excitation_list=self.excitation_list,
+                                                                    n_qubits=self.n_qubits,
+                                                                    n_electrons=self.n_electrons)
         if statevector is not None:
             self.statevector = statevector
 

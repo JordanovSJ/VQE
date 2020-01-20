@@ -22,6 +22,7 @@ if __name__ == "__main__":
     E = QiskitSimulation.get_energy(h, excitation_list, excitation_pars, 4, 2)
 
     print(E)
+    print(excitation_list)
     print('spagetti')
 
 
