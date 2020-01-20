@@ -44,14 +44,18 @@ class VQERunner:
         # logging.info('HF energy = {}'.format(self.energy))
 
         # get a list of excitations
+        # TODO fix names
         if excitation_list is None:
-            self.excitation_list = UCCSD(self.n_orbitals, self.n_electrons).get_excitation_list()
+            self.excitation_list = UCCSD(self.n_orbitals, self.n_electrons).get_ansatz_elements()
         else:
             self.excitation_list = excitation_list
 
         self.backend = backend
 
-        self.var_params = numpy.zeros(len(self.excitation_list))
+        if excitation_list[1] == 'excitation_list':
+            self.var_params = numpy.zeros(len(self.excitation_list[0]))
+        elif excitation_list[1] == 'qasm_list':
+            self.var_params = numpy.zeros(3*self.n_qubits*len(self.excitation_list[0]))
         self.statevector = initial_statevector
 
     # Todo: a prettier way to write this?
@@ -91,7 +95,15 @@ class VQERunner:
         print('-----Numeber of excitation: {}-----'.format(len(self.excitation_list)))
         print('-----Statevector and energy calculate using {}------'.format(self.backend))
 
-        excitation_parameters = numpy.zeros(len(self.excitation_list))
+        if self.excitation_list[1] == 'excitation_list':
+            excitation_parameters = numpy.zeros(len(self.excitation_list[0]))
+        else:
+            excitation_parameters = numpy.zeros(2*self.n_qubits*len(self.excitation_list[0]))
+
+        # <<<<<<<<<<<<<<, test >>>>>>>>>>>>>>>>..
+        print('Test initial energy : ', self.get_energy(excitation_parameters))
+        print(self.statevector)
+        print(self.excitation_list[0])
 
         self.iteration = 1
         self.time = time.time()

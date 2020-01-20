@@ -1,12 +1,11 @@
 from openfermion import QubitOperator, FermionOperator
 from openfermion.transforms import jordan_wigner
 import itertools
+import numpy
 
-# TODO create a parent class for the different ansatz type classes
-# class Ansatz:
-#     def __init__(self):
-#         return 0
-#
+# We implement two different types of ansatz states
+# Type "excitation_list" consists of a list of exponent Pauli terms representing single step Trotter excitations
+# Type "qasm_list" consists of custom circuit elements represented explicitly by qasm instructions
 
 
 # TODO change to static classes and methods?
@@ -14,6 +13,7 @@ class UCCSD:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
+        self.ansatz_type = 'excitation_list'
 
     def get_single_excitation_list(self):
         single_excitations = []
@@ -37,14 +37,15 @@ class UCCSD:
 
         return double_excitations
 
-    def get_excitation_list(self):
-        return self.get_single_excitation_list() + self.get_double_excitation_list()
+    def get_ansatz_elements(self):
+        return self.get_single_excitation_list() + self.get_double_excitation_list(), self.ansatz_type
 
 
 class UCCGSD:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
+        self.ansatz_type = 'excitation_list'
 
     def get_single_excitation_list(self):
         single_excitations = []
@@ -62,8 +63,36 @@ class UCCGSD:
 
         return double_excitations
 
-    def get_excitation_list(self):
-        return self.get_single_excitation_list() + self.get_double_excitation_list()
+    def get_ansatz_elements(self):
+        return self.get_single_excitation_list() + self.get_double_excitation_list(), self.ansatz_type
 
-# class k-UpCCGSD:
-#     #TODO
+
+class FixedAnsatz1:
+    def __init__(self, n_orbitals, n_electrons):
+        self.n_orbitals = n_orbitals
+        self.n_electrons = n_electrons
+        self.ansatz_type = 'qasm_list'
+
+    def get_single_block(self, index):
+        qasm = ['']
+        # apply single qubit general rotations to each qubit
+        for qubit in range(self.n_orbitals):
+            qasm.append('rx({{}}) q[{}];\n'.format(qubit))  # we want to leave first {} empty for var_parameter later
+            qasm.append('ry({{}}) q[{}];\n'.format(qubit))
+
+        # used_qubits = numpy.zeros(self.n_orbitals)
+
+        for qubit in range(1, self.n_orbitals):
+
+            qasm.append('cx q[{}], q[{}];\n'.format(qubit - 1, qubit))
+
+            # used_qubits[qubit] = 1
+            # used_qubits[next_qubit] = 1
+
+        return ''.join(qasm)
+
+    def get_ansatz_elements(self):
+        # return block
+        return [self.get_single_block(index) for index in range(1, self.n_orbitals)], self.ansatz_type
+
+

@@ -229,12 +229,20 @@ class QiskitSimulation:
             # TODO
             raise ValueError(' Not implemented yet')
 
-        # add circuit elements implementing the list of excitations
-        qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list, excitation_parameters, gate_counter))
+        if excitation_list[1] == 'excitation_list':
+            # add circuit elements implementing the list of excitations
+            qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list[0], excitation_parameters, gate_counter))
 
-        # Get a circuit of SWAP gates to reverse the order of qubits. This is required in order the statevector to match
-        # the reversed order of qubits used by openfermion when obtaining the Hamiltonian Matrix. This is not required
-        # in the case of implementing the H as a circuit as well (when running on a real device)
+        elif excitation_list[1] == 'qasm_list':
+            # TODO
+            assert len(excitation_parameters) == 2*len(excitation_list[0])*n_qubits
+            excitation_parameters = excitation_parameters*10e2
+            qasm_ansatz = (''.join(excitation_list[0])).format(*excitation_parameters)
+            qasm.append(qasm_ansatz)
+
+        # Get a circuit of SWAP gates to reverse the order of qubits. This is required in order the statevector to
+        # match the reversed order of qubits used by openfermion when obtaining the Hamiltonian Matrix. This is not
+        # required in the case of implementing the H as a circuit as well (when running on a real device)
         qasm.append(QiskitSimulation.reverse_qubits_qasm(n_qubits))
 
         # join the qasm elements into a single string

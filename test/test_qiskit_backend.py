@@ -107,7 +107,7 @@ class QiskitSimulationBackendTest(unittest.TestCase):
         fermion_ham = openfermion.transforms.get_fermion_operator(molecule_ham)
         h = openfermion.transforms.jordan_wigner(fermion_ham)
 
-        excitation_list = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_excitation_list()
+        excitation_list = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()[0]
         excitation_pars = numpy.zeros(len(excitation_list))
         excitation_pars[-1] = 0.11
         energy_qiskit_sim = QiskitSimulation.get_energy(h, excitation_list, excitation_pars, molecule.n_orbitals,

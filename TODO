@@ -1,3 +1,5 @@
+*combine ansatz elements, var_parameters and ansatz type together
+
 1. Create Backgrounds; classes to construct and calculate H, as either a matrix or as quantum_circuits/states on a quantum simulator or
     a real device.
       - matrix  ----- DONE
