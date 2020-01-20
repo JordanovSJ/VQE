@@ -15,7 +15,8 @@ from src.ansatz_types import UCCSD
 
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, molecule, excitation_list=None, basis='sto-3g', molecule_geometry_params=None, backend=backends.MatrixCalculation):
+    def __init__(self, molecule, excitation_list=None, basis='sto-3g', molecule_geometry_params=None,
+                 backend=backends.MatrixCalculation, initial_statevector=None):
 
         if molecule_geometry_params is None:
             molecule_geometry_params = {}
@@ -51,15 +52,16 @@ class VQERunner:
         self.backend = backend
 
         self.var_params = numpy.zeros(len(self.excitation_list))
-        self.statevector = None
+        self.statevector = initial_statevector
 
     # Todo: a prettier way to write this?
-    def get_energy(self, excitation_parameters):
+    def get_energy(self, excitation_parameters, initial_statevector=None):
         energy, statevector, gate_counter = self.backend.get_energy(excitation_parameters=excitation_parameters,
                                                                     qubit_hamiltonian=self.jw_ham_qubit_operator,
                                                                     excitation_list=self.excitation_list,
                                                                     n_qubits=self.n_qubits,
-                                                                    n_electrons=self.n_electrons)
+                                                                    n_electrons=self.n_electrons,
+                                                                    initial_statevector=initial_statevector)
         if statevector is not None:
             self.statevector = statevector
 
@@ -71,7 +73,7 @@ class VQERunner:
         delta_e = self.new_energy - self.previous_energy
         self.previous_energy = self.new_energy
 
-        print('Iteration: {}. Energy change {}'.format(self.iteration, '{:.3e}'.format(delta_e)))
+        print('Iteration: {}.\n Energy {}.  Energy change {}'.format(self.iteration, self.new_energy, '{:.3e}'.format(delta_e)))
         print('Iteration dutation: ', time.time() - self.time)
         self.time = time.time()
         self.iteration += 1
@@ -94,6 +96,6 @@ class VQERunner:
         self.iteration = 1
         self.time = time.time()
         opt_energy = scipy.optimize.minimize(self.get_energy, excitation_parameters, method='Nelder-Mead', callback=self.callback,
-                                             options={'maxiter': max_n_iterations}, tol=1e-5)  # TODO: find a suitable optimizer
+                                             options={'maxiter': max_n_iterations}, tol=1e-4)  # TODO: find a suitable optimizer
 
         return opt_energy

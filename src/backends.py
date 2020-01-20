@@ -30,15 +30,17 @@ class MatrixCalculation:
         return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
 
     @staticmethod
-    def prepare_statevector(excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
+    def prepare_statevector(excitation_list, excitation_parameters, n_qubits, n_electrons, initial_statevector=None):
         assert len(excitation_list) == len(excitation_parameters)
         assert n_qubits >= n_electrons
 
         # initiate statevector as the HF state or as the 0th state
-        if hf_initial_state:
+        if initial_statevector is None:
             sparse_statevector = scipy.sparse.csr_matrix(jw_hartree_fock_state(n_electrons, n_qubits))
         else:
-            sparse_statevector = scipy.sparse.csr_matrix(numpy.zeros(2**n_qubits))
+            assert len(initial_statevector) == 2**n_qubits
+            assert initial_statevector.dot(initial_statevector.conj()) == 1  # TODO maybe this will give numerical error
+            sparse_statevector = scipy.sparse.csr_matrix(initial_statevector)
 
         # TODO check if more efficient ot add up all excitation matrices and calculate a single excitation
         for i, excitation in enumerate(excitation_list):
@@ -49,7 +51,7 @@ class MatrixCalculation:
         return sparse_statevector
 
     @staticmethod
-    def get_energy(qubit_hamiltonian, excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
+    def get_energy(qubit_hamiltonian, excitation_list, excitation_parameters, n_qubits, n_electrons, initial_statevector=None):
 
         # TODO add gate counter
         # # create a dictionary to keep count on the number of gates for each qubit
@@ -61,7 +63,7 @@ class MatrixCalculation:
 
         sparse_statevector = MatrixCalculation.\
             prepare_statevector(excitation_list, excitation_parameters, n_qubits, n_electrons,
-                                hf_initial_state=hf_initial_state)
+                                initial_statevector=initial_statevector)
         bra = sparse_statevector.conj()
         ket = sparse_statevector.transpose()
 
@@ -179,7 +181,7 @@ class QiskitSimulation:
         qasm = ['']
         # iterate over all excitations (each excitation is represented by a sum of products of pauli operators)
         for i, excitation in enumerate(excitation_list):
-
+            # print('Excitation ', i)  # testing
             # iterate over the terms of each excitation (each term is a product of pauli operators, on different qubits)
             for exponent_term in excitation.terms:
                 exponent_angle = excitation_parameters[i]*excitation.terms[exponent_term]
@@ -209,7 +211,7 @@ class QiskitSimulation:
         return ''.join(qasm)
 
     @staticmethod
-    def get_energy(qubit_hamiltonian, excitation_list, excitation_parameters, n_qubits, n_electrons, hf_initial_state=True):
+    def get_energy(qubit_hamiltonian, excitation_list, excitation_parameters, n_qubits, n_electrons, initial_statevector=None):
 
         # create a dictionary to keep count on the number of gates for each qubit
         gate_counter = {}
@@ -220,9 +222,12 @@ class QiskitSimulation:
         qasm = [QiskitSimulation.get_qasm_header(n_qubits)]
 
         # add a circuit for a HF state initialization
-        if hf_initial_state:
+        if initial_statevector is None:
             assert n_qubits >= n_electrons
             qasm.append(QiskitSimulation.get_hf_state_qasm(n_electrons, gate_counter))
+        else:
+            # TODO
+            raise ValueError(' Not implemented yet')
 
         # add circuit elements implementing the list of excitations
         qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list, excitation_parameters, gate_counter))
@@ -243,6 +248,6 @@ class QiskitSimulation:
 
         energy = statevector.conj().dot(hamiltonian_matrix).dot(statevector)[0, 0]
 
-        return energy, statevector, gate_counter
+        return energy.real, statevector, gate_counter
 
 
