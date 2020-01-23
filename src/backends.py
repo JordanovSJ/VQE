@@ -194,9 +194,10 @@ class QiskitSimulation:
     # return a statevector in the form of an array from a qasm circuit
     @staticmethod
     def get_statevector_from_qasm(qasm_circuit):
+        backend_options = {"method": "statevector", "zero_threshold": 10e-8, "max_parallel_threads": 6, "max_parallel_experiments": 6, "max_parallel_shots": 6}
         ansatz_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm_circuit)
         backend = qiskit.BasicAer.get_backend('statevector_simulator')
-        result = qiskit.execute(ansatz_circuit, backend).result()
+        result = qiskit.execute(ansatz_circuit, backend, backend_options=backend_options).result()
         statevector = result.get_statevector(ansatz_circuit)
 
         return statevector
@@ -231,6 +232,7 @@ class QiskitSimulation:
 
         if excitation_list[1] == 'excitation_list':
             # add circuit elements implementing the list of excitations
+            excitation_parameters = excitation_parameters * 10
             qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list[0], excitation_parameters, gate_counter))
 
         elif excitation_list[1] == 'qasm_list':
