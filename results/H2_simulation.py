@@ -19,7 +19,7 @@ if __name__ == "__main__":
     for i in range(5):
         r = 1.64 + i*0.04
         print('index ', i, 'R = ', r)
-        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, excitation_list=ansatz_elements, molecule_geometry_params={'distance': r})
+        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements, molecule_geometry_params={'distance': r})
         # t0 = time.time()
         result = vqe_runner.vqe_run(max_n_iterations)
         values.append({'index': i, 'r': r, 'E': result.fun, 'n_it': result.nit})
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     for i in range(10):
         r = 1.4 + i * 0.04
         print('index ', i, 'R = ', r)
-        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, excitation_list=ansatz_elements,
+        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
                                molecule_geometry_params={'distance': r})
 
         result = vqe_runner.vqe_run(max_n_iterations)

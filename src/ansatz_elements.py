@@ -1,5 +1,8 @@
 from openfermion import QubitOperator, FermionOperator
 from openfermion.transforms import jordan_wigner
+
+from src.utils import QasmUtils, MatrixUtils
+
 import itertools
 import numpy
 
@@ -9,66 +12,48 @@ import numpy
 
 
 class AnsatzElement:
-    def __int__(self, type, element, n_qubits):
-        self.type = type  # excitation or not
+    def __init__(self, element_type, element, n_qubits, excitation_order=None, n_var_parameters=1):
+        self.element_type = element_type  # excitation or not
         self.n_qubits = n_qubits
-        # TODO
-        self.qasm = None
-        self.gate_counter = None
-        if type == 'excitation':
-            self.excitation_order = 'TODO'
+        self.element = element
+
+        # create a dictionary to keep count on the number of gates for each qubit
+        self.gate_counter = {}
+        for i in range(n_qubits):
+            self.gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
+
+        if (self.element_type == 'excitation') and (excitation_order is None):
+            assert type(self.element) == QubitOperator
+            assert n_var_parameters == 1
+            self.excitation_order = self.get_excitation_order()
         else:
-            self.excitation_order = None
+            self.excitation_order = excitation_order
 
-        def get_exponent_qasm(exponent_term, exponent_angle, gate_counter):
-            assert type(exponent_term) == tuple  # TODO remove?
-            assert exponent_angle.imag == 0
+        self.n_var_parameters = n_var_parameters
 
-            # gates for X and Y basis correction (Z by default)
-            x_basis_correction = ['']
-            y_basis_correction_front = ['']
-            y_basis_correction_back = ['']
-            # CNOT ladder
-            cnots = ['']
+    def get_qasm(self, var_parameters):
+        if self.element_type == 'excitation':
+            assert len(var_parameters) == 1
+            var_parameter = var_parameters[0]
+            return self.get_excitation_qasm(self.element, var_parameter)
+        else:
+            return self.element.format(*[var_parameters])
 
-            for i, operator in enumerate(exponent_term):
-                qubit = operator[0]
-                pauli_operator = operator[1]
+    def get_excitation_order(self):
+        terms = list(self.element)
+        n_terms = len(terms)
+        return max([len(terms[i]) for i in range(n_terms)])
 
-                # add basis rotations for X and Y
-                if pauli_operator == 'X':
-                    x_basis_correction.append('h q[{}];\n'.format(qubit))
+    # get the qasm circuit of an excitation
+    def get_excitation_qasm(self, excitation, var_parameter):
+        qasm = ['']
+        for exponent_term in excitation.terms:
+            exponent_angle = var_parameter * excitation.terms[exponent_term]
+            assert exponent_angle.real == 0
+            exponent_angle = exponent_angle.imag
+            qasm.append(QasmUtils.get_exponent_qasm(exponent_term, exponent_angle, self.gate_counter))
 
-                    gate_counter['q{}'.format(qubit)]['u1'] += 2
-                if pauli_operator == 'Y':
-                    y_basis_correction_front.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit))
-                    y_basis_correction_back.append('rx({}) q[{}];\n'.format(- numpy.pi / 2, qubit))
-
-                    gate_counter['q{}'.format(qubit)]['u1'] += 2
-
-                # add the core cnot gates
-                if i > 0:
-                    previous_qubit = exponent_term[i - 1][0]
-                    cnots.append('cx q[{}],q[{}];\n'.format(previous_qubit, qubit))
-
-                    gate_counter['q{}'.format(previous_qubit)]['cx'] += 2
-                    gate_counter['q{}'.format(qubit)]['cx'] += 2
-
-            front_basis_correction = x_basis_correction + y_basis_correction_front
-            back_basis_correction = x_basis_correction + y_basis_correction_back
-
-            # TODO make this more readable
-            # add a Z-rotation between the two CNOT ladders at the last qubit
-            last_qubit = exponent_term[-1][0]
-            z_rotation = 'rz({}) q[{}];\n'.format(-2 * exponent_angle, last_qubit)  # exp(i*theta*Z) ~ Rz(-2*theta)
-
-            gate_counter['q{}'.format(last_qubit)]['u1'] += 1
-
-            # create the cnot module simulating a single Trotter step
-            cnots_module = cnots + [z_rotation] + cnots[::-1]
-
-            return ''.join(front_basis_correction + cnots_module + back_basis_correction)
-
+        return ''.join(qasm)
 
 
 # TODO change to static classes and methods?
@@ -76,15 +61,13 @@ class UCCSD:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
-        self.ansatz_type = 'excitation_list'
 
     def get_single_excitation_list(self):
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
-                fermion_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(j, i))
-                single_excitations.append(jordan_wigner(fermion_operator))
-
+                excitation = jordan_wigner(FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(j, i)))
+                single_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals, excitation_order=1))
         # returns list of QubitOperators
         return single_excitations
 
@@ -94,42 +77,43 @@ class UCCSD:
             for j in range(i+1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals-1):
                     for l in range(k+1, self.n_orbitals):
-                        fermion_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
-                                                           .format(i, j, k, l))
-                        double_excitations.append(jordan_wigner(fermion_operator))
-
+                        excitation = jordan_wigner(FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
+                                                                   .format(i, j, k, l)))
+                        double_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals,
+                                                                excitation_order=2))
         return double_excitations
 
     def get_ansatz_elements(self):
-        return self.get_single_excitation_list() + self.get_double_excitation_list(), self.ansatz_type
+        return self.get_single_excitation_list() + self.get_double_excitation_list()
 
 
 class UCCGSD:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
-        self.ansatz_type = 'excitation_list'
 
     def get_single_excitation_list(self):
         single_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 2):
-            fermion_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
-            single_excitations.append(jordan_wigner(fermion_operator))
+            excitation = jordan_wigner(FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices)))
+            single_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals, excitation_order=1))
 
         return single_excitations
 
     def get_double_excitation_list(self):
         double_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 4):
-            fermion_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
-            double_excitations.append(jordan_wigner(fermion_operator))
+            excitation = jordan_wigner(FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices)))
+            double_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals, excitation_order=2))
 
         return double_excitations
 
     def get_ansatz_elements(self):
-        return self.get_single_excitation_list() + self.get_double_excitation_list(), self.ansatz_type
+        return self.get_single_excitation_list() + self.get_double_excitation_list()
 
 
+# this is ugly ansatz
+# TODO
 class FixedAnsatz1:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
@@ -156,6 +140,8 @@ class FixedAnsatz1:
 
     def get_ansatz_elements(self):
         # return block
-        return [self.get_single_block(index) for index in range(1, self.n_orbitals)], self.ansatz_type
+        qasm_list = [self.get_single_block(index) for index in range(1, self.n_orbitals)]
+        qasm = ''.join(qasm_list)
+        return AnsatzElement('qasm', qasm, self.n_orbitals, n_var_parameters=2*self.n_orbitals*(self.n_orbitals-1))
 
 

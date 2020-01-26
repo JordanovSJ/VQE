@@ -20,7 +20,7 @@ class QiskitSimulationBackendTest(unittest.TestCase):
 
         qubit_operator = openfermion.QubitOperator('X0 Y1')
         qasm_circuit = QiskitSimulation.get_qasm_header(2)
-        qasm_circuit += QiskitSimulation.get_qubit_operator_qasm(qubit_operator, gate_counter)
+        qasm_circuit += QiskitSimulation.get_pauli_operators_qasm(qubit_operator, gate_counter)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm_circuit)
 
         expected_statevector = numpy.array([0, 0, 0, 1j])

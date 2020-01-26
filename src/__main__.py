@@ -13,10 +13,10 @@ if __name__ == "__main__":
     r = 0.735
     max_n_iterations = 2000
 
-    ansatz_elements = FixedAnsatz1(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+    ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
     # ansatz_elements = [ansatz_elements[0][:5], ansatz_elements[1]]
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, excitation_list=ansatz_elements, molecule_geometry_params={'distance': r})
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements, molecule_geometry_params={'distance': r})
     t0 = time.time()
     result = vqe_runner.vqe_run(max_n_iterations)
     t = time.time()

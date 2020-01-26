@@ -13,13 +13,14 @@ from src.molecules import H2, HF
 import openfermion
 
 if __name__ == "__main__":
-    molecule = HF
-    vqe_runner = VQERunner(molecule, molecule_geometry_params={'distance': 0.995})
+    molecule = H2
+    vqe_runner = VQERunner(molecule, molecule_geometry_params={'distance': 0.735})
     h = vqe_runner.jw_ham_qubit_operator
-    excitation_list = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
-    excitation_pars = numpy.zeros(len(excitation_list))
+    ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+    var_parameters = numpy.zeros(len(ansatz_elements))
+    var_parameters[4] = 0.11
 
-    E = QiskitSimulation.get_energy(h, excitation_list, excitation_pars, 12, 10)
+    E = QiskitSimulation.get_energy(h, ansatz_elements=ansatz_elements, var_parameters=var_parameters, n_qubits=4, n_electrons=2)
 
     print(E)
     # print(excitation_list)

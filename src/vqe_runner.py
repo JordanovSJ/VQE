@@ -10,19 +10,17 @@ import numpy
 import time
 
 import logging
+
 from src.ansatz_elements import UCCSD
 
 
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, molecule, excitation_list=None, basis='sto-3g', molecule_geometry_params=None,
-                 backend=backends.MatrixCalculation, initial_statevector=None):
+    def __init__(self, molecule, ansatz_elements=None, basis='sto-3g', molecule_geometry_params=None,
+                 backend=backends.QiskitSimulation, initial_statevector=None):
 
         if molecule_geometry_params is None:
             molecule_geometry_params = {}
-
-        self.iteration = None
-        self.time = None
 
         self.molecule_name = molecule.name
         self.n_electrons = molecule.n_electrons
@@ -34,35 +32,34 @@ class VQERunner:
         # logging.info('Running VQE for geometry {}'.format(self.molecule_data.geometry))
         self.molecule_psi4 = run_psi4(self.molecule_data, run_mp2=False, run_cisd=False, run_ccsd=False, run_fci=False)
 
-        # Get a qubit representation of the molecule hamiltonian
+        # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
         self.fermion_ham = get_fermion_operator(self.molecule_ham)
         self.jw_ham_qubit_operator = jordan_wigner(self.fermion_ham)
 
-        self.previous_energy = self.molecule_psi4.hf_energy.item()
-        self.new_energy = None
-        # logging.info('HF energy = {}'.format(self.energy))
-
-        # get a list of excitations
-        # TODO fix names
-        if excitation_list is None:
-            self.excitation_list = UCCSD(self.n_orbitals, self.n_electrons).get_ansatz_elements()
+        # ansatz_elements
+        if ansatz_elements is None:
+            self.ansatz_elements = UCCSD(self.n_orbitals, self.n_electrons).get_ansatz_elements()
         else:
-            self.excitation_list = excitation_list
+            self.ansatz_elements = ansatz_elements
 
-        self.backend = backend
-
-        if excitation_list[1] == 'excitation_list':
-            self.var_params = numpy.zeros(len(self.excitation_list[0]))
-        elif excitation_list[1] == 'qasm_list':
-            self.var_params = numpy.zeros(3*self.n_qubits*len(self.excitation_list[0]))
+        self.var_parameters = numpy.zeros(sum([element.n_var_parameters for element in self.ansatz_elements]))
         self.statevector = initial_statevector
 
+        # backend
+        self.backend = backend
+
+        # call back function variables
+        self.previous_energy = self.molecule_psi4.hf_energy.item()
+        self.new_energy = None
+        self.iteration = None
+        self.time = None
+
     # Todo: a prettier way to write this?
-    def get_energy(self, excitation_parameters, initial_statevector=None):
-        energy, statevector, gate_counter = self.backend.get_energy(excitation_parameters=excitation_parameters,
+    def get_energy(self, var_parameters, initial_statevector=None):
+        energy, statevector, gate_counter = self.backend.get_energy(var_parameters=var_parameters,
                                                                     qubit_hamiltonian=self.jw_ham_qubit_operator,
-                                                                    excitation_list=self.excitation_list,
+                                                                    ansatz_elements=self.ansatz_elements,
                                                                     n_qubits=self.n_qubits,
                                                                     n_electrons=self.n_electrons,
                                                                     initial_statevector=initial_statevector)
@@ -86,28 +83,25 @@ class VQERunner:
     def vqe_run(self, max_n_iterations=None):
 
         if max_n_iterations is None:
-            max_n_iterations = len(self.excitation_list) * 100
+            max_n_iterations = len(self.ansatz_elements) * 100
 
         print('-----Running VQE for: {}-----'.format(self.molecule_name))
         print('-----Number of electrons: {}-----'.format(self.n_electrons))
         print('-----Number of orbitals: {}-----'.format(self.n_orbitals))
         # print('-----Ansatz type {} ------'.format(self.ansatz))
-        print('-----Numeber of excitation: {}-----'.format(len(self.excitation_list)))
+        print('-----Numeber of excitation: {}-----'.format(len(self.ansatz_elements)))
         print('-----Statevector and energy calculate using {}------'.format(self.backend))
 
-        if self.excitation_list[1] == 'excitation_list':
-            excitation_parameters = numpy.zeros(len(self.excitation_list[0]))
-        else:
-            excitation_parameters = numpy.zeros(2*self.n_qubits*len(self.excitation_list[0]))
+        var_parameters = self.var_parameters
 
         # <<<<<<<<<<<<<<, test >>>>>>>>>>>>>>>>..
-        print('Test initial energy : ', self.get_energy(excitation_parameters))
+        print('Test initial energy : ', self.get_energy(var_parameters))
         print(self.statevector)
-        print(self.excitation_list[0])
+        print(self.ansatz_elements[0])
 
         self.iteration = 1
         self.time = time.time()
-        opt_energy = scipy.optimize.minimize(self.get_energy, excitation_parameters, method='Nelder-Mead', callback=self.callback,
+        opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='Nelder-Mead', callback=self.callback,
                                              options={'maxiter': max_n_iterations}, tol=1e-4)  # TODO: find a suitable optimizer
 
         return opt_energy
