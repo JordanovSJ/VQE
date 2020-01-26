@@ -10,7 +10,7 @@ import numpy
 import time
 
 import logging
-from src.ansatz_types import UCCSD
+from src.ansatz_elements import UCCSD
 
 
 class VQERunner:

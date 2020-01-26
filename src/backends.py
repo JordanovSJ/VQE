@@ -232,7 +232,7 @@ class QiskitSimulation:
 
         if excitation_list[1] == 'excitation_list':
             # add circuit elements implementing the list of excitations
-            excitation_parameters = excitation_parameters * 10
+            excitation_parameters = excitation_parameters
             qasm.append(QiskitSimulation.get_excitation_list_qasm(excitation_list[0], excitation_parameters, gate_counter))
 
         elif excitation_list[1] == 'qasm_list':

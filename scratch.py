@@ -5,7 +5,7 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from scipy.linalg import eigh
 from openfermion.utils import jw_hartree_fock_state
 import scipy
-from src.ansatz_types import UCCSD
+from src.ansatz_elements import UCCSD
 import numpy
 from src.backends import QiskitSimulation, MatrixCalculation
 from src.vqe_runner import VQERunner

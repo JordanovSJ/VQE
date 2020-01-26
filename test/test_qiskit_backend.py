@@ -1,6 +1,6 @@
 from src import molecules
 from src.backends import QiskitSimulation, MatrixCalculation
-from src.ansatz_types import UCCSD
+from src.ansatz_elements import UCCSD
 
 import openfermionpsi4
 import openfermion
