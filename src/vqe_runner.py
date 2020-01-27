@@ -2,8 +2,9 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from openfermionpsi4 import run_psi4
 from openfermion.hamiltonians import MolecularData
 from openfermion.utils import jw_hartree_fock_state
+
 import src.backends as backends
-from functools import partial
+from src.utils import QasmUtils
 
 import scipy
 import numpy
@@ -54,17 +55,21 @@ class VQERunner:
         self.new_energy = None
         self.iteration = None
         self.time = None
+        self.gate_counter = None
 
     # Todo: a prettier way to write this?
-    def get_energy(self, var_parameters, initial_statevector=None):
-        energy, statevector, gate_counter = self.backend.get_energy(var_parameters=var_parameters,
-                                                                    qubit_hamiltonian=self.jw_ham_qubit_operator,
-                                                                    ansatz_elements=self.ansatz_elements,
-                                                                    n_qubits=self.n_qubits,
-                                                                    n_electrons=self.n_electrons,
-                                                                    initial_statevector=initial_statevector)
+    def get_energy(self, var_parameters, initial_statevector=None, update_gate_counter=False):
+        energy, statevector, qasm = self.backend.get_energy(var_parameters=var_parameters,
+                                                            qubit_hamiltonian=self.jw_ham_qubit_operator,
+                                                            ansatz_elements=self.ansatz_elements,
+                                                            n_qubits=self.n_qubits,
+                                                            n_electrons=self.n_electrons,
+                                                            initial_statevector=initial_statevector)
         if statevector is not None:
             self.statevector = statevector
+
+        if update_gate_counter or self.iteration == 1:
+            self.gate_counter = QasmUtils.gate_count(qasm, self.n_qubits)
 
         self.new_energy = energy
         return energy
@@ -103,5 +108,7 @@ class VQERunner:
         self.time = time.time()
         opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='Nelder-Mead', callback=self.callback,
                                              options={'maxiter': max_n_iterations}, tol=1e-4)  # TODO: find a suitable optimizer
+
+        print('Gate counter', self.gate_counter)
 
         return opt_energy

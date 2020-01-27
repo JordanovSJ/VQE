@@ -25,16 +25,10 @@ class AnsatzElement:
         else:
             self.excitation_order = excitation_order
 
-        # TODO: currently works for excitations only
-        # create a dictionary to keep count on the number of gates for each qubit
-        self.gate_counter = {}
-        for i in range(n_qubits):
-            self.gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
-
     def get_qasm(self, var_parameters):
         if self.element_type == 'excitation':
             assert len(var_parameters) == 1
-            return QasmUtils.get_excitation_qasm(self.element, var_parameters[0], self.gate_counter)
+            return QasmUtils.get_excitation_qasm(self.element, var_parameters[0])
         else:
             return self.element.format(*[var_parameters])
 

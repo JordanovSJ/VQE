@@ -11,18 +11,23 @@ import numpy
 class QasmUtils:
 
     @ staticmethod
-    def get_qasm_gate_count(qasm):
-        #TODO
-        return 0
+    def gate_count(qasm, n_qubits):
+        gate_counter = {}
+        for i in range(n_qubits):
+            # count all occurrences of a qubit (can get a few more because of the header)
+            qubit_count = qasm.count('q[{}]'.format(i))
+            cnot_count = qasm.count('q[{}],'.format(i))
+            cnot_count += qasm.count(',q[{}]'.format(i))
+            gate_counter['q{}'.format(i)] = {'cx': cnot_count, 'u1': qubit_count-cnot_count}
+        return gate_counter
 
     @staticmethod
     def get_qasm_header(n_qubits):
         return 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[{0}];\ncreg c[{0}];\n'.format(n_qubits)
 
-    # get a qasm circuit for a qubit operator consisting of Pauli gates only (used for the Hamiltonian)
     # NOT USED
     @staticmethod
-    def get_pauli_operators_qasm(qubit_operator, gate_counter):
+    def get_pauli_operators_qasm(qubit_operator):
         assert type(qubit_operator) == QubitOperator
         assert len(qubit_operator.terms) == 1
 
@@ -44,35 +49,32 @@ class QasmUtils:
             else:
                 raise ValueError('Invalid qubit operator. {} is not a Pauli operator'.format(gate[1]))
 
-            gate_counter['q{}'.format(qubit)]['u1'] += 1
-
         return ''.join(qasm)
 
-    # return a qasm circuit for preparing the HF state for given number of qubits/orbitals and electrons, within JW
+    # return a qasm circuit for preparing the HF state
     @staticmethod
-    def get_hf_state_qasm(n_electrons, gate_counter):
+    def get_hf_state_qasm(n_electrons):
         qasm = ['']
         for i in range(n_electrons):
             qasm.append('x q[{0}];\n'.format(i))
-            gate_counter['q{}'.format(i)]['u1'] += 1
 
         return ''.join(qasm)
 
     # get the qasm circuit of an excitation
     @staticmethod
-    def get_excitation_qasm(excitation, var_parameter, gate_counter):
+    def get_excitation_qasm(excitation, var_parameter):
         qasm = ['']
         for exponent_term in excitation.terms:
             exponent_angle = var_parameter * excitation.terms[exponent_term]
             assert exponent_angle.real == 0
             exponent_angle = exponent_angle.imag
-            qasm.append(QasmUtils.get_exponent_qasm(exponent_term, exponent_angle, gate_counter))
+            qasm.append(QasmUtils.get_exponent_qasm(exponent_term, exponent_angle))
 
         return ''.join(qasm)
 
     # returns a qasm circuit for an exponent of pauli operators
     @staticmethod
-    def get_exponent_qasm(exponent_term, exponent_angle, gate_counter):
+    def get_exponent_qasm(exponent_term, exponent_angle):
         assert type(exponent_term) == tuple  # TODO remove?
         assert exponent_angle.imag == 0
 
@@ -91,20 +93,14 @@ class QasmUtils:
             if pauli_operator == 'X':
                 x_basis_correction.append('h q[{}];\n'.format(qubit))
 
-                gate_counter['q{}'.format(qubit)]['u1'] += 2
             if pauli_operator == 'Y':
                 y_basis_correction_front.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit))
                 y_basis_correction_back.append('rx({}) q[{}];\n'.format(- numpy.pi / 2, qubit))
-
-                gate_counter['q{}'.format(qubit)]['u1'] += 2
 
             # add the core cnot gates
             if i > 0:
                 previous_qubit = exponent_term[i - 1][0]
                 cnots.append('cx q[{}],q[{}];\n'.format(previous_qubit, qubit))
-
-                gate_counter['q{}'.format(previous_qubit)]['cx'] += 2
-                gate_counter['q{}'.format(qubit)]['cx'] += 2
 
         front_basis_correction = x_basis_correction + y_basis_correction_front
         back_basis_correction = x_basis_correction + y_basis_correction_back
@@ -113,8 +109,6 @@ class QasmUtils:
         # add a Z-rotation between the two CNOT ladders at the last qubit
         last_qubit = exponent_term[-1][0]
         z_rotation = 'rz({}) q[{}];\n'.format(-2*exponent_angle, last_qubit)  # exp(i*theta*Z) ~ Rz(-2*theta)
-
-        gate_counter['q{}'.format(last_qubit)]['u1'] += 1
 
         # create the cnot module simulating a single Trotter step
         cnots_module = cnots + [z_rotation] + cnots[::-1]
