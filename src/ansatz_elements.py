@@ -13,14 +13,10 @@ import numpy
 
 class AnsatzElement:
     def __init__(self, element_type, element, n_qubits, excitation_order=None, n_var_parameters=1):
+        self.element = element
         self.element_type = element_type  # excitation or not
         self.n_qubits = n_qubits
-        self.element = element
-
-        # create a dictionary to keep count on the number of gates for each qubit
-        self.gate_counter = {}
-        for i in range(n_qubits):
-            self.gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
+        self.n_var_parameters = n_var_parameters
 
         if (self.element_type == 'excitation') and (excitation_order is None):
             assert type(self.element) == QubitOperator
@@ -29,13 +25,16 @@ class AnsatzElement:
         else:
             self.excitation_order = excitation_order
 
-        self.n_var_parameters = n_var_parameters
+        # TODO: currently works for excitations only
+        # create a dictionary to keep count on the number of gates for each qubit
+        self.gate_counter = {}
+        for i in range(n_qubits):
+            self.gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
 
     def get_qasm(self, var_parameters):
         if self.element_type == 'excitation':
             assert len(var_parameters) == 1
-            var_parameter = var_parameters[0]
-            return self.get_excitation_qasm(self.element, var_parameter)
+            return QasmUtils.get_excitation_qasm(self.element, var_parameters[0], self.gate_counter)
         else:
             return self.element.format(*[var_parameters])
 
@@ -43,17 +42,6 @@ class AnsatzElement:
         terms = list(self.element)
         n_terms = len(terms)
         return max([len(terms[i]) for i in range(n_terms)])
-
-    # get the qasm circuit of an excitation
-    def get_excitation_qasm(self, excitation, var_parameter):
-        qasm = ['']
-        for exponent_term in excitation.terms:
-            exponent_angle = var_parameter * excitation.terms[exponent_term]
-            assert exponent_angle.real == 0
-            exponent_angle = exponent_angle.imag
-            qasm.append(QasmUtils.get_exponent_qasm(exponent_term, exponent_angle, self.gate_counter))
-
-        return ''.join(qasm)
 
 
 # TODO change to static classes and methods?
@@ -68,7 +56,7 @@ class UCCSD:
             for j in range(self.n_electrons, self.n_orbitals):
                 excitation = jordan_wigner(FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(j, i)))
                 single_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals, excitation_order=1))
-        # returns list of QubitOperators
+
         return single_excitations
 
     def get_double_excitation_list(self):
@@ -142,6 +130,6 @@ class FixedAnsatz1:
         # return block
         qasm_list = [self.get_single_block(index) for index in range(1, self.n_orbitals)]
         qasm = ''.join(qasm_list)
-        return AnsatzElement('qasm', qasm, self.n_orbitals, n_var_parameters=2*self.n_orbitals*(self.n_orbitals-1))
+        return [AnsatzElement('qasm', qasm, self.n_orbitals, n_var_parameters=2*self.n_orbitals*(self.n_orbitals-1))]
 
 

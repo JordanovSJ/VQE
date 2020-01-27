@@ -60,6 +60,7 @@ class MatrixCalculation:
 
 class QiskitSimulation:
 
+    # NOT USED
     @staticmethod
     def get_excitation_list_qasm(excitation_list, excitation_parameters, gate_counter):
         qasm = ['']
@@ -67,6 +68,7 @@ class QiskitSimulation:
         for i, excitation in enumerate(excitation_list):
             # print('Excitation ', i)  # testing
             # iterate over the terms of each excitation (each term is a product of pauli operators, on different qubits)
+            # TODO replace with the function from QasmUtils
             for exponent_term in excitation.terms:
                 exponent_angle = excitation_parameters[i]*excitation.terms[exponent_term]
                 assert exponent_angle.real == 0
@@ -78,7 +80,7 @@ class QiskitSimulation:
     # return a statevector in the form of an array from a qasm circuit
     @staticmethod
     def get_statevector_from_qasm(qasm_circuit):
-        backend_options = {"method": "statevector", "zero_threshold": 10e-8, "max_parallel_threads": 6, "max_parallel_experiments": 6, "max_parallel_shots": 6}
+        backend_options = {"method": "statevector", "zero_threshold": 10e-9, "max_parallel_threads": 6, "max_parallel_experiments": 6, "max_parallel_shots": 6}
         ansatz_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm_circuit)
         backend = qiskit.BasicAer.get_backend('statevector_simulator')
         result = qiskit.execute(ansatz_circuit, backend, backend_options=backend_options).result()
@@ -121,6 +123,9 @@ class QiskitSimulation:
 
         # get the resulting statevector from the Qiskit simulator
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
+
+        print(statevector)
+        print(qasm)
 
         # get the Hamiltonian in the form of a matrix
         hamiltonian_matrix = get_sparse_operator(qubit_hamiltonian).todense()

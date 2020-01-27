@@ -28,18 +28,13 @@ class QasmUtils:
 
         operator = next(iter(qubit_operator.terms.keys()))
         coeff = next(iter(qubit_operator.terms.values()))
-
         assert coeff == 1
 
         # represent the qasm as a list of strings
         qasm = ['']
 
-        # a dictionary to keep count on the number of gates applied to each qubit
-        gate_count = {}
-
         for gate in operator:
             qubit = gate[0]
-
             if gate[1] == 'X':
                 qasm.append('x q[{0}];\n'.format(qubit))
             elif gate[1] == 'Y':
@@ -60,6 +55,18 @@ class QasmUtils:
         for i in range(n_electrons):
             qasm.append('x q[{0}];\n'.format(i))
             gate_counter['q{}'.format(i)]['u1'] += 1
+
+        return ''.join(qasm)
+
+    # get the qasm circuit of an excitation
+    @staticmethod
+    def get_excitation_qasm(excitation, var_parameter, gate_counter):
+        qasm = ['']
+        for exponent_term in excitation.terms:
+            exponent_angle = var_parameter * excitation.terms[exponent_term]
+            assert exponent_angle.real == 0
+            exponent_angle = exponent_angle.imag
+            qasm.append(QasmUtils.get_exponent_qasm(exponent_term, exponent_angle, gate_counter))
 
         return ''.join(qasm)
 
