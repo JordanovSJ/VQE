@@ -13,8 +13,8 @@ import numpy
 class MatrixCalculation:
 
     @staticmethod
-    def prepare_statevector(excitation_list, excitation_parameters, n_qubits, n_electrons, initial_statevector=None):
-        assert len(excitation_list) == len(excitation_parameters)
+    def prepare_statevector(ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector=None):
+        assert len(ansatz_elements) == len(var_parameters)
         assert n_qubits >= n_electrons
 
         # initiate statevector as the HF state or as the 0th state
@@ -22,25 +22,19 @@ class MatrixCalculation:
             sparse_statevector = scipy.sparse.csr_matrix(jw_hartree_fock_state(n_electrons, n_qubits))
         else:
             assert len(initial_statevector) == 2**n_qubits
-            assert initial_statevector.dot(initial_statevector.conj()) == 1  # TODO maybe this will give numerical error
+            assert initial_statevector.dot(initial_statevector.conj()) == 1
             sparse_statevector = scipy.sparse.csr_matrix(initial_statevector)
 
-        # TODO check if more efficient ot add up all excitation matrices and calculate a single excitation
-        for i, excitation in enumerate(excitation_list):
+        for i, ansatz_element in enumerate(ansatz_elements):
+            assert ansatz_element.element_type == 'excitation'
             excitation_matrix = MatrixUtils.\
-                get_qubit_operator_exponent_matrix(excitation, n_qubits, parameter=excitation_parameters[i])
+                get_qubit_operator_exponent_matrix(ansatz_element.element, n_qubits, parameter=var_parameters[i])
             sparse_statevector = sparse_statevector.dot(excitation_matrix.transpose())
 
         return sparse_statevector
 
     @staticmethod
     def get_energy(qubit_hamiltonian, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector=None):
-
-        # TODO add gate counter
-        # # create a dictionary to keep count on the number of gates for each qubit
-        # gate_counter = {}
-        # for i in range(n_qubits):
-        #     gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
 
         sparse_matrix_hamiltonian = get_sparse_operator(qubit_hamiltonian)
 

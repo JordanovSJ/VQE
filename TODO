@@ -1,9 +1,6 @@
-*combine ansatz elements, var_parameters and ansatz type together
-
 1. Create Backgrounds; classes to construct and calculate H, as either a matrix or as quantum_circuits/states on a quantum simulator or
     a real device.
-      - matrix  ----- DONE
-      - qiskit simulator ---- DONE
+
       - real device (Rigetti)
 
 2.For the quantum simulator/devices backgrounds implement different methods for calculating <H>
@@ -16,10 +13,6 @@
 4.Search for best classical optimizer
 
 5.Add thresholds for convergence
-
-6. Counting number of gates/circuit depth functionality -- DONE
-
-7. Custom ansatz functionality
 
 8.Excited states functionality
 
@@ -34,6 +27,7 @@ IDEAS for algorithms and papers:
 -fixed shape ansatz circuit
 -computing excited states
 -other VQE applications
+-different classical optimizers for different ansatz elements: gradient descent for excitations; direct search otherwise
 
 
 Notes:

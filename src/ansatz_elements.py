@@ -30,7 +30,7 @@ class AnsatzElement:
             assert len(var_parameters) == 1
             return QasmUtils.get_excitation_qasm(self.element, var_parameters[0])
         else:
-            return self.element.format(*[var_parameters])
+            return self.element.format(*var_parameters)
 
     def get_excitation_order(self):
         terms = list(self.element)

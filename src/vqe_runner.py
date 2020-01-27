@@ -18,7 +18,7 @@ from src.ansatz_elements import UCCSD
 class VQERunner:
     # Works for a single geometry
     def __init__(self, molecule, ansatz_elements=None, basis='sto-3g', molecule_geometry_params=None,
-                 backend=backends.QiskitSimulation, initial_statevector=None):
+                 backend=backends.QiskitSimulation, initial_statevector=None, optimizer=None, optimizer_options=None):
 
         if molecule_geometry_params is None:
             molecule_geometry_params = {}
@@ -49,6 +49,8 @@ class VQERunner:
 
         # backend
         self.backend = backend
+        self.optimizer = optimizer
+        self.optimizer_options = optimizer_options
 
         # call back function variables
         self.previous_energy = self.molecule_psi4.hf_energy.item()
@@ -72,6 +74,8 @@ class VQERunner:
             self.gate_counter = QasmUtils.gate_count(qasm, self.n_qubits)
 
         self.new_energy = energy
+        # test
+        print(energy)
         return energy
 
     # TODO: update to something useful
@@ -102,12 +106,20 @@ class VQERunner:
         # <<<<<<<<<<<<<<, test >>>>>>>>>>>>>>>>..
         print('Test initial energy : ', self.get_energy(var_parameters))
         print(self.statevector)
-        print(self.ansatz_elements[0])
 
         self.iteration = 1
         self.time = time.time()
-        opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='Nelder-Mead', callback=self.callback,
-                                             options={'maxiter': max_n_iterations}, tol=1e-4)  # TODO: find a suitable optimizer
+        if self.optimizer is None:
+            # opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='L-BFGS-B', callback=self.callback,
+            #                                      options={'maxcor': 10, 'ftol': 1e-09, 'gtol': 1e-05,
+            #                                               'eps': 1e-06, 'maxfun': 1500, 'maxiter': max_n_iterations,
+            #                                               'iprint': -1, 'maxls': 10}, tol=1e-4)
+
+            opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='Powell', tol=1e-4,
+                                                 callback=self.callback)
+        else:
+            opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method=self.optimizer,
+                                                 options=self.optimizer_options, tol=1e-4, callback=self.callback)
 
         print('Gate counter', self.gate_counter)
 

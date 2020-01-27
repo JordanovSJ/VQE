@@ -9,12 +9,12 @@ import pandas
 
 if __name__ == "__main__":
 
-    molecule = H2
-    r = 0.735
+    molecule = HF
+    r = 0.917
     max_n_iterations = 2000
 
     ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
-    # ansatz_elements = [ansatz_elements[0][:5], ansatz_elements[1]]
+    # ansatz_elements = FixedAnsatz1(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements, molecule_geometry_params={'distance': r})
     t0 = time.time()
