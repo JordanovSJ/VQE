@@ -10,7 +10,7 @@ import pandas
 if __name__ == "__main__":
 
     molecule = HF
-    r = 0.917
+    r = 0.995
     max_n_iterations = 2000
 
     ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()

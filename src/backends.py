@@ -53,7 +53,6 @@ class MatrixCalculation:
 
 
 class QiskitSimulation:
-
     # return a statevector in the form of an array from a qasm circuit
     @staticmethod
     def get_statevector_from_qasm(qasm_circuit):
@@ -105,7 +104,6 @@ class QiskitSimulation:
 
         # get the Hamiltonian in the form of a matrix
         hamiltonian_matrix = get_sparse_operator(qubit_hamiltonian).todense()
-
         energy = statevector.conj().dot(hamiltonian_matrix).dot(statevector)[0, 0]
 
         return energy.real, statevector, qasm
