@@ -111,9 +111,15 @@ class VQERunner:
         self.time = time.time()
         if self.optimizer is None:
             opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='L-BFGS-B', callback=self.callback,
-                                                 options={'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-04,
+                                                 options={'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-04,
                                                           'eps': 1e-04, 'maxfun': 1500, 'maxiter': max_n_iterations,
                                                           'iprint': -1, 'maxls': 5}, tol=1e-4)
+
+            # opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='L-BFGS-B',
+            #                                      callback=self.callback,
+            #                                      options={'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-04,
+            #                                               'eps': 1e-04, 'maxfun': 1500, 'maxiter': max_n_iterations,
+            #                                               'iprint': -1, 'maxls': 5}, tol=1e-4)
 
             # opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='Powell', tol=1e-4,
             #                                      callback=self.callback)
