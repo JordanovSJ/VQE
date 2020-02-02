@@ -65,7 +65,7 @@ class QiskitSimulation:
         return statevector
 
     @staticmethod
-    def get_energy(qubit_hamiltonian, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector=None):
+    def get_energy(qubit_hamiltonian, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
 
         # create a dictionary to keep count on the number of gates for each qubit
         gate_counter = {}
@@ -76,12 +76,11 @@ class QiskitSimulation:
         qasm = [QasmUtils.get_qasm_header(n_qubits)]
 
         # add a circuit for a HF state initialization
-        if initial_statevector is None:
+        if initial_statevector_qasm is None:
             assert n_qubits >= n_electrons
             qasm.append(QasmUtils.get_hf_state_qasm(n_electrons))
         else:
-            # TODO arbitrary state initialization
-            raise ValueError(' Not implemented yet')
+            qasm.append(initial_statevector_qasm)
 
         n_used_var_pars = 0
         for element in ansatz_elements:

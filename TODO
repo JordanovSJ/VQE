@@ -1,3 +1,5 @@
+10.Logging
+
 1. Create Backgrounds; classes to construct and calculate H, as either a matrix or as quantum_circuits/states on a quantum simulator or
     a real device.
 
@@ -19,13 +21,11 @@
 9. Multi-threading
     - the matrices for the exponents of the excitation operators can be calculated in parallel
 
-10.Logging
-
 11.Custom optimizer?
 
 IDEAS for algorithms and papers:
 -ADAPT based on energy contribution
--fixed shape ansatz circuit
+    - iterate through elements until find a significant contribution, not maximum
 -computing excited states
 -other VQE applications
 -different classical optimizers for different ansatz elements: gradient descent for excitations; direct search otherwise

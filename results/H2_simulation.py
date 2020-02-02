@@ -1,4 +1,4 @@
-from src.vqe_runner import VQERunner
+from src.vqe import VQERunner
 from src.molecules import H2, LiH, HF
 from src.ansatz_elements import UCCGSD, UCCSD, FixedAnsatz1
 from src.backends import QiskitSimulation

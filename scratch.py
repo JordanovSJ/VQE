@@ -8,7 +8,7 @@ import scipy
 from src.ansatz_elements import UCCSD
 import numpy
 from src.backends import QiskitSimulation, MatrixCalculation
-from src.vqe_runner import VQERunner
+from src.vqe import VQERunner
 from src.molecules import H2, HF
 import openfermion
 
