@@ -49,6 +49,8 @@ if __name__ == "__main__":
                                    molecule_geometry_params={'distance': r}, optimizer=optimizer)
 
             result = vqe_runner.vqe_run(max_n_iterations)
+
+            # Bad criteria
             if result - energy < delta_e:
                 delta_e = result - energy
                 index_element_to_add = i

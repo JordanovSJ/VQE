@@ -1,5 +1,11 @@
 10.Logging
 
+9. Multi-threading
+
+13. New criteria when to add ansatz element
+
+<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>.
+
 1. Create Backgrounds; classes to construct and calculate H, as either a matrix or as quantum_circuits/states on a quantum simulator or
     a real device.
 
@@ -17,9 +23,6 @@
 5.Add thresholds for convergence
 
 8.Excited states functionality
-
-9. Multi-threading
-    - the matrices for the exponents of the excitation operators can be calculated in parallel
 
 11.Custom optimizer?
 
