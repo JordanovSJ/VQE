@@ -54,7 +54,8 @@ class VQERunner:
         self.optimizer_options = optimizer_options
 
         # call back function variables
-        self.previous_energy = self.molecule_psi4.hf_energy.item()
+        self.hf_energy = self.molecule_psi4.hf_energy.item()
+        self.previous_energy = self.hf_energy
         self.new_energy = None
         self.iteration = None
         self.time = None
@@ -79,9 +80,9 @@ class VQERunner:
         delta_e = self.new_energy - self.previous_energy
         self.previous_energy = self.new_energy
 
-        # print('Iteration: {}.\n Energy {}.  Energy change {}'.format(self.iteration, self.new_energy,
-        #                                                              '{:.3e}'.format(delta_e)))
-        # print('Iteration dutation: ', time.time() - self.time)
+        print('Iteration: {}.\n Energy {}.  Energy change {}'.format(self.iteration, self.new_energy,
+                                                                     '{:.3e}'.format(delta_e)))
+        print('Iteration dutation: ', time.time() - self.time)
         self.time = time.time()
         self.iteration += 1
 
@@ -103,12 +104,12 @@ class VQERunner:
         if max_n_iterations is None:
             max_n_iterations = len(self.ansatz_elements) * 100
 
-        print('-----Running VQE for: {}-----'.format(self.molecule_name))
-        print('-----Number of electrons: {}-----'.format(self.n_electrons))
-        print('-----Number of orbitals: {}-----'.format(self.n_orbitals))
-        print('-----Numeber of excitation: {}-----'.format(len(self.ansatz_elements)))
-        print('-----Statevector and energy calculate using {}------'.format(self.backend))
-        print('-----Optimizer {}------'.format(self.optimizer))
+        # print('-----Running VQE for: {}-----'.format(self.molecule_name))
+        # print('-----Number of electrons: {}-----'.format(self.n_electrons))
+        # print('-----Number of orbitals: {}-----'.format(self.n_orbitals))
+        # print('-----Numeber of excitation: {}-----'.format(len(self.ansatz_elements)))
+        # print('-----Statevector and energy calculate using {}------'.format(self.backend))
+        # print('-----Optimizer {}------'.format(self.optimizer))
 
         self.iteration = 1
         self.time = time.time()

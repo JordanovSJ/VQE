@@ -6,6 +6,7 @@ import time
 from src.utils import QasmUtils, MatrixUtils
 
 import qiskit
+import qiskit.qasm
 import scipy
 import numpy
 
@@ -56,12 +57,15 @@ class QiskitSimulation:
     # return a statevector in the form of an array from a qasm circuit
     @staticmethod
     def get_statevector_from_qasm(qasm_circuit):
-        backend_options = {"method": "statevector", "zero_threshold": 10e-9, "max_parallel_threads": 6, "max_parallel_experiments": 6, "max_parallel_shots": 6}
-        qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm_circuit)
+        n_threads = 2
+        backend_options = {"method": "statevector", "zero_threshold": 10e-9, "max_parallel_threads": n_threads,
+                           "max_parallel_experiments": n_threads, "max_parallel_shots": n_threads}
         backend = qiskit.BasicAer.get_backend('statevector_simulator')
+        qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm_circuit)
+        print('aaa')
         result = qiskit.execute(qiskit_circuit, backend, backend_options=backend_options).result()
+        print('bbb')
         statevector = result.get_statevector(qiskit_circuit)
-
         return statevector
 
     @staticmethod
