@@ -6,24 +6,60 @@ import logging
 import time
 import numpy
 import pandas
+import multiprocessing
+
 
 if __name__ == "__main__":
 
     molecule = HF
     r = 0.995
     max_n_iterations = 2000
+    threshold = 1e-6  # 1e-3 for chemical accuracy
+
+    t0 = time.time()
 
     ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
     # ansatz_elements_pool += FixedAnsatz1(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
 
-    ansatz_elements = []
-    count = 0
-
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=[],
                            molecule_geometry_params={'distance': r}, optimizer=None)
-    energy = vqe_runner.vqe_run(max_n_iterations)
+    hf_energy = vqe_runner.vqe_run(max_n_iterations)
 
-    while count < 2:
+    new_pool = []
+
+
+    def add_element_above_threshold(local_ansatz_element):
+        local_vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=[local_ansatz_element],
+                                     molecule_geometry_params={'distance': r})
+        local_result = local_vqe_runner.vqe_run(max_n_iterations)
+
+        if hf_energy - local_result >= threshold:
+            new_pool.append(ansatz_element)
+            print('Add element ', ansatz_element.element)
+
+
+    # # First pick only the excitations that contribute above a threshold
+    # for i, ansatz_element in enumerate(ansatz_elements_pool):
+    #     print(i)
+    #     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=[ansatz_element],
+    #                            molecule_geometry_params={'distance': r})
+    #     result = vqe_runner.vqe_run(max_n_iterations)
+    #
+    #     if hf_energy-result >= threshold:
+    #         new_pool.append(ansatz_elements_pool[i])
+    #         print('Add element ', ansatz_element.element)
+
+    pool = multiprocessing.Pool(multiprocessing.cpu_count()-1)
+    pool.map_async(add_element_above_threshold, [ansatz_element for ansatz_element in ansatz_elements_pool])
+
+    ansatz_elements_pool = new_pool
+    print('Length of new pool', len(ansatz_elements_pool))
+
+    ansatz_elements = []
+    count = 0
+    energy = hf_energy
+
+    while count < min(5, len(ansatz_elements_pool)):
         count += 1
 
         previous_energy = energy
@@ -39,7 +75,7 @@ if __name__ == "__main__":
 
         # TODO this can be parallelized
         for i, ansatz_element in enumerate(ansatz_elements_pool):
-
+            print(i)
             if ansatz_element.element_type == 'excitation':
                 optimizer = None
             else:
@@ -61,9 +97,12 @@ if __name__ == "__main__":
 
         print('Added element ', ansatz_elements[-1].element)
 
-    t0 = time.time()
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
+                           molecule_geometry_params={'distance': r}, optimizer=None)
+
+    energy = vqe_runner.vqe_run(max_n_iterations)
     t = time.time()
 
-    print(result)
-
+    print(energy)
+    print('Run time ', time.time() - t0)
     print('Ciao')

@@ -79,9 +79,9 @@ class VQERunner:
         delta_e = self.new_energy - self.previous_energy
         self.previous_energy = self.new_energy
 
-        print('Iteration: {}.\n Energy {}.  Energy change {}'.format(self.iteration, self.new_energy,
-                                                                     '{:.3e}'.format(delta_e)))
-        print('Iteration dutation: ', time.time() - self.time)
+        # print('Iteration: {}.\n Energy {}.  Energy change {}'.format(self.iteration, self.new_energy,
+        #                                                              '{:.3e}'.format(delta_e)))
+        # print('Iteration dutation: ', time.time() - self.time)
         self.time = time.time()
         self.iteration += 1
 
