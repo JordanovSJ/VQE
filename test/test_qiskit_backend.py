@@ -42,7 +42,7 @@ class QiskitSimulationTest(unittest.TestCase):
         self.assertEqual(len(expected_statevector), len(statevector))
 
         for i in range(len(statevector)):
-            self.assertEqual(statevector[i], expected_statevector[i])
+            self.assertEqual(statevector[i].round(3), expected_statevector[i].round(3))
 
     # test that the the qiskit circuit simulator and a matrices calculation produce same statevector for an exponent
     # TODO: this test is ugly ...

@@ -28,8 +28,8 @@ class MyPool(multiprocessing.pool.Pool):
 
 if __name__ == "__main__":
 
-    molecule = H2
-    r = 0.735
+    molecule = HF
+    r = 0.995
     max_n_iterations = 2000
     threshold = 1e-6  # 1e-3 for chemical accuracy
 
@@ -70,15 +70,16 @@ if __name__ == "__main__":
     #     print('1')
     #     result_ids.append(add_element_above_threshold.remote(ansatz_element))
 
-    ray.init(num_cpus=2)
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r})
 
-    vqe_runners = [VQERunner.remote(molecule, backend=QiskitSimulation, ansatz_elements=[element],
-                                    molecule_geometry_params={'distance': r}) for element in ansatz_elements_pool]
-    result = ray.get([vqe_runner.vqe_run.remote(max_n_iterations) for vqe_runner in vqe_runners])
+    ray.init(num_cpus=4)
+    result_ids = [vqe_runner.vqe_run_parallel.remote(self=vqe_runner, ansatz_elements=[ansatz_element]) for ansatz_element in ansatz_elements_pool]
 
+    results = ray.get(result_ids)
     # new_pool = ray.get(result_ids)
 
     # for i in range(new_pool.count(0)):
     #     new_pool.remove(0)
 
-    print(len(vqe_runners))
+    print(len(results))
+    print(results)

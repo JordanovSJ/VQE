@@ -6,6 +6,8 @@ import time
 import qiskit
 import scipy
 import numpy
+import logging
+import datetime
 
 
 class QasmUtils:
@@ -144,3 +146,28 @@ class MatrixUtils:
         assert parameter.imag == 0  # TODO remove?
         qubit_operator_matrix = get_sparse_operator(qubit_operator, n_qubits)
         return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
+
+
+class LogUtils:
+
+    @staticmethod
+    def log_cofig():
+        time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+        logging_filename = '{}'.format(time_stamp)
+        logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                            format='%(levelname)s %(asctime)s %(message)s')
+        # disable logging from qiskit
+        logging.getLogger('qiskit').setLevel(logging.WARNING)
+
+    @staticmethod
+    def vqe_info(molecule, ansatz_elements=None, basis=None, molecule_geometry_params=None, backend=None):
+        logging.info('Initialize VQE for {}; n_electrons={}, n_orbitals={}; geometry: {}'
+                     .format(molecule.name, molecule.n_electrons, molecule.n_orbitals, molecule_geometry_params))
+        if basis is not None:
+            logging.info('Basis: {}'.format(basis))
+        if backend is not None:
+            logging.info('Backend: {}'.format(backend))
+        if ansatz_elements is not None:
+            n_var_params = sum([el.n_var_parameters for el in ansatz_elements])
+            logging.info('Number of Ansatz elements: {}'.format(len(ansatz_elements)))
+            logging.info('Number of variational parameters: {}'.format(n_var_params))
