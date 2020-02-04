@@ -60,11 +60,9 @@ class QiskitSimulation:
         n_threads = 2
         backend_options = {"method": "statevector", "zero_threshold": 10e-9, "max_parallel_threads": n_threads,
                            "max_parallel_experiments": n_threads, "max_parallel_shots": n_threads}
-        backend = qiskit.BasicAer.get_backend('statevector_simulator')
+        backend = qiskit.Aer.get_backend('statevector_simulator')
         qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm_circuit)
-        print('aaa')
         result = qiskit.execute(qiskit_circuit, backend, backend_options=backend_options).result()
-        print('bbb')
         statevector = result.get_statevector(qiskit_circuit)
         return statevector
 

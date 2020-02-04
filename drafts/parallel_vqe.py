@@ -38,9 +38,9 @@ if __name__ == "__main__":
     ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
     # ansatz_elements_pool += FixedAnsatz1(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=[],
-                           molecule_geometry_params={'distance': r}, optimizer=None)
-    hf_energy = vqe_runner.hf_energy
+    # vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=[],
+    #                               molecule_geometry_params={'distance': r}, optimizer=None)
+    # hf_energy = vqe_runner.hf_energy
 
     # pool = MyPool(3)
     # pool = multiprocessing.pool.Pool(3)
@@ -49,36 +49,36 @@ if __name__ == "__main__":
     # pool.close()
     # pool.join()
 
-    @ray.remote
-    def add_element_above_threshold(element):
-        print('Run VQE')
-        print(element.element)
-        local_vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=[element],
-                                     molecule_geometry_params={'distance': r})
-        result = local_vqe_runner.vqe_run(max_n_iterations)
-
-        if hf_energy - result >= threshold:
-            print('Add element ', element.element)
-            return element
-        else:
-            return 0
-
-    @ray.remote
-    def stupid(x):
-        return x**2
+    # @ray.remote
+    # def add_element_above_threshold(element):
+    #     print('Run VQE')
+    #     print(element.element)
+    #     local_vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=[element],
+    #                                  molecule_geometry_params={'distance': r})
+    #     result = local_vqe_runner.vqe_run(max_n_iterations)
+    #
+    #     if hf_energy - result >= threshold:
+    #         print('Add element ', element.element)
+    #         return element
+    #     else:
+    #         return 0
+    #
+    # ray.init(num_cpus=2)
+    #
+    # result_ids = []
+    # for ansatz_element in ansatz_elements_pool:
+    #     print('1')
+    #     result_ids.append(add_element_above_threshold.remote(ansatz_element))
 
     ray.init(num_cpus=2)
 
-    result_ids = []
-    for ansatz_element in ansatz_elements_pool:
-        result_ids.append(add_element_above_threshold.remote(ansatz_element))
+    vqe_runners = [VQERunner.remote(molecule, backend=QiskitSimulation, ansatz_elements=[element],
+                                    molecule_geometry_params={'distance': r}) for element in ansatz_elements_pool]
+    result = ray.get([vqe_runner.vqe_run.remote(max_n_iterations) for vqe_runner in vqe_runners])
 
-    # for i in range(1000):
-    #     result_ids.append(stupid.remote(i))
+    # new_pool = ray.get(result_ids)
 
-    new_pool = ray.get(result_ids)
+    # for i in range(new_pool.count(0)):
+    #     new_pool.remove(0)
 
-    for i in range(new_pool.count(0)):
-        new_pool.remove(0)
-
-    print(new_pool)
+    print(len(vqe_runners))

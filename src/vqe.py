@@ -13,6 +13,7 @@ import time
 import logging
 
 from src.ansatz_elements import UCCSD
+import ray
 
 
 class VQERunner:
@@ -30,8 +31,7 @@ class VQERunner:
 
         self.molecule_data = MolecularData(geometry=molecule.geometry(** molecule_geometry_params),
                                            basis=basis, multiplicity=molecule.multiplicity, charge=molecule.charge)
-        # logging.info('Running VQE for geometry {}'.format(self.molecule_data.geometry))
-        self.molecule_psi4 = run_psi4(self.molecule_data, run_mp2=False, run_cisd=False, run_ccsd=False, run_fci=False)
+        self.molecule_psi4 = run_psi4(self.molecule_data)
 
         # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
