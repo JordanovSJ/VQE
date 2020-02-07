@@ -87,7 +87,9 @@ if __name__ == "__main__":
 
         print('Added element ', ansatz_elements[-1].element)
 
-    energy = vqe_runner.vqe_run(ansatz_elements=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}
+                                 , ansatz_elements=ansatz_elements)
+    energy = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
     t = time.time()
 
     print(energy)

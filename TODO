@@ -1,15 +1,4 @@
-10.Logging
-
-9. Multi-threading
-
-13. New criteria when to add ansatz element
-
-<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>.
-
-1. Create Backgrounds; classes to construct and calculate H, as either a matrix or as quantum_circuits/states on a quantum simulator or
-    a real device.
-
-      - real device (Rigetti)
+1. Implementation for Riggeti real QPU
 
 2.For the quantum simulator/devices backgrounds implement different methods for calculating <H>
      - UHU*
@@ -26,12 +15,24 @@
 
 11.Custom optimizer?
 
+DONE:
+
+10. Logging
+
+9. Multi-threading
+
+13. New criteria when to add ansatz element
+
+
 IDEAS for algorithms and papers:
 -ADAPT based on energy contribution
     - iterate through elements until find a significant contribution, not maximum
 -computing excited states
 -other VQE applications
 -different classical optimizers for different ansatz elements: gradient descent for excitations; direct search otherwise
+****************
+-GO CRAZY: try implemented ML for ansatz optimization
+****************
 
 
 Notes:
