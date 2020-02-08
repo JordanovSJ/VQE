@@ -12,11 +12,11 @@ import numpy
 
 
 class AnsatzElement:
-    def __init__(self, element_type, element, n_qubits, excitation_order=None, n_var_parameters=1):
+    def __init__(self, element_type, element, n_var_parameters=1, excitation_order=None, fermi_operator=None):
         self.element = element
         self.element_type = element_type  # excitation or not
-        self.n_qubits = n_qubits
         self.n_var_parameters = n_var_parameters
+        self.fermi_operator = fermi_operator
 
         if (self.element_type == 'excitation') and (excitation_order is None):
             assert type(self.element) == QubitOperator
@@ -48,9 +48,10 @@ class UCCSD:
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
-                excitation = jordan_wigner(FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(j, i)))
-                single_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals, excitation_order=1))
-
+                fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(j, i))
+                excitation = jordan_wigner(fermi_operator)
+                single_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
+                                                        excitation_order=1))
         return single_excitations
 
     def get_double_excitation_list(self):
@@ -59,9 +60,9 @@ class UCCSD:
             for j in range(i+1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals-1):
                     for l in range(k+1, self.n_orbitals):
-                        excitation = jordan_wigner(FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
-                                                                   .format(i, j, k, l)))
-                        double_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals,
+                        fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(i, j, k, l))
+                        excitation = jordan_wigner(fermi_operator)
+                        double_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
                                                                 excitation_order=2))
         return double_excitations
 
@@ -77,17 +78,19 @@ class UCCGSD:
     def get_single_excitation_list(self):
         single_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 2):
+            fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
             excitation = jordan_wigner(FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices)))
-            single_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals, excitation_order=1))
-
+            single_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
+                                                    excitation_order=1))
         return single_excitations
 
     def get_double_excitation_list(self):
         double_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 4):
-            excitation = jordan_wigner(FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices)))
-            double_excitations.append(AnsatzElement('excitation', excitation, self.n_orbitals, excitation_order=2))
-
+            fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
+            excitation = jordan_wigner(fermi_operator)
+            double_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
+                                                    excitation_order=2))
         return double_excitations
 
     def get_ansatz_elements(self):

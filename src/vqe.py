@@ -155,13 +155,13 @@ class VQERunner:
 
         return opt_energy.fun
 
-    # @ray.remote
-    def vqe_run_parallel(self, ansatz_elements, initial_statevector_qasm=None, max_n_iterations=None):
+    @ray.remote
+    def vqe_run_multithread(self, ansatz_elements, initial_statevector_qasm=None, max_n_iterations=None):
 
         if max_n_iterations is None:
             max_n_iterations = len(ansatz_elements) * 100
 
-        var_parameters = sum([el.n_var_parameters for el in ansatz_elements])
+        var_parameters = numpy.zeros(sum([el.n_var_parameters for el in ansatz_elements]))
 
         # partial function to be used in the optimizer
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
@@ -181,6 +181,13 @@ class VQERunner:
             opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method=self.optimizer,
                                                  options=self.optimizer_options, tol=1e-4)
 
-        print(opt_energy.fun)
+        if len(ansatz_elements) == 1:
+            message = 'Ran VQE for ansatz_element {} . Energy {}'.format(ansatz_elements[0].fermi_operator, opt_energy.fun)
+            logging.info(message)
+            print(message)
+        else:
+            message = 'Ran VQE. Energy {}'.format(opt_energy.fun)
+            logging.info(message)
+            print(message)
 
         return opt_energy.fun
