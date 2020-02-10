@@ -75,6 +75,7 @@ class VQERunner:
 
         # if we run parallel process dont print and update info
         if parallel:
+            # TODO this logging does not work when running in parallel
             logging.info('Parallel process. Energy {}. Iteration duration: {}'.format(energy, time.time() - t_start))
         else:
             if update_gate_counter or self.iteration == 1:
@@ -139,7 +140,7 @@ class VQERunner:
                                                           'eps': 1e-04, 'maxfun': 1500, 'maxiter': max_n_iterations,
                                                           'iprint': -1, 'maxls': 5}, tol=1e-4)
 
-            ## the comment code below is the most optimal set up for the optimizer so far
+            # # the comment code below is the most optimal set up for the optimizer so far
             # opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='L-BFGS-B',
             #                                      callback=self.callback,
             #                                      options={'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-04,

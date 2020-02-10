@@ -11,8 +11,8 @@ import ray
 
 if __name__ == "__main__":
 
-    molecule = H2
-    r = 0.735
+    molecule = HF
+    r = 0.995
     max_n_iterations = 2000
     threshold = 1e-6  # 1e-3 for chemical accuracy
 
@@ -23,14 +23,11 @@ if __name__ == "__main__":
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r})
 
     ray.init(num_cpus=4)
+
     result_ids = [[i, vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=[ansatz_element])]
                   for i, ansatz_element in enumerate(ansatz_elements_pool)]
 
     results = [[result_id[0], ray.get(result_id[1])] for result_id in result_ids]
-    # new_pool = ray.get(result_ids)
 
-    # for i in range(new_pool.count(0)):
-    #     new_pool.remove(0)
-
-    print(len(results))
-    print(results)
+    # print(len(results))
+    print(ids_energies)

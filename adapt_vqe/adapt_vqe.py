@@ -22,7 +22,7 @@ if __name__ == "__main__":
     max_ansatz_elements = 10
 
     multithread = True
-    n_cpus = 2
+    n_cpus = 6
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     LogUtils.log_cofig()
@@ -36,19 +36,23 @@ if __name__ == "__main__":
 
     # calculate the energy contribution of each ansatz element
     if multithread:
+        logging.info('Multithreading')
+        print('Multithreading ', n_cpus)
         ray.init(num_cpus=n_cpus)
-        ids_energies = [
-            [i, ray.get(vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=[element]))]
+        # get ray ID objects
+        ray_ids = [
+            [i, vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=[element])]
             for i, element in enumerate(initial_ansatz_elements_pool)]
+        is_energies = [[ray_id[0], ray.get(ray_id[1])] for ray_id in ray_ids]
     else:
-        ids_energies = [
+        is_energies = [
             [i, vqe_runner.vqe_run(ansatz_elements=[element])]
             for i, element in enumerate(initial_ansatz_elements_pool)]
 
     # create a new pool of ansatz elements
     new_ansatz_element_pool = []
-    for i, current_energy in ids_energies:
-        delta_e = hf_energy - current_energy
+    for i, energy in is_energies:
+        delta_e = hf_energy - energy
         if delta_e >= threshold:
             element = initial_ansatz_elements_pool[i]
             new_ansatz_element_pool.append(element)
@@ -75,18 +79,19 @@ if __name__ == "__main__":
 
         # calculate the energy contribution of each ansatz element
         if multithread:
-            ids_energies = [
+            ray_ids = [
                 [i, ray.get(vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=ansatz_elements + [element]))]
                 for i, element in enumerate(new_ansatz_element_pool)]
+            is_energies = [[ray_id[0], ray.get(ray_id[1])] for ray_id in ray_ids]
         else:
-            ids_energies = [
+            is_energies = [
                 [i, vqe_runner.vqe_run(ansatz_elements=ansatz_elements + [element])]
                 for i, element in enumerate(new_ansatz_element_pool)]
 
         previous_energy = current_energy
         delta_e = 0
         # find the element with greatest contribution
-        for i, energy in ids_energies:
+        for i, energy in is_energies:
             if previous_energy - energy > delta_e:
                 delta_e = previous_energy - energy
                 current_energy = energy
