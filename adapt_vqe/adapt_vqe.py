@@ -10,6 +10,26 @@ import numpy
 import pandas
 import ray
 
+# def get_most_significant_ansatz_element(vqe_runner, ansatz_elements, n_elements, initial_ansatz=None, multithread=False):
+#     if multithread:
+#         ray_ids = [
+#             [i, vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=ansatz_elements + [element])]
+#             for i, element in enumerate(new_ansatz_element_pool)]
+#         is_energies = [[ray_id[0], ray.get(ray_id[1])] for ray_id in ray_ids]
+#     else:
+#         is_energies = [
+#             [i, vqe_runner.vqe_run(ansatz_elements=ansatz_elements + [element])]
+#             for i, element in enumerate(new_ansatz_element_pool)]
+#
+#     previous_energy = current_energy
+#     delta_e = 0
+#     # find the element with greatest contribution
+#     for i, energy in is_energies:
+#         if previous_energy - energy > delta_e:
+#             delta_e = previous_energy - energy
+#             current_energy = energy
+#             element_to_add_index = i
+
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -69,18 +89,15 @@ if __name__ == "__main__":
     current_energy = hf_energy
     previous_energy = 0
 
-    # TODO suitable condition?
-    while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:  # count < min(5, len(initial_ansatz_elements_pool)):
+    while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:
         count += 1
-
-        # energy = vqe_runner.vqe_run(ansatz_elements=ansatz_elements)
 
         print('New cycle ', count)
 
         # calculate the energy contribution of each ansatz element
         if multithread:
             ray_ids = [
-                [i, ray.get(vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=ansatz_elements + [element]))]
+                [i, vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=ansatz_elements + [element])]
                 for i, element in enumerate(new_ansatz_element_pool)]
             is_energies = [[ray_id[0], ray.get(ray_id[1])] for ray_id in ray_ids]
         else:

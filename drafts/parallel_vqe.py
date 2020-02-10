@@ -29,5 +29,5 @@ if __name__ == "__main__":
 
     results = [[result_id[0], ray.get(result_id[1])] for result_id in result_ids]
 
-    # print(len(results))
-    print(ids_energies)
+    print(len(results))
+    print(results)
