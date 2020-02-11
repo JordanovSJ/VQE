@@ -8,6 +8,9 @@ import scipy
 import numpy
 import logging
 import datetime
+import ray
+
+from src import config
 
 
 class QasmUtils:
@@ -148,14 +151,54 @@ class MatrixUtils:
         return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
 
 
+class AdaptAnsatzUtils:
+    # finds the VQE energy for a single ansatz element added to (optionally) an initial ansatz
+    @staticmethod
+    def get_ansatz_elements_energies(vqe_runner, ansatz_elements, initial_ansatz=None, multithread=False):
+        if initial_ansatz is None:
+            initial_ansatz = []
+        if multithread:
+            ray.init(num_cpus=config.multithread['n_cpus'])
+            ray_ids = [
+                [element,
+                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=initial_ansatz + [element])]
+                for element in ansatz_elements]
+            elements_energies = [[ray_id[0], ray.get(ray_id[1])] for ray_id in ray_ids]
+            ray.shutdown()
+        else:
+            elements_energies = [
+                [element, vqe_runner.vqe_run(ansatz_elements=initial_ansatz + [element])]
+                for element in ansatz_elements]
+
+        return elements_energies
+
+    # returns the ansatz element that achieves lowest energy (together with the energy value)
+    @staticmethod
+    def get_most_significant_ansatz_element(vqe_runner, ansatz_elements, initial_ansatz=None, multithread=False):
+        elements_energies = AdaptAnsatzUtils.get_ansatz_elements_energies(vqe_runner, ansatz_elements,
+                                                                          initial_ansatz, multithread)
+        return min(elements_energies, key=lambda x: x[1])
+
+    # get ansatz elements that contribute to energy decrease below(above) some threshold value
+    @staticmethod
+    def get_ansatz_elements_above_threshold(vqe_runner, ansatz_elements, threshold, initial_ansatz=None, multithread=False):
+        elements_energies = AdaptAnsatzUtils.get_ansatz_elements_energies(vqe_runner, ansatz_elements,
+                                                                          initial_ansatz, multithread)
+        return [element_energy for element_energy in elements_energies if element_energy[1] <= threshold]
+
+
 class LogUtils:
 
     @staticmethod
     def log_cofig():
         time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
         logging_filename = '{}'.format(time_stamp)
-        logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
-                            format='%(levelname)s %(asctime)s %(message)s')
+        try:
+            logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                                format='%(levelname)s %(asctime)s %(message)s')
+        except FileNotFoundError:
+            logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                                format='%(levelname)s %(asctime)s %(message)s')
         # disable logging from qiskit
         logging.getLogger('qiskit').setLevel(logging.WARNING)
 

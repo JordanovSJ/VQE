@@ -1,7 +1,7 @@
 # this module contains functions not designated a better place
 import scipy
 import openfermion
-from vqe.utils import QasmUtils
+from src.utils import QasmUtils
 
 
 def prepare_statevector_as_matrix(excitations_list, initial_statevector):

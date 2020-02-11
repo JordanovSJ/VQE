@@ -2,8 +2,8 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from openfermionpsi4 import run_psi4
 from openfermion.hamiltonians import MolecularData
 
-import vqe.backends as backends
-from vqe.utils import QasmUtils, LogUtils
+import src.backends as backends
+from src.utils import QasmUtils, LogUtils
 
 import scipy
 import numpy
@@ -12,7 +12,7 @@ from functools import partial
 
 import logging
 
-from vqe.ansatz_elements import UCCSD
+from src.ansatz_elements import UCCSD
 import ray
 
 
