@@ -3,7 +3,7 @@ from openfermion import QubitOperator
 from openfermion.utils import jw_hartree_fock_state
 import time
 
-from src.utils import QasmUtils, MatrixUtils
+from vqe.utils import QasmUtils, MatrixUtils
 
 import qiskit
 import qiskit.qasm

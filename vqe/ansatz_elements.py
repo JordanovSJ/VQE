@@ -1,7 +1,7 @@
 from openfermion import QubitOperator, FermionOperator
 from openfermion.transforms import jordan_wigner
 
-from src.utils import QasmUtils, MatrixUtils
+from vqe.utils import QasmUtils, MatrixUtils
 
 import itertools
 import numpy

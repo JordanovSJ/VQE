@@ -5,11 +5,11 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from scipy.linalg import eigh
 from openfermion.utils import jw_hartree_fock_state
 import scipy
-from src.ansatz_elements import UCCSD
+from vqe.ansatz_elements import UCCSD
 import numpy
-from src.backends import QiskitSimulation, MatrixCalculation
-from src.vqe import VQERunner
-from src.molecules import H2, HF
+from vqe.backends import QiskitSimulation, MatrixCalculation
+from vqe.vqe import VQERunner
+from vqe.molecules import H2, HF
 import openfermion
 import qiskit
 import time

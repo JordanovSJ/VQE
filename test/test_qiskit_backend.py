@@ -1,6 +1,6 @@
-from src import molecules
-from src.backends import QiskitSimulation, MatrixCalculation
-from src.ansatz_elements import UCCSD
+from vqe import molecules
+from vqe.backends import QiskitSimulation, MatrixCalculation
+from vqe.ansatz_elements import UCCSD
 
 import openfermionpsi4
 import openfermion
@@ -9,7 +9,7 @@ import scipy
 import unittest
 import qiskit
 import numpy
-from src.utils import QasmUtils, MatrixUtils
+from vqe.utils import QasmUtils, MatrixUtils
 
 
 class QiskitSimulationTest(unittest.TestCase):

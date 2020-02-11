@@ -1,8 +1,8 @@
-from src.vqe import VQERunner
-from src.molecules import H2, LiH, HF
-from src.ansatz_elements import UCCGSD, UCCSD, FixedAnsatz1
-from src.backends import QiskitSimulation
-from src.utils import LogUtils
+from vqe.vqe import VQERunner
+from vqe.molecules import H2, LiH, HF
+from vqe.ansatz_elements import UCCGSD, UCCSD, FixedAnsatz1
+from vqe.backends import QiskitSimulation
+from vqe.utils import LogUtils
 
 import logging
 import time
