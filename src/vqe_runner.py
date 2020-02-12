@@ -148,7 +148,7 @@ class VQERunner:
             #                                               'iprint': -1, 'maxls': 5}, tol=1e-4)
 
         else:
-            opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method=self.optimizer,
+            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
                                                  options=self.optimizer_options, tol=1e-4)
 
         print(opt_energy)

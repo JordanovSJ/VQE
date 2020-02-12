@@ -63,6 +63,8 @@ if __name__ == "__main__":
 
         print('New cycle ', count)
 
+        previous_energy = current_energy
+
         element_to_add, current_energy = AdaptAnsatzUtils\
             .get_most_significant_ansatz_element(vqe_runner,
                                                  new_ansatz_element_pool,
@@ -70,7 +72,6 @@ if __name__ == "__main__":
                                                  multithread=multithread)
 
         delta_e = previous_energy - current_energy
-        previous_energy = current_energy
 
         if delta_e > 0:
             ansatz_elements.append(element_to_add)

@@ -30,6 +30,7 @@ class AnsatzElement:
             assert len(var_parameters) == 1
             return QasmUtils.get_excitation_qasm(self.element, var_parameters[0])
         else:
+            var_parameters = numpy.array(var_parameters)*1000
             return self.element.format(*var_parameters)
 
     def get_excitation_order(self):
@@ -79,7 +80,7 @@ class UCCGSD:
         single_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 2):
             fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
-            excitation = jordan_wigner(FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices)))
+            excitation = jordan_wigner(fermi_operator)
             single_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
                                                     excitation_order=1))
         return single_excitations
@@ -87,7 +88,7 @@ class UCCGSD:
     def get_double_excitation_list(self):
         double_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 4):
-            fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
+            fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(* indices))
             excitation = jordan_wigner(fermi_operator)
             double_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
                                                     excitation_order=2))
@@ -97,36 +98,40 @@ class UCCGSD:
         return self.get_single_excitation_list() + self.get_double_excitation_list()
 
 
-# this is ugly ansatz
-# TODO
-class FixedAnsatz1:
+class HardwareEfficientAnsatz1:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
-        self.ansatz_type = 'qasm_list'
+        self.ansatz_type = 'hardware_efficient'
 
-    def get_single_block(self, index):
-        qasm = ['']
+    def get_single_element_qasm(self, double_parameters=False):
+
+        qasm_middle = ['']
+        qasm_cnots_odd = ['']
+        qasm_cnots_even = ['']
+
         # apply single qubit general rotations to each qubit
-        for qubit in range(self.n_orbitals):
-            qasm.append('rx({{}}) q[{}];\n'.format(qubit))  # we want to leave first {} empty for var_parameter later
-            qasm.append('ry({{}}) q[{}];\n'.format(qubit))
+        for qubit in range(0, self.n_orbitals - 1):
+            if qubit % 2:
+                qasm_cnots_odd.append('cx q[{}], q[{}];\n'.format(qubit, qubit + 1))
+            else:
+                qasm_cnots_even.append('cx q[{}], q[{}];\n'.format(qubit, qubit + 1))
+            if double_parameters:
+                qasm_middle.append('rx({{}}) q[{}];\n'.format(qubit))  # we want to leave first {} empty for var_parameter later
+                qasm_middle.append('ry({{}}) q[{}];\n'.format(qubit))
+            else:
+                qasm_middle.append('rx({{}}) q[{}];\n'.format(qubit))
 
-        # used_qubits = numpy.zeros(self.n_orbitals)
+        qasm = ''.join(qasm_cnots_even) + ''.join(qasm_cnots_odd) + ''.join(qasm_middle) + ''.join(qasm_cnots_odd)\
+               + ''.join(qasm_cnots_even)
 
-        for qubit in range(1, self.n_orbitals):
+        return qasm
 
-            qasm.append('cx q[{}], q[{}];\n'.format(qubit - 1, qubit))
+    def get_ansatz_element(self, double_parameters=False):
 
-            # used_qubits[qubit] = 1
-            # used_qubits[next_qubit] = 1
-
-        return ''.join(qasm)
-
-    def get_ansatz_elements(self):
-        # return block
-        qasm_list = [self.get_single_block(index) for index in range(1, self.n_orbitals)]
-        qasm = ''.join(qasm_list)
-        return [AnsatzElement('qasm', qasm, self.n_orbitals, n_var_parameters=2*self.n_orbitals*(self.n_orbitals-1))]
+        qasm = self.get_single_element_qasm(double_parameters)
+        # return just a single ansatz element
+        return AnsatzElement(element=qasm, element_type=self.ansatz_type,
+                             n_var_parameters=(1+double_parameters)*self.n_orbitals)
 
 
