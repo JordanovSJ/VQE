@@ -30,7 +30,7 @@ class AnsatzElement:
             assert len(var_parameters) == 1
             return QasmUtils.get_excitation_qasm(self.element, var_parameters[0])
         else:
-            var_parameters = numpy.array(var_parameters)*100
+            var_parameters = numpy.array(var_parameters)*1000
             return self.element.format(*var_parameters)
 
     def get_excitation_order(self):
@@ -104,7 +104,7 @@ class HardwareEfficientAnsatz1:
         self.n_electrons = n_electrons
         self.ansatz_type = 'hardware_efficient'
 
-    def get_single_element_qasm(self, double_parameters=False):
+    def get_element_qasm(self, double_parameters=False):
 
         qasm_middle = ['']
         qasm_cnots_odd = ['']
@@ -129,7 +129,7 @@ class HardwareEfficientAnsatz1:
 
     def get_ansatz_element(self, double_parameters=False):
 
-        qasm = self.get_single_element_qasm(double_parameters)
+        qasm = self.get_element_qasm(double_parameters)
         # return just a single ansatz element
         return AnsatzElement(element=qasm, element_type=self.ansatz_type,
                              n_var_parameters=(1+double_parameters)*self.n_orbitals)
@@ -141,7 +141,7 @@ class HardwareEfficientAnsatz2:
         self.n_electrons = n_electrons
         self.ansatz_type = 'hardware_efficient'
 
-    def get_single_element_qasm(self, double_parameters=False):
+    def get_element_qasm(self, double_parameters=False):
 
         qasm_singles = ['']
         qasm_cnots = ['']
@@ -156,13 +156,69 @@ class HardwareEfficientAnsatz2:
             else:
                 qasm_singles.append('rx({{}}) q[{}];\n'.format(qubit))
 
-        qasm = ''.join(qasm_singles) + ''.join(qasm_cnots) + ''.join(qasm_singles) + ''.join(qasm_cnots[::-1])
+        qasm = ''.join(qasm_singles) + ''.join(qasm_cnots) + ''.join(qasm_singles) + ''.join(qasm_cnots[::-1]) \
+               + ''.join(qasm_singles)
 
         return qasm
 
     def get_ansatz_element(self, double_parameters=False):
 
-        qasm = self.get_single_element_qasm(double_parameters)
+        qasm = self.get_element_qasm(double_parameters)
         # return just a single ansatz element
         return AnsatzElement(element=qasm, element_type=self.ansatz_type,
-                             n_var_parameters=2*(1+double_parameters)*self.n_orbitals)
+                             n_var_parameters=3*(1+double_parameters)*self.n_orbitals)
+
+
+class HardwareEfficientAnsatz3:
+    def __init__(self, n_orbitals, n_electrons):
+        self.n_orbitals = n_orbitals
+        self.n_electrons = n_electrons
+        self.ansatz_type = 'hardware_efficient'
+        self.n_parameters = 0
+
+    def get_element_qasm(self, double_parameters=False, index=3):
+        self.n_parameters = 0
+        qasm = ['']
+        for i in range(1, index + 1):
+            used_qubits = numpy.zeros(self.n_orbitals)
+            for qubit in range(self.n_orbitals):
+                ctrl_qubit = qubit
+                target_qubit = (qubit + index) % self.n_orbitals
+                if used_qubits[target_qubit] == 0 or used_qubits[ctrl_qubit] == 0:
+                    qasm.append('cx q[{}], q[{}];\n'.format(ctrl_qubit, target_qubit))
+
+                    if double_parameters:
+                        qasm.append('rx({{}}) q[{}];\n'.format(ctrl_qubit))
+                        qasm.append('rx({{}}) q[{}];\n'.format(target_qubit))
+                        qasm.append('ry({{}}) q[{}];\n'.format(ctrl_qubit))
+                        qasm.append('ry({{}}) q[{}];\n'.format(target_qubit))
+                        self.n_parameters += 4
+                    else:
+                        qasm.append('rx({{}}) q[{}];\n'.format(ctrl_qubit))
+                        qasm.append('rx({{}}) q[{}];\n'.format(target_qubit))
+                        self.n_parameters += 2
+
+                    qasm.append('cx q[{}], q[{}];\n'.format(ctrl_qubit, target_qubit))
+
+                    if double_parameters:
+                        qasm.append('rx({{}}) q[{}];\n'.format(ctrl_qubit))
+                        qasm.append('rx({{}}) q[{}];\n'.format(target_qubit))
+                        qasm.append('ry({{}}) q[{}];\n'.format(ctrl_qubit))
+                        qasm.append('ry({{}}) q[{}];\n'.format(target_qubit))
+                        self.n_parameters += 4
+                    else:
+                        qasm.append('ry({{}}) q[{}];\n'.format(ctrl_qubit))
+                        qasm.append('ry({{}}) q[{}];\n'.format(target_qubit))
+                        self.n_parameters += 2
+
+                    used_qubits[target_qubit] = 1
+                    used_qubits[ctrl_qubit] = 1
+
+        return ''.join(qasm)
+
+    def get_ansatz_element(self, double_parameters=False, index=3):
+
+        qasm = self.get_element_qasm(double_parameters, index)
+        # return just a single ansatz element
+        return AnsatzElement(element=qasm, element_type=self.ansatz_type,
+                             n_var_parameters=self.n_parameters)
