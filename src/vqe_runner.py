@@ -63,7 +63,7 @@ class VQERunner:
         self.iteration = None
         self.gate_counter = None
 
-    def get_energy(self, var_parameters, ansatz_elements, parallel=False, initial_statevector_qasm=None,
+    def get_energy(self, var_parameters, ansatz_elements, multithread=False, initial_statevector_qasm=None,
                    update_gate_counter=False):
         t_start = time.time()
         energy, statevector, qasm = self.backend.get_energy(var_parameters=var_parameters,
@@ -74,7 +74,7 @@ class VQERunner:
                                                             initial_statevector_qasm=initial_statevector_qasm)
 
         # if we run parallel process dont print and update info
-        if parallel:
+        if multithread:
             # TODO this logging does not work when running in parallel
             logging.info('Parallel process. Energy {}. Iteration duration: {}'.format(energy, time.time() - t_start))
         else:
@@ -86,8 +86,10 @@ class VQERunner:
             delta_e = self.new_energy - self.previous_energy
             self.previous_energy = self.new_energy
 
-            logging.info('Iteration: {}. Energy {}.  Energy change {} , Iteration dutation: {}'
-                         .format(self.iteration, self.new_energy, '{:.3e}'.format(delta_e), time.time() - t_start))
+            message = 'Iteration: {}. Energy {}.  Energy change {} , Iteration dutation: {}'\
+                .format(self.iteration, self.new_energy, '{:.3e}'.format(delta_e), time.time() - t_start)
+            logging.info(message)
+            print(message)
             self.iteration += 1
 
         return energy
@@ -115,7 +117,6 @@ class VQERunner:
         print('-----Optimizer {}------'.format(self.optimizer))
 
         self.iteration = 1
-        self.time = time.time()
 
         if ansatz_elements is None:
             var_parameters = self.var_parameters

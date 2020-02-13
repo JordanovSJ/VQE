@@ -30,7 +30,7 @@ class AnsatzElement:
             assert len(var_parameters) == 1
             return QasmUtils.get_excitation_qasm(self.element, var_parameters[0])
         else:
-            var_parameters = numpy.array(var_parameters)*1000
+            var_parameters = numpy.array(var_parameters)*100
             return self.element.format(*var_parameters)
 
     def get_excitation_order(self):
@@ -135,3 +135,34 @@ class HardwareEfficientAnsatz1:
                              n_var_parameters=(1+double_parameters)*self.n_orbitals)
 
 
+class HardwareEfficientAnsatz2:
+    def __init__(self, n_orbitals, n_electrons):
+        self.n_orbitals = n_orbitals
+        self.n_electrons = n_electrons
+        self.ansatz_type = 'hardware_efficient'
+
+    def get_single_element_qasm(self, double_parameters=False):
+
+        qasm_singles = ['']
+        qasm_cnots = ['']
+
+        # apply single qubit general rotations to each qubit
+        for qubit in range(0, self.n_orbitals - 1):
+            qasm_cnots.append('cx q[{}], q[{}];\n'.format(qubit, qubit + 1))
+
+            if double_parameters:
+                qasm_singles.append('rx({{}}) q[{}];\n'.format(qubit))  # we want to leave first {} empty for var_parameter later
+                qasm_singles.append('ry({{}}) q[{}];\n'.format(qubit))
+            else:
+                qasm_singles.append('rx({{}}) q[{}];\n'.format(qubit))
+
+        qasm = ''.join(qasm_singles) + ''.join(qasm_cnots) + ''.join(qasm_singles) + ''.join(qasm_cnots[::-1])
+
+        return qasm
+
+    def get_ansatz_element(self, double_parameters=False):
+
+        qasm = self.get_single_element_qasm(double_parameters)
+        # return just a single ansatz element
+        return AnsatzElement(element=qasm, element_type=self.ansatz_type,
+                             n_var_parameters=2*(1+double_parameters)*self.n_orbitals)
