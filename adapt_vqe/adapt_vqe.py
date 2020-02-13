@@ -22,7 +22,7 @@ if __name__ == "__main__":
     max_ansatz_elements = 10
 
     multithread = True
-    n_cpus = 2
+    n_cpus = 4
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     LogUtils.log_cofig()
