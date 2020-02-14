@@ -1,3 +1,6 @@
+-Understand p-h Hamiltoanian
+
+**********************
 1. Implementation for Riggeti real QPU
 
 2.For the quantum simulator/devices backgrounds implement different methods for calculating <H>
@@ -25,7 +28,7 @@ DONE:
 
 
 IDEAS for algorithms and papers:
--ADAPT based on energy contribution
+-ADAPT based on energy contribution (DONE)
     - iterate through elements until find a significant contribution, not maximum
 -computing excited states
 -other VQE applications
@@ -43,4 +46,4 @@ Notes:
 2. State preparation of QISKIT requires much more time than energy calculation
 => therefore no point finding explicitly the <H> when simulating
 
-
+3. Adaptive ansatz should theoretically correct for Trotter approximation

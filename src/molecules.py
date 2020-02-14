@@ -74,12 +74,12 @@ class BeH2:
     name: str = 'BeH2'
     multiplicity: int = 1
     charge: int = 0
-    orbital_no: int = 14
-    electron_no: int = 6
+    n_orbitals: int = 14
+    n_electrons: int = 6
     # ground_state_distance = 1.3264
 
     @staticmethod
-    def get_geometry(distance=1):
+    def geometry(distance=1):
         return [
             ['Be', [0, 0, 0]],
             ['H', [0, 0, distance]],
