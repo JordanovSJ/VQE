@@ -22,8 +22,8 @@ if __name__ == "__main__":
     LogUtils.log_cofig()
 
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    ansatz_element = ExchangeAnsatz2(molecule.n_orbitals, molecule.n_electrons, n_blocks=1)
-    ansatz_elements = [ansatz_element, ansatz_element]
+    ansatz_element = ExchangeAnsatz2(molecule.n_orbitals, molecule.n_electrons)
+    ansatz_elements = [ansatz_element, ansatz_element, ansatz_element, ansatz_element, ansatz_element]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
                            molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')
