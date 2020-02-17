@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF
-from src.ansatz_elements import UCCGSD, UCCSD, HardwareEfficientAnsatz1, HardwareEfficientAnsatz2, HardwareEfficientAnsatz3
+from src.ansatz_elements import UCCGSD, UCCSD, ExchangeAnsatz1, ExchangeAnsatz2
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
 
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     LogUtils.log_cofig()
 
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    ansatz_element = HardwareEfficientAnsatz2(molecule.n_orbitals, molecule.n_electrons).get_ansatz_element(double_parameters=True)
-    ansatz_elements = [ansatz_element, ansatz_element, ansatz_element, ansatz_element]
+    ansatz_element = ExchangeAnsatz2(molecule.n_orbitals, molecule.n_electrons, n_blocks=1)
+    ansatz_elements = [ansatz_element, ansatz_element]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
                            molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')

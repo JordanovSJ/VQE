@@ -56,6 +56,26 @@ class QasmUtils:
 
         return ''.join(qasm)
 
+    @staticmethod
+    def get_controlled_y_gate_qasm(angle, control, target):
+        qasm = ['']
+        qasm.append('ry({}) q[{}];\n'.format(angle/2, target))
+        qasm.append('cx q[{}], q[{}];\n'.format(control, target))
+        qasm.append('ry({}) q[{}];\n'.format(-angle/2, target))
+        qasm.append('cx q[{}], q[{}];\n'.format(control, target))
+
+        return ''.join(qasm)
+
+    # this is simplified exchange gate, that does not change phases
+    @staticmethod
+    def get_partial_exchange_qasm(angle, control, target):
+        qasm = ['']
+        qasm.append('cx q[{}], q[{}];\n'.format(target, control))
+        qasm.append(QasmUtils.get_controlled_y_gate_qasm(2*angle, control, target))  # the factor of 2 is convenience
+        qasm.append('cx q[{}], q[{}];\n'.format(target, control))
+
+        return ''.join(qasm)
+
     # return a qasm circuit for preparing the HF state
     @staticmethod
     def get_hf_state_qasm(n_electrons):

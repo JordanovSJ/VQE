@@ -60,7 +60,7 @@ class VQERunner:
         # call back function variables
         self.previous_energy = self.hf_energy
         self.new_energy = None
-        self.iteration = None
+        self.iteration = 0
         self.gate_counter = None
 
     def get_energy(self, var_parameters, ansatz_elements, multithread=False, initial_statevector_qasm=None,
