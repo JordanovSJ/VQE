@@ -94,7 +94,7 @@ class ExchangeAnsatz2(AnsatzElement):
         qasm_odd = ['']
 
         parameter_id = 0
-        for qubit in range(self.n_orbitals):
+        for qubit in range(self.n_orbitals ):
 
             if qubit % 2:
                 angle = var_parameters[parameter_id]
