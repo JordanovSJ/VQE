@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF
-from src.ansatz_elements import UCCGSD, UCCSD, FixedAnsatz1
+from src.ansatz_elements import UCCGSD, UCCSD, ExchangeAnsatz2
 from src.backends import QiskitSimulation
 from src.utils import LogUtils, AdaptAnsatzUtils
 
@@ -48,6 +48,9 @@ if __name__ == "__main__":
             .format(element.fermi_operator, energy - hf_energy)
         logging.info(message)
         print(message)
+
+    exchange_ansatz_element = ExchangeAnsatz2(molecule.n_orbitals, molecule.n_electrons)
+    new_ansatz_element_pool.append(exchange_ansatz_element)
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)

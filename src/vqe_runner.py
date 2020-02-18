@@ -167,7 +167,7 @@ class VQERunner:
 
         # partial function to be used in the optimizer
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
-                             initial_statevector_qasm=initial_statevector_qasm, parallel=True)
+                             initial_statevector_qasm=initial_statevector_qasm, multithread=True)
 
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
