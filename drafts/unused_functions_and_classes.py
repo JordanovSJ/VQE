@@ -43,7 +43,7 @@ def get_excitation_list_qasm(excitation_list, var_parameters, gate_counter):
             exponent_angle = var_parameters[i] * excitation.terms[exponent_term]
             assert exponent_angle.real == 0
             exponent_angle = exponent_angle.imag
-            qasm.append(QasmUtils.get_exponent_qasm(exponent_term, exponent_angle))
+            qasm.append(QasmUtils.exponent_qasm(exponent_term, exponent_angle))
 
     return ''.join(qasm)
 

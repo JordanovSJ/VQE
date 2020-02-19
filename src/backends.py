@@ -75,12 +75,12 @@ class QiskitSimulation:
             gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
 
         # add a qasm header
-        qasm = [QasmUtils.get_qasm_header(n_qubits)]
+        qasm = [QasmUtils.qasm_header(n_qubits)]
 
         # add a circuit for a HF state initialization
         if initial_statevector_qasm is None:
             assert n_qubits >= n_electrons
-            qasm.append(QasmUtils.get_hf_state_qasm(n_electrons))
+            qasm.append(QasmUtils.hf_state_qasm(n_electrons))
         else:
             qasm.append(initial_statevector_qasm)
 

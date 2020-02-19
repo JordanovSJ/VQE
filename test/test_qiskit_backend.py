@@ -17,8 +17,8 @@ class QiskitSimulationTest(unittest.TestCase):
     def test_pauli_gates_circuit_statevector(self):
 
         qubit_operator = openfermion.QubitOperator('X0 Y1')
-        qasm_circuit = QasmUtils.get_qasm_header(2)
-        qasm_circuit += QasmUtils.get_pauli_operators_qasm(qubit_operator)
+        qasm_circuit = QasmUtils.qasm_header(2)
+        qasm_circuit += QasmUtils.pauli_operator_qasm(qubit_operator)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm_circuit)
 
         expected_statevector = numpy.array([0, 0, 0, 1j])
@@ -32,8 +32,8 @@ class QiskitSimulationTest(unittest.TestCase):
     def test_exponent_statevector(self):
 
         exp_operator = ((0, 'X'), (1, 'Z'), (2, 'Z'))
-        qasm = QasmUtils.get_qasm_header(3)
-        qasm += QasmUtils.get_exponent_qasm(exp_operator, -numpy.pi/2)
+        qasm = QasmUtils.qasm_header(3)
+        qasm += QasmUtils.exponent_qasm(exp_operator, -numpy.pi / 2)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
 
         expected_statevector = numpy.zeros(8)
@@ -63,8 +63,8 @@ class QiskitSimulationTest(unittest.TestCase):
                 angle = 2*numpy.pi/10
 
                 # <<< create a statevector using QiskitSimulation.get_exponent_qasm >>>
-                qasm = QasmUtils.get_qasm_header(n_qubits)
-                qasm += QasmUtils.get_exponent_qasm(qubit_operator_tuple, angle)
+                qasm = QasmUtils.qasm_header(n_qubits)
+                qasm += QasmUtils.exponent_qasm(qubit_operator_tuple, angle)
                 qiskit_statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
                 qiskit_statevector = qiskit_statevector * numpy.exp(1j * angle)  # correct for a global phase
                 qiskit_statevector = qiskit_statevector.round(2)  # round for the purpose of testing
@@ -112,8 +112,8 @@ class QiskitSimulationTest(unittest.TestCase):
         n_qubits = 5
         n_electrons = 3
 
-        qasm = QasmUtils.get_qasm_header(n_qubits)
-        qasm += QasmUtils.get_hf_state_qasm(n_electrons)
+        qasm = QasmUtils.qasm_header(n_qubits)
+        qasm += QasmUtils.hf_state_qasm(n_electrons)
         qasm += QasmUtils.reverse_qubits_qasm(n_qubits)
         qiskit_statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
 

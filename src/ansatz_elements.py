@@ -28,7 +28,7 @@ class AnsatzElement:
     def get_qasm(self, var_parameters):
         if self.element_type == 'excitation':
             assert len(var_parameters) == 1
-            return QasmUtils.get_excitation_qasm(self.element, var_parameters[0])
+            return QasmUtils.excitation_qasm(self.element, var_parameters[0])
         else:
             var_parameters = numpy.array(var_parameters)
             return self.element.format(*var_parameters)
@@ -70,7 +70,7 @@ class ExchangeAnsatz1(AnsatzElement):
                 qasm.append('rz({}) q[{}];\n'.format(angle, virtual_orbital))
 
                 angle = var_parameters_cycle.__next__()
-                qasm.append(QasmUtils.get_partial_exchange_qasm(angle, occupied_orbital, virtual_orbital))
+                qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, occupied_orbital, virtual_orbital))
 
             # TODO add exchanges between the last unoccupied orbitals?
 
@@ -87,34 +87,20 @@ class ExchangeAnsatz2(AnsatzElement):
         super(ExchangeAnsatz2, self).\
             __init__(element=None, element_type='hardware_efficient', n_var_parameters=n_var_parameters)
 
+    @staticmethod
+    def double_exchange(angle, qubits):
+        assert len(qubits) == 4
+        qasm = ['']
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubits[1], qubits[2]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubits[0], qubits[3]))
+        qasm.append('cz q[{}], q[{}];\n'.format(qubits[2], qubits[3]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubits[1], qubits[2]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubits[0], qubits[3]))
+        return ''.join(qasm)
+
     def get_qasm(self, var_parameters):
-        var_parameters *= 10
-        assert len(var_parameters) == self.n_var_parameters
-        qasm_even = ['']
-        qasm_odd = ['']
 
-        parameter_id = 0
-        for qubit in range(self.n_orbitals ):
-
-            if qubit % 2:
-                angle = var_parameters[parameter_id]
-                parameter_id += 1
-                qasm_even.append('rz({}) q[{}];\n'.format(angle, qubit))
-
-                angle = var_parameters[parameter_id]
-                parameter_id += 1
-                qasm_even.append('rz({}) q[{}];\n'.format(angle, (qubit+1) % self.n_orbitals))
-
-                angle = var_parameters[parameter_id]
-                parameter_id += 1
-                qasm_even.append(QasmUtils.get_partial_exchange_qasm(angle, qubit, (qubit + 1) % self.n_orbitals))
-            else:
-                angle = var_parameters[parameter_id]
-                parameter_id += 1
-                qasm_odd.append(QasmUtils.get_partial_exchange_qasm(angle, qubit, (qubit + 1) % self.n_orbitals))
-
-        assert parameter_id == len(var_parameters)
-        return ''.join(qasm_odd) + ''.join(qasm_even)
+        return ''
 
 
 class UCCSD:

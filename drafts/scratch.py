@@ -14,26 +14,35 @@ import openfermion
 import qiskit
 import time
 from src.utils import QasmUtils
+from src import backends
 
-from src.ansatz_elements import ExchangeAnsatz1
+from src.ansatz_elements import ExchangeAnsatz2
 
 if __name__ == "__main__":
-    molecule = H2
-    r = 0.735
-    max_n_iterations = 2000
+    qubits = numpy.arange(4)
+    angle = numpy.pi/10
 
-    uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    ansatz_element = ExchangeAnsatz1(molecule.n_orbitals, molecule.n_electrons)
-    ansatz_elements = [ansatz_element]
+    qasm = ['']
+    qasm.append(QasmUtils.qasm_header(4))
+    qasm.append('x q[0];\n')
+    qasm.append('x q[1];\n')
+    qasm.append(ExchangeAnsatz2.double_exchange(angle, qubits))
+    qasm = ''.join(qasm)
+    statevector = backends.QiskitSimulation.get_statevector_from_qasm(qasm)
+    print(statevector)
+    print(QasmUtils.gate_count(qasm, 4))
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
-                           molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')
+    qasm_2 = ['']
+    qasm_2.append(QasmUtils.qasm_header(4))
+    qasm_2.append('x q[0];\n')
+    qasm_2.append('x q[1];\n')
+    double_excitation = UCCSD(4, 2).get_double_excitation_list()[0]
+    qasm_2.append(double_excitation.get_qasm([angle]))
+    qasm_2 = ''.join(qasm_2)
+    statevector_2 = backends.QiskitSimulation.get_statevector_from_qasm(qasm_2)
+    print(statevector_2.round(3))
+    print(QasmUtils.gate_count(qasm_2, 4))
 
-    var_pars = [0.5, 0.2, 0, 0.2]
-
-    E = vqe_runner.get_energy(var_pars, ansatz_elements)
-
-    print(E)
     print('spagetti')
 
 # solution for HF at r =0.995

@@ -13,9 +13,9 @@ class QasmUtilsTest(unittest.TestCase):
         target = 1
 
         # case 1
-        qasm = QasmUtils.get_qasm_header(2)
+        qasm = QasmUtils.qasm_header(2)
         qasm += 'x q[{}];\n'.format(control)
-        qasm += QasmUtils.get_controlled_y_gate_qasm(numpy.pi/2, control, target)
+        qasm += QasmUtils.controlled_y_gate_qasm(numpy.pi / 2, control, target)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm).round(3)
 
         expected_statevector = numpy.array([0, 1, 0, 1])/numpy.sqrt(2)
@@ -29,10 +29,10 @@ class QasmUtilsTest(unittest.TestCase):
         target = 1
 
         #case 2
-        qasm = QasmUtils.get_qasm_header(2)
+        qasm = QasmUtils.qasm_header(2)
         qasm += 'x q[{}];\n'.format(control)
         qasm += 'x q[{}];\n'.format(target)
-        qasm += QasmUtils.get_controlled_y_gate_qasm(numpy.pi / 2, control, target)
+        qasm += QasmUtils.controlled_y_gate_qasm(numpy.pi / 2, control, target)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm).round(3)
 
         expected_statevector = numpy.array([0, -1, 0, 1]) / numpy.sqrt(2)
@@ -45,10 +45,10 @@ class QasmUtilsTest(unittest.TestCase):
         qubit_1 = 0
         qubit_2 = 1
 
-        qasm_1 = QasmUtils.get_qasm_header(2)
+        qasm_1 = QasmUtils.qasm_header(2)
         qasm_1 += 'x q[{}];\n'.format(qubit_1)
 
-        qasm_2 = QasmUtils.get_qasm_header(2)
+        qasm_2 = QasmUtils.qasm_header(2)
         qasm_2 += 'x q[{}];\n'.format(qubit_2)
 
         angles = [0, numpy.pi/4, numpy.pi/3, numpy.pi/2, numpy.pi]
@@ -56,7 +56,7 @@ class QasmUtilsTest(unittest.TestCase):
         for angle in angles:
 
             statevector_1 = QiskitSimulation.\
-                get_statevector_from_qasm(qasm_1 + QasmUtils.get_partial_exchange_qasm(angle, qubit_1, qubit_2)).round(3)
+                get_statevector_from_qasm(qasm_1 + QasmUtils.partial_exchange_gate_qasm(angle, qubit_1, qubit_2)).round(3)
 
             expected_statevector_1 = numpy.array([0, numpy.cos(angle), numpy.sin(angle), 0])
             expected_statevector_1 = expected_statevector_1.round(3)
@@ -65,7 +65,7 @@ class QasmUtilsTest(unittest.TestCase):
                 self.assertEqual(statevector_1[i], expected_statevector_1[i])
 
             statevector_2 = QiskitSimulation.\
-                get_statevector_from_qasm(qasm_2 + QasmUtils.get_partial_exchange_qasm(angle, qubit_1, qubit_2)).round(3)
+                get_statevector_from_qasm(qasm_2 + QasmUtils.partial_exchange_gate_qasm(angle, qubit_1, qubit_2)).round(3)
 
             expected_statevector_2 = numpy.array([0, - numpy.sin(angle), numpy.cos(angle), 0])
             expected_statevector_2 = expected_statevector_2.round(3)

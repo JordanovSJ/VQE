@@ -23,16 +23,18 @@ class QasmUtils:
             qubit_count = qasm.count('q[{}]'.format(i))
             cnot_count = qasm.count('q[{}],'.format(i))
             cnot_count += qasm.count(',q[{}]'.format(i))
+            cnot_count += qasm.count('q[{}] ,'.format(i))
+            cnot_count += qasm.count(', q[{}]'.format(i))
             gate_counter['q{}'.format(i)] = {'cx': cnot_count, 'u1': qubit_count-cnot_count}
         return gate_counter
 
     @staticmethod
-    def get_qasm_header(n_qubits):
+    def qasm_header(n_qubits):
         return 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[{0}];\ncreg c[{0}];\n'.format(n_qubits)
 
     # NOT USED
     @staticmethod
-    def get_pauli_operators_qasm(qubit_operator):
+    def pauli_operator_qasm(qubit_operator):
         assert type(qubit_operator) == QubitOperator
         assert len(qubit_operator.terms) == 1
 
@@ -57,7 +59,7 @@ class QasmUtils:
         return ''.join(qasm)
 
     @staticmethod
-    def get_controlled_y_gate_qasm(angle, control, target):
+    def controlled_y_gate_qasm(angle, control, target):
         qasm = ['']
         qasm.append('ry({}) q[{}];\n'.format(angle/2, target))
         qasm.append('cx q[{}], q[{}];\n'.format(control, target))
@@ -68,17 +70,17 @@ class QasmUtils:
 
     # this is simplified exchange gate, that does not change phases
     @staticmethod
-    def get_partial_exchange_qasm(angle, control, target):
+    def partial_exchange_gate_qasm(angle, control, target):
         qasm = ['']
         qasm.append('cx q[{}], q[{}];\n'.format(target, control))
-        qasm.append(QasmUtils.get_controlled_y_gate_qasm(2*angle, control, target))  # the factor of 2 is convenience
+        qasm.append(QasmUtils.controlled_y_gate_qasm(2 * angle, control, target))  # the factor of 2 is convenience
         qasm.append('cx q[{}], q[{}];\n'.format(target, control))
 
         return ''.join(qasm)
 
     # return a qasm circuit for preparing the HF state
     @staticmethod
-    def get_hf_state_qasm(n_electrons):
+    def hf_state_qasm(n_electrons):
         qasm = ['']
         for i in range(n_electrons):
             qasm.append('x q[{0}];\n'.format(i))
@@ -87,19 +89,19 @@ class QasmUtils:
 
     # get the qasm circuit of an excitation
     @staticmethod
-    def get_excitation_qasm(excitation, var_parameter):
+    def excitation_qasm(excitation, var_parameter):
         qasm = ['']
         for exponent_term in excitation.terms:
             exponent_angle = var_parameter * excitation.terms[exponent_term]
             assert exponent_angle.real == 0
             exponent_angle = exponent_angle.imag
-            qasm.append(QasmUtils.get_exponent_qasm(exponent_term, exponent_angle))
+            qasm.append(QasmUtils.exponent_qasm(exponent_term, exponent_angle))
 
         return ''.join(qasm)
 
     # returns a qasm circuit for an exponent of pauli operators
     @staticmethod
-    def get_exponent_qasm(exponent_term, exponent_angle):
+    def exponent_qasm(exponent_term, exponent_angle):
         assert type(exponent_term) == tuple  # TODO remove?
         assert exponent_angle.imag == 0
 
