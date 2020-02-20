@@ -16,19 +16,20 @@ import time
 from src.utils import QasmUtils
 from src import backends
 
-from src.ansatz_elements import ExchangeAnsatz2
+from src.ansatz_elements import DoubleExchangeAnsatzElement
 
 if __name__ == "__main__":
     qubits = numpy.arange(4)
-    angle = numpy.pi/10
+    angle = numpy.pi/1000
 
     qasm = ['']
     qasm.append(QasmUtils.qasm_header(4))
     qasm.append('x q[0];\n')
     qasm.append('x q[1];\n')
-    qasm.append(ExchangeAnsatz2.double_exchange(angle, qubits))
+    qasm.append(DoubleExchangeAnsatzElement.double_exchange(angle, qubits[:2], qubits[-2:]))
     qasm = ''.join(qasm)
     statevector = backends.QiskitSimulation.get_statevector_from_qasm(qasm)
+    print(abs(statevector[12])/abs(statevector[10]))
     print(statevector)
     print(QasmUtils.gate_count(qasm, 4))
 

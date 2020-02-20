@@ -1,6 +1,9 @@
+<<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
+
+-!!!  TUNE THE GRADIENT DECREASE OPTIMIZER  !!!
 -Understand p-h Hamiltoanian
 
-**********************
+*********************************************
 1. Implementation for Riggeti real QPU
 
 2.For the quantum simulator/devices backgrounds implement different methods for calculating <H>

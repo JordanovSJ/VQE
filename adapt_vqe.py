@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF
-from src.ansatz_elements import UCCGSD, UCCSD, ExchangeAnsatz2
+from src.ansatz_elements import UCCGSD, UCCSD, ESD
 from src.backends import QiskitSimulation
 from src.utils import LogUtils, AdaptAnsatzUtils
 
@@ -16,8 +16,8 @@ import ray
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    molecule = H2
-    r = 0.735
+    molecule = HF
+    r = 0.995
     max_n_iterations = 2000
 
     accuracy = 1e-4
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     LogUtils.log_cofig()
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
     # ansatz_elements_pool += FixedAnsatz1(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r})
@@ -48,9 +48,6 @@ if __name__ == "__main__":
             .format(element.fermi_operator, energy - hf_energy)
         logging.info(message)
         print(message)
-
-    exchange_ansatz_element = ExchangeAnsatz2(molecule.n_orbitals, molecule.n_electrons)
-    new_ansatz_element_pool.append(exchange_ansatz_element)
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)

@@ -106,17 +106,10 @@ class VQERunner:
 
     def vqe_run(self, ansatz_elements=None, initial_statevector_qasm=None, max_n_iterations=None):
 
+        self.iteration = 1
+
         if max_n_iterations is None:
             max_n_iterations = len(self.ansatz_elements) * 100 + 100
-
-        print('-----Running VQE for: {}-----'.format(self.molecule_name))
-        print('-----Number of electrons: {}-----'.format(self.n_electrons))
-        print('-----Number of orbitals: {}-----'.format(self.n_orbitals))
-        print('-----Numeber of ansatz elements: {}-----'.format(len(self.ansatz_elements)))
-        print('-----Statevector and energy calculated using {}------'.format(self.backend))
-        print('-----Optimizer {}------'.format(self.optimizer))
-
-        self.iteration = 1
 
         if ansatz_elements is None:
             var_parameters = self.var_parameters
@@ -135,22 +128,30 @@ class VQERunner:
         if len(ansatz_elements) == 0:
             return get_energy(var_parameters)
 
+        print('-----Running VQE for: {}-----'.format(self.molecule_name))
+        print('-----Number of electrons: {}-----'.format(self.n_electrons))
+        print('-----Number of orbitals: {}-----'.format(self.n_orbitals))
+        print('-----Numeber of ansatz elements: {}-----'.format(len(self.ansatz_elements)))
+        if len(ansatz_elements) == 1:
+            print('-----Ansatz type {}------'.format(ansatz_elements[0].element_type))
+        print('-----Statevector and energy calculated using {}------'.format(self.backend))
+        print('-----Optimizer {}------'.format(self.optimizer))
+
         if self.optimizer is None:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method='L-BFGS-B',
-                                                 options={'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-04,
-                                                          'eps': 1e-04, 'maxfun': 1500, 'maxiter': max_n_iterations,
-                                                          'iprint': -1, 'maxls': 5}, tol=1e-4)
+                                                 options={'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-07,
+                                                          'eps': 1e-04, 'maxfun': 1000, 'maxiter': max_n_iterations,
+                                                          'iprint': -1, 'maxls': 10}, tol=1e-5)
 
             # # the comment code below is the most optimal set up for the optimizer so far
-            # opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method='L-BFGS-B',
-            #                                      callback=self.callback,
-            #                                      options={'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-04,
-            #                                               'eps': 1e-04, 'maxfun': 1500, 'maxiter': max_n_iterations,
-            #                                               'iprint': -1, 'maxls': 5}, tol=1e-4)
+            # opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method='L-BFGS-B',
+            #                                                  options={'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-07,
+            #                                                           'eps': 1e-04, 'maxfun': 1000, 'maxiter': max_n_iterations,
+            #                                                           'iprint': -1, 'maxls': 10}, tol=1e-5)
 
         else:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=1e-4)
+                                                 options=self.optimizer_options, tol=1e-5)
 
         print(opt_energy)
         print('Gate counter', self.gate_counter)
@@ -175,13 +176,13 @@ class VQERunner:
         
         if self.optimizer is None:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method='L-BFGS-B',
-                                                 options={'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-04,
-                                                          'eps': 1e-04, 'maxfun': 1500, 'maxiter': max_n_iterations,
-                                                          'iprint': -1, 'maxls': 5}, tol=1e-4)
+                                                 options={'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-07,
+                                                          'eps': 1e-04, 'maxfun': 1000, 'maxiter': max_n_iterations,
+                                                          'iprint': -1, 'maxls': 10}, tol=1e-5)
 
         else:
-            opt_energy = scipy.optimize.minimize(self.get_energy, var_parameters, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=1e-4)
+            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
+                                                 options=self.optimizer_options, tol=1e-5)
 
         if len(ansatz_elements) == 1:
             message = 'Ran VQE for ansatz_element {} . Energy {}'.format(ansatz_elements[0].fermi_operator, opt_energy.fun)

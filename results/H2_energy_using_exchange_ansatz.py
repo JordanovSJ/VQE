@@ -4,12 +4,16 @@ from src.ansatz_elements import UCCGSD, UCCSD, DoubleExchangeAnsatzElement
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
 
+import matplotlib.pyplot as plt
+
 import logging
 import time
 import numpy
 import pandas
 import datetime
+import scipy
 import qiskit
+from functools import partial
 
 
 if __name__ == "__main__":
@@ -27,14 +31,14 @@ if __name__ == "__main__":
     ansatz_elements = [ansatz_element_2]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
-                           molecule_geometry_params={'distance': r} )#, optimizer='Nelder-Mead')
+                           molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')
 
-    t0 = time.time()
-    result = vqe_runner.vqe_run(max_n_iterations=max_n_iterations)
-    t = time.time()
+    angles = numpy.arange(101)*numpy.pi/200
+    energies = []
+    for angle in angles:
+        energies.append(vqe_runner.get_energy([angle], ansatz_elements))
 
-    logging.critical(result)
-    print(result)
-    print('TIme for running: ', t - t0)
-
-    print('Pizza')
+    plt.plot(angles, energies)
+    plt.xlabel(r'Angle, [$\pi$]')
+    plt.ylabel('Energy, [Hartree]')
+    plt.show()

@@ -176,3 +176,40 @@ class HeuristicAnsatz3:
         # return just a single ansatz element
         return AnsatzElement(element=qasm, element_type=self.ansatz_type,
                              n_var_parameters=self.n_parameters)
+
+
+class ExchangeAnsatz1(AnsatzElement):
+    def __init__(self, n_orbitals, n_electrons, n_blocks=1):
+        self.n_orbitals = n_orbitals
+        self.n_electrons = n_electrons
+        self.n_blocks = n_blocks
+
+        n_var_parameters = min(n_electrons, n_orbitals - n_electrons)*(1 + n_blocks)
+        super(ExchangeAnsatz1, self).\
+            __init__(element=None, element_type=str(self), n_var_parameters=n_var_parameters)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == self.n_var_parameters
+        var_parameters_cycle = itertools.cycle(var_parameters)
+        qasm = ['']
+        for block in range(self.n_blocks):
+            unoccupied_orbitals = list(range(self.n_electrons, self.n_orbitals))
+            for occupied_orbital in reversed(range(0, self.n_electrons)):
+                if len(unoccupied_orbitals) == 0:
+                    break
+                if occupied_orbital == self.n_electrons - 1:
+                    virtual_orbital = self.n_electrons + block
+                else:
+                    virtual_orbital = min(unoccupied_orbitals)
+                unoccupied_orbitals.remove(virtual_orbital)
+
+                # add a phase rotation for the excited orbitals only
+                angle = var_parameters_cycle.__next__()
+                qasm.append('rz({}) q[{}];\n'.format(angle, virtual_orbital))
+
+                angle = var_parameters_cycle.__next__()
+                qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, occupied_orbital, virtual_orbital))
+
+            # TODO add exchanges between the last unoccupied orbitals?
+
+        return ''.join(qasm)
