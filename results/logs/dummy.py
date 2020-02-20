@@ -1,0 +1,1 @@
+# I am a dummy file that exist to make sure that results/logs is create
