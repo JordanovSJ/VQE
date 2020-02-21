@@ -20,13 +20,15 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_cofig()
 
-    uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    ansatz_element_2 = DoubleExchangeAnsatzElement([0, 1], [2, 3])
+    # uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
+    ansatz_element_1 = DoubleExchangeAnsatzElement([4, 5], [10, 11])
+    ansatz_element_2 = DoubleExchangeAnsatzElement([2, 3], [10, 11])
+    # ansatz_element_1 = DoubleExchangeAnsatzElement([0, 1], [2, 3])
     # ansatz_element_1 = ExchangeAnsatz1(molecule.n_orbitals, molecule.n_electrons, n_blocks=2)
-    ansatz_elements = [ansatz_element_2]
+    ansatz_elements = [ansatz_element_1, ansatz_element_2]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
-                           molecule_geometry_params={'distance': r} )#, optimizer='Nelder-Mead')
+                           molecule_geometry_params={'distance': r}, print_var_parameters=True)#, optimizer='Nelder-Mead')
 
     t0 = time.time()
     result = vqe_runner.vqe_run()

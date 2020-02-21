@@ -21,7 +21,7 @@ class VQERunner:
     # Works for a single geometry
     def __init__(self, molecule, ansatz_elements=None, basis='sto-3g', molecule_geometry_params=None,
                  backend=backends.QiskitSimulation, initial_statevector_qasm=None, optimizer=None,
-                 optimizer_options=None):
+                 optimizer_options=None, print_var_parameters=False):
         LogUtils.vqe_info(molecule, ansatz_elements=ansatz_elements, basis=basis,
                           molecule_geometry_params=molecule_geometry_params, backend=backend)
 
@@ -59,6 +59,7 @@ class VQERunner:
         self.optimizer_options = optimizer_options
 
         # call back function variables
+        self.print_var_parameters = print_var_parameters
         self.previous_energy = self.hf_energy
         self.new_energy = None
         self.iteration = 0
@@ -67,6 +68,7 @@ class VQERunner:
     def get_energy(self, var_parameters, ansatz_elements, multithread=False, initial_statevector_qasm=None,
                    update_gate_counter=False):
         t_start = time.time()
+        # var_parameters = var_parameters[::-1]  # TODO cheat
         energy, statevector, qasm = self.backend.get_energy(var_parameters=var_parameters,
                                                             qubit_hamiltonian=self.jw_ham_qubit_operator,
                                                             ansatz_elements=ansatz_elements,
@@ -89,21 +91,21 @@ class VQERunner:
 
             message = 'Iteration: {}. Energy {}.  Energy change {} , Iteration dutation: {}'\
                 .format(self.iteration, self.new_energy, '{:.3e}'.format(delta_e), time.time() - t_start)
+            if self.print_var_parameters:
+                message += ' Params: ' + str(var_parameters)
             logging.info(message)
             print(message)
+
             self.iteration += 1
 
         return energy
 
     # Not used
     # def callback(self, xk):
-    #     delta_e = self.new_energy - self.previous_energy
-    #     self.previous_energy = self.new_energy
+    #     print('pars')
+    #     if self.print_var_parameters:
     #
-    #     logging.info('Iteration: {}. Energy {}.  Energy change {} , Iteration dutation: {}'
-    #                  .format(self.iteration, self.new_energy, '{:.3e}'.format(delta_e), time.time() - self.time))
-    #     self.time = time.time()
-    #     self.iteration += 1
+    #         print(xk)
 
     def vqe_run(self, ansatz_elements=None, initial_statevector_qasm=None, max_n_iterations=None):
 
@@ -140,10 +142,12 @@ class VQERunner:
 
         if self.optimizer is None:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
-                                                 options=config.optimizer_options, tol=config.optimizer_tol)
+                                                 options=config.optimizer_options, tol=config.optimizer_tol,
+                                                 bounds=config.optimizer_bounds)
         else:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=config.optimizer_tol)
+                                                 options=self.optimizer_options, tol=config.optimizer_tol,
+                                                 bounds=config.optimizer_bounds)
 
         print(opt_energy)
         print('Gate counter', self.gate_counter)
@@ -168,10 +172,12 @@ class VQERunner:
         
         if self.optimizer is None:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
-                                                 options=config.optimizer_options, tol=config.optimizer_tol)
+                                                 options=config.optimizer_options, tol=config.optimizer_tol,
+                                                 bounds=config.optimizer_bounds)
         else:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=config.optimizer_tol)
+                                                 options=self.optimizer_options, tol=config.optimizer_tol,
+                                                 bounds=config.optimizer_bounds)
 
         if len(ansatz_elements) == 1:
             message = 'Ran VQE for ansatz_element {} . Energy {}'.format(ansatz_elements[0].element, opt_energy.fun)
