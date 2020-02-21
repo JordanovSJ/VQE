@@ -4,6 +4,7 @@ from openfermion.hamiltonians import MolecularData
 
 import src.backends as backends
 from src.utils import QasmUtils, LogUtils
+from src import config
 
 import scipy
 import numpy
@@ -138,20 +139,11 @@ class VQERunner:
         print('-----Optimizer {}------'.format(self.optimizer))
 
         if self.optimizer is None:
-            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method='L-BFGS-B',
-                                                 options={'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-07,
-                                                          'eps': 1e-04, 'maxfun': 1000, 'maxiter': max_n_iterations,
-                                                          'iprint': -1, 'maxls': 10}, tol=1e-5)
-
-            # # the comment code below is the most optimal set up for the optimizer so far
-            # opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method='L-BFGS-B',
-            #                                                  options={'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-07,
-            #                                                           'eps': 1e-04, 'maxfun': 1000, 'maxiter': max_n_iterations,
-            #                                                           'iprint': -1, 'maxls': 10}, tol=1e-5)
-
+            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
+                                                 options=config.optimizer_options, tol=config.optimizer_tol)
         else:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=1e-5)
+                                                 options=self.optimizer_options, tol=config.optimizer_tol)
 
         print(opt_energy)
         print('Gate counter', self.gate_counter)
@@ -175,17 +167,14 @@ class VQERunner:
             return get_energy(var_parameters)
         
         if self.optimizer is None:
-            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method='L-BFGS-B',
-                                                 options={'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-07,
-                                                          'eps': 1e-04, 'maxfun': 1000, 'maxiter': max_n_iterations,
-                                                          'iprint': -1, 'maxls': 10}, tol=1e-5)
-
+            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
+                                                 options=config.optimizer_options, tol=config.optimizer_tol)
         else:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=1e-5)
+                                                 options=self.optimizer_options, tol=config.optimizer_tol)
 
         if len(ansatz_elements) == 1:
-            message = 'Ran VQE for ansatz_element {} . Energy {}'.format(ansatz_elements[0].fermi_operator, opt_energy.fun)
+            message = 'Ran VQE for ansatz_element {} . Energy {}'.format(ansatz_elements[0].element, opt_energy.fun)
             logging.info(message)
             print(message)
         else:

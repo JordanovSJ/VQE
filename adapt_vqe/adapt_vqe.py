@@ -16,8 +16,8 @@ import ray
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    molecule = HF
-    r = 0.995
+    molecule = H2
+    r = 0.735
     max_n_iterations = 2000
 
     accuracy = 1e-4
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     for element, energy in elements_energies:
         new_ansatz_element_pool.append(element)
         message = 'New ansatz element added to updated pool, {}. Delta E = {}'\
-            .format(element.fermi_operator, energy - hf_energy)
+            .format(element.element, energy - hf_energy)
         logging.info(message)
         print(message)
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         if delta_e > 0:
             ansatz_elements.append(element_to_add)
             message = 'Add new element to final ansatz {}. Energy {}. Energy change {}'\
-                .format(element_to_add.fermi_operator, current_energy, delta_e)
+                .format(element_to_add.element, current_energy, delta_e)
             logging.info(message)
             print(message)
         else:

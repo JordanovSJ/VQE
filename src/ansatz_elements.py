@@ -9,14 +9,14 @@ import numpy
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< individual ansatz elements >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class AnsatzElement:
-    def __init__(self, element_type, element, n_var_parameters=1, excitation_order=None, fermi_operator=None):
-        self.element = element
-        self.element_type = element_type  # excitation or not
+    def __init__(self, element_type, element, excitation=None, n_var_parameters=1, excitation_order=None):
+        self.excitation = excitation
+        self.element_type = element_type
         self.n_var_parameters = n_var_parameters
-        self.fermi_operator = fermi_operator
+        self.element = element
 
         if (self.element_type == 'excitation') and (excitation_order is None):
-            assert type(self.element) == QubitOperator
+            assert type(self.excitation) == QubitOperator
             assert n_var_parameters == 1
             self.excitation_order = self.get_excitation_order()
         else:
@@ -25,13 +25,13 @@ class AnsatzElement:
     def get_qasm(self, var_parameters):
         if self.element_type == 'excitation':
             assert len(var_parameters) == 1
-            return QasmUtils.excitation_qasm(self.element, var_parameters[0])
+            return QasmUtils.excitation_qasm(self.excitation, var_parameters[0])
         else:
             var_parameters = numpy.array(var_parameters)
-            return self.element.format(*var_parameters)
+            return self.excitation.format(*var_parameters)
 
     def get_excitation_order(self):
-        terms = list(self.element)
+        terms = list(self.excitation)
         n_terms = len(terms)
         return max([len(terms[i]) for i in range(n_terms)])
 
@@ -40,7 +40,8 @@ class ExchangeAnsatzElement(AnsatzElement):
     def __init__(self, qubit_1, qubit_2):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
-        super(ExchangeAnsatzElement, self).__init__(element=None, element_type=str(self), n_var_parameters=1)
+        super(ExchangeAnsatzElement, self).__init__(element='s_exc {}, {}'.format(qubit_1, qubit_2)
+                                                    , element_type=str(self),  n_var_parameters=1)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
@@ -52,7 +53,8 @@ class DoubleExchangeAnsatzElement(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
-        super(DoubleExchangeAnsatzElement, self).__init__(element=None, element_type=str(self), n_var_parameters=1)
+        super(DoubleExchangeAnsatzElement, self).__init__(element='d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
+                                                          element_type=str(self),  n_var_parameters=1)
 
     @staticmethod
     def double_exchange(angle, qubit_pair_1, qubit_pair_2):
@@ -78,7 +80,7 @@ class ExchangeAnsatzBlock(AnsatzElement):
         n_var_parameters = 2*int(n_orbitals/4) + 2*n_orbitals
 
         super(ExchangeAnsatzBlock, self).\
-            __init__(element=None, element_type=str(self), n_var_parameters=n_var_parameters)
+            __init__(element_type=str(self), n_var_parameters=n_var_parameters)
 
     def get_qasm(self, var_parameters):
         var_parameters_cycle = itertools.cycle(var_parameters)
@@ -153,7 +155,7 @@ class UCCSD:
             for j in range(self.n_electrons, self.n_orbitals):
                 fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(j, i))
                 excitation = jordan_wigner(fermi_operator)
-                single_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
+                single_excitations.append(AnsatzElement('excitation', excitation=excitation, element=fermi_operator,
                                                         excitation_order=1))
         return single_excitations
 
@@ -165,7 +167,7 @@ class UCCSD:
                     for l in range(k+1, self.n_orbitals):
                         fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(i, j, k, l))
                         excitation = jordan_wigner(fermi_operator)
-                        double_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
+                        double_excitations.append(AnsatzElement('excitation', excitation=excitation, element=fermi_operator,
                                                                 excitation_order=2))
         return double_excitations
 
@@ -183,7 +185,7 @@ class UCCGSD:
         for indices in itertools.combinations(range(self.n_orbitals), 2):
             fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
             excitation = jordan_wigner(fermi_operator)
-            single_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
+            single_excitations.append(AnsatzElement('excitation', excitation=excitation, element=fermi_operator,
                                                     excitation_order=1))
         return single_excitations
 
@@ -192,7 +194,7 @@ class UCCGSD:
         for indices in itertools.combinations(range(self.n_orbitals), 4):
             fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(* indices))
             excitation = jordan_wigner(fermi_operator)
-            double_excitations.append(AnsatzElement('excitation', excitation, fermi_operator=fermi_operator,
+            double_excitations.append(AnsatzElement('excitation', excitation=excitation, element=fermi_operator,
                                                     excitation_order=2))
         return double_excitations
 

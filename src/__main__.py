@@ -14,9 +14,8 @@ import qiskit
 
 if __name__ == "__main__":
 
-    molecule = H2
-    r = 0.735
-    max_n_iterations = 2000
+    molecule = HF
+    r = 0.995
 
     # logging
     LogUtils.log_cofig()
@@ -30,7 +29,7 @@ if __name__ == "__main__":
                            molecule_geometry_params={'distance': r} )#, optimizer='Nelder-Mead')
 
     t0 = time.time()
-    result = vqe_runner.vqe_run(max_n_iterations=max_n_iterations)
+    result = vqe_runner.vqe_run()
     t = time.time()
 
     logging.critical(result)
