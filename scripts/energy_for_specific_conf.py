@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF
-from src.ansatz_elements import UCCGSD, UCCSD, DoubleExchangeAnsatzElement
+from src.ansatz_elements import UCCGSD, UCCSD, DoubleExchangeAnsatzElement, ExchangeAnsatzElement
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
 
@@ -28,8 +28,9 @@ if __name__ == "__main__":
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
     ansatz_element_1 = DoubleExchangeAnsatzElement([4, 5], [10, 11])
     ansatz_element_2 = DoubleExchangeAnsatzElement([2, 3], [10, 11])
+    ansatz_element_4 = ExchangeAnsatzElement(0, 11)
 
-    ansatz_elements = [ansatz_element_1, ansatz_element_2]
+    ansatz_elements = [ansatz_element_1, ansatz_element_4]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
                            molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')

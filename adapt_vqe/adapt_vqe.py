@@ -16,12 +16,12 @@ import ray
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    molecule = H2
-    r = 0.735
+    molecule = HF
+    r = 0.995
     max_n_iterations = 2000
 
     accuracy = 1e-4
-    threshold = 1e-6  # 1e-3 for chemical accuracy
+    threshold = 1e-7  # 1e-3 for chemical accuracy
     max_ansatz_elements = 10
 
     multithread = True
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     LogUtils.log_cofig()
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons).get_double_exchanges()
     # ansatz_elements_pool += FixedAnsatz1(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r})
@@ -48,6 +48,8 @@ if __name__ == "__main__":
             .format(element.element, energy - hf_energy)
         logging.info(message)
         print(message)
+
+    new_ansatz_element_pool += ESD(molecule.n_orbitals, molecule.n_electrons).get_single_exchanges()
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)

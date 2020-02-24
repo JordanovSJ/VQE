@@ -23,6 +23,8 @@
 
 12. Decrease qubits/orbitals considered whenever possible??
 
+13. Add parameter bound for each ansatz element
+
 DONE:
 
 10. Logging
