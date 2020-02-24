@@ -16,8 +16,8 @@ import ray
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    molecule = HF
-    r = 0.995
+    molecule = H2
+    r = 0.735
     max_n_iterations = 2000
 
     accuracy = 1e-4
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     LogUtils.log_cofig()
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+    initial_ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
     # ansatz_elements_pool += FixedAnsatz1(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r})
