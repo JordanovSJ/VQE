@@ -33,7 +33,7 @@ class VQERunner:
         self.n_orbitals = molecule.n_orbitals
         self.n_qubits = self.n_orbitals
 
-        self.molecule_data = MolecularData(geometry=molecule.geometry(** molecule_geometry_params),
+        self.molecule_data = MolecularData(geometry=molecule.geometry(**molecule_geometry_params),
                                            basis=basis, multiplicity=molecule.multiplicity, charge=molecule.charge)
         self.molecule_psi4 = run_psi4(self.molecule_data)
 
@@ -89,7 +89,7 @@ class VQERunner:
             delta_e = self.new_energy - self.previous_energy
             self.previous_energy = self.new_energy
 
-            message = 'Iteration: {}. Energy {}.  Energy change {} , Iteration dutation: {}'\
+            message = 'Iteration: {}. Energy {}.  Energy change {} , Iteration dutation: {}' \
                 .format(self.iteration, self.new_energy, '{:.3e}'.format(delta_e), time.time() - t_start)
             if self.print_var_parameters:
                 message += ' Params: ' + str(var_parameters)
@@ -107,7 +107,8 @@ class VQERunner:
     #
     #         print(xk)
 
-    def vqe_run(self, ansatz_elements=None, initial_statevector_qasm=None, max_n_iterations=None):
+    def vqe_run(self, ansatz_elements=None, initial_var_parameters=None,
+                initial_statevector_qasm=None, max_n_iterations=None):
 
         self.iteration = 1
 
@@ -118,7 +119,11 @@ class VQERunner:
             var_parameters = self.var_parameters
             ansatz_elements = self.ansatz_elements
         else:
-            var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements]))
+            if initial_var_parameters is None:
+                var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements]))
+            else:
+                assert len(initial_var_parameters) == sum([element.n_var_parameters for element in ansatz_elements])
+                var_parameters = initial_var_parameters
 
         if initial_statevector_qasm is None:
             initial_statevector_qasm = self.initial_statevector_qasm
@@ -152,15 +157,20 @@ class VQERunner:
         print(opt_energy)
         print('Gate counter', self.gate_counter)
 
-        return opt_energy.fun
+        return opt_energy
 
     @ray.remote
-    def vqe_run_multithread(self, ansatz_elements, initial_statevector_qasm=None, max_n_iterations=None):
+    def vqe_run_multithread(self, ansatz_elements, initial_var_parameters=None,
+                            initial_statevector_qasm=None, max_n_iterations=None):
 
         if max_n_iterations is None:
             max_n_iterations = len(ansatz_elements) * 100
 
-        var_parameters = numpy.zeros(sum([el.n_var_parameters for el in ansatz_elements]))
+        if initial_var_parameters is None or initial_var_parameters == []:
+            var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements]))
+        else:
+            assert len(initial_var_parameters) == sum([element.n_var_parameters for element in ansatz_elements])
+            var_parameters = initial_var_parameters
 
         # partial function to be used in the optimizer
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
@@ -169,7 +179,7 @@ class VQERunner:
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
             return get_energy(var_parameters)
-        
+
         if self.optimizer is None:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
                                                  options=config.optimizer_options, tol=config.optimizer_tol,
@@ -188,4 +198,4 @@ class VQERunner:
             logging.info(message)
             print(message)
 
-        return opt_energy.fun
+        return opt_energy

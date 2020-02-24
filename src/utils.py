@@ -176,37 +176,48 @@ class MatrixUtils:
 class AdaptAnsatzUtils:
     # finds the VQE energy for a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
-    def get_ansatz_elements_energies(vqe_runner, ansatz_elements, initial_ansatz=None, multithread=False):
+    def get_ansatz_elements_vqe_results(vqe_runner, ansatz_elements, initial_var_parameters=None,
+                                        initial_ansatz=None, multithread=False):
         if initial_ansatz is None:
             initial_ansatz = []
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
-            ray_ids = [
+            elements_ray_ids = [
                 [element,
-                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=initial_ansatz + [element])]
-                for element in ansatz_elements]
-            elements_energies = [[ray_id[0], ray.get(ray_id[1])] for ray_id in ray_ids]
+                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=initial_ansatz + [element],
+                                                       initial_var_parameters=initial_var_parameters)]
+                for element in ansatz_elements
+            ]
+            elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in elements_ray_ids]
             ray.shutdown()
         else:
-            elements_energies = [
-                [element, vqe_runner.vqe_run(ansatz_elements=initial_ansatz + [element])]
-                for element in ansatz_elements]
+            elements_results = [
+                [element, vqe_runner.vqe_run(ansatz_elements=initial_ansatz + [element],
+                                             initial_var_parameters=initial_var_parameters)]
+                for element in ansatz_elements
+            ]
 
-        return elements_energies
+        return elements_results
 
     # returns the ansatz element that achieves lowest energy (together with the energy value)
     @staticmethod
-    def get_most_significant_ansatz_element(vqe_runner, ansatz_elements, initial_ansatz=None, multithread=False):
-        elements_energies = AdaptAnsatzUtils.get_ansatz_elements_energies(vqe_runner, ansatz_elements,
-                                                                          initial_ansatz, multithread)
-        return min(elements_energies, key=lambda x: x[1])
+    def get_most_significant_ansatz_element(vqe_runner, ansatz_elements, initial_var_parameters=None,
+                                            initial_ansatz=None, multithread=False):
+        elements_results = AdaptAnsatzUtils.get_ansatz_elements_vqe_results(vqe_runner, ansatz_elements,
+                                                                            initial_var_parameters=initial_var_parameters,
+                                                                            initial_ansatz=initial_ansatz,
+                                                                            multithread=multithread)
+        return min(elements_results, key=lambda x: x[1].fun)
 
     # get ansatz elements that contribute to energy decrease below(above) some threshold value
     @staticmethod
-    def get_ansatz_elements_above_threshold(vqe_runner, ansatz_elements, threshold, initial_ansatz=None, multithread=False):
-        elements_energies = AdaptAnsatzUtils.get_ansatz_elements_energies(vqe_runner, ansatz_elements,
-                                                                          initial_ansatz, multithread)
-        return [element_energy for element_energy in elements_energies if element_energy[1] <= threshold]
+    def get_ansatz_elements_above_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=None,
+                                            initial_ansatz=None, multithread=False):
+        elements_results = AdaptAnsatzUtils.get_ansatz_elements_vqe_results(vqe_runner, ansatz_elements,
+                                                                            initial_var_parameters=initial_var_parameters,
+                                                                            initial_ansatz=initial_ansatz,
+                                                                            multithread=multithread)
+        return [element_result for element_result in elements_results if element_result[1].fun <= threshold]
 
 
 class LogUtils:

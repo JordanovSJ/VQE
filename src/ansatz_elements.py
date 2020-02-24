@@ -79,19 +79,19 @@ class ExchangeAnsatzBlock(AnsatzElement):
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
-        n_var_parameters = 2*int(n_orbitals/4) + 2*n_orbitals
+        n_var_parameters = int(n_orbitals/4) + n_orbitals
 
         super(ExchangeAnsatzBlock, self).\
-            __init__(element_type=str(self), n_var_parameters=n_var_parameters)
+            __init__(element_type=str(self), element='block', n_var_parameters=n_var_parameters)
 
     def get_qasm(self, var_parameters):
         var_parameters_cycle = itertools.cycle(var_parameters)
         count = 0
         qasm = ['']
         # add single qubit n rotations
-        for qubit in range(self.n_orbitals):
-            qasm.append('rz ({}) q[{}];\n'.format(var_parameters_cycle.__next__(), qubit))
-            count += 1
+        # for qubit in range(self.n_orbitals):
+        #     qasm.append('rz ({}) q[{}];\n'.format(var_parameters_cycle.__next__(), qubit))
+        #     count += 1
         # double orbital exchanges
         for qubit in range(self.n_orbitals):
             if qubit % 4 == 0:
@@ -100,8 +100,8 @@ class ExchangeAnsatzBlock(AnsatzElement):
                 q_2 = (qubit + 2) % self.n_orbitals
                 q_3 = (qubit + 3) % self.n_orbitals
                 q_4 = (qubit + 4) % self.n_orbitals
-                qasm.append(DoubleExchangeAnsatzElement.double_exchange(var_parameters_cycle.__next__(), [q_0, q_1], [q_2, q_3]))
-                count += 1
+                # qasm.append(DoubleExchangeAnsatzElement.double_exchange(var_parameters_cycle.__next__(), [q_0, q_1], [q_2, q_3]))
+                # count += 1
                 qasm.append(DoubleExchangeAnsatzElement.double_exchange(var_parameters_cycle.__next__(), [q_1, q_2], [q_3, q_4]))
                 count += 1
         # single orbital exchanges
@@ -139,6 +139,29 @@ class ESD:
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
                         double_excitations.append(DoubleExchangeAnsatzElement([i, j], [k, l]))
+
+        return double_excitations
+
+    def get_ansatz_elements(self):
+        return self.get_single_exchanges() + self.get_double_exchanges()
+
+
+class EGSD:
+    def __init__(self, n_orbitals, n_electrons):
+        self.n_orbitals = n_orbitals
+        self.n_electrons = n_electrons
+
+    def get_single_exchanges(self):
+        single_excitations = []
+        for indices in itertools.combinations(range(self.n_orbitals), 2):
+            single_excitations.append(ExchangeAnsatzElement(*indices))
+
+        return single_excitations
+
+    def get_double_exchanges(self):
+        double_excitations = []
+        for indices in itertools.combinations(range(self.n_orbitals), 4):
+            double_excitations.append(DoubleExchangeAnsatzElement(indices[:2], indices[-2:]))
 
         return double_excitations
 
