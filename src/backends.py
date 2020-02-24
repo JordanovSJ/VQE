@@ -29,7 +29,7 @@ class MatrixCalculation:
         for i, ansatz_element in enumerate(ansatz_elements):
             assert ansatz_element.element_type == 'excitation'
             excitation_matrix = MatrixUtils.\
-                get_qubit_operator_exponent_matrix(ansatz_element.element, n_qubits, parameter=var_parameters[i])
+                get_qubit_operator_exponent_matrix(ansatz_element.excitation, n_qubits, parameter=var_parameters[i])
             sparse_statevector = sparse_statevector.dot(excitation_matrix.transpose())
 
         return sparse_statevector

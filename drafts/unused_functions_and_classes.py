@@ -82,7 +82,7 @@ class HeuristicAnsatz1:
 
         qasm = self.get_element_qasm(double_parameters)
         # return just a single ansatz element
-        return AnsatzElement(element=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
                              n_var_parameters=(1+double_parameters)*self.n_orbitals)
 
 
@@ -119,7 +119,7 @@ class HeuristicAnsatz2:
 
         qasm = self.get_element_qasm(double_parameters)
         # return just a single ansatz element
-        return AnsatzElement(element=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
                              n_var_parameters=1*(1+double_parameters)*self.n_orbitals+1)
 
 
@@ -174,7 +174,7 @@ class HeuristicAnsatz3:
 
         qasm = self.get_element_qasm(double_parameters, index)
         # return just a single ansatz element
-        return AnsatzElement(element=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
                              n_var_parameters=self.n_parameters)
 
 
@@ -186,7 +186,7 @@ class ExchangeAnsatz1(AnsatzElement):
 
         n_var_parameters = min(n_electrons, n_orbitals - n_electrons)*(1 + n_blocks)
         super(ExchangeAnsatz1, self).\
-            __init__(element=None, element_type=str(self), n_var_parameters=n_var_parameters)
+            __init__(excitation=None, element_type=str(self), n_var_parameters=n_var_parameters)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == self.n_var_parameters
@@ -212,4 +212,18 @@ class ExchangeAnsatz1(AnsatzElement):
 
             # TODO add exchanges between the last unoccupied orbitals?
 
+        return ''.join(qasm)
+
+    @staticmethod
+    def double_exchange_old(angle, qubit_pair_1, qubit_pair_2):
+        assert len(qubit_pair_1) == 2
+        assert len(qubit_pair_2) == 2
+        qasm = ['']
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[0], qubit_pair_2[1]))
+        # corrections
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
         return ''.join(qasm)
