@@ -213,3 +213,17 @@ class ExchangeAnsatz1(AnsatzElement):
             # TODO add exchanges between the last unoccupied orbitals?
 
         return ''.join(qasm)
+
+    @staticmethod
+    def double_exchange_old(angle, qubit_pair_1, qubit_pair_2):
+        assert len(qubit_pair_1) == 2
+        assert len(qubit_pair_2) == 2
+        qasm = ['']
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[0], qubit_pair_2[1]))
+        # corrections
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+        return ''.join(qasm)

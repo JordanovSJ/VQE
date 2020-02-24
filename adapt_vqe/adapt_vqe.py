@@ -20,8 +20,8 @@ if __name__ == "__main__":
     r = 0.995
     max_n_iterations = 2000
 
-    accuracy = 1e-4
-    threshold = 1e-7  # 1e-3 for chemical accuracy
+    accuracy = 1e-5  # 1e-3 for chemical accuracy
+    threshold = 1e-7
     max_ansatz_elements = 8
 
     multithread = True
@@ -94,8 +94,8 @@ if __name__ == "__main__":
     # calculate the VQE for the final ansatz
     vqe_runner_final = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}
                                  , ansatz_elements=ansatz_elements)
-    current_energy = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
+    final_result = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
     t = time.time()
 
-    print(current_energy)
+    print(final_result)
     print('Ciao')

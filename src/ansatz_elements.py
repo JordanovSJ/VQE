@@ -57,6 +57,18 @@ class DoubleExchangeAnsatzElement(AnsatzElement):
                                                           element_type=str(self),  n_var_parameters=1)
 
     @staticmethod
+    def second_angle(x):
+        if x == 0:
+            return 0
+        else:
+            tan_x = numpy.tan(x)
+            tan_x_squared = tan_x**2
+            # TODO: since this expression is very important, consider if it is accurate enough
+            tan_y = ((-tan_x_squared - 1 + numpy.sqrt(tan_x_squared ** 2 + 6 * tan_x_squared + 1)) / (2*tan_x))
+            return numpy.arctan(tan_y)
+
+    # this method constructs an operation that acts approximately as a double partial exchange
+    @staticmethod
     def double_exchange(angle, qubit_pair_1, qubit_pair_2):
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
@@ -64,8 +76,9 @@ class DoubleExchangeAnsatzElement(AnsatzElement):
         qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[1], qubit_pair_2[0]))
         qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[0], qubit_pair_2[1]))
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[0], qubit_pair_2[1]))
+        angle_2 = DoubleExchangeAnsatzElement.second_angle(angle)
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle_2, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle_2, qubit_pair_1[0], qubit_pair_2[1]))
         # corrections
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
         return ''.join(qasm)

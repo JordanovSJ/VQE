@@ -5,7 +5,7 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from scipy.linalg import eigh
 from openfermion.utils import jw_hartree_fock_state
 import scipy
-from src.ansatz_elements import UCCSD
+from src.ansatz_elements import UCCSD, DoubleExchangeAnsatzElement, ExchangeAnsatzElement
 import numpy
 from src.backends import QiskitSimulation, MatrixCalculation
 from src.vqe_runner import VQERunner
@@ -16,7 +16,6 @@ import time
 from src.utils import QasmUtils
 from src import backends
 
-from src.ansatz_elements import DoubleExchangeAnsatzElement
 
 if __name__ == "__main__":
     qubits = numpy.arange(4)
@@ -24,10 +23,19 @@ if __name__ == "__main__":
 
     qasm = ['']
     qasm.append(QasmUtils.qasm_header(4))
+
     qasm.append('x q[0];\n')
     qasm.append('x q[1];\n')
-    qasm.append(DoubleExchangeAnsatzElement.double_exchange(angle, qubits[:2], qubits[-2:]))
-    # qasm.append(DoubleExchangeAnsatzElement.double_exchange(0, qubits[:2], qubits[-2:]))
+
+    # angle_1 = 0.03216793
+    # var_parameters = [0.24704637, angle_1, -angle_1]
+    # ansatz_el_0 = DoubleExchangeAnsatzElement([0, 1], [2, 3])
+    # ansatz_el_1 = ExchangeAnsatzElement(1, 2)
+    # ansatz_el_2 = ExchangeAnsatzElement(0, 3)
+    # qasm.append(ansatz_el_0.get_qasm([var_parameters[0]]))
+    # qasm.append(ansatz_el_1.get_qasm([var_parameters[1]]))
+    # qasm.append(ansatz_el_2.get_qasm([var_parameters[2]]))
+    qasm.append(DoubleExchangeAnsatzElement.double_exchange_2(angle, [0, 1], [2, 3]))
     qasm = ''.join(qasm)
     statevector = backends.QiskitSimulation.get_statevector_from_qasm(qasm)
     print(abs(statevector[12])/abs(statevector[10]))
@@ -42,7 +50,7 @@ if __name__ == "__main__":
     qasm_2.append(double_excitation.get_qasm([angle]))
     qasm_2 = ''.join(qasm_2)
     statevector_2 = backends.QiskitSimulation.get_statevector_from_qasm(qasm_2)
-    print(statevector_2.round(3))
+    print(statevector_2.round(6))
     print(QasmUtils.gate_count(qasm_2, 4))
 
     print('spagetti')
