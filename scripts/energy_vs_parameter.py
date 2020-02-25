@@ -18,16 +18,16 @@ from functools import partial
 
 if __name__ == "__main__":
 
-    molecule = H2
-    r = 0.735
+    molecule = HF
+    r = 0.995
     max_n_iterations = 2000
 
     # logging
     LogUtils.log_cofig()
 
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    # ansatz_element_1 = DoubleExchangeAnsatzElement([4, 5], [10, 11])
-    ansatz_element_1 = DoubleExchangeAnsatzElement([0, 1], [2, 3])
+    ansatz_element_1 = DoubleExchangeAnsatzElement([4, 5], [10, 11])
+    # ansatz_element_1 = DoubleExchangeAnsatzElement([0, 1], [2, 3])
     ansatz_elements = [ansatz_element_1]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
