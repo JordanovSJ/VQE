@@ -16,6 +16,6 @@ optimizer_options = {'maxcor': 15, 'ftol': 1e-9, 'gtol': 1e-7, 'eps': 1e-02, 'ma
                      'iprint': -1, 'maxls': 20}
 
 
-# optimizer_options={'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-05, 'eps': 1e-04, 'maxfun': 1500, 'maxiter': 1000,
+# optimizer_options={'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-05, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1000,
 #                    'iprint': -1, 'maxls': 5}
 

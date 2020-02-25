@@ -37,7 +37,7 @@ if __name__ == "__main__":
                          'iprint': -1, 'maxls': 20}
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},
-                           optimizer_options=optimizer_options)
+                           optimizer_options=optimizer_options, optimizer='L-BFGS-B')
     hf_energy = vqe_runner.hf_energy
 
     # get a new ansatz element pool
@@ -75,6 +75,7 @@ if __name__ == "__main__":
         # custom optimizer options for this step
         optimizer_options = {'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-05, 'eps': 1e-04, 'maxfun': 1500, 'maxiter': 1000,
                              'iprint': -1, 'maxls': 5}
+        vqe_runner.optimizer = 'L-BFGS-B'
         vqe_runner.optimizer_options = optimizer_options
 
         element_to_add, result = AdaptAnsatzUtils.get_most_significant_ansatz_element(vqe_runner,
