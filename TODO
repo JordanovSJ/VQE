@@ -2,6 +2,9 @@
 
 -!!!  TUNE THE GRADIENT DECREASE OPTIMIZER  !!!
 (create a custom optimizer!!!)
+-consider making the single exchange more "flexible" .. add phase change (preferably without introducing 2nd parameter)
+-can you tweak the double exchange angle dependence to help to gradient descend optimizer
+
 -Understand p-h Hamiltoanian
 
 *********************************************
