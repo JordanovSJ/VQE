@@ -22,6 +22,7 @@ class VQERunner:
     def __init__(self, molecule, ansatz_elements=None, basis='sto-3g', molecule_geometry_params=None,
                  backend=backends.QiskitSimulation, initial_statevector_qasm=None, optimizer=None,
                  optimizer_options=None, print_var_parameters=False):
+
         LogUtils.vqe_info(molecule, ansatz_elements=ansatz_elements, basis=basis,
                           molecule_geometry_params=molecule_geometry_params, backend=backend)
 

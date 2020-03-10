@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     accuracy = 1e-5  # 1e-3 for chemical accuracy
     threshold = 1e-7
-    max_ansatz_elements = 8
+    max_ansatz_elements = 10
 
     multithread = True
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -31,9 +31,14 @@ if __name__ == "__main__":
 
     # create a pool of ansatz elements
 
-    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons).get_double_exchanges()
+    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons, rescaled=True).get_double_exchanges()
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r})
+    # custom optimizer options for this step
+    # optimizer_options = {'maxcor': 15, 'ftol': 1e-9, 'gtol': 1e-7, 'eps': 1e-02, 'maxfun': 1000, 'maxiter': 1000,
+    #                      'iprint': -1, 'maxls': 20}
+
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},
+                           optimizer='L-BFGS-B')#, optimizer_options=optimizer_options, )
     hf_energy = vqe_runner.hf_energy
 
     # get a new ansatz element pool
@@ -61,12 +66,18 @@ if __name__ == "__main__":
     previous_energy = 0
     var_parameters = []
 
-    while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:
+    while previous_energy - current_energy >= accuracy and count <= max_ansatz_elements:
         count += 1
 
         print('New cycle ', count)
 
         previous_energy = current_energy
+
+        # custom optimizer options for this step
+        # optimizer_options = {'maxcor': 10, 'ftol': 1e-06, 'gtol': 1e-05, 'eps': 1e-04, 'maxfun': 1500, 'maxiter': 1000,
+        #                      'iprint': -1, 'maxls': 5}
+        # vqe_runner.optimizer = 'L-BFGS-B'
+        # vqe_runner.optimizer_options = optimizer_options
 
         element_to_add, result = AdaptAnsatzUtils.get_most_significant_ansatz_element(vqe_runner,
                                                                                       new_ansatz_element_pool,

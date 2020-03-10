@@ -13,45 +13,29 @@ from src.molecules import H2, HF
 import openfermion
 import qiskit
 import time
+
+import matplotlib.pyplot as plt
+
 from src.utils import QasmUtils
 from src import backends
 
 
+def f(parameter):
+    if parameter > 0:
+        rescaled_parameter = parameter + numpy.tanh(parameter ** 0.5)
+    else:
+        rescaled_parameter = parameter + numpy.tanh(-(-parameter) ** 0.5)
+
+    return rescaled_parameter
+
+
 if __name__ == "__main__":
-    qubits = numpy.arange(4)
-    angle = numpy.pi/10
 
-    qasm = ['']
-    qasm.append(QasmUtils.qasm_header(4))
+    xs = [0.2739346112349019, 0.08593024873566706, 0.10911150073047889, -0.039011893591530344, 0.10037893539114985]
+    fs = [f(x) for x in xs]
 
-    qasm.append('x q[0];\n')
-    qasm.append('x q[1];\n')
-
-    # angle_1 = 0.03216793
-    # var_parameters = [0.24704637, angle_1, -angle_1]
-    # ansatz_el_0 = DoubleExchangeAnsatzElement([0, 1], [2, 3])
-    # ansatz_el_1 = ExchangeAnsatzElement(1, 2)
-    # ansatz_el_2 = ExchangeAnsatzElement(0, 3)
-    # qasm.append(ansatz_el_0.get_qasm([var_parameters[0]]))
-    # qasm.append(ansatz_el_1.get_qasm([var_parameters[1]]))
-    # qasm.append(ansatz_el_2.get_qasm([var_parameters[2]]))
-    qasm.append(DoubleExchangeAnsatzElement.double_exchange_2(angle, [0, 1], [2, 3]))
-    qasm = ''.join(qasm)
-    statevector = backends.QiskitSimulation.get_statevector_from_qasm(qasm)
-    print(abs(statevector[12])/abs(statevector[10]))
-    print(statevector)
-    print(QasmUtils.gate_count(qasm, 4))
-
-    qasm_2 = ['']
-    qasm_2.append(QasmUtils.qasm_header(4))
-    qasm_2.append('x q[0];\n')
-    qasm_2.append('x q[1];\n')
-    double_excitation = UCCSD(4, 2).get_double_excitation_list()[0]
-    qasm_2.append(double_excitation.get_qasm([angle]))
-    qasm_2 = ''.join(qasm_2)
-    statevector_2 = backends.QiskitSimulation.get_statevector_from_qasm(qasm_2)
-    print(statevector_2.round(6))
-    print(QasmUtils.gate_count(qasm_2, 4))
+    plt.plot(xs, fs)
+    plt.show()
 
     print('spagetti')
 
