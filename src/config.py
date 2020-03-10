@@ -12,7 +12,7 @@ optimizer = 'L-BFGS-B'
 optimizer_tol = 1e-6
 optimizer_bounds = scipy.optimize.Bounds(-numpy.pi, numpy.pi)
 # optimizer_bounds = None
-optimizer_options = {'maxcor': 15, 'ftol': 1e-9, 'gtol': 1e-9, 'eps': 1e-03, 'maxfun': 1000, 'maxiter': 1000,
-                     'iprint': -1, 'maxls': 15}
+optimizer_options = {'maxcor': 15, 'ftol': 1e-10, 'gtol': 1e-8, 'eps': 5e-03, 'maxfun': 1000, 'maxiter': 1000,
+                     'iprint': -1, 'maxls': 20}
 # # the comment code below is the most optimal set up for the optimizer so far
 

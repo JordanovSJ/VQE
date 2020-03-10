@@ -1,6 +1,10 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
 -!!!  TUNE THE GRADIENT DECREASE OPTIMIZER  !!!
+    -large espilon (~1e-2) ensures that single ansatz element optimizations succeed. However they fail the optimization with many elements.
+    Alternatively decrease ftol, however this likely increase the required iterations
+
+
 -Understand p-h Hamiltoanian
 
 *********************************************
