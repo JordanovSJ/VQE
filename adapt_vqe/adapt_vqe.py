@@ -65,7 +65,7 @@ if __name__ == "__main__":
     previous_energy = 0
     var_parameters = []
 
-    while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:
+    while previous_energy - current_energy >= accuracy and count <= max_ansatz_elements:
         count += 1
 
         print('New cycle ', count)
