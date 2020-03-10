@@ -50,9 +50,10 @@ class ExchangeAnsatzElement(AnsatzElement):
 
 # Heuristic exchange ansatz 1,  17.02.2020
 class DoubleExchangeAnsatzElement(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2):
+    def __init__(self, qubit_pair_1, qubit_pair_2, rescaled=False):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
+        self.rescaled = rescaled
         super(DoubleExchangeAnsatzElement, self).__init__(element='d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
                                                           element_type=str(self),  n_var_parameters=1)
 
@@ -63,7 +64,7 @@ class DoubleExchangeAnsatzElement(AnsatzElement):
         else:
             tan_x = numpy.tan(x)
             tan_x_squared = tan_x**2
-            # TODO: since this expression is very important, consider if it is accurate enough
+            # TODO: accurate enough?
             tan_y = ((-tan_x_squared - 1 + numpy.sqrt(tan_x_squared ** 2 + 6 * tan_x_squared + 1)) / (2*tan_x))
             return numpy.arctan(tan_y)
 
@@ -83,24 +84,19 @@ class DoubleExchangeAnsatzElement(AnsatzElement):
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
         return ''.join(qasm)
 
-    @staticmethod
-    def double_exchange_cheat(angle, qubit_pair_1, qubit_pair_2):
-        assert len(qubit_pair_1) == 2
-        assert len(qubit_pair_2) == 2
-        qasm = ['']
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[0], qubit_pair_2[1]))
-        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-        angle_2 = DoubleExchangeAnsatzElement.second_angle(angle)
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle_2, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle_2, qubit_pair_1[0], qubit_pair_2[1]))
-        # corrections
-        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-        return ''.join(qasm)
-
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return self.double_exchange(var_parameters[0], self.qubit_pair_1, self.qubit_pair_2)
+        if self.rescaled:
+            # rescale parameter (used for easier gradient optimization)
+            parameter = var_parameters[0]
+            if parameter > 0:
+                rescaled_parameter = parameter + numpy.tanh(parameter**0.5)
+            else:
+                rescaled_parameter = parameter + numpy.tanh(-(-parameter)**0.5)
+
+            return self.double_exchange(rescaled_parameter, self.qubit_pair_1, self.qubit_pair_2)
+        else:
+            return self.double_exchange(var_parameters[0], self.qubit_pair_1, self.qubit_pair_2)
 
 
 class ExchangeAnsatzBlock(AnsatzElement):
@@ -148,9 +144,10 @@ class ExchangeAnsatzBlock(AnsatzElement):
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # exchange single and double
 class ESD:
-    def __init__(self, n_orbitals, n_electrons):
+    def __init__(self, n_orbitals, n_electrons, rescaled=False):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
+        self.rescaled = rescaled
 
     def get_single_exchanges(self):
         single_excitations = []
@@ -166,7 +163,7 @@ class ESD:
             for j in range(i + 1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
-                        double_excitations.append(DoubleExchangeAnsatzElement([i, j], [k, l]))
+                        double_excitations.append(DoubleExchangeAnsatzElement([i, j], [k, l], rescaled=self.rescaled))
 
         return double_excitations
 
