@@ -16,8 +16,8 @@ import ray
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    molecule = H2
-    r = 0.735
+    molecule = HF
+    r = 0.995
     max_n_iterations = 2000
 
     accuracy = 1e-5  # 1e-3 for chemical accuracy
@@ -37,8 +37,8 @@ if __name__ == "__main__":
     # optimizer_options = {'maxcor': 15, 'ftol': 1e-9, 'gtol': 1e-7, 'eps': 1e-02, 'maxfun': 1000, 'maxiter': 1000,
     #                      'iprint': -1, 'maxls': 20}
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},
-                           optimizer='L-BFGS-B')#, optimizer_options=optimizer_options, )
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},)
+                           #optimizer='L-BFGS-B', optimizer_options=optimizer_options, )
     hf_energy = vqe_runner.hf_energy
 
     # get a new ansatz element pool
