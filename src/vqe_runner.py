@@ -67,7 +67,7 @@ class VQERunner:
         self.gate_counter = None
 
     def get_energy(self, var_parameters, ansatz_elements, multithread=False, initial_statevector_qasm=None,
-                   update_gate_counter=False):
+                   update_gate_counter=False, multithread_iteration=None):
         t_start = time.time()
         # var_parameters = var_parameters[::-1]  # TODO cheat
         energy, statevector, qasm = self.backend.get_energy(var_parameters=var_parameters,
@@ -79,6 +79,12 @@ class VQERunner:
 
         # if we run parallel process dont print and update info
         if multithread:
+            if multithread_iteration is not None:
+                try:
+                    multithread_iteration[0] += 1
+                except TypeError as te:
+                    logging.warning(te)
+
             # TODO this logging does not work when running in parallel
             logging.info('Parallel process. Energy {}. Iteration duration: {}'.format(energy, time.time() - t_start))
         else:
@@ -108,13 +114,9 @@ class VQERunner:
     #
     #         print(xk)
 
-    def vqe_run(self, ansatz_elements=None, initial_var_parameters=None,
-                initial_statevector_qasm=None, max_n_iterations=None):
+    def vqe_run(self, ansatz_elements=None, initial_var_parameters=None, initial_statevector_qasm=None):
 
         self.iteration = 1
-
-        if max_n_iterations is None:
-            max_n_iterations = len(self.ansatz_elements) * 100 + 100
 
         if ansatz_elements is None:
             var_parameters = self.var_parameters
@@ -137,14 +139,17 @@ class VQERunner:
         if len(ansatz_elements) == 0:
             return get_energy(var_parameters)
 
-        print('-----Running VQE for: {}-----'.format(self.molecule_name))
-        print('-----Number of electrons: {}-----'.format(self.n_electrons))
-        print('-----Number of orbitals: {}-----'.format(self.n_orbitals))
-        print('-----Numeber of ansatz elements: {}-----'.format(len(self.ansatz_elements)))
+        message = ''
+        message += '-----Running VQE for: {}-----\n'.format(self.molecule_name)
+        message += '-----Number of electrons: {}-----\n'.format(self.n_electrons)
+        message += '-----Number of orbitals: {}-----\n'.format(self.n_orbitals)
+        message += '-----Numeber of ansatz elements: {}-----\n'.format(len(self.ansatz_elements))
         if len(ansatz_elements) == 1:
-            print('-----Ansatz type {}------'.format(ansatz_elements[0].element_type))
-        print('-----Statevector and energy calculated using {}------'.format(self.backend))
-        print('-----Optimizer {}------'.format(self.optimizer))
+            message += '-----Ansatz type {}------\n'.format(ansatz_elements[0].element_type)
+        message += '-----Statevector and energy calculated using {}------\n'.format(self.backend)
+        message += '-----Optimizer {}------\n'.format(self.optimizer)
+        print(message)
+        logging.info(message)
 
         if self.optimizer is None:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
@@ -156,16 +161,14 @@ class VQERunner:
                                                  bounds=config.optimizer_bounds)
 
         print(opt_energy)
+        logging.info(opt_energy)
         print('Gate counter', self.gate_counter)
+        logging.info('Gate counter' + str(self.gate_counter))
 
         return opt_energy
 
     @ray.remote
-    def vqe_run_multithread(self, ansatz_elements, initial_var_parameters=None,
-                            initial_statevector_qasm=None, max_n_iterations=None):
-
-        if max_n_iterations is None:
-            max_n_iterations = len(ansatz_elements) * 100
+    def vqe_run_multithread(self, ansatz_elements, initial_var_parameters=None, initial_statevector_qasm=None):
 
         if initial_var_parameters is None or initial_var_parameters == []:
             var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements]))
@@ -173,9 +176,11 @@ class VQERunner:
             assert len(initial_var_parameters) == sum([element.n_var_parameters for element in ansatz_elements])
             var_parameters = initial_var_parameters
 
+        local_iteration = [0]
+
         # partial function to be used in the optimizer
-        get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
-                             initial_statevector_qasm=initial_statevector_qasm, multithread=True)
+        get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements, multithread=True,
+                             initial_statevector_qasm=initial_statevector_qasm, multithread_iteration=local_iteration)
 
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
@@ -191,11 +196,12 @@ class VQERunner:
                                                  bounds=config.optimizer_bounds)
 
         if len(ansatz_elements) == 1:
-            message = 'Ran VQE for ansatz_element {} . Energy {}'.format(ansatz_elements[0].element, opt_energy.fun)
+            message = 'Ran VQE for element {}. Energy {}. Iterations {}'.format(ansatz_elements[0].element,
+                                                                                opt_energy.fun, local_iteration[0])
             logging.info(message)
             print(message)
         else:
-            message = 'Ran VQE. Energy {}'.format(opt_energy.fun)
+            message = 'Ran VQE. Energy {}. Iterations {}'.format(opt_energy.fun, local_iteration[0])
             logging.info(message)
             print(message)
 

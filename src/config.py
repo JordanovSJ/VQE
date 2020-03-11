@@ -17,7 +17,7 @@ optimizer_bounds = scipy.optimize.Bounds(-numpy.pi/2, numpy.pi/2)
 #                      'iprint': -1, 'maxls': 20}
 
 # use for rescaled d_exc
-optimizer_options = {'maxcor': 10, 'ftol': 1e-08, 'gtol': 1e-04, 'eps': 1e-04, 'maxfun': 1500, 'maxiter': 1000,
+optimizer_options = {'maxcor': 10, 'ftol': 1e-07, 'gtol': 1e-05, 'eps': 1e-04, 'maxfun': 1500, 'maxiter': 1000,
                      'iprint': -1, 'maxls': 5}
 
 # this settings worked for the adapt_vqe when using the UCCSD elements. However they fail for ESD
