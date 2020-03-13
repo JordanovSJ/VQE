@@ -19,23 +19,18 @@ import matplotlib.pyplot as plt
 from src.utils import QasmUtils
 from src import backends
 
-
-def f(parameter):
-    if parameter > 0:
-        rescaled_parameter = parameter + numpy.tanh(parameter ** 0.5)
-    else:
-        rescaled_parameter = parameter + numpy.tanh(-(-parameter) ** 0.5)
-
-    return rescaled_parameter
-
-
 if __name__ == "__main__":
 
-    xs = [0.2739346112349019, 0.08593024873566706, 0.10911150073047889, -0.039011893591530344, 0.10037893539114985]
-    fs = [f(x) for x in xs]
+    angle = 0.1
 
-    plt.plot(xs, fs)
-    plt.show()
+    ansatz_element_1 = DoubleExchangeAnsatzElement([2, 5], [10, 11], rescaled=True)
+    ansatz_element_2 = UCCSD(12, 10).get_double_excitation_list()[19]
+
+    statevetor_1 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_1], [angle], 12, 10)
+    statevetor_2 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_2], [angle], 12, 10)
+
+    print(statevetor_1)
+    print((statevetor_2))
 
     print('spagetti')
 

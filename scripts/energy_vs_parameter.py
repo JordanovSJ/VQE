@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF, BeH2
-from src.ansatz_elements import UCCGSD, UCCSD, DoubleExchangeAnsatzElement
+from src.ansatz_elements import UCCGSD, UCCSD, DoubleExchangeAnsatzElement, ExchangeAnsatzElement
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
 
@@ -18,24 +18,33 @@ from functools import partial
 
 if __name__ == "__main__":
 
-    molecule = BeH2
-    r =1.3264
+    molecule = HF
+    r = 0.995
 
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    ansatz_element_1 = DoubleExchangeAnsatzElement([4, 5], [10, 11])#, rescaled=True)
+    ansatz_element_0 = DoubleExchangeAnsatzElement([2, 5], [10, 11], rescaled=True)
+
+    ansatz_element_1 = DoubleExchangeAnsatzElement([4, 5], [10, 11], rescaled=True)
+    ansatz_element_2 = DoubleExchangeAnsatzElement([3, 4], [10, 11], rescaled=True)
+    ansatz_element_3 = DoubleExchangeAnsatzElement([2, 3], [10, 11], rescaled=True)
+    ansatz_element_4 = DoubleExchangeAnsatzElement([6, 7], [10, 11], rescaled=True)
+    ansatz_element_5 = DoubleExchangeAnsatzElement([8, 9], [10, 11], rescaled=True)
+    ansatz_element_6 = DoubleExchangeAnsatzElement([1, 2], [10, 11], rescaled=True)
+    ansatz_element_7 = ExchangeAnsatzElement(5, 11)#, rescaled=True)
+
     # ansatz_element_1 = uccsd.get_double_excitation_list()[414]
-    ansatz_elements = [ansatz_element_1]
+    ansatz_elements = [ansatz_element_0] #ansatz_element_1, ansatz_element_2, ansatz_element_3, ansatz_element_4, ansatz_element_5,ansatz_element_6]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
                            molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')
 
-    angles = numpy.arange(20)*numpy.pi/200
+    angles = (numpy.arange(40) - 20)*numpy.pi/100
     energies = []
     for angle in angles:
-        energies.append(vqe_runner.get_energy([angle], ansatz_elements))
+        energies.append(vqe_runner.get_energy([angle],ansatz_elements))
 
     plt.plot(angles, energies)
     plt.xlabel(r'Angle, [$\pi$]')
     plt.ylabel('Energy, [Hartree]')
-    plt.title('Mol.: {}, ansatz_element: {}'.format(molecule.name, ansatz_elements[0].element))
+    plt.title('Mol.: {}, ansatz_element: {}: {}'.format(molecule.name, len(ansatz_elements), ansatz_elements[-1].element))
     plt.show()

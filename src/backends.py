@@ -67,6 +67,25 @@ class QiskitSimulation:
         return statevector
 
     @staticmethod
+    def get_statevector_from_ansatz_elements(ansatz_elements, var_parameters, n_qubits, n_electrons):
+        assert n_electrons < n_qubits
+        qasm = ['']
+        qasm = [QasmUtils.qasm_header(n_qubits)]
+        qasm.append(QasmUtils.hf_state_qasm(n_electrons))
+
+        n_used_var_pars = 0
+        for element in ansatz_elements:
+            # take unused var. parameters for the ansatz element
+            element_var_pars = var_parameters[n_used_var_pars:(n_used_var_pars + element.n_var_parameters)]
+            n_used_var_pars += len(element_var_pars)
+            qasm_element = element.get_qasm(element_var_pars)
+            qasm.append(qasm_element)
+
+        qasm.append(QasmUtils.reverse_qubits_qasm(n_qubits))
+        statevector = QiskitSimulation.get_statevector_from_qasm(''.join(qasm))
+        return statevector
+
+    @staticmethod
     def get_energy(qubit_hamiltonian, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
 
         # create a dictionary to keep count on the number of gates for each qubit

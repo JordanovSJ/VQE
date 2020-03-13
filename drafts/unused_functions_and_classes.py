@@ -227,3 +227,12 @@ class ExchangeAnsatz1(AnsatzElement):
         # corrections
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
         return ''.join(qasm)
+
+
+def rescaling_for_double_exchange(parameter):
+    if parameter > 0:
+        rescaled_parameter = parameter + numpy.tanh(parameter ** 0.5)
+    else:
+        rescaled_parameter = parameter + numpy.tanh(-(-parameter) ** 0.5)
+
+    return rescaled_parameter
