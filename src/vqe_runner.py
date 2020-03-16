@@ -59,6 +59,11 @@ class VQERunner:
         self.optimizer = optimizer
         self.optimizer_options = optimizer_options
 
+        if optimizer is None:
+            logging.info('Optimizer: {}. Optimizer options: {}'.format(config.optimizer, config.optimizer_options))
+        else:
+            logging.info('Optimizer: {}. Optimizer options: {}'.format(optimizer, optimizer_options))
+
         # call back function variables
         self.print_var_parameters = print_var_parameters
         self.previous_energy = self.hf_energy

@@ -63,7 +63,6 @@ class DoubleExchangeAnsatzElement(AnsatzElement):
         else:
             tan_x = numpy.tan(x)
             tan_x_squared = tan_x**2
-            # TODO: accurate enough?
             tan_y = ((-tan_x_squared - 1 + numpy.sqrt(tan_x_squared ** 2 + 6 * tan_x_squared + 1)) / (2*tan_x))
             return numpy.arctan(tan_y)
 
