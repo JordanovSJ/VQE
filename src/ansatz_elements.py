@@ -48,7 +48,6 @@ class ExchangeAnsatzElement(AnsatzElement):
         return QasmUtils.partial_exchange_gate_qasm(var_parameters[0], self.qubit_1, self.qubit_2)
 
 
-# Heuristic exchange ansatz 1,  17.02.2020
 class DoubleExchangeAnsatzElement(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, rescaled=False):
         self.qubit_pair_1 = qubit_pair_1
@@ -80,8 +79,13 @@ class DoubleExchangeAnsatzElement(AnsatzElement):
         angle_2 = DoubleExchangeAnsatzElement.second_angle(angle)
         qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle_2, qubit_pair_1[1], qubit_pair_2[0]))
         qasm.append(QasmUtils.partial_exchange_gate_qasm(angle_2, qubit_pair_1[0], qubit_pair_2[1]))
-        # corrections
-        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+        if angle > 0:
+            # adding a correcting CZ gate at the end will result in a minus sign
+            qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+        else:
+            # adding a correcting CZ gate at the front will result in a plus sign
+            qasm = ['cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1])] + qasm
         return ''.join(qasm)
 
     def get_qasm(self, var_parameters):
@@ -97,48 +101,6 @@ class DoubleExchangeAnsatzElement(AnsatzElement):
             return self.double_exchange(rescaled_parameter, self.qubit_pair_1, self.qubit_pair_2)
         else:
             return self.double_exchange(var_parameters[0], self.qubit_pair_1, self.qubit_pair_2)
-
-
-class ExchangeAnsatzBlock(AnsatzElement):
-    def __init__(self, n_orbitals, n_electrons):
-        self.n_orbitals = n_orbitals
-        self.n_electrons = n_electrons
-        n_var_parameters = int(n_orbitals/4) + n_orbitals
-
-        super(ExchangeAnsatzBlock, self).\
-            __init__(element_type=str(self), element='block', n_var_parameters=n_var_parameters)
-
-    def get_qasm(self, var_parameters):
-        var_parameters_cycle = itertools.cycle(var_parameters)
-        count = 0
-        qasm = ['']
-        # add single qubit n rotations
-        # for qubit in range(self.n_orbitals):
-        #     qasm.append('rz ({}) q[{}];\n'.format(var_parameters_cycle.__next__(), qubit))
-        #     count += 1
-        # double orbital exchanges
-        for qubit in range(self.n_orbitals):
-            if qubit % 4 == 0:
-                q_0 = qubit
-                q_1 = (qubit + 1) % self.n_orbitals
-                q_2 = (qubit + 2) % self.n_orbitals
-                q_3 = (qubit + 3) % self.n_orbitals
-                q_4 = (qubit + 4) % self.n_orbitals
-                # qasm.append(DoubleExchangeAnsatzElement.double_exchange(var_parameters_cycle.__next__(), [q_0, q_1], [q_2, q_3]))
-                # count += 1
-                qasm.append(DoubleExchangeAnsatzElement.double_exchange(var_parameters_cycle.__next__(), [q_1, q_2], [q_3, q_4]))
-                count += 1
-        # single orbital exchanges
-        for qubit in range(self.n_orbitals):
-            if qubit % 2 == 0:
-                qasm.append(QasmUtils.partial_exchange_gate_qasm(var_parameters_cycle.__next__(),
-                                                                 qubit, (qubit + 1) % self.n_orbitals))
-                count += 1
-                qasm.append(QasmUtils.partial_exchange_gate_qasm(var_parameters_cycle.__next__(),
-                                                                 (qubit+1) % self.n_orbitals, (qubit + 2) % self.n_orbitals))
-                count += 1
-        assert count == len(var_parameters)
-        return ''.join(qasm)
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

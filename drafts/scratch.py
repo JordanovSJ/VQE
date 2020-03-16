@@ -21,16 +21,18 @@ from src import backends
 
 if __name__ == "__main__":
 
-    angle = 0.1
+    angle = - 0.1
 
     ansatz_element_1 = DoubleExchangeAnsatzElement([2, 5], [10, 11], rescaled=True)
     ansatz_element_2 = UCCSD(12, 10).get_double_excitation_list()[19]
 
-    statevetor_1 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_1], [angle], 12, 10)
-    statevetor_2 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_2], [angle], 12, 10)
+    statevetor_1 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_1], [angle], 12, 10)[0].round(5)
+    statevetor_2 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_2], [angle], 12, 10)[0].round(5)
 
-    print(statevetor_1)
-    print((statevetor_2))
+    for i in range(len(statevetor_1)):
+        if statevetor_1[i] != 0 or statevetor_2[i] != 0:
+            print('1', i, statevetor_1[i])
+            print('2', i, statevetor_2[i])
 
     print('spagetti')
 

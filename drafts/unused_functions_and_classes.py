@@ -1,6 +1,8 @@
 # this module contains functions not designated a better place
 import scipy
 import numpy
+import itertools
+
 import openfermion
 from src.utils import QasmUtils
 from src.ansatz_elements import AnsatzElement
@@ -236,3 +238,45 @@ def rescaling_for_double_exchange(parameter):
         rescaled_parameter = parameter + numpy.tanh(-(-parameter) ** 0.5)
 
     return rescaled_parameter
+
+
+class ExchangeAnsatzBlock(AnsatzElement):
+    def __init__(self, n_orbitals, n_electrons):
+        self.n_orbitals = n_orbitals
+        self.n_electrons = n_electrons
+        n_var_parameters = int(n_orbitals/4) + n_orbitals
+
+        super(ExchangeAnsatzBlock, self).\
+            __init__(element_type=str(self), element='block', n_var_parameters=n_var_parameters)
+
+    def get_qasm(self, var_parameters):
+        var_parameters_cycle = itertools.cycle(var_parameters)
+        count = 0
+        qasm = ['']
+        # add single qubit n rotations
+        # for qubit in range(self.n_orbitals):
+        #     qasm.append('rz ({}) q[{}];\n'.format(var_parameters_cycle.__next__(), qubit))
+        #     count += 1
+        # double orbital exchanges
+        for qubit in range(self.n_orbitals):
+            if qubit % 4 == 0:
+                q_0 = qubit
+                q_1 = (qubit + 1) % self.n_orbitals
+                q_2 = (qubit + 2) % self.n_orbitals
+                q_3 = (qubit + 3) % self.n_orbitals
+                q_4 = (qubit + 4) % self.n_orbitals
+                # qasm.append(DoubleExchangeAnsatzElement.double_exchange(var_parameters_cycle.__next__(), [q_0, q_1], [q_2, q_3]))
+                # count += 1
+                qasm.append(DoubleExchangeAnsatzElement.double_exchange(var_parameters_cycle.__next__(), [q_1, q_2], [q_3, q_4]))
+                count += 1
+        # single orbital exchanges
+        for qubit in range(self.n_orbitals):
+            if qubit % 2 == 0:
+                qasm.append(QasmUtils.partial_exchange_gate_qasm(var_parameters_cycle.__next__(),
+                                                                 qubit, (qubit + 1) % self.n_orbitals))
+                count += 1
+                qasm.append(QasmUtils.partial_exchange_gate_qasm(var_parameters_cycle.__next__(),
+                                                                 (qubit+1) % self.n_orbitals, (qubit + 2) % self.n_orbitals))
+                count += 1
+        assert count == len(var_parameters)
+        return ''.join(qasm)

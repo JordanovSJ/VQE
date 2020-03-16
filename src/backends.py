@@ -54,6 +54,7 @@ class MatrixCalculation:
 
 
 class QiskitSimulation:
+
     # return a statevector in the form of an array from a qasm circuit
     @staticmethod
     def get_statevector_from_qasm(qasm_circuit):
@@ -66,47 +67,24 @@ class QiskitSimulation:
         statevector = result.get_statevector(qiskit_circuit)
         return statevector
 
+    # return a statevector in the form of an array from a list of ansatz elements
     @staticmethod
-    def get_statevector_from_ansatz_elements(ansatz_elements, var_parameters, n_qubits, n_electrons):
+    def get_statevector_from_ansatz_elements(ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
         assert n_electrons < n_qubits
         qasm = ['']
-        qasm = [QasmUtils.qasm_header(n_qubits)]
-        qasm.append(QasmUtils.hf_state_qasm(n_electrons))
+        qasm.append(QasmUtils.qasm_header(n_qubits))
 
-        n_used_var_pars = 0
-        for element in ansatz_elements:
-            # take unused var. parameters for the ansatz element
-            element_var_pars = var_parameters[n_used_var_pars:(n_used_var_pars + element.n_var_parameters)]
-            n_used_var_pars += len(element_var_pars)
-            qasm_element = element.get_qasm(element_var_pars)
-            qasm.append(qasm_element)
-
-        qasm.append(QasmUtils.reverse_qubits_qasm(n_qubits))
-        statevector = QiskitSimulation.get_statevector_from_qasm(''.join(qasm))
-        return statevector
-
-    @staticmethod
-    def get_energy(qubit_hamiltonian, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
-
-        # create a dictionary to keep count on the number of gates for each qubit
-        gate_counter = {}
-        for i in range(n_qubits):
-            gate_counter['q{}'.format(i)] = {'cx': 0, 'u1': 0}
-
-        # add a qasm header
-        qasm = [QasmUtils.qasm_header(n_qubits)]
-
-        # add a circuit for a HF state initialization
+        # initial state
         if initial_statevector_qasm is None:
-            assert n_qubits >= n_electrons
             qasm.append(QasmUtils.hf_state_qasm(n_electrons))
         else:
             qasm.append(initial_statevector_qasm)
 
+        # perform ansatz operations
         n_used_var_pars = 0
         for element in ansatz_elements:
             # take unused var. parameters for the ansatz element
-            element_var_pars = var_parameters[n_used_var_pars:(n_used_var_pars+element.n_var_parameters)]
+            element_var_pars = var_parameters[n_used_var_pars:(n_used_var_pars + element.n_var_parameters)]
             n_used_var_pars += len(element_var_pars)
             qasm_element = element.get_qasm(element_var_pars)
             qasm.append(qasm_element)
@@ -116,11 +94,19 @@ class QiskitSimulation:
         # required in the case of implementing the H as a circuit as well (when running on a real device)
         qasm.append(QasmUtils.reverse_qubits_qasm(n_qubits))
 
-        # join the qasm elements into a single string
         qasm = ''.join(qasm)
 
-        # get the resulting statevector from the Qiskit simulator
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
+
+        return statevector, qasm
+
+    @staticmethod
+    def get_energy(qubit_hamiltonian, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
+
+        # get the resulting statevector from the Qiskit simulator
+        statevector, qasm = QiskitSimulation.get_statevector_from_ansatz_elements(ansatz_elements, var_parameters,
+                                                                                  n_qubits, n_electrons,
+                                                                                  initial_statevector_qasm=initial_statevector_qasm)
 
         # get the Hamiltonian in the form of a matrix
         hamiltonian_matrix = get_sparse_operator(qubit_hamiltonian).todense()
