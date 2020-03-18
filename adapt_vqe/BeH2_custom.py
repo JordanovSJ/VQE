@@ -29,44 +29,55 @@ if __name__ == "__main__":
 
     LogUtils.log_cofig()
 
-    new_ansatz_element_pool = [DoubleExchangeAnsatzElement([0, 1], [6, 7]), DoubleExchangeAnsatzElement([0, 1], [8, 9]),
-                               DoubleExchangeAnsatzElement([0, 1], [10, 13]), DoubleExchangeAnsatzElement([0, 1], [12, 13]),
-                               DoubleExchangeAnsatzElement([1, 2], [6, 7]), DoubleExchangeAnsatzElement([0, 1], [8, 9]),
-                               DoubleExchangeAnsatzElement([2, 3], [6, 7]), DoubleExchangeAnsatzElement([2, 3], [8, 9]),
-                               DoubleExchangeAnsatzElement([2, 3], [10, 11]), DoubleExchangeAnsatzElement([2, 3], [12, 13]),
-                               DoubleExchangeAnsatzElement([3, 4], [11, 12]), DoubleExchangeAnsatzElement([4, 5], [6, 7]),
-                               DoubleExchangeAnsatzElement([4, 5], [8, 9]), DoubleExchangeAnsatzElement([4, 5], [10, 11]),
-                               DoubleExchangeAnsatzElement([4, 5], [12, 13]), DoubleExchangeAnsatzElement([2, 5], [10, 13])
-                               ]
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}, )
+    hf_energy = vqe_runner.hf_energy
 
-    occ_orbitals = [0, 1, 2, 3, 4, 5]
-    unocc_orbitals = [8, 9, 10, 11, 12, 13]
-    for i in occ_orbitals:
-        for j in unocc_orbitals:
-            new_ansatz_element_pool.append(ExchangeAnsatzElement(i, j))
+    initial_ansatz_elements_pool = [DoubleExchangeAnsatzElement([0, 1], [6, 7]), DoubleExchangeAnsatzElement([0, 1], [8, 9]),
+                                    DoubleExchangeAnsatzElement([0, 1], [10, 11]), DoubleExchangeAnsatzElement([0, 1], [12, 13]),
+                                    DoubleExchangeAnsatzElement([0, 3], [8, 9]), DoubleExchangeAnsatzElement([0, 3], [6, 7]),
+                                    DoubleExchangeAnsatzElement([0, 3], [10, 11]), DoubleExchangeAnsatzElement([0, 3], [12, 13]),
+                                    DoubleExchangeAnsatzElement([0, 5], [10, 13]), DoubleExchangeAnsatzElement([0, 4], [10, 12]),
+                                    DoubleExchangeAnsatzElement([0, 5], [11, 12]),
+                                    DoubleExchangeAnsatzElement([1, 2], [6, 7]),  DoubleExchangeAnsatzElement([1, 2], [8, 9]),
+                                    DoubleExchangeAnsatzElement([1, 2], [10, 11]),  DoubleExchangeAnsatzElement([1, 2], [13, 12]),
+                                    DoubleExchangeAnsatzElement([1, 4], [10, 13]),  DoubleExchangeAnsatzElement([1, 4], [11, 12]),
+                                    DoubleExchangeAnsatzElement([1, 5], [11, 13])]
+    for ansatz_element in initial_ansatz_elements_pool:
+        ansatz_element.rescaled = True
+
+    elements_results = AdaptAnsatzUtils.get_ansatz_elements_above_threshold(vqe_runner,
+                                                                            initial_ansatz_elements_pool,
+                                                                            hf_energy - threshold,
+                                                                            multithread=multithread)
+    new_ansatz_element_pool = []
+    for element, result in elements_results:
+        new_ansatz_element_pool.append(element)
+        message = 'New ansatz element added to updated pool, {}. Delta E = {}' \
+            .format(element.element, result.fun - hf_energy)
+        logging.info(message)
+        print(message)
+
+    new_ansatz_element_pool += ESD(molecule.n_orbitals, molecule.n_electrons).get_single_exchanges()
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)
     print(message)
 
-    optimizer_options = {'maxcor': 15, 'ftol': 1e-9, 'gtol': 1e-7, 'eps': 1e-02, 'maxfun': 1000, 'maxiter': 1000,
-                         'iprint': -1, 'maxls': 20}
+    ansatz_elements = [DoubleExchangeAnsatzElement([4, 5], [10, 11]), DoubleExchangeAnsatzElement([2, 3], [10, 11]),
+                       DoubleExchangeAnsatzElement([2, 5], [10, 13]), DoubleExchangeAnsatzElement([3, 4], [11, 12]),
+                       DoubleExchangeAnsatzElement([4, 5], [12, 13]), DoubleExchangeAnsatzElement([2, 3], [6, 7]),
+                       DoubleExchangeAnsatzElement([2, 3], [8, 9]), DoubleExchangeAnsatzElement([3, 4], [10, 13]),
+                       DoubleExchangeAnsatzElement([2, 5], [11, 12]), DoubleExchangeAnsatzElement([4, 5], [10, 11]),
+                       DoubleExchangeAnsatzElement([2, 3], [12, 13])]
+    for ansatz_element in ansatz_elements:
+        ansatz_element.rescaled = True
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},
-                           optimizer_options=optimizer_options, optimizer='L-BFGS-B')
-    hf_energy = vqe_runner.hf_energy
-
-    ansatz_elements = [DoubleExchangeAnsatzElement([2, 3], [10, 11]), DoubleExchangeAnsatzElement([4, 5], [10, 11]),
-                       DoubleExchangeAnsatzElement([3, 4], [11, 12]), DoubleExchangeAnsatzElement([2, 5], [10, 13]),
-                       DoubleExchangeAnsatzElement([4, 5], [10, 11]), DoubleExchangeAnsatzElement([4, 5], [12, 13]),
-                       DoubleExchangeAnsatzElement([2, 3], [6, 7]), DoubleExchangeAnsatzElement([2, 3], [12, 13]),
-                       DoubleExchangeAnsatzElement([2, 3], [8, 9]), DoubleExchangeAnsatzElement([2, 3], [12, 13])]
     count = 0
     current_energy = hf_energy
     previous_energy = 0
-    var_parameters = [0.1506849672708805, 0.16381713543831095, 0.16777943904771997, -0.16780802212279367,
-                       0.13676618057869488, -0.13124487100967253, 0.16771467140452906, -0.08964427599759087,
-                      0.16784030725429916, 0.07475576336618228]
+    var_parameters = [-0.0054992889124403765, 0.023766365897992005, 0.01717614966453385, 0.015011866799256805,
+                      0.016964508878047655, 0.021262393988796015, 0.021290614230504695,
+                      -0.017633996956538913, 0.03100399546046377, 0.011142611036214452, 0.007020778825375539]
 
     while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:
         count += 1
@@ -74,12 +85,6 @@ if __name__ == "__main__":
         print('New cycle ', count)
 
         previous_energy = current_energy
-
-        # custom optimizer options for this step
-        # vqe_runner.optimizer = 'Nelder-Mead'
-        # vqe_runner.optimizer_options = {'xatol': 0.0001, 'fatol': 0.0001}
-
-        vqe_runner.optimizer_options = optimizer_options
 
         element_to_add, result = AdaptAnsatzUtils.get_most_significant_ansatz_element(vqe_runner,
                                                                                       new_ansatz_element_pool,
