@@ -21,10 +21,12 @@ from src import backends
 
 if __name__ == "__main__":
 
-    angle = - 0.1
+    angle = 0.8
 
-    ansatz_element_1 = DoubleExchangeAnsatzElement([2, 5], [10, 11], rescaled=True)
-    ansatz_element_2 = UCCSD(12, 10).get_double_excitation_list()[19]
+    # ansatz_element_1 = DoubleExchangeAnsatzElement([2, 5], [10, 11], rescaled=True)
+    ansatz_element_1 = ExchangeAnsatzElement(1, 11)
+    # ansatz_element_2 = UCCSD(12, 10).get_double_excitation_list()[2]
+    ansatz_element_2 = UCCSD(12, 10).get_single_excitation_list()[3]
 
     statevetor_1 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_1], [angle], 12, 10)[0].round(5)
     statevetor_2 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_2], [angle], 12, 10)[0].round(5)
