@@ -20,7 +20,7 @@ if __name__ == "__main__":
     r = 1.3264
     max_n_iterations = 2000
 
-    accuracy = 1e-5  # 1e-3 for chemical accuracy
+    accuracy = 1e-6  # 1e-3 for chemical accuracy
     threshold = 1e-7
     max_ansatz_elements = 13
 
@@ -72,12 +72,21 @@ if __name__ == "__main__":
     for ansatz_element in ansatz_elements:
         ansatz_element.rescaled = True
 
+    # second simulation
+    ansatz_elements.append(ExchangeAnsatzElement(3, 11))
+    ansatz_elements.append(ExchangeAnsatzElement(2, 10))
+    ansatz_elements.append(DoubleExchangeAnsatzElement([1, 2], [8, 9], rescaled=True))
+    ansatz_elements.append(DoubleExchangeAnsatzElement([0, 3], [6, 7], rescaled=True))
+    ansatz_elements.append(DoubleExchangeAnsatzElement([1, 2], [6, 7], rescaled=True))
+
     count = 0
     current_energy = hf_energy
     previous_energy = 0
     var_parameters = [-0.0054992889124403765, 0.023766365897992005, 0.01717614966453385, 0.015011866799256805,
                       0.016964508878047655, 0.021262393988796015, 0.021290614230504695,
-                      -0.017633996956538913, 0.03100399546046377, 0.011142611036214452, 0.007020778825375539, 0]
+                      -0.017633996956538913, 0.03100399546046377, 0.011142611036214452, 0.007020778825375539,
+                      0.010181156409182737, -0.010138404057780747, 0.00127638513,
+                      -0.0013733568117874281, 0.0013181392749837036, 0]
 
     while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:
         count += 1
