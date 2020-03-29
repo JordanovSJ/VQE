@@ -20,7 +20,7 @@ if __name__ == "__main__":
     r = 1.3264
     max_n_iterations = 2000
 
-    accuracy = 1e-5  # 1e-3 for chemical accuracy
+    accuracy = 1e-6  # 1e-3 for chemical accuracy
     threshold = 1e-7
     max_ansatz_elements = 13
 
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     LogUtils.log_cofig()
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons, rescaled=True).get_double_exchanges()
+    initial_ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_double_excitation_list()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},)
     hf_energy = vqe_runner.hf_energy
@@ -43,12 +43,12 @@ if __name__ == "__main__":
     new_ansatz_element_pool = []
     for element, result in elements_results:
         new_ansatz_element_pool.append(element)
-        message = 'New ansatz element added to updated pool, {}. Delta E = {}'\
+        message = 'New ansatz element added to updated pool, {}. Delta E = {}' \
             .format(element.element, result.fun - hf_energy)
         logging.info(message)
         print(message)
 
-    new_ansatz_element_pool += ESD(molecule.n_orbitals, molecule.n_electrons).get_single_exchanges()
+    new_ansatz_element_pool += UCCSD(molecule.n_orbitals, molecule.n_electrons).get_single_excitation_list()
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)
