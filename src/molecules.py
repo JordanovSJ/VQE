@@ -46,7 +46,7 @@ class LiH:
     n_orbitals: int = 12
     n_electrons: int = 4
 
-    # ground_state_distance = 1.547
+    # ground_state_distance = 1.546
 
     @staticmethod
     def geometry(distance=1):
@@ -61,7 +61,7 @@ class HF:
     charge: int = 0
     n_orbitals: int = 12
     n_electrons: int = 10
-    # ground_state_distance = 0.917
+    # ground_state_distance = 0.995
 
     @staticmethod
     def geometry(distance=1):
@@ -76,7 +76,7 @@ class BeH2:
     charge: int = 0
     n_orbitals: int = 14
     n_electrons: int = 6
-    # ground_state_distance = 1.3264
+    # ground_state_distance = 1.316
 
     @staticmethod
     def geometry(distance=1):

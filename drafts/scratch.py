@@ -5,7 +5,7 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from scipy.linalg import eigh
 from openfermion.utils import jw_hartree_fock_state
 import scipy
-from src.ansatz_elements import UCCSD, DoubleExchangeAnsatzElement, ExchangeAnsatzElement
+from src.ansatz_elements import UCCSD, DoubleExchange, SingleExchange
 import numpy
 from src.backends import QiskitSimulation, MatrixCalculation
 from src.vqe_runner import VQERunner
@@ -21,20 +21,32 @@ from src import backends
 
 if __name__ == "__main__":
 
-    angle = 0.8
+    angle = - 1
 
-    # ansatz_element_1 = DoubleExchangeAnsatzElement([2, 5], [10, 11], rescaled=True)
-    ansatz_element_1 = ExchangeAnsatzElement(1, 11)
-    # ansatz_element_2 = UCCSD(12, 10).get_double_excitation_list()[2]
-    ansatz_element_2 = UCCSD(12, 10).get_single_excitation_list()[3]
+    qasm_1 = ['']
+    qasm_1.append(QasmUtils.qasm_header(4))
+    # qasm_1.append('x q[3];\n')
+    qasm_1.append('h q[1];\n')
+    qasm_1.append('h q[2];\n')
+    qasm_1.append('x q[0];\n')
 
-    statevetor_1 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_1], [angle], 12, 10)[0].round(5)
-    statevetor_2 = QiskitSimulation.get_statevector_from_ansatz_elements([ansatz_element_2], [angle], 12, 10)[0].round(5)
+    qasm_1.append(SingleExchange(0, 3).get_qasm([angle]))
+    statevector_1 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_1)).round(5)
 
-    for i in range(len(statevetor_1)):
-        if statevetor_1[i] != 0 or statevetor_2[i] != 0:
-            print('1', i, statevetor_1[i])
-            print('2', i, statevetor_2[i])
+    print(statevector_1)
+
+    qasm_2 = ['']
+    qasm_2.append(QasmUtils.qasm_header(4))
+    qasm_2.append('h q[1];\n')
+    qasm_2.append('h q[2];\n')
+    qasm_2.append('x q[0];\n')
+
+    excitation = UCCSD(4, 2).get_single_excitation_list()[1]
+    excitation_qasm = excitation.get_qasm([angle])
+    qasm_2.append(excitation_qasm)
+    statevector_2 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_2)).round(10)
+
+    print(statevector_2)
 
     print('spagetti')
 

@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF, BeH2
-from src.ansatz_elements import UCCGSD, UCCSD, ESD, EGSD, DoubleExchangeAnsatzElement, ExchangeAnsatzElement
+from src.ansatz_elements import UCCGSD, UCCSD, ESD, EGSD, DoubleExchange, SingleExchange
 from src.backends import QiskitSimulation
 from src.utils import LogUtils, AdaptAnsatzUtils
 
@@ -29,21 +29,21 @@ if __name__ == "__main__":
 
     LogUtils.log_cofig()
 
-    new_ansatz_element_pool = [DoubleExchangeAnsatzElement([0, 1], [6, 7]), DoubleExchangeAnsatzElement([0, 1], [8, 9]),
-                               DoubleExchangeAnsatzElement([0, 1], [10, 13]), DoubleExchangeAnsatzElement([0, 1], [12, 13]),
-                               DoubleExchangeAnsatzElement([1, 2], [6, 7]), DoubleExchangeAnsatzElement([0, 1], [8, 9]),
-                               DoubleExchangeAnsatzElement([2, 3], [6, 7]), DoubleExchangeAnsatzElement([2, 3], [8, 9]),
-                               DoubleExchangeAnsatzElement([2, 3], [10, 11]), DoubleExchangeAnsatzElement([2, 3], [12, 13]),
-                               DoubleExchangeAnsatzElement([3, 4], [11, 12]), DoubleExchangeAnsatzElement([4, 5], [6, 7]),
-                               DoubleExchangeAnsatzElement([4, 5], [8, 9]), DoubleExchangeAnsatzElement([4, 5], [10, 11]),
-                               DoubleExchangeAnsatzElement([4, 5], [12, 13]), DoubleExchangeAnsatzElement([2, 5], [10, 13])
+    new_ansatz_element_pool = [DoubleExchange([0, 1], [6, 7]), DoubleExchange([0, 1], [8, 9]),
+                               DoubleExchange([0, 1], [10, 13]), DoubleExchange([0, 1], [12, 13]),
+                               DoubleExchange([1, 2], [6, 7]), DoubleExchange([0, 1], [8, 9]),
+                               DoubleExchange([2, 3], [6, 7]), DoubleExchange([2, 3], [8, 9]),
+                               DoubleExchange([2, 3], [10, 11]), DoubleExchange([2, 3], [12, 13]),
+                               DoubleExchange([3, 4], [11, 12]), DoubleExchange([4, 5], [6, 7]),
+                               DoubleExchange([4, 5], [8, 9]), DoubleExchange([4, 5], [10, 11]),
+                               DoubleExchange([4, 5], [12, 13]), DoubleExchange([2, 5], [10, 13])
                                ]
 
     occ_orbitals = [0, 1, 2, 3, 4, 5]
     unocc_orbitals = [8, 9, 10, 11, 12, 13]
     for i in occ_orbitals:
         for j in unocc_orbitals:
-            new_ansatz_element_pool.append(ExchangeAnsatzElement(i, j))
+            new_ansatz_element_pool.append(SingleExchange(i, j))
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)
@@ -56,11 +56,11 @@ if __name__ == "__main__":
                            optimizer_options=optimizer_options, optimizer='L-BFGS-B')
     hf_energy = vqe_runner.hf_energy
 
-    ansatz_elements = [DoubleExchangeAnsatzElement([2, 3], [10, 11]), DoubleExchangeAnsatzElement([4, 5], [10, 11]),
-                       DoubleExchangeAnsatzElement([3, 4], [11, 12]), DoubleExchangeAnsatzElement([2, 5], [10, 13]),
-                       DoubleExchangeAnsatzElement([4, 5], [10, 11]), DoubleExchangeAnsatzElement([4, 5], [12, 13]),
-                       DoubleExchangeAnsatzElement([2, 3], [6, 7]), DoubleExchangeAnsatzElement([2, 3], [12, 13]),
-                       DoubleExchangeAnsatzElement([2, 3], [8, 9]), DoubleExchangeAnsatzElement([2, 3], [12, 13])]
+    ansatz_elements = [DoubleExchange([2, 3], [10, 11]), DoubleExchange([4, 5], [10, 11]),
+                       DoubleExchange([3, 4], [11, 12]), DoubleExchange([2, 5], [10, 13]),
+                       DoubleExchange([4, 5], [10, 11]), DoubleExchange([4, 5], [12, 13]),
+                       DoubleExchange([2, 3], [6, 7]), DoubleExchange([2, 3], [12, 13]),
+                       DoubleExchange([2, 3], [8, 9]), DoubleExchange([2, 3], [12, 13])]
     count = 0
     current_energy = hf_energy
     previous_energy = 0
