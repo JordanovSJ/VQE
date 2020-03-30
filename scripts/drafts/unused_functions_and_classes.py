@@ -210,7 +210,7 @@ class ExchangeAnsatz1(AnsatzElement):
                 qasm.append('rz({}) q[{}];\n'.format(angle, virtual_orbital))
 
                 angle = var_parameters_cycle.__next__()
-                qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, occupied_orbital, virtual_orbital))
+                qasm.append(QasmUtils.partial_exchange_gate(angle, occupied_orbital, virtual_orbital))
 
             # TODO add exchanges between the last unoccupied orbitals?
 
@@ -221,11 +221,11 @@ class ExchangeAnsatz1(AnsatzElement):
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
         qasm = ['']
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange_gate(angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate(-angle, qubit_pair_1[0], qubit_pair_2[1]))
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange_gate(-angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate(angle, qubit_pair_1[0], qubit_pair_2[1]))
         # corrections
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
         return ''.join(qasm)
@@ -272,11 +272,11 @@ class ExchangeAnsatzBlock(AnsatzElement):
         # single orbital exchanges
         for qubit in range(self.n_orbitals):
             if qubit % 2 == 0:
-                qasm.append(QasmUtils.partial_exchange_gate_qasm(var_parameters_cycle.__next__(),
-                                                                 qubit, (qubit + 1) % self.n_orbitals))
+                qasm.append(QasmUtils.partial_exchange_gate(var_parameters_cycle.__next__(),
+                                                            qubit, (qubit + 1) % self.n_orbitals))
                 count += 1
-                qasm.append(QasmUtils.partial_exchange_gate_qasm(var_parameters_cycle.__next__(),
-                                                                 (qubit+1) % self.n_orbitals, (qubit + 2) % self.n_orbitals))
+                qasm.append(QasmUtils.partial_exchange_gate(var_parameters_cycle.__next__(),
+                                                            (qubit+1) % self.n_orbitals, (qubit + 2) % self.n_orbitals))
                 count += 1
         assert count == len(var_parameters)
         return ''.join(qasm)

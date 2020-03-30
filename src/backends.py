@@ -76,7 +76,7 @@ class QiskitSimulation:
 
         # initial state
         if initial_statevector_qasm is None:
-            qasm.append(QasmUtils.hf_state_qasm(n_electrons))
+            qasm.append(QasmUtils.hf_state(n_electrons))
         else:
             qasm.append(initial_statevector_qasm)
 

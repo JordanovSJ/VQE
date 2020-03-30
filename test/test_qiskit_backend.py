@@ -113,7 +113,7 @@ class QiskitSimulationTest(unittest.TestCase):
         n_electrons = 3
 
         qasm = QasmUtils.qasm_header(n_qubits)
-        qasm += QasmUtils.hf_state_qasm(n_electrons)
+        qasm += QasmUtils.hf_state(n_electrons)
         qasm += QasmUtils.reverse_qubits_qasm(n_qubits)
         qiskit_statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
 

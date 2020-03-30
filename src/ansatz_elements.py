@@ -71,7 +71,7 @@ class SingleExchange(AnsatzElement):
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return QasmUtils.partial_exchange_gate_qasm(var_parameters[0], self.qubit_1, self.qubit_2)
+        return QasmUtils.partial_exchange_gate(var_parameters[0], self.qubit_1, self.qubit_2)
 
 
 class DoubleExchange(AnsatzElement):
@@ -98,12 +98,12 @@ class DoubleExchange(AnsatzElement):
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
         qasm = ['']
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange_gate(angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate(-angle, qubit_pair_1[0], qubit_pair_2[1]))
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
         angle_2 = DoubleExchange.second_angle(angle)
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(-angle_2, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate_qasm(angle_2, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange_gate(-angle_2, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate(angle_2, qubit_pair_1[0], qubit_pair_2[1]))
 
         if angle > 0:
             # adding a correcting CZ gate at the end will result in a minus sign
