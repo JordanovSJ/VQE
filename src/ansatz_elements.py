@@ -75,10 +75,11 @@ class SingleExchange(AnsatzElement):
 
 
 class DoubleExchange(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2, rescaled=False):
+    def __init__(self, qubit_pair_1, qubit_pair_2, rescaled=False, extended=False):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
         self.rescaled = rescaled
+        self.extended = extended
         super(DoubleExchange, self).__init__(element='d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
                                              element_type=str(self), n_var_parameters=1)
 
@@ -94,7 +95,7 @@ class DoubleExchange(AnsatzElement):
 
     # this method constructs an operation that acts approximately as a double partial exchange
     @staticmethod
-    def double_exchange(angle, qubit_pair_1, qubit_pair_2):
+    def double_exchange(angle, qubit_pair_1, qubit_pair_2, extended=False):
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
         qasm = ['']
@@ -105,36 +106,49 @@ class DoubleExchange(AnsatzElement):
         qasm.append(QasmUtils.partial_exchange_gate(-angle_2, qubit_pair_1[1], qubit_pair_2[0]))
         qasm.append(QasmUtils.partial_exchange_gate(angle_2, qubit_pair_1[0], qubit_pair_2[1]))
 
-        if angle > 0:
-            # adding a correcting CZ gate at the end will result in a minus sign
-            qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+        if extended:
+            # do not include the first qubit of the second pair
+            parity_qubits = list(range(min(qubit_pair_1), max(qubit_pair_1))) + list(range(min(qubit_pair_2)+1, max(qubit_pair_2)))
+            if angle > 0:
+                # front
+                qasm = [QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1], reverse=True)] + qasm
+                # rear
+                qasm.append(QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1]))
+            else:
+                qasm = [QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1])] + qasm
+                qasm.append(QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1], reverse=True))
         else:
-            # adding a correcting CZ gate at the front will result in a plus sign
-            qasm = ['cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1])] + qasm
+            if angle > 0:
+                # adding a correcting CZ gate at the end will result in a minus sign
+                qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+            else:
+                # adding a correcting CZ gate at the front will result in a plus sign
+                qasm = ['cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1])] + qasm
+
         return ''.join(qasm)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        if self.rescaled:
-            # rescale parameter (used for easier gradient optimization)
-            parameter = var_parameters[0]
-            if parameter > 0:
-                rescaled_parameter = parameter + numpy.tanh(parameter**0.5)
-            else:
-                rescaled_parameter = parameter + numpy.tanh(-(-parameter)**0.5)
+        parameter = var_parameters[0]
 
-            return self.double_exchange(rescaled_parameter, self.qubit_pair_1, self.qubit_pair_2)
-        else:
-            return self.double_exchange(var_parameters[0], self.qubit_pair_1, self.qubit_pair_2)
+        # rescaled parameter (used for easier gradient optimization)
+        if self.rescaled:
+            if var_parameters[0] > 0:
+                parameter = var_parameters[0] + numpy.tanh(var_parameters[0]**0.5)
+            else:
+                parameter = var_parameters[0] + numpy.tanh(-(-var_parameters[0])**0.5)
+
+        return self.double_exchange(parameter, self.qubit_pair_1, self.qubit_pair_2, extended=self.extended)
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # exchange single and double
 class ESD:
-    def __init__(self, n_orbitals, n_electrons, rescaled=False):
+    def __init__(self, n_orbitals, n_electrons, rescaled=False, extended=False):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.rescaled = rescaled
+        self.extended = extended
 
     def get_single_exchanges(self):
         single_excitations = []
@@ -150,7 +164,7 @@ class ESD:
             for j in range(i + 1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
-                        double_excitations.append(DoubleExchange([i, j], [k, l], rescaled=self.rescaled))
+                        double_excitations.append(DoubleExchange([i, j], [k, l], rescaled=self.rescaled, extended=self.extended))
 
         return double_excitations
 

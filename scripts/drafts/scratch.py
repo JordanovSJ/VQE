@@ -5,7 +5,7 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from scipy.linalg import eigh
 from openfermion.utils import jw_hartree_fock_state
 import scipy
-from src.ansatz_elements import UCCSD, DoubleExchange, SingleExchange
+from src.ansatz_elements import UCCSD, DoubleExchange, SingleExchange, DoubleExcitation
 import numpy
 from src.backends import QiskitSimulation, MatrixCalculation
 from src.vqe_runner import VQERunner
@@ -21,29 +21,27 @@ from src import backends
 
 if __name__ == "__main__":
 
-    angle = - 1
+    angle = - 0.2
 
     qasm_1 = ['']
-    qasm_1.append(QasmUtils.qasm_header(4))
+    qasm_1.append(QasmUtils.qasm_header(6))
     # qasm_1.append('x q[3];\n')
-    qasm_1.append('h q[1];\n')
-    qasm_1.append('h q[2];\n')
+    qasm_1.append('h q[4];\n')
+    qasm_1.append('x q[2];\n')
     qasm_1.append('x q[0];\n')
 
-    qasm_1.append(SingleExchange(0, 3).get_qasm([angle]))
+    qasm_1.append(DoubleExchange([0, 2], [3, 5], rescaled=True, extended=True).get_qasm([angle]))
     statevector_1 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_1)).round(5)
 
     print(statevector_1)
 
     qasm_2 = ['']
-    qasm_2.append(QasmUtils.qasm_header(4))
-    qasm_2.append('h q[1];\n')
-    qasm_2.append('h q[2];\n')
+    qasm_2.append(QasmUtils.qasm_header(6))
+    qasm_2.append('h q[4];\n')
+    qasm_2.append('x q[2];\n')
     qasm_2.append('x q[0];\n')
 
-    excitation = UCCSD(4, 2).get_single_excitation_list()[1]
-    excitation_qasm = excitation.get_qasm([angle])
-    qasm_2.append(excitation_qasm)
+    qasm_2.append(DoubleExcitation([0, 2], [3, 5]).get_qasm([angle]))
     statevector_2 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_2)).round(10)
 
     print(statevector_2)
