@@ -109,14 +109,83 @@ class DoubleExchange(AnsatzElement):
         if extended:
             # do not include the first qubit of the second pair
             parity_qubits = list(range(min(qubit_pair_1), max(qubit_pair_1))) + list(range(min(qubit_pair_2)+1, max(qubit_pair_2)))
+
+            # ladder of CNOT used to determine the parity
+            cnot_ladder = ['']
+            for i in range(len(parity_qubits) - 1):
+                cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i+1]))
+
             if angle > 0:
-                # front
-                qasm = [QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1], reverse=True)] + qasm
-                # rear
-                qasm.append(QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1]))
+
+                # applies a CZ correction in front, to get a negative sign for the excitation term, if the parity is 1
+                # (or the parity of "parity_qubits" is 0)
+                front = ['']
+
+                # this is the CZ that determines the sign of the excitation term
+                front.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+                # this bit determines the parity and applies a  CZ to negate the correction if the parity is wrong
+                front += cnot_ladder
+                front.append('x q[{}];\n'.format(parity_qubits[-1]))
+                front.append('cz q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_pair_2[0]))
+                front.append('x q[{}];\n'.format(parity_qubits[-1]))
+                front += cnot_ladder[::-1]
+
+                # .. positive sign for the excitation term, if the parity is 0 (or the parity of "parity_qubits" is 1)
+                rear = ['']
+
+                # .. sign correction
+                rear.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+                # .. parity correction
+                rear += cnot_ladder
+                rear.append('cz q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_pair_2[0]))
+                rear += cnot_ladder[::-1]
+
+                # additional correction of states 010 and 110
+                rear.append('x q[{}];\n'.format(qubit_pair_2[1]))
+                rear.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+                rear.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+                qasm = front + qasm + rear
+
+                # # front
+                # qasm = [QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1], reverse=True)] + qasm
+                # # rear
+                # qasm.append(QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1]))
             else:
-                qasm = [QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1])] + qasm
-                qasm.append(QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1], reverse=True))
+                front = ['']
+
+                # sign correction
+                front.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+                # parity correction
+                front += cnot_ladder
+                front.append('cz q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_pair_2[0]))
+                front += cnot_ladder[::-1]
+
+                rear = ['']
+
+                # sign correction
+                rear.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+                # parity correction
+                rear += cnot_ladder
+                rear.append('x q[{}];\n'.format(parity_qubits[-1]))
+                rear.append('cz q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_pair_2[0]))
+                rear.append('x q[{}];\n'.format(parity_qubits[-1]))
+
+                # 010 and 011 correction
+                rear.append('x q[{}];\n'.format(qubit_pair_2[1]))
+                rear.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+                rear.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+                rear += cnot_ladder[::-1]
+
+                qasm = front + qasm + rear
+
+                # qasm = [QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1])] + qasm
+                # qasm.append(QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1], reverse=True))
         else:
             if angle > 0:
                 # adding a correcting CZ gate at the end will result in a minus sign

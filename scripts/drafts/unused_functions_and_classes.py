@@ -280,3 +280,29 @@ class ExchangeAnsatzBlock(AnsatzElement):
                 count += 1
         assert count == len(var_parameters)
         return ''.join(qasm)
+
+
+# DOES NOT WORK!!!!!!!!!!!
+# performs a CP operation on q1 and q2 if the parity of {q} is odd, where q1 belongs to {q}, and q2 does not
+    @staticmethod
+    def parity_controlled_phase_gate(parity_qubits, qubit_1, qubit_2, reverse=False):
+        qasm = ['']
+        # ladder of cnots
+        cnots = ['']
+
+        parity_qubits = list(parity_qubits)
+        control_qubits = parity_qubits + [qubit_1]
+
+        for i in range(len(control_qubits) - 1):
+            cnots.append('cx q[{}], q[{}];\n'.format(control_qubits[i], control_qubits[i+1]))
+
+        qasm += cnots
+        if reverse:
+            qasm.append('x q[{}];\n'.format(qubit_1))
+            qasm.append('cz q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+            qasm.append('x q[{}];\n'.format(qubit_1))
+        else:
+            qasm.append('cz q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm += cnots[::-1]
+
+        return ''.join(qasm)
