@@ -73,51 +73,6 @@ class QasmUtilsTest(unittest.TestCase):
             for i in range(len(statevector_2)):
                 self.assertEqual(statevector_2[i], expected_statevector_2[i])
 
-    def test_parity_controlled_phase_gate_1(self):
-
-        qasm = ['']
-        qasm.append(QasmUtils.qasm_header(3))
-        qasm.append('h q[0];\n x q[1];\n x q[2];\n')
-        qasm.append(QasmUtils.parity_controlled_phase_gate([0], 1, 2))
-        statevector = QiskitSimulation.get_statevector_from_qasm(''.join(qasm))
-
-        self.assertEqual(statevector[-1].round(5).real, (1/numpy.sqrt(2)).round(5))
-        self.assertEqual(statevector[-2].round(5).real, (-1/numpy.sqrt(2)).round(5))
-
-        # test the reverse control case
-        qasm = ['']
-        qasm.append(QasmUtils.qasm_header(3))
-        qasm.append('h q[0];\n x q[1];\n x q[2];\n')
-        qasm.append(QasmUtils.parity_controlled_phase_gate([0], 1, 2, reverse=True))
-        statevector = QiskitSimulation.get_statevector_from_qasm(''.join(qasm))
-
-        self.assertEqual(statevector[-1].round(5).real, (-1 / numpy.sqrt(2)).round(5))
-        self.assertEqual(statevector[-2].round(5).real, (1 / numpy.sqrt(2)).round(5))
-
-    def test_parity_controlled_phase_gate_2(self):
-        qasm = ['']
-        qasm.append(QasmUtils.qasm_header(4))
-        qasm.append('h q[0];\n h q[1];\n x q[2];\n x q[3];\n')
-        qasm.append(QasmUtils.parity_controlled_phase_gate([0, 1], 2, 3))
-        statevector = QiskitSimulation.get_statevector_from_qasm(''.join(qasm))
-
-        self.assertEqual(statevector[-1].real.round(5), (-1 / 2))  # -1111
-        self.assertEqual(statevector[-2].real.round(5), (1 / 2))  # 1110
-        self.assertEqual(statevector[-3].real.round(5), (1 / 2))  # 1101
-        self.assertEqual(statevector[-4].real.round(5), (-1 / 2))  # -1100
-
-        # test the reverse control case
-        qasm = ['']
-        qasm.append(QasmUtils.qasm_header(4))
-        qasm.append('h q[0];\n h q[1];\n x q[2];\n x q[3];\n')
-        qasm.append(QasmUtils.parity_controlled_phase_gate([0, 1], 2, 3, reverse=True))
-        statevector = QiskitSimulation.get_statevector_from_qasm(''.join(qasm))
-
-        self.assertEqual(statevector[-1].real.round(5), (1 / 2))
-        self.assertEqual(statevector[-2].real.round(5), (-1 / 2))
-        self.assertEqual(statevector[-3].real.round(5), (-1 / 2))
-        self.assertEqual(statevector[-4].real.round(5), (1 / 2))
-
 
 if __name__ == '__main__':
     unittest.main()
