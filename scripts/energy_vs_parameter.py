@@ -22,15 +22,15 @@ if __name__ == "__main__":
     r = 0.995
 
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    ansatz_element_0 = DoubleExchange([2, 5], [10, 11], rescaled=True)
+    ansatz_element_0 = DoubleExchange([4, 5], [10, 11], rescaled_parameter=False, parity_dependence=True)
 
-    ansatz_element_1 = DoubleExchange([4, 5], [10, 11], rescaled=True)
-    ansatz_element_2 = DoubleExchange([3, 4], [10, 11], rescaled=True)
-    ansatz_element_3 = DoubleExchange([2, 3], [10, 11], rescaled=True)
-    ansatz_element_4 = DoubleExchange([6, 7], [10, 11], rescaled=True)
-    ansatz_element_5 = DoubleExchange([8, 9], [10, 11], rescaled=True)
-    ansatz_element_6 = DoubleExchange([1, 2], [10, 11], rescaled=True)
-    ansatz_element_7 = SingleExchange(5, 11)#, rescaled=True)
+    ansatz_element_1 = DoubleExchange([4, 5], [10, 11], rescaled_parameter=True)
+    # ansatz_element_2 = DoubleExchange([3, 4], [10, 11], rescaled=True)
+    # ansatz_element_3 = DoubleExchange([2, 3], [10, 11], rescaled=True)
+    # ansatz_element_4 = DoubleExchange([6, 7], [10, 11], rescaled=True)
+    # ansatz_element_5 = DoubleExchange([8, 9], [10, 11], rescaled=True)
+    # ansatz_element_6 = DoubleExchange([1, 2], [10, 11], rescaled=True)
+    # ansatz_element_7 = SingleExchange(5, 11)#, rescaled=True)
 
     # ansatz_element_1 = uccsd.get_double_excitation_list()[414]
     ansatz_elements = [ansatz_element_0] #ansatz_element_1, ansatz_element_2, ansatz_element_3, ansatz_element_4, ansatz_element_5,ansatz_element_6]

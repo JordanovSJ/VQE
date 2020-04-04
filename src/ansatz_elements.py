@@ -75,11 +75,12 @@ class SingleExchange(AnsatzElement):
 
 
 class DoubleExchange(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2, rescaled=False, extended=False):
+    def __init__(self, qubit_pair_1, qubit_pair_2, rescaled_parameter=False, parity_dependence=False, d_exc_correction=False):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
-        self.rescaled = rescaled
-        self.extended = extended
+        self.rescaled_parameter = rescaled_parameter
+        self.parity_dependence = parity_dependence
+        self.d_exc_correction = d_exc_correction
         super(DoubleExchange, self).__init__(element='d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
                                              element_type=str(self), n_var_parameters=1)
 
@@ -95,18 +96,24 @@ class DoubleExchange(AnsatzElement):
 
     # this method constructs an operation that acts approximately as a double partial exchange
     @staticmethod
-    def double_exchange(angle, qubit_pair_1, qubit_pair_2, extended=False):
+    def double_exchange(angle, qubit_pair_1, qubit_pair_2, parity_dependence=False, d_exc_correction=False):
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
         qasm = ['']
         qasm.append(QasmUtils.partial_exchange_gate(angle, qubit_pair_1[1], qubit_pair_2[0]))
         qasm.append(QasmUtils.partial_exchange_gate(-angle, qubit_pair_1[0], qubit_pair_2[1]))
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-        angle_2 = DoubleExchange.second_angle(angle)
+
+        # correction 3rd order terms approximates the operation of a double exchange
+        if d_exc_correction:
+            angle_2 = DoubleExchange.second_angle(angle)
+        # not correcting 3rd order terms approximates the operation of a double excitation (with 3rd order error terms)
+        else:
+            angle_2 = angle
         qasm.append(QasmUtils.partial_exchange_gate(-angle_2, qubit_pair_1[1], qubit_pair_2[0]))
         qasm.append(QasmUtils.partial_exchange_gate(angle_2, qubit_pair_1[0], qubit_pair_2[1]))
 
-        if extended:
+        if parity_dependence:
             # do not include the first qubit of the second pair
             parity_qubits = list(range(min(qubit_pair_1), max(qubit_pair_1))) + list(range(min(qubit_pair_2)+1, max(qubit_pair_2)))
 
@@ -116,14 +123,11 @@ class DoubleExchange(AnsatzElement):
                 cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i+1]))
 
             if angle > 0:
-
                 # applies a CZ correction in front, to get a negative sign for the excitation term, if the parity is 1
                 # (or the parity of "parity_qubits" is 0)
                 front = ['']
-
                 # this is the CZ that determines the sign of the excitation term
                 front.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-
                 # this bit determines the parity and applies a  CZ to negate the correction if the parity is wrong
                 front += cnot_ladder
                 front.append('x q[{}];\n'.format(parity_qubits[-1]))
@@ -133,59 +137,42 @@ class DoubleExchange(AnsatzElement):
 
                 # .. positive sign for the excitation term, if the parity is 0 (or the parity of "parity_qubits" is 1)
                 rear = ['']
-
                 # .. sign correction
                 rear.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-
                 # .. parity correction
                 rear += cnot_ladder
                 rear.append('cz q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_pair_2[0]))
                 rear += cnot_ladder[::-1]
-
                 # additional correction of states 010 and 110
                 rear.append('x q[{}];\n'.format(qubit_pair_2[1]))
                 rear.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
                 rear.append('x q[{}];\n'.format(qubit_pair_2[1]))
 
                 qasm = front + qasm + rear
-
-                # # front
-                # qasm = [QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1], reverse=True)] + qasm
-                # # rear
-                # qasm.append(QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1]))
             else:
                 front = ['']
-
                 # sign correction
                 front.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-
                 # parity correction
                 front += cnot_ladder
                 front.append('cz q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_pair_2[0]))
                 front += cnot_ladder[::-1]
 
                 rear = ['']
-
                 # sign correction
                 rear.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-
                 # parity correction
                 rear += cnot_ladder
                 rear.append('x q[{}];\n'.format(parity_qubits[-1]))
                 rear.append('cz q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_pair_2[0]))
                 rear.append('x q[{}];\n'.format(parity_qubits[-1]))
-
+                rear += cnot_ladder[::-1]
                 # 010 and 011 correction
                 rear.append('x q[{}];\n'.format(qubit_pair_2[1]))
                 rear.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
                 rear.append('x q[{}];\n'.format(qubit_pair_2[1]))
 
-                rear += cnot_ladder[::-1]
-
                 qasm = front + qasm + rear
-
-                # qasm = [QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1])] + qasm
-                # qasm.append(QasmUtils.parity_controlled_phase_gate(parity_qubits, qubit_pair_2[0], qubit_pair_2[1], reverse=True))
         else:
             if angle > 0:
                 # adding a correcting CZ gate at the end will result in a minus sign
@@ -196,28 +183,32 @@ class DoubleExchange(AnsatzElement):
 
         return ''.join(qasm)
 
+        # this method constructs an operation that acts approximately as a double partial exchange
+
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
         parameter = var_parameters[0]
 
         # rescaled parameter (used for easier gradient optimization)
-        if self.rescaled:
+        if self.rescaled_parameter:
             if var_parameters[0] > 0:
                 parameter = var_parameters[0] + numpy.tanh(var_parameters[0]**0.5)
             else:
                 parameter = var_parameters[0] + numpy.tanh(-(-var_parameters[0])**0.5)
 
-        return self.double_exchange(parameter, self.qubit_pair_1, self.qubit_pair_2, extended=self.extended)
+        return self.double_exchange(parameter, self.qubit_pair_1, self.qubit_pair_2,
+                                    parity_dependence=self.parity_dependence, d_exc_correction=self.d_exc_correction)
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # exchange single and double
 class ESD:
-    def __init__(self, n_orbitals, n_electrons, rescaled=False, extended=False):
+    def __init__(self, n_orbitals, n_electrons, rescaled=False, extended=False, d_exc_correction=False):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.rescaled = rescaled
         self.extended = extended
+        self.d_exc_correction= d_exc_correction
 
     def get_single_exchanges(self):
         single_excitations = []
@@ -233,7 +224,9 @@ class ESD:
             for j in range(i + 1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
-                        double_excitations.append(DoubleExchange([i, j], [k, l], rescaled=self.rescaled, extended=self.extended))
+                        double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
+                                                                 parity_dependence=self.extended,
+                                                                 d_exc_correction=self.d_exc_correction))
 
         return double_excitations
 

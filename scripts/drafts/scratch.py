@@ -21,36 +21,41 @@ from src import backends
 
 if __name__ == "__main__":
 
-    angle = + 0
+    angle = - 0.01
 
     qasm_1 = ['']
     qasm_1.append(QasmUtils.qasm_header(6))
 
-    # qasm_1.append('x q[0];\n')
-    qasm_1.append('h q[0];\n')
+    qasm_1.append('x q[0];\n')
+    # qasm_1.append('h q[0];\n')
     qasm_1.append('h q[1];\n')
-    qasm_1.append('h q[2];\n')
-    qasm_1.append('h q[3];\n')
+    # qasm_1.append('h q[2];\n')
+    # qasm_1.append('h q[3];\n')
     qasm_1.append('h q[4];\n')
-    qasm_1.append('h q[5];\n')
-    # qasm_1.append('x q[2];\n')
+    # qasm_1.append('h q[5];\n')
+    qasm_1.append('x q[2];\n')
 
-    qasm_1.append(DoubleExchange([0, 2], [3, 5], rescaled=True, extended=True).get_qasm([angle]))
+    # qasm_1.append(QasmUtils.partial_exchange_gate(angle, 0, 2))
+    # qasm_1.append(QasmUtils.partial_exchange_gate(angle,  1, 3))
+    # qasm_1.append('cz q[{}], q[{}];\n'.format(2, 3))
+    # qasm_1.append(QasmUtils.partial_exchange_gate(-angle, 0, 2))
+    # qasm_1.append(QasmUtils.partial_exchange_gate(-angle, 1, 3))
+
+    qasm_1.append(DoubleExchange([0, 2], [3, 5], rescaled_parameter=True, parity_dependence=True, d_exc_correction=True).get_qasm([angle]))
     statevector_1 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_1)).round(5)
 
     print(statevector_1)
 
     qasm_2 = ['']
     qasm_2.append(QasmUtils.qasm_header(6))
-    # qasm_2.append('x q[0];\n')
-    qasm_2.append('h q[0];\n')
+    qasm_2.append('x q[3];\n')
+    # qasm_2.append('h q[0];\n')
     qasm_2.append('h q[1];\n')
-    qasm_2.append('h q[2];\n')
-    qasm_2.append('h q[3];\n')
+    # qasm_2.append('h q[2];\n')
+    # qasm_2.append('h q[3];\n')
     qasm_2.append('h q[4];\n')
-    qasm_2.append('h q[5];\n')
-    # qasm_2.append('x q[2];\n')
-
+    # qasm_2.append('h q[5];\n')
+    qasm_2.append('x q[5];\n')
 
     qasm_2.append(DoubleExcitation([0, 2], [3, 5]).get_qasm([angle]))
     statevector_2 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_2)).round(10)

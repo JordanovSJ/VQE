@@ -4,11 +4,10 @@
 
 -(create a custom optimizer!!!)
 -consider making the single exchange more "flexible" .. add phase change (preferably without introducing 2nd parameter)
--can you tweak the double exchange angle dependence to help to gradient descend optimizer
-
--Understand p-h Hamiltoanian
 
 *********************************************
+0. Try using only double excitations
+
 1. Implementation for Riggeti real QPU
 
 2.For the quantum simulator/devices backgrounds implement different methods for calculating <H>
@@ -20,15 +19,11 @@
 
 4.Search for best classical optimizer
 
-5.Add thresholds for convergence
-
 8.Excited states functionality
 
 11.Custom optimizer?
 
 12. Decrease qubits/orbitals considered whenever possible??
-
-13. Add parameter bound for each ansatz element
 
 DONE:
 

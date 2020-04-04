@@ -227,11 +227,16 @@ class LogUtils:
         time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
         logging_filename = '{}'.format(time_stamp)
         try:
-            logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+            logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
                                 format='%(levelname)s %(asctime)s %(message)s')
         except FileNotFoundError:
-            logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
-                                format='%(levelname)s %(asctime)s %(message)s')
+            try:
+                logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                                    format='%(levelname)s %(asctime)s %(message)s')
+            except FileNotFoundError:
+                logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                                    format='%(levelname)s %(asctime)s %(message)s')
+
         # disable logging from qiskit
         logging.getLogger('qiskit').setLevel(logging.WARNING)
 
