@@ -200,15 +200,57 @@ class DoubleExchange(AnsatzElement):
                                     parity_dependence=self.parity_dependence, d_exc_correction=self.d_exc_correction)
 
 
+class CustomDoubleExcitation(AnsatzElement):
+    def __init__(self, qubit_pair_1, qubit_pair_2, parity_dependence=False):
+        self.qubit_pair_1 = qubit_pair_1
+        self.qubit_pair_2 = qubit_pair_2
+        self.parity_dependence = parity_dependence
+        super(CustomDoubleExcitation, self).__init__(element='d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
+                                                     element_type=str(self), n_var_parameters=1)
+
+    @staticmethod
+    def custom_double_excitation(angle, qubit_pair_1, qubit_pair_2):
+        qasm = ['']
+
+        # determine tha parity of the two qubit pairs
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        # perform partial single qubit exchange on q0 and q2, controlled by q1 = |0> and q3 = |0>
+
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+        # TODO add parity dependence
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_1[0]))
+        qasm.append(QasmUtils.n_controlled_y_rotation(angle=angle, controls=[*qubit_pair_1, qubit_pair_2[1]],
+                                                      target=qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_1[0]))
+
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        return ''.join(qasm)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        parameter = var_parameters[0]
+
+        return self.custom_double_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2) #, parity_dependence=self.parity_dependence)
+
+
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # exchange single and double
 class ESD:
-    def __init__(self, n_orbitals, n_electrons, rescaled=False, extended=False, d_exc_correction=False):
+    def __init__(self, n_orbitals, n_electrons, rescaled=False, parity_dependence=False, d_exc_correction=False):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.rescaled = rescaled
-        self.extended = extended
-        self.d_exc_correction= d_exc_correction
+        self.parity_dependence = parity_dependence
+        self.d_exc_correction = d_exc_correction
 
     def get_single_exchanges(self):
         single_excitations = []
@@ -225,7 +267,7 @@ class ESD:
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
                         double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
-                                                                 parity_dependence=self.extended,
+                                                                 parity_dependence=self.parity_dependence,
                                                                  d_exc_correction=self.d_exc_correction))
 
         return double_excitations

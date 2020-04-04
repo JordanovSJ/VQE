@@ -15,7 +15,7 @@ class QasmUtilsTest(unittest.TestCase):
         # case 1
         qasm = QasmUtils.qasm_header(2)
         qasm += 'x q[{}];\n'.format(control)
-        qasm += QasmUtils.controlled_y_gate(numpy.pi / 2, control, target)
+        qasm += QasmUtils.controlled_y_rotation(numpy.pi / 2, control, target)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm).round(3)
 
         expected_statevector = numpy.array([0, 1, 0, 1])/numpy.sqrt(2)
@@ -32,7 +32,7 @@ class QasmUtilsTest(unittest.TestCase):
         qasm = QasmUtils.qasm_header(2)
         qasm += 'x q[{}];\n'.format(control)
         qasm += 'x q[{}];\n'.format(target)
-        qasm += QasmUtils.controlled_y_gate(numpy.pi / 2, control, target)
+        qasm += QasmUtils.controlled_y_rotation(numpy.pi / 2, control, target)
         statevector = QiskitSimulation.get_statevector_from_qasm(qasm).round(3)
 
         expected_statevector = numpy.array([0, -1, 0, 1]) / numpy.sqrt(2)

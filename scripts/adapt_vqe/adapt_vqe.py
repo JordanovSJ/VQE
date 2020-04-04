@@ -30,7 +30,7 @@ if __name__ == "__main__":
     LogUtils.log_cofig()
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons, rescaled=True, extended=True,
+    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons, rescaled=True, parity_dependence=True,
                                        d_exc_correction=True).get_double_exchanges()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},)

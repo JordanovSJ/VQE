@@ -59,7 +59,7 @@ class QasmUtils:
         return ''.join(qasm)
 
     @staticmethod
-    def controlled_y_gate(angle, control, target):
+    def controlled_y_rotation(angle, control, target):
         qasm = ['']
         qasm.append('ry({}) q[{}];\n'.format(angle/2, target))
         qasm.append('cx q[{}], q[{}];\n'.format(control, target))
@@ -68,12 +68,26 @@ class QasmUtils:
 
         return ''.join(qasm)
 
+    @staticmethod
+    def n_controlled_y_rotation(angle, controls, target):
+        if not controls:
+            return 'ry({}) q[{}];\n'.format(angle, target)
+        else:
+            qasm = ['']
+
+            qasm.append(QasmUtils.n_controlled_y_rotation(angle/2, controls[:-1], target))
+            qasm.append('cx q[{}], q[{}];\n'.format(controls[-1], target))
+            qasm.append(QasmUtils.n_controlled_y_rotation(-angle/2, controls[:-1], target))
+            qasm.append('cx q[{}], q[{}];\n'.format(controls[-1], target))
+
+            return ''.join(qasm)
+
     # this is simplified exchange gate, that does not change phases
     @staticmethod
     def partial_exchange_gate(angle, control, target):
         qasm = ['']
         qasm.append('cx q[{}], q[{}];\n'.format(target, control))
-        qasm.append(QasmUtils.controlled_y_gate(2 * angle, control, target))  # the factor of 2 is convenience
+        qasm.append(QasmUtils.controlled_y_rotation(2 * angle, control, target))  # the factor of 2 is convenience
         qasm.append('cx q[{}], q[{}];\n'.format(target, control))
 
         return ''.join(qasm)

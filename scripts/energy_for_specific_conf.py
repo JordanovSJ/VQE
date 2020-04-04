@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF
-from src.ansatz_elements import UCCGSD, UCCSD, DoubleExchange, SingleExchange
+from src.ansatz_elements import UCCGSD, UCCSD, DoubleExchange, SingleExchange, CustomDoubleExcitation
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
 
@@ -26,17 +26,17 @@ if __name__ == "__main__":
 
     # uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
     ansatz_elements = []
-    ansatz_element_1 = DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, parity_dependence=True)
+    ansatz_element_1 = CustomDoubleExcitation([4, 5], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
     ansatz_elements.append(ansatz_element_1)
-    ansatz_element_2 = DoubleExchange([2, 5], [10, 11], rescaled_parameter=True, parity_dependence=True)
+    ansatz_element_2 = CustomDoubleExcitation([2, 5], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
     ansatz_elements.append(ansatz_element_2)
-    ansatz_element_3 = DoubleExchange([2, 3], [10, 11], rescaled_parameter=True, parity_dependence=True)
+    ansatz_element_3 = CustomDoubleExcitation([2, 3], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
     ansatz_elements.append(ansatz_element_3)
-    ansatz_element_4 = DoubleExchange([3, 4], [10, 11], rescaled_parameter=True, parity_dependence=True)
+    ansatz_element_4 = CustomDoubleExcitation([3, 4], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
     ansatz_elements.append(ansatz_element_4)
-    ansatz_element_5 = DoubleExchange([6, 7], [10, 11], rescaled_parameter=True, parity_dependence=True)
+    ansatz_element_5 = CustomDoubleExcitation([6, 7], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
     ansatz_elements.append(ansatz_element_5)
-    ansatz_element_6 = DoubleExchange([8, 9], [10, 11], rescaled_parameter=True, parity_dependence=True)
+    ansatz_element_6 = CustomDoubleExcitation([8, 9], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
     ansatz_elements.append(ansatz_element_6)
     ansatz_element_7 = SingleExchange(4, 10)
     ansatz_elements.append(ansatz_element_7)
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     ansatz_elements.append(ansatz_element_9)
     ansatz_element_10 = SingleExchange(2, 10)
     ansatz_elements.append(ansatz_element_10)
-    ansatz_element_11 = DoubleExchange([0, 1], [10, 11], rescaled_parameter=True, parity_dependence=True)
+    ansatz_element_11 = CustomDoubleExcitation([0, 1], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
     ansatz_elements.append(ansatz_element_11)
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
