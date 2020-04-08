@@ -22,7 +22,7 @@ if __name__ == "__main__":
     r = 0.995
 
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    ansatz_element_0 = DoubleExchange([4, 5], [10, 11], rescaled_parameter=False, parity_dependence=True)
+    ansatz_element_0 = DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, parity_dependence=False, d_exc_correction=False)
 
     ansatz_element_1 = DoubleExchange([4, 5], [10, 11], rescaled_parameter=True)
     # ansatz_element_2 = DoubleExchange([3, 4], [10, 11], rescaled=True)
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
                            molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')
 
-    angles = (numpy.arange(40) - 20)*numpy.pi/100
+    angles = (numpy.arange(40) - 20)*numpy.pi/200
     energies = []
     for angle in angles:
         energies.append(vqe_runner.get_energy([angle],ansatz_elements))

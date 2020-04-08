@@ -17,7 +17,7 @@ import ray
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     molecule = BeH2
-    r = 1.3264
+    r = 1.316
     max_n_iterations = 2000
 
     accuracy = 1e-6  # 1e-3 for chemical accuracy
@@ -29,24 +29,19 @@ if __name__ == "__main__":
 
     LogUtils.log_cofig()
 
-    # create a pool of ansatz elements
-    initial_ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_double_excitation_list()
+    logging.info('Continued simulation: adapt_ESD BeH2 rescaled, corrected, parity')
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},)
-    hf_energy = vqe_runner.hf_energy
+    pool_d_exc_qubits = [[[0, 1], [6, 7]], [[0, 1], [8, 9]], [[0, 1], [10, 11]], [[0, 1], [12, 13]], [[0, 3], [6, 7]],
+                          [[0, 3], [8, 9]], [[0, 3], [10, 11]], [ [0, 3], [12, 13]], [[0, 4], [10, 12]], [[0, 5], [10, 13]],
+                          [[0, 5], [11, 12]], [[1, 2], [6, 7]], [[1, 2], [8, 9]], [[1, 2], [10, 11]], [[1, 2], [12, 13]],
+                          [ [1, 4], [10, 13]], [ [1, 4], [11, 12]], [[1, 5], [11, 13]], [[2, 3], [6, 7]], [ [2, 3], [8, 9]],
+                          [[2, 3], [10, 11]], [[2, 3], [12, 13]], [[2, 4], [10, 12]], [[2, 5], [10, 13]], [ [2, 5], [11, 12]],
+                          [[3, 4], [10, 13]], [[3, 4], [11, 12]], [[3, 5], [11, 13]], [[4, 5], [6, 7]], [[4, 5], [8, 9]],
+                          [[4, 5], [10, 11]], [[4, 5], [12, 13]]]
 
-    # get a new ansatz element pool
-    elements_results = AdaptAnsatzUtils.get_ansatz_elements_above_threshold(vqe_runner,
-                                                                            initial_ansatz_elements_pool,
-                                                                            hf_energy - threshold,
-                                                                            multithread=multithread)
-    new_ansatz_element_pool = []
-    for element, result in elements_results:
-        new_ansatz_element_pool.append(element)
-        message = 'New ansatz element added to updated pool, {}. Delta E = {}' \
-            .format(element.element, result.fun - hf_energy)
-        logging.info(message)
-        print(message)
+    new_ansatz_element_pool = \
+        [DoubleExchange(qubits[0], qubits[1], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True)
+         for qubits in pool_d_exc_qubits]
 
     new_ansatz_element_pool += UCCSD(molecule.n_orbitals, molecule.n_electrons).get_single_excitation_list()
 
@@ -54,18 +49,38 @@ if __name__ == "__main__":
     logging.info(message)
     print(message)
 
-    ansatz_elements = [DoubleExcitation([4, 5], [10, 11]), DoubleExcitation([3, 4], [11, 12]),
-                       DoubleExcitation([2, 5], [10, 13]), DoubleExcitation([2, 3], [10, 11]),
-                       DoubleExcitation([4, 5], [12, 13]), DoubleExcitation([2, 3], [6, 7]),
-                       DoubleExcitation([2, 5], [11, 12]), DoubleExcitation([3, 4], [10, 13]),
-                       DoubleExcitation([2, 3], [8, 9]), DoubleExcitation([2, 3], [12, 13]),
-                       SingleExcitation(3, 11)]
+    ansatz_elements = [DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
+                       DoubleExchange([2, 3], [10, 11], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
+                       DoubleExchange([2, 5], [10, 13], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
+                       DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
+                       DoubleExchange([4, 5], [12, 13], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
+                       DoubleExchange([2, 3], [8, 9], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
+                       DoubleExchange([2, 3], [6, 7], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
+                       DoubleExchange([2, 5], [11, 12], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       DoubleExchange([3, 4], [10, 13], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       DoubleExchange([2, 3], [12, 13], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       SingleExchange(5, 10), SingleExchange(2, 10), SingleExchange(3, 11)
+                       ]
+
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}, )
+    hf_energy = vqe_runner.hf_energy
+
     count = 0
     current_energy = hf_energy
     previous_energy = 0
-    var_parameters = [0.07524622301174176, 0.048566337341091864, 0.04878703191135014, 0.05903878703114574,
-                      0.04106504718231557, 0.05408221080970733, -0.042467237248041294, -0.04153775187828831,
-                      0.05425409011047975, 0.028003214545926677, -0.011157935689415909, 0.0]
+    var_parameters = [-0.006286855482474437, 0.02322160352844799, 0.01761525382660268, 0.01295646822009815,
+                      0.01666999491692214, 0.02171421596304153, 0.021744136592131823, -0.017092625626106632,
+                      -0.017067333762441125, 0.03798730875674191, 0.010456438059108284, 0.009035857484448868,
+                      -0.0060881581645557915, -0.019570178119205736, -0.011190260456751982, 0.010990888659595147, 0.0]
 
     while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:
         count += 1

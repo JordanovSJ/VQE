@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     accuracy = 1e-5  # 1e-3 for chemical accuracy
     threshold = 1e-7
-    max_ansatz_elements = 15
+    max_ansatz_elements = 20
 
     multithread = True
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
