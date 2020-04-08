@@ -51,24 +51,29 @@ if __name__ == "__main__":
 
     ansatz_elements = [DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
                        DoubleExchange([2, 3], [10, 11], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
-                       DoubleExchange([2, 5], [10, 13], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
                        DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
                        DoubleExchange([4, 5], [12, 13], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
-                       DoubleExchange([2, 3], [8, 9], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
                        DoubleExchange([2, 3], [6, 7], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
+                       DoubleExchange([3, 4], [10, 13] , rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+
                        DoubleExchange([2, 5], [11, 12], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-                       DoubleExchange([3, 4], [10, 13], rescaled_parameter=True, d_exc_correction=True,
+                       DoubleExchange([2, 5], [10, 13], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-                       DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
+                       DoubleExchange([2, 3], [8, 9], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
                        DoubleExchange([2, 3], [12, 13], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-                       DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True,
+                       DoubleExchange([3, 5], [11, 13], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       DoubleExchange([2, 4], [10, 12], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
                        DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-                       SingleExchange(5, 10), SingleExchange(2, 10), SingleExchange(3, 11)
+                       DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       SingleExchange( 3, 12)
                        ]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}, )
@@ -77,10 +82,10 @@ if __name__ == "__main__":
     count = 0
     current_energy = hf_energy
     previous_energy = 0
-    var_parameters = [-0.006286855482474437, 0.02322160352844799, 0.01761525382660268, 0.01295646822009815,
-                      0.01666999491692214, 0.02171421596304153, 0.021744136592131823, -0.017092625626106632,
-                      -0.017067333762441125, 0.03798730875674191, 0.010456438059108284, 0.009035857484448868,
-                      -0.0060881581645557915, -0.019570178119205736, -0.011190260456751982, 0.010990888659595147, 0.0]
+    var_parameters =[0.02542504343149286, 0.022800826074214103, 0.019658085166753464, 0.016359315630631654,
+                     0.020856005034729494, -0.015290856033162612, -0.015482320072768922, 0.017327150133654004,
+                     0.020917710627941843, 0.0089730955422877, 0.0030479645826446636, 0.003004512035924215,
+                     -0.0015, -0.003517727107124633, -0.014030400855921022, 0.0]
 
     while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:
         count += 1

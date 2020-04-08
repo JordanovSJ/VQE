@@ -25,6 +25,8 @@
 
 12. Decrease qubits/orbitals considered whenever possible??
 
+13. A method to calculate parameter gradients, to feed to a non-gradient free optimizer
+
 DONE:
 
 10. Logging
