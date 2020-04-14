@@ -43,7 +43,7 @@ if __name__ == "__main__":
         [DoubleExchange(qubits[0], qubits[1], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True)
          for qubits in pool_d_exc_qubits]
 
-    new_ansatz_element_pool += UCCSD(molecule.n_orbitals, molecule.n_electrons).get_single_excitation_list()
+    new_ansatz_element_pool += UCCSD(molecule.n_orbitals, molecule.n_electrons).get_single_excitations()
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)

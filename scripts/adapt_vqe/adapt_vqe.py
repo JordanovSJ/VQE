@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     # create a pool of ansatz elements
     initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons, rescaled=True, parity_dependence=True,
-                                       d_exc_correction=True).get_double_exchanges()
+                                       d_exc_correction=True, bosonic_excitation=True).get_double_excitations()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},)
     hf_energy = vqe_runner.hf_energy
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         logging.info(message)
         print(message)
 
-    new_ansatz_element_pool += UCCSD(molecule.n_orbitals, molecule.n_electrons).get_single_excitation_list()
+    new_ansatz_element_pool += ESD(molecule.n_orbitals, molecule.n_electrons).get_single_excitations()
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)

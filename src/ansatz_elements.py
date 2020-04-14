@@ -100,8 +100,8 @@ class DoubleExchange(AnsatzElement):
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
         qasm = ['']
-        qasm.append(QasmUtils.partial_exchange_gate(angle, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate(-angle, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange_gate(angle, qubit_pair_1[0], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate(-angle, qubit_pair_1[1], qubit_pair_2[1]))
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
 
         # correction 3rd order terms approximates the operation of a double exchange
@@ -110,8 +110,8 @@ class DoubleExchange(AnsatzElement):
         # not correcting 3rd order terms approximates the operation of a double excitation (with 3rd order error terms)
         else:
             angle_2 = angle
-        qasm.append(QasmUtils.partial_exchange_gate(-angle_2, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate(angle_2, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange_gate(-angle_2, qubit_pair_1[0], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange_gate(angle_2, qubit_pair_1[1], qubit_pair_2[1]))
 
         if parity_dependence:
             # do not include the first qubit of the second pair
@@ -242,17 +242,93 @@ class CustomDoubleExcitation(AnsatzElement):
         return self.custom_double_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2) #, parity_dependence=self.parity_dependence)
 
 
+class OptimizedDoubleExcitation(AnsatzElement):
+    def __init__(self, qubit_pair_1, qubit_pair_2):
+        self.qubit_pair_1 = qubit_pair_1
+        self.qubit_pair_2 = qubit_pair_2
+        super(OptimizedDoubleExcitation, self).__init__(element='optimized_d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
+                                                        element_type=str(self), n_var_parameters=1)
+
+    @staticmethod
+    def optimized_d_bosonic_excitation(angle, qubit_pair_1, qubit_pair_2):
+        qasm = ['']
+
+        # 1st term
+        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi/2, qubit_pair_2[1]))  # S^
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[0]))
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('rz({}) q[{}];\n'.format(angle, qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+        # 2nd term
+        qasm.append('rz({}) q[{}];\n'.format(angle, qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))
+
+        # 3rd term (-)
+        qasm.append('rz({}) q[{}];\n'.format(-angle, qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+        # 4rd term (-)
+        qasm.append('rz({}) q[{}];\n'.format(-angle, qubit_pair_2[1]))
+        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi/2, qubit_pair_1[1]))  # S^
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[1]))
+
+        # 5th term
+        qasm.append('rz({}) q[{}];\n'.format(angle, qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+        # 6th term
+        qasm.append('rz({}) q[{}];\n'.format(angle, qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))
+
+        # 7th term
+        qasm.append('rz({}) q[{}];\n'.format(-angle, qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+        # 8th term
+        qasm.append('rz({}) q[{}];\n'.format(-angle, qubit_pair_2[1]))
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[0]))
+
+        qasm.append('rz({}) q[{}];\n'.format(numpy.pi/2, qubit_pair_1[1]))  # S
+
+        return ''.join(qasm)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        parameter = var_parameters[0]
+
+        return self.optimized_d_bosonic_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
+
+
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # exchange single and double
 class ESD:
-    def __init__(self, n_orbitals, n_electrons, rescaled=False, parity_dependence=False, d_exc_correction=False):
+    def __init__(self, n_orbitals, n_electrons, rescaled=False, parity_dependence=False, d_exc_correction=False,
+                 bosonic_excitation=False):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.rescaled = rescaled
         self.parity_dependence = parity_dependence
         self.d_exc_correction = d_exc_correction
+        self.bosonic_excitation = bosonic_excitation
 
-    def get_single_exchanges(self):
+    def get_single_excitations(self):
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
@@ -260,43 +336,56 @@ class ESD:
 
         return single_excitations
 
-    def get_double_exchanges(self):
+    def get_double_excitations(self):
         double_excitations = []
         for i in range(self.n_electrons - 1):
             for j in range(i + 1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
-                        double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
-                                                                 parity_dependence=self.parity_dependence,
-                                                                 d_exc_correction=self.d_exc_correction))
+                        if self.bosonic_excitation:
+                            double_excitations.append(OptimizedDoubleExcitation([i, j], [k, l]))
+                        else:
+                            double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
+                                                                     parity_dependence=self.parity_dependence,
+                                                                     d_exc_correction=self.d_exc_correction))
 
         return double_excitations
 
     def get_ansatz_elements(self):
-        return self.get_single_exchanges() + self.get_double_exchanges()
+        return self.get_single_excitations() + self.get_double_excitations()
 
 
 class EGSD:
-    def __init__(self, n_orbitals, n_electrons):
+    def __init__(self, n_orbitals, n_electrons, rescaled=False, parity_dependence=False, d_exc_correction=False,
+                 bosonic_excitation=False):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
+        self.rescaled = rescaled
+        self.parity_dependence = parity_dependence
+        self.d_exc_correction = d_exc_correction
+        self.bosonic_excitation = bosonic_excitation
 
-    def get_single_exchanges(self):
+    def get_single_excitations(self):
         single_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 2):
             single_excitations.append(SingleExchange(*indices))
 
         return single_excitations
 
-    def get_double_exchanges(self):
+    def get_double_excitations(self):
         double_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 4):
-            double_excitations.append(DoubleExchange(indices[:2], indices[-2:]))
+            if self.bosonic_excitation:
+                double_excitations.append(OptimizedDoubleExcitation(indices[:2], indices[-2:]))
+            else:
+                double_excitations.append(DoubleExchange(indices[:2], indices[-2:], rescaled_parameter=self.rescaled,
+                                                         parity_dependence=self.parity_dependence,
+                                                         d_exc_correction=self.d_exc_correction))
 
         return double_excitations
 
     def get_ansatz_elements(self):
-        return self.get_single_exchanges() + self.get_double_exchanges()
+        return self.get_single_excitations() + self.get_double_excitations()
 
 
 class UCCSD:
@@ -304,32 +393,24 @@ class UCCSD:
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
 
-    def get_single_excitation_list(self):
+    def get_single_excitations(self):
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
-                # fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(j, i))
-                # excitation = jordan_wigner(fermi_operator)
-                # single_excitations.append(AnsatzElement('excitation', excitation=excitation, element=fermi_operator,
-                #                                         excitation_order=1))
                 single_excitations.append(SingleExcitation(i, j))
         return single_excitations
 
-    def get_double_excitation_list(self):
+    def get_double_excitations(self):
         double_excitations = []
         for i in range(self.n_electrons-1):
             for j in range(i+1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals-1):
                     for l in range(k+1, self.n_orbitals):
-                        # fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(i, j, k, l))
-                        # excitation = jordan_wigner(fermi_operator)
-                        # double_excitations.append(AnsatzElement('excitation', excitation=excitation, element=fermi_operator,
-                        #                                         excitation_order=2))
                         double_excitations.append(DoubleExcitation([i, j], [k, l]))
         return double_excitations
 
     def get_ansatz_elements(self):
-        return self.get_single_excitation_list() + self.get_double_excitation_list()
+        return self.get_single_excitations() + self.get_double_excitations()
 
 
 class UCCGSD:
@@ -337,7 +418,7 @@ class UCCGSD:
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
 
-    def get_single_excitation_list(self):
+    def get_single_excitations(self):
         single_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 2):
             fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
@@ -346,7 +427,7 @@ class UCCGSD:
                                                     excitation_order=1))
         return single_excitations
 
-    def get_double_excitation_list(self):
+    def get_double_excitations(self):
         double_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 4):
             fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(* indices))
@@ -356,7 +437,7 @@ class UCCGSD:
         return double_excitations
 
     def get_ansatz_elements(self):
-        return self.get_single_excitation_list() + self.get_double_excitation_list()
+        return self.get_single_excitations() + self.get_double_excitations()
 
 
 
