@@ -16,8 +16,8 @@ import ray
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    molecule = HF
-    r = 0.995
+    molecule = H2
+    r = 0.735
     max_n_iterations = 2000
 
     accuracy = 1e-5  # 1e-3 for chemical accuracy

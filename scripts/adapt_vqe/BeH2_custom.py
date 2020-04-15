@@ -56,7 +56,6 @@ if __name__ == "__main__":
                        DoubleExchange([2, 3], [6, 7], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
                        DoubleExchange([3, 4], [10, 13] , rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-
                        DoubleExchange([2, 5], [11, 12], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
                        DoubleExchange([2, 5], [10, 13], rescaled_parameter=True, d_exc_correction=True,
@@ -73,7 +72,15 @@ if __name__ == "__main__":
                                       parity_dependence=True),
                        DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-                       SingleExchange( 3, 12)
+                       SingleExchange(3, 12), SingleExchange(4, 11),
+                       DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       SingleExchange(2, 13),
+                       DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       DoubleExchange([3, 4], [10, 13], rescaled_parameter=True, d_exc_correction=True,
+                                      parity_dependence=True),
+                       SingleExchange(3, 13),
                        ]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}, )
@@ -82,10 +89,12 @@ if __name__ == "__main__":
     count = 0
     current_energy = hf_energy
     previous_energy = 0
-    var_parameters =[0.02542504343149286, 0.022800826074214103, 0.019658085166753464, 0.016359315630631654,
-                     0.020856005034729494, -0.015290856033162612, -0.015482320072768922, 0.017327150133654004,
-                     0.020917710627941843, 0.0089730955422877, 0.0030479645826446636, 0.003004512035924215,
-                     -0.0015, -0.003517727107124633, -0.014030400855921022, 0.0]
+    var_parameters =[0.028669163026094503, 0.022537232912906303, 0.017489866500661134, 0.01629385690836846,
+                     0.020851881457013468, -0.017647056790242338, -0.015327407983115066, 0.01789008153595026,
+                     0.020923010546973268, 0.009497179062575096, 0.0024758813833710277, 0.0031049292770414087,
+                     -0.0006, -0.0016353927583732481, -0.0072252648121858744,
+                     -0.03436254148045186, -0.0011640242426753896, -0.0011606935508930922, -0.0085,
+                     0.0024093251382888855, 0.00991045371533506, 0.0]
 
     while previous_energy - current_energy >= accuracy or count > max_ansatz_elements:
         count += 1
