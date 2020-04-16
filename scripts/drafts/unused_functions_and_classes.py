@@ -210,7 +210,7 @@ class ExchangeAnsatz1(AnsatzElement):
                 qasm.append('rz({}) q[{}];\n'.format(angle, virtual_orbital))
 
                 angle = var_parameters_cycle.__next__()
-                qasm.append(QasmUtils.partial_exchange_gate(angle, occupied_orbital, virtual_orbital))
+                qasm.append(QasmUtils.partial_exchange(angle, occupied_orbital, virtual_orbital))
 
             # TODO add exchanges between the last unoccupied orbitals?
 
@@ -221,11 +221,11 @@ class ExchangeAnsatz1(AnsatzElement):
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
         qasm = ['']
-        qasm.append(QasmUtils.partial_exchange_gate(angle, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate(-angle, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange(angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange(-angle, qubit_pair_1[0], qubit_pair_2[1]))
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
-        qasm.append(QasmUtils.partial_exchange_gate(-angle, qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append(QasmUtils.partial_exchange_gate(angle, qubit_pair_1[0], qubit_pair_2[1]))
+        qasm.append(QasmUtils.partial_exchange(-angle, qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append(QasmUtils.partial_exchange(angle, qubit_pair_1[0], qubit_pair_2[1]))
         # corrections
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
         return ''.join(qasm)
@@ -272,11 +272,11 @@ class ExchangeAnsatzBlock(AnsatzElement):
         # single orbital exchanges
         for qubit in range(self.n_orbitals):
             if qubit % 2 == 0:
-                qasm.append(QasmUtils.partial_exchange_gate(var_parameters_cycle.__next__(),
-                                                            qubit, (qubit + 1) % self.n_orbitals))
+                qasm.append(QasmUtils.partial_exchange(var_parameters_cycle.__next__(),
+                                                       qubit, (qubit + 1) % self.n_orbitals))
                 count += 1
-                qasm.append(QasmUtils.partial_exchange_gate(var_parameters_cycle.__next__(),
-                                                            (qubit+1) % self.n_orbitals, (qubit + 2) % self.n_orbitals))
+                qasm.append(QasmUtils.partial_exchange(var_parameters_cycle.__next__(),
+                                                       (qubit+1) % self.n_orbitals, (qubit + 2) % self.n_orbitals))
                 count += 1
         assert count == len(var_parameters)
         return ''.join(qasm)
@@ -284,25 +284,68 @@ class ExchangeAnsatzBlock(AnsatzElement):
 
 # DOES NOT WORK!!!!!!!!!!!
 # performs a CP operation on q1 and q2 if the parity of {q} is odd, where q1 belongs to {q}, and q2 does not
+@staticmethod
+def parity_controlled_phase_gate(parity_qubits, qubit_1, qubit_2, reverse=False):
+    qasm = ['']
+    # ladder of cnots
+    cnots = ['']
+
+    parity_qubits = list(parity_qubits)
+    control_qubits = parity_qubits + [qubit_1]
+
+    for i in range(len(control_qubits) - 1):
+        cnots.append('cx q[{}], q[{}];\n'.format(control_qubits[i], control_qubits[i+1]))
+
+    qasm += cnots
+    if reverse:
+        qasm.append('x q[{}];\n'.format(qubit_1))
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('x q[{}];\n'.format(qubit_1))
+    else:
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+    qasm += cnots[::-1]
+
+    return ''.join(qasm)
+
+class CustomDoubleExcitation(AnsatzElement):
+    def __init__(self, qubit_pair_1, qubit_pair_2, parity_dependence=False):
+        self.qubit_pair_1 = qubit_pair_1
+        self.qubit_pair_2 = qubit_pair_2
+        self.parity_dependence = parity_dependence
+        super(CustomDoubleExcitation, self).__init__(element='d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
+                                                     element_type=str(self), n_var_parameters=1)
+
     @staticmethod
-    def parity_controlled_phase_gate(parity_qubits, qubit_1, qubit_2, reverse=False):
+    def custom_double_excitation(angle, qubit_pair_1, qubit_pair_2):
         qasm = ['']
-        # ladder of cnots
-        cnots = ['']
 
-        parity_qubits = list(parity_qubits)
-        control_qubits = parity_qubits + [qubit_1]
+        # determine tha parity of the two qubit pairs
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
 
-        for i in range(len(control_qubits) - 1):
-            cnots.append('cx q[{}], q[{}];\n'.format(control_qubits[i], control_qubits[i+1]))
+        # perform partial single qubit exchange on q0 and q2, controlled by q1 = |0> and q3 = |0>
 
-        qasm += cnots
-        if reverse:
-            qasm.append('x q[{}];\n'.format(qubit_1))
-            qasm.append('cz q[{}], q[{}];\n'.format(qubit_1, qubit_2))
-            qasm.append('x q[{}];\n'.format(qubit_1))
-        else:
-            qasm.append('cz q[{}], q[{}];\n'.format(qubit_1, qubit_2))
-        qasm += cnots[::-1]
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+        # TODO add parity dependence
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_1[0]))
+        qasm.append(QasmUtils.n_controlled_y_rotation(angle=angle, controls=[*qubit_pair_1, qubit_pair_2[1]],
+                                                      target=qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_1[0]))
+
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
 
         return ''.join(qasm)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        parameter = var_parameters[0]
+
+        return self.custom_double_excitation(parameter, self.qubit_pair_1,
+                                             self.qubit_pair_2)  # , parity_dependence=self.parity_dependence)
+

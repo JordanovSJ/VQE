@@ -84,12 +84,37 @@ class QasmUtils:
 
     # this is simplified exchange gate, that does not change phases
     @staticmethod
-    def partial_exchange_gate(angle, control, target):
+    def partial_exchange(angle, control, target):
         qasm = ['']
         qasm.append('cx q[{}], q[{}];\n'.format(target, control))
         qasm.append(QasmUtils.controlled_y_rotation(2 * angle, control, target))  # the factor of 2 is convenience
         qasm.append('cx q[{}], q[{}];\n'.format(target, control))
 
+        return ''.join(qasm)
+
+    @staticmethod
+    def controlled_zx(qubit_1, qubit_2):
+        qasm = ['']
+        qasm.append('h q[{}];\n'.format(qubit_2))
+        qasm.append('rz({}) q[{}];\n'.format(numpy.pi/2, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi/2, qubit_2))
+        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_1))
+        qasm.append('h q[{}];\n'.format(qubit_2))
+
+        return ''.join(qasm)
+
+    @staticmethod
+    def efficient_partial_exchange(angle, qubit_1, qubit_2):
+        theta = numpy.pi/2 - angle
+        qasm = ['']
+        qasm.append(QasmUtils.controlled_zx(qubit_2, qubit_1))
+
+        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
         return ''.join(qasm)
 
     # return a qasm circuit for preparing the HF state
