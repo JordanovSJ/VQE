@@ -93,13 +93,19 @@ class QasmUtils:
         return ''.join(qasm)
 
     @staticmethod
-    def controlled_zx(qubit_1, qubit_2):
+    def controlled_xz(qubit_1, qubit_2, reverse=False):
         qasm = ['']
         qasm.append('h q[{}];\n'.format(qubit_2))
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi/2, qubit_2))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
-        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi/2, qubit_2))
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_1))
+        if reverse:
+            qasm.append('rz({}) q[{}];\n'.format(numpy.pi/2, qubit_2))
+            qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_1))
+            qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+            qasm.append('rz({}) q[{}];\n'.format(-numpy.pi/2, qubit_2))
+        else:
+            qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_2))
+            qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+            qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_2))
+            qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_1))
         qasm.append('h q[{}];\n'.format(qubit_2))
 
         return ''.join(qasm)
@@ -108,13 +114,14 @@ class QasmUtils:
     def efficient_partial_exchange(angle, qubit_1, qubit_2):
         theta = numpy.pi/2 - angle
         qasm = ['']
-        qasm.append(QasmUtils.controlled_zx(qubit_2, qubit_1))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
 
         qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
         qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
 
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
+
         return ''.join(qasm)
 
     # return a qasm circuit for preparing the HF state

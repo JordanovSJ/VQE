@@ -38,7 +38,7 @@ class EfficientDoubleExchange(AnsatzElement):
         qasm = ['']
 
         # 1st exchange + 0-2
-        qasm.append(QasmUtils.controlled_zx(qubit_pair_2[0], qubit_pair_1[0]))
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_2[0], qubit_pair_1[0]))
         qasm.append('ry({}) q[{}];\n'.format(theta_1, qubit_pair_2[0]))
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
         qasm.append('ry({}) q[{}];\n'.format(-theta_1, qubit_pair_2[0]))
@@ -46,7 +46,7 @@ class EfficientDoubleExchange(AnsatzElement):
         # qasm.append(QasmUtils.efficient_partial_exchange(angle, qubit_pair_1[0], qubit_pair_2[0]))
 
         # 2nd exchange + 1-3
-        qasm.append(QasmUtils.controlled_zx(qubit_pair_2[1], qubit_pair_1[1]))
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_2[1], qubit_pair_1[1]))
         qasm.append('ry({}) q[{}];\n'.format(theta_1, qubit_pair_2[1]))
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[1]))
         qasm.append('ry({}) q[{}];\n'.format(-theta_1, qubit_pair_2[1]))
@@ -54,6 +54,8 @@ class EfficientDoubleExchange(AnsatzElement):
         # qasm.append(QasmUtils.efficient_partial_exchange(angle, qubit_pair_1[1], qubit_pair_2[1]))
 
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+        # qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))
+
         # correction 3rd order terms approximates the operation of a double exchange
         if d_exc_correction:
             angle_2 = DoubleExchange.second_angle(angle)
@@ -66,7 +68,7 @@ class EfficientDoubleExchange(AnsatzElement):
         qasm.append('ry({}) q[{}];\n'.format(theta_2, qubit_pair_2[0]))
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
         qasm.append('ry({}) q[{}];\n'.format(-theta_2, qubit_pair_2[0]))
-        qasm.append(QasmUtils.controlled_zx(qubit_pair_2[0], qubit_pair_1[0]))
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_2[0], qubit_pair_1[0], reverse=True))
 
         # qasm.append(QasmUtils.efficient_partial_exchange(-angle_2, qubit_pair_1[0], qubit_pair_2[0]))
 
@@ -74,7 +76,7 @@ class EfficientDoubleExchange(AnsatzElement):
         qasm.append('ry({}) q[{}];\n'.format(theta_2, qubit_pair_2[1]))
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[1]))
         qasm.append('ry({}) q[{}];\n'.format(-theta_2, qubit_pair_2[1]))
-        qasm.append(QasmUtils.controlled_zx(qubit_pair_2[1], qubit_pair_1[1]))
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_2[1], qubit_pair_1[1], reverse=True))
 
         # qasm.append(QasmUtils.efficient_partial_exchange(-angle_2, qubit_pair_1[1], qubit_pair_2[1]))
 
