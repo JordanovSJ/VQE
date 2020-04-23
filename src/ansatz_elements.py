@@ -102,6 +102,7 @@ class DoubleExchange(AnsatzElement):
         qasm = ['']
         qasm.append(QasmUtils.partial_exchange(angle, qubit_pair_1[0], qubit_pair_2[0]))
         qasm.append(QasmUtils.partial_exchange(angle, qubit_pair_1[1], qubit_pair_2[1]))
+
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
 
         # correction 3rd order terms approximates the operation of a double exchange

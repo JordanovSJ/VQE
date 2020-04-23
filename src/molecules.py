@@ -1,6 +1,7 @@
 from openfermion.hamiltonians import MolecularData
 from openfermionpsi4 import run_psi4
 
+import numpy
 import abc
 
 # TODO make example molecules child classes?
@@ -29,10 +30,9 @@ class H2:
     charge: int = 0
     n_orbitals: int = 4
     n_electrons: int = 2
-    # ground_state_distance = 0.735
 
     @staticmethod
-    def geometry(distance=1):
+    def geometry(distance=0.735):
 
         return [
                 ['H', [0, 0, 0]],
@@ -46,10 +46,8 @@ class LiH:
     n_orbitals: int = 12
     n_electrons: int = 4
 
-    # ground_state_distance = 1.546
-
     @staticmethod
-    def geometry(distance=1):
+    def geometry(distance= 1.546):
         return [
             ['Li', [0, 0, 0]],
             ['H', [0, 0, distance]]]
@@ -61,10 +59,9 @@ class HF:
     charge: int = 0
     n_orbitals: int = 12
     n_electrons: int = 10
-    # ground_state_distance = 0.995
 
     @staticmethod
-    def geometry(distance=1):
+    def geometry(distance= 0.995):
         return [
             ['F', [0, 0, 0]],
             ['H', [0, 0, distance]]]
@@ -76,12 +73,27 @@ class BeH2:
     charge: int = 0
     n_orbitals: int = 14
     n_electrons: int = 6
-    # ground_state_distance = 1.316
 
     @staticmethod
-    def geometry(distance=1):
+    def geometry(distance=1.316):
         return [
             ['Be', [0, 0, 0]],
             ['H', [0, 0, distance]],
             ['H', [0, 0, -distance]]
+        ]
+
+
+class H2O:
+    name: str = 'H2O'
+    multiplicity: int = 1
+    charge: int = 0
+    n_orbitals: int = 14
+    n_electrons: int = 10
+
+    @staticmethod
+    def geometry(distance=1.028, theta=0.538):
+        return [
+            ['O', [0, 0, 0]],
+            ['H', [0, 0, -distance]],
+            ['H', [0, distance*numpy.sin(theta), distance*numpy.cos(theta)]]
         ]

@@ -43,16 +43,13 @@ class EfficientDoubleExchange(AnsatzElement):
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
         qasm.append('ry({}) q[{}];\n'.format(-theta_1, qubit_pair_2[0]))
 
-        # qasm.append(QasmUtils.efficient_partial_exchange(angle, qubit_pair_1[0], qubit_pair_2[0]))
-
         # 2nd exchange + 1-3
         qasm.append(QasmUtils.controlled_xz(qubit_pair_2[1], qubit_pair_1[1]))
         qasm.append('ry({}) q[{}];\n'.format(theta_1, qubit_pair_2[1]))
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[1]))
         qasm.append('ry({}) q[{}];\n'.format(-theta_1, qubit_pair_2[1]))
 
-        # qasm.append(QasmUtils.efficient_partial_exchange(angle, qubit_pair_1[1], qubit_pair_2[1]))
-
+        # CZ gates
         qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
         # qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))
 
@@ -70,15 +67,11 @@ class EfficientDoubleExchange(AnsatzElement):
         qasm.append('ry({}) q[{}];\n'.format(-theta_2, qubit_pair_2[0]))
         qasm.append(QasmUtils.controlled_xz(qubit_pair_2[0], qubit_pair_1[0], reverse=True))
 
-        # qasm.append(QasmUtils.efficient_partial_exchange(-angle_2, qubit_pair_1[0], qubit_pair_2[0]))
-
         # 4th exchange -1-3
         qasm.append('ry({}) q[{}];\n'.format(theta_2, qubit_pair_2[1]))
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[1]))
         qasm.append('ry({}) q[{}];\n'.format(-theta_2, qubit_pair_2[1]))
         qasm.append(QasmUtils.controlled_xz(qubit_pair_2[1], qubit_pair_1[1], reverse=True))
-
-        # qasm.append(QasmUtils.efficient_partial_exchange(-angle_2, qubit_pair_1[1], qubit_pair_2[1]))
 
         # correcting for parameter sign
         if parity_dependence:
@@ -145,10 +138,14 @@ class EfficientDoubleExchange(AnsatzElement):
             if angle > 0:
                 # adding a correcting CZ gate at the end will result in a minus sign
                 qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+                # qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))
+
             else:
                 # adding a correcting CZ gate at the front will result in a plus sign
-                qasm = ['cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1])] + qasm
-
+                qasm = ['cz q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]),
+                        ] \
+                       + qasm
+                # 'cz q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1])
         return ''.join(qasm)
 
     def get_qasm(self, var_parameters):
@@ -164,3 +161,60 @@ class EfficientDoubleExchange(AnsatzElement):
 
         return self.double_exchange(parameter, self.qubit_pair_1, self.qubit_pair_2,
                                     parity_dependence=self.parity_dependence, d_exc_correction=self.d_exc_correction)
+
+
+class EfficientDoubleExcitation2(AnsatzElement):
+    def __init__(self, qubit_pair_1, qubit_pair_2):
+        self.qubit_pair_1 = qubit_pair_1
+        self.qubit_pair_2 = qubit_pair_2
+        super(EfficientDoubleExcitation2, self).__init__(element='optimized_d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
+                                                         element_type=str(self), n_var_parameters=1)
+
+    @staticmethod
+    def efficient_double_excitation_2(angle, qubit_pair_1, qubit_pair_2):
+        qasm = ['']
+        theta = numpy.pi / 2 - angle / 2
+
+        # determine the parity of the two pairs
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        # partial exchange 1
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_2[0], qubit_pair_1[0]))
+        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
+        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_pair_2[0]))
+
+        # TODO add double CNOT
+        # <<<<<<<<<<< custom doubly controlled X gate >>>>>>>>>>>>
+        qasm.append('ry({}) q[{}];\n'.format(numpy.pi/4, qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append('ry({}) q[{}];\n'.format(-numpy.pi/4, qubit_pair_2[0]))
+
+        qasm.append('cz q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        qasm.append('ry({}) q[{}];\n'.format(numpy.pi / 4, qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append('ry({}) q[{}];\n'.format(-numpy.pi / 4, qubit_pair_2[0]))
+
+        # qasm.append('cz q[{}], q[{}];\n'.format(*qubit_pair_2)) ??????
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        # partial exchange 2 TODO check signs of theta
+        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
+        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_pair_2[0]))
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_2[0], qubit_pair_1[0], reverse=False))
+
+        # correct for parity determination
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        return ''.join(qasm)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        parameter = var_parameters[0]
+
+        return self.efficient_double_excitation_2(parameter, self.qubit_pair_1, self.qubit_pair_2)
+

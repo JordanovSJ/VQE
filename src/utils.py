@@ -75,9 +75,9 @@ class QasmUtils:
         else:
             qasm = ['']
 
-            qasm.append(QasmUtils.n_controlled_y_rotation(angle/2, controls[:-1], target))
+            qasm.append(QasmUtils.n_controlled_y_rotation(angle / 2, controls[:-1], target))
             qasm.append('cx q[{}], q[{}];\n'.format(controls[-1], target))
-            qasm.append(QasmUtils.n_controlled_y_rotation(-angle/2, controls[:-1], target))
+            qasm.append(QasmUtils.n_controlled_y_rotation(-angle / 2, controls[:-1], target))
             qasm.append('cx q[{}], q[{}];\n'.format(controls[-1], target))
 
             return ''.join(qasm)
