@@ -20,15 +20,43 @@ import matplotlib.pyplot as plt
 from src.utils import QasmUtils
 from src import backends
 
+
+def get_circuit_matrix(qasm):
+    backend = qiskit.Aer.get_backend('unitary_simulator')
+    qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm)
+    result = qiskit.execute(qiskit_circuit, backend).result()
+    matrix = result.get_unitary(qiskit_circuit, decimals=5)
+    return matrix
+
+
+def matrix_to_str(matrix):
+    str_m = '{'
+
+    for row in matrix:
+        str_m += '{'
+        for element in row:
+            str_m += str(element)
+            str_m += ','
+
+        str_m = str_m[:-1]  # remove last coma
+        str_m += '},'
+
+    str_m = str_m[:-1]  # remove last coma
+    str_m += '}'
+    str_m.replace('j', 'I')
+    return str_m
+
+
 if __name__ == "__main__":
 
     angle = 0.1
     n = 4
     qasm_init = ['']
     qasm_init.append(QasmUtils.qasm_header(n))
-    qasm_init.append('x q[0];\n')
+    # qasm_init.append('x q[1];\n')
+    # qasm_init.append('x q[0];\n')
     # qasm_init.append('h q[1];\n')
-    qasm_init.append('x q[1];\n')
+    # qasm_init.append('x q[3];\n')
     # qasm_init.append('x q[2];\n')
 
     qasm_1 = ['']
@@ -37,18 +65,6 @@ if __name__ == "__main__":
     # qasm_1.append(DoubleExchange([0, 1], [2, 3], d_exc_correction=False, parity_dependence=False,
     #                              rescaled_parameter=False).get_qasm([angle]))
     qasm_1.append(DoubleExcitation([0, 1], [2, 3]).get_qasm([angle]))
-
-    # qasm_1.append('ry({}) q[{}];\n'.format(numpy.pi / 4, 2))
-    # qasm_1.append('cx q[{}], q[{}];\n'.format(1, 2))
-    # qasm_1.append('ry({}) q[{}];\n'.format(-numpy.pi / 4, 2))
-    #
-    # qasm_1.append('cz q[{}], q[{}];\n'.format(0, 2))
-    #
-    # qasm_1.append('ry({}) q[{}];\n'.format(numpy.pi / 4, 2))
-    # qasm_1.append('cx q[{}], q[{}];\n'.format(1, 2))
-    # qasm_1.append('ry({}) q[{}];\n'.format(-numpy.pi / 4, 2))
-
-    # qasm_1.append('cz q[{}], q[{}];\n'.format(0, 2))
 
     statevector_1 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_1)).round(10)
 
@@ -64,5 +80,7 @@ if __name__ == "__main__":
     statevector_2 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_2)).round(10)
 
     print(statevector_2)
+
+    print(matrix_to_str(get_circuit_matrix(''.join(qasm_2))))
 
     print('spagetti')
