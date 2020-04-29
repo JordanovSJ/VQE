@@ -82,16 +82,6 @@ class QasmUtils:
 
             return ''.join(qasm)
 
-    # this is simplified exchange gate, that does not change phases
-    @staticmethod
-    def partial_exchange(angle, control, target):
-        qasm = ['']
-        qasm.append('cx q[{}], q[{}];\n'.format(target, control))
-        qasm.append(QasmUtils.controlled_y_rotation(2 * angle, control, target))  # the factor of 2 is convenience
-        qasm.append('cx q[{}], q[{}];\n'.format(target, control))
-
-        return ''.join(qasm)
-
     @staticmethod
     def controlled_xz(qubit_1, qubit_2, reverse=False):
         qasm = ['']
@@ -110,11 +100,12 @@ class QasmUtils:
 
         return ''.join(qasm)
 
+    # this is simplified single particle exchange gate, that does not change phases
     @staticmethod
-    def efficient_partial_exchange(angle, qubit_1, qubit_2):
+    def partial_exchange(angle, qubit_1, qubit_2):
         theta = numpy.pi/2 - angle
         qasm = ['']
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
+        qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
 
         qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))

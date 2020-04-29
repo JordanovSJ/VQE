@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF
-from src.ansatz_elements import UCCGSD, UCCSD, ESD, EGSD
+from src.ansatz_element_lists import UCCGSD, UCCSD, ESD, EGSD
 from src.backends import QiskitSimulation
 from src.utils import LogUtils, AdaptAnsatzUtils
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     r = 0.735
     max_n_iterations = 2000
 
-    accuracy = 1e-5  # 1e-3 for chemical accuracy
+    accuracy = 1e-6  # 1e-3 for chemical accuracy
     threshold = 1e-7
     max_ansatz_elements = 20
 
@@ -28,10 +28,10 @@ if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     LogUtils.log_cofig()
+    logging.info('{}, efficient double bosonic excitation'.format(molecule.name))
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons, rescaled=True, parity_dependence=True,
-                                       d_exc_correction=True, bosonic_excitation=True).get_double_excitations()
+    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons, bosonic_excitation=True).get_double_excitations()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r},)
     hf_energy = vqe_runner.hf_energy

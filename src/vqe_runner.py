@@ -13,7 +13,7 @@ from functools import partial
 
 import logging
 
-from src.ansatz_elements import UCCSD
+from src.ansatz_element_lists import UCCSD
 import ray
 
 
