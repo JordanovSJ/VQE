@@ -91,9 +91,9 @@ class H2O:
     n_electrons: int = 10
 
     @staticmethod
-    def geometry(distance=1.028, theta=0.538):
+    def geometry(distance=1.0285, theta=0.538*numpy.pi):
         return [
             ['O', [0, 0, 0]],
             ['H', [0, 0, -distance]],
-            ['H', [0, distance*numpy.sin(theta), distance*numpy.cos(theta)]]
+            ['H', [0, distance*numpy.sin(numpy.pi - theta), distance*numpy.cos(numpy.pi - theta)]]
         ]
