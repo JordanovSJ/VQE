@@ -21,7 +21,7 @@ class VQERunner:
     # Works for a single geometry
     def __init__(self, molecule, ansatz_elements=None, basis='sto-3g', molecule_geometry_params=None,
                  backend=backends.QiskitSimulation, initial_statevector_qasm=None, optimizer=None,
-                 optimizer_options=None, print_var_parameters=False):
+                 optimizer_options=None, print_var_parameters=False, run_fci=True):
 
         LogUtils.vqe_info(molecule, ansatz_elements=ansatz_elements, basis=basis,
                           molecule_geometry_params=molecule_geometry_params, backend=backend)
@@ -36,13 +36,14 @@ class VQERunner:
 
         self.molecule_data = MolecularData(geometry=molecule.geometry(**molecule_geometry_params),
                                            basis=basis, multiplicity=molecule.multiplicity, charge=molecule.charge)
-        self.molecule_psi4 = run_psi4(self.molecule_data)
+        self.molecule_psi4 = run_psi4(self.molecule_data, run_fci=run_fci)
 
         # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
         self.fermion_ham = get_fermion_operator(self.molecule_ham)
         self.jw_ham_qubit_operator = jordan_wigner(self.fermion_ham)
         self.hf_energy = self.molecule_psi4.hf_energy.item()
+        self.fci_energy = self.molecule_psi4.fci_energy.item()
 
         # ansatz_elements
         if ansatz_elements is None:
