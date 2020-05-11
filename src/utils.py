@@ -126,7 +126,7 @@ class QasmUtils:
 
     # get the qasm circuit of an excitation
     @staticmethod
-    def excitation_qasm(excitation, var_parameter):
+    def fermi_excitation_qasm(excitation, var_parameter):
         qasm = ['']
         for exponent_term in excitation.terms:
             exponent_angle = var_parameter * excitation.terms[exponent_term]
