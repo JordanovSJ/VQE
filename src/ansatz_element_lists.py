@@ -9,6 +9,65 @@ import numpy
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+class SDElements:
+    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None):
+        self.n_orbitals = n_orbitals
+        self.n_electrons = n_electrons
+        self.element_type = element_type
+
+        if element_type == 'exchange':
+            if d_exchange_vars is not None:
+                self.rescaled = d_exchange_vars['rescaled']
+                self.parity_dependence = d_exchange_vars['parity_dependence']
+                self.d_exc_correction = d_exchange_vars['d_exc_correction']
+                self.bosonic_excitation = d_exchange_vars['bosonic_excitation']
+            else:
+                self.rescaled = False
+                self.parity_dependence = False
+                self.bosonic_excitation = False
+
+    def get_single_excitations(self):
+        single_excitations = []
+        for i in range(self.n_electrons):
+            for j in range(self.n_electrons, self.n_orbitals):
+                if self.element_type == 'fermi_excitation':
+                    single_excitations.append(SingleFermiExcitation(i, j))
+                elif self.element_type == 'bos_excitation' or self.element_type == 'exchange':
+                    single_excitations.append(SingleBosExcitation(i, j))
+                elif self.element_type == 'efficient_fermi_excitation':
+                    # TODO
+                    print('TODO')
+                else:
+                    raise Exception('Invalid single excitation type.')
+
+        return single_excitations
+
+    def get_double_excitations(self):
+        double_excitations = []
+        for i in range(self.n_electrons - 1):
+            for j in range(i + 1, self.n_electrons):
+                for k in range(self.n_electrons, self.n_orbitals - 1):
+                    for l in range(k + 1, self.n_orbitals):
+                        if self.element_type == 'fermi_excitation':
+                            double_excitations.append(DoubleFermiExcitation([i, j], [k, l]))
+                        elif self.element_type == 'bosonic_excitation':
+                            double_excitations.append(DoubleBosExcitation([i, j], [k, l]))
+                        elif self.element_type == 'efficient_fermi_excitation':
+                            print('TODO')
+                        elif self.element_type == 'exchange':
+                            double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
+                                                                     parity_dependence=self.parity_dependence,
+                                                                     d_exc_correction=self.d_exc_correction))
+                        else:
+                            raise Exception('invalid double excitation type.')
+
+        return double_excitations
+
+    def get_ansatz_elements(self):
+        return self.get_single_excitations() + self.get_double_excitations()
+
+
 # exchange single and double
 class ESD:
     def __init__(self, n_orbitals, n_electrons, rescaled=False, parity_dependence=False, d_exc_correction=False,
@@ -24,7 +83,7 @@ class ESD:
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
-                single_excitations.append(SingleExchange(i, j))
+                single_excitations.append(SingleBosExcitation(i, j))
 
         return single_excitations
 
@@ -35,7 +94,7 @@ class ESD:
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
                         if self.bosonic_excitation:
-                            double_excitations.append(EfficientDoubleExcitation([i, j], [k, l]))
+                            double_excitations.append(DoubleBosExcitation([i, j], [k, l]))
                         else:
                             double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
                                                                      parity_dependence=self.parity_dependence,
@@ -60,7 +119,7 @@ class EGSD:
     def get_single_excitations(self):
         single_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 2):
-            single_excitations.append(SingleExchange(*indices))
+            single_excitations.append(SingleBosExcitation(*indices))
 
         return single_excitations
 
@@ -68,7 +127,7 @@ class EGSD:
         double_excitations = []
         for indices in itertools.combinations(range(self.n_orbitals), 4):
             if self.bosonic_excitation:
-                double_excitations.append(EfficientDoubleExcitation(indices[:2], indices[-2:]))
+                double_excitations.append(DoubleBosExcitation(indices[:2], indices[-2:]))
             else:
                 double_excitations.append(DoubleExchange(indices[:2], indices[-2:], rescaled_parameter=self.rescaled,
                                                          parity_dependence=self.parity_dependence,
@@ -89,7 +148,7 @@ class UCCSD:
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
-                single_excitations.append(SingleExcitation(i, j))
+                single_excitations.append(SingleFermiExcitation(i, j))
         return single_excitations
 
     def get_double_excitations(self):
@@ -98,7 +157,7 @@ class UCCSD:
             for j in range(i+1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals-1):
                     for l in range(k+1, self.n_orbitals):
-                        double_excitations.append(DoubleExcitation([i, j], [k, l]))
+                        double_excitations.append(DoubleFermiExcitation([i, j], [k, l]))
         return double_excitations
 
     def get_ansatz_elements(self):

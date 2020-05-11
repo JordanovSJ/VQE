@@ -38,18 +38,18 @@ class AnsatzElement:
         return max([len(terms[i]) for i in range(n_terms)])
 
 
-class SingleExcitation(AnsatzElement):
+class SingleFermiExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
         fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(qubit_2, qubit_1))
         excitation = jordan_wigner(fermi_operator)
 
-        super(SingleExcitation, self).__init__(element=fermi_operator, excitation=excitation, excitation_order=1
-                                               , element_type='excitation', n_var_parameters=1)
+        super(SingleFermiExcitation, self).__init__(element=fermi_operator, excitation=excitation, excitation_order=1
+                                                    , element_type=str(self), n_var_parameters=1)
 
 
-class DoubleExcitation(AnsatzElement):
+class DoubleFermiExcitation(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
@@ -58,20 +58,109 @@ class DoubleExcitation(AnsatzElement):
                                          .format(qubit_pair_1[0], qubit_pair_1[1], qubit_pair_2[0], qubit_pair_2[1]))
         excitation = jordan_wigner(fermi_operator)
 
-        super(DoubleExcitation, self).__init__(element=fermi_operator, excitation=excitation, excitation_order=2
-                                               , element_type='excitation', n_var_parameters=1)
+        super(DoubleFermiExcitation, self).__init__(element=fermi_operator, excitation=excitation, excitation_order=2
+                                                    , element_type=str(self), n_var_parameters=1)
 
 
-class SingleExchange(AnsatzElement):
+class SingleBosExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
-        super(SingleExchange, self).__init__(element='s_exc {}, {}'.format(qubit_1, qubit_2)
-                                             , element_type=str(self), n_var_parameters=1)
+        super(SingleBosExcitation, self).__init__(element='s_exc {}, {}'.format(qubit_1, qubit_2)
+                                                  , element_type=str(self), n_var_parameters=1)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
         return QasmUtils.partial_exchange(var_parameters[0], self.qubit_1, self.qubit_2)
+
+
+class DoubleBosExcitation(AnsatzElement):
+    def __init__(self, qubit_pair_1, qubit_pair_2):
+        self.qubit_pair_1 = qubit_pair_1
+        self.qubit_pair_2 = qubit_pair_2
+        super(DoubleBosExcitation, self).__init__(element='optimized_d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
+                                                  element_type=str(self), n_var_parameters=1)
+
+    @staticmethod
+    def efficient_double_excitation(angle, qubit_pair_1, qubit_pair_2):
+        qasm = ['']
+        theta = angle / 8
+
+        # determine the parity of the two pairs
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+        # apply a partial swap of qubits 0 and 2, controlled by 1 and 3 ##
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
+        # # partial ccc_y operation
+        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))  # 0 2
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
+
+        # ############################## partial ccc_y operation  ############ to here
+
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_1[0], qubit_pair_2[0], reverse=True))
+
+        # correct for parity determination
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        return ''.join(qasm)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        parameter = var_parameters[0]
+
+        return self.efficient_double_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
 
 
 class DoubleExchange(AnsatzElement):
@@ -222,97 +311,6 @@ class DoubleExchange(AnsatzElement):
 
         return self.double_exchange(parameter, self.qubit_pair_1, self.qubit_pair_2,
                                     parity_dependence=self.parity_dependence, d_exc_correction=self.d_exc_correction)
-
-
-class EfficientDoubleExcitation(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2):
-        self.qubit_pair_1 = qubit_pair_1
-        self.qubit_pair_2 = qubit_pair_2
-        super(EfficientDoubleExcitation, self).__init__(element='optimized_d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
-                                                        element_type=str(self), n_var_parameters=1)
-
-    @staticmethod
-    def efficient_double_excitation(angle, qubit_pair_1, qubit_pair_2):
-        qasm = ['']
-        theta = angle / 8
-
-        # determine the parity of the two pairs
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
-        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
-        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
-
-        # apply a partial swap of qubits 0 and 2, controlled by 1 and 3 ##
-
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
-        # # partial ccc_y operation
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))  # 0 2
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
-
-        # ############################## partial ccc_y operation  ############ to here
-
-        qasm.append(QasmUtils.controlled_xz(qubit_pair_1[0], qubit_pair_2[0], reverse=True))
-
-        # correct for parity determination
-        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
-        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
-
-        return ''.join(qasm)
-
-    def get_qasm(self, var_parameters):
-        assert len(var_parameters) == 1
-        parameter = var_parameters[0]
-
-        return self.efficient_double_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
-
-
 
 
 

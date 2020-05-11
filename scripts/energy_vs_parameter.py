@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF, BeH2
-from src.ansatz_element_lists import UCCGSD, UCCSD, DoubleExchange, SingleExchange, EfficientDoubleExcitation
+from src.ansatz_element_lists import UCCGSD, UCCSD, DoubleExchange, SingleBosExcitation, DoubleBosExcitation
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
     # ansatz_element_0 = DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, parity_dependence=False, d_exc_correction=False)
 
-    ansatz_element_1 = EfficientDoubleExcitation([4, 5], [10, 11])
+    ansatz_element_1 = DoubleBosExcitation([4, 5], [10, 11])
     # ansatz_element_2 = DoubleExchange([3, 4], [10, 11], rescaled=True)
     # ansatz_element_3 = DoubleExchange([2, 3], [10, 11], rescaled=True)
     # ansatz_element_4 = DoubleExchange([6, 7], [10, 11], rescaled=True)

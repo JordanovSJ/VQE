@@ -97,3 +97,20 @@ class H2O:
             ['H', [0, 0, -distance]],
             ['H', [0, distance*numpy.sin(numpy.pi - theta), distance*numpy.cos(numpy.pi - theta)]]
         ]
+
+
+class H4:
+    name: str = 'H4'
+    multiplicity: int = 1
+    charge: int = 0
+    n_orbitals: int = 8
+    n_electrons: int = 4
+
+    @staticmethod
+    def geometry(distance=0.735):
+        return [
+            ['H', [0, 0, 0]],
+            ['H', [0, 0, distance]],
+            ['H', [0, 0, 2 * distance]],
+            ['H', [0, 0, 3 * distance]]
+          ]

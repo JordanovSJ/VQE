@@ -5,7 +5,7 @@ from openfermion.transforms import get_fermion_operator, jordan_wigner, get_spar
 from scipy.linalg import eigh
 from openfermion.utils import jw_hartree_fock_state
 import scipy
-from src.ansatz_element_lists import UCCSD, DoubleExchange, SingleExchange, DoubleExcitation, EfficientDoubleExcitation
+from src.ansatz_element_lists import UCCSD, DoubleExchange, SingleBosExcitation, DoubleFermiExcitation, DoubleBosExcitation
 from src.test_ansatz_elements import EfficientDoubleExchange, EfficientDoubleExcitation2
 import numpy
 from src.backends import QiskitSimulation, MatrixCalculation
@@ -77,7 +77,17 @@ if __name__ == "__main__":
     #                                       rescaled_parameter=False).get_qasm([angle]))
     # qasm_2.append(EfficientDoubleExcitation2([0, 1], [2, 3]).get_qasm([angle]))
 
-    qasm_2.append(QasmUtils.partial_exchange(angle, 0, 1))
+    # qasm_2.append(QasmUtils.partial_exchange(angle, 0, 1))
+    # qasm_2.append('rx({}) q[0];\n'.format(numpy.pi/4))
+    # qasm_2.append('cz q[1], q[0];\n')
+    # qasm_2.append('rx({}) q[0];\n'.format(-numpy.pi/4))
+    # qasm_2.append('cz q[2], q[0];\n')
+    # qasm_2.append('rx({}) q[0];\n'.format(numpy.pi/4))
+    # qasm_2.append('cz q[1], q[0];\n')
+    # qasm_2.append('rx ({}) q[0];\n'.format(-numpy.pi/4))
+    # qasm_2.append('cz q[2], q[0];\n')
+
+    qasm_2.append(QasmUtils.controlled_xz(1, 0))
 
     statevector_2 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_2)).round(10)
 
