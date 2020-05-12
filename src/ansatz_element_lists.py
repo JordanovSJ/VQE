@@ -36,8 +36,8 @@ class SDElements:
                 elif self.element_type == 'bos_excitation' or self.element_type == 'exchange':
                     single_excitations.append(SingleBosExcitation(i, j))
                 elif self.element_type == 'efficient_fermi_excitation':
-                    # TODO
-                    print('TODO')
+                    # TODO change tp efficient single fermi excitation ...
+                    single_excitations.append(SingleFermiExcitation(i, j))
                 else:
                     raise Exception('Invalid single excitation type.')
 
@@ -54,7 +54,7 @@ class SDElements:
                         elif self.element_type == 'bosonic_excitation':
                             double_excitations.append(DoubleBosExcitation([i, j], [k, l]))
                         elif self.element_type == 'efficient_fermi_excitation':
-                            print('TODO')
+                            double_excitations.append(EfficientDoubleFermiExcitation([i, j], [k, l]))
                         elif self.element_type == 'exchange':
                             double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
                                                                      parity_dependence=self.parity_dependence,

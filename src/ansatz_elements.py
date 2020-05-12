@@ -194,9 +194,10 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
 
         # ladder of CNOT used to determine the parity
         parity_cnot_ladder = ['']
-        for i in range(len(parity_qubits) - 1):
-            parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
-        parity_cnot_ladder.append('x q[{}];\n'.format(parity_qubits[-1]))
+        if len(parity_qubits) > 0:
+            for i in range(len(parity_qubits) - 1):
+                parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
+            parity_cnot_ladder.append('x q[{}];\n'.format(parity_qubits[-1]))
 
         # determine the parity of the two pairs
         qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
@@ -209,10 +210,10 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
         qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
 
         # apply parity sign correction 1
-        qasm += parity_cnot_ladder
-        qasm.append('h q[{}];\n'.format(parity_qubits[-1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], parity_qubits[-1]))
-        # qasm.append('h q[{}];\n'.format(parity_qubits[-1]))  # this cancels with the next h
+        if len(parity_qubits) > 0:
+            qasm += parity_cnot_ladder
+            qasm.append('h q[{}];\n'.format(parity_qubits[-1]))
+            qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], parity_qubits[-1]))
 
         # # partial ccc_y operation
         qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
@@ -266,9 +267,10 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
         # ############################## partial ccc_y operation  ############ to here
 
         # apply parity sign correction 2
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], parity_qubits[-1]))
-        qasm.append('h q[{}];\n'.format(parity_qubits[-1]))
-        qasm += parity_cnot_ladder[::-1]
+        if len(parity_qubits) > 0:
+            qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], parity_qubits[-1]))
+            qasm.append('h q[{}];\n'.format(parity_qubits[-1]))
+            qasm += parity_cnot_ladder[::-1]
 
         qasm.append(QasmUtils.controlled_xz(qubit_pair_1[0], qubit_pair_2[0], reverse=True))
 

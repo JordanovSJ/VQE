@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from src.vqe_runner import VQERunner
 from src.molecules import *
-from src.ansatz_element_lists import UCCGSD, UCCSD, ESD, EGSD
+from src.ansatz_element_lists import *
 from src.backends import QiskitSimulation
 from src.utils import LogUtils, AdaptAnsatzUtils
 
@@ -16,10 +16,10 @@ import ray
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    molecule = H2O
-    r = 1.0285
-    theta = 0.538*numpy.pi
-    molecule_params = {'distance': r, 'theta': theta}
+    molecule = HF
+    r = 0.995
+    # theta = 0.538*numpy.pi
+    molecule_params = {'distance': r} #, 'theta': theta}
 
     max_n_iterations = 2000
 
@@ -34,7 +34,8 @@ if __name__ == "__main__":
     logging.info('{}, efficient double bosonic excitation'.format(molecule.name))
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = ESD(molecule.n_orbitals, molecule.n_electrons, bosonic_excitation=True).get_double_excitations()
+    initial_ansatz_elements_pool = SDElements(molecule.n_orbitals, molecule.n_electrons,
+                                              element_type='efficient_fermi_excitation').get_double_excitations()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
     hf_energy = vqe_runner.hf_energy
