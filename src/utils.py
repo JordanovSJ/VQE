@@ -103,7 +103,7 @@ class QasmUtils:
     # this is simplified single particle exchange gate, that does not change phases
     @staticmethod
     def partial_exchange(angle, qubit_1, qubit_2):
-        theta = numpy.pi/2 - angle
+        theta = numpy.pi/2 + angle
         qasm = ['']
         qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
 
@@ -126,13 +126,54 @@ class QasmUtils:
 
     # get the qasm circuit of an excitation
     @staticmethod
-    def fermi_excitation_qasm(excitation, var_parameter):
+    def fermi_excitation(excitation, var_parameter):
         qasm = ['']
         for exponent_term in excitation.terms:
             exponent_angle = var_parameter * excitation.terms[exponent_term]
             assert exponent_angle.real == 0
             exponent_angle = exponent_angle.imag
             qasm.append(QasmUtils.exponent_qasm(exponent_term, exponent_angle))
+
+        return ''.join(qasm)
+
+    # TODO move to ansatz elements
+    @staticmethod
+    def efficient_fermi_excitation(angle, qubit_1, qubit_2):
+        theta = numpy.pi / 2 + angle
+        qasm = ['']
+        if qubit_2 < qubit_1:
+            x = qubit_1
+            qubit_1 = qubit_2
+            qubit_2 = x
+
+        parity_qubits = list(range(qubit_1+1, qubit_2))
+
+        parity_cnot_ladder = ['']
+        if len(parity_qubits) > 0:
+            for i in range(len(parity_qubits) - 1):
+                parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
+
+            qasm += parity_cnot_ladder
+            # parity dependence
+            qasm.append('h q[{}];\n'.format(qubit_1))
+            qasm.append('cx q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_1))
+            qasm.append('h q[{}];\n'.format(qubit_1))
+
+        qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
+
+        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
+
+        if len(parity_qubits) > 0:
+
+            qasm.append('h q[{}];\n'.format(qubit_1))
+            qasm.append('cx q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_1))
+            qasm.append('h q[{}];\n'.format(qubit_1))
+
+            qasm += parity_cnot_ladder[::-1]
 
         return ''.join(qasm)
 

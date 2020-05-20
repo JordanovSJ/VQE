@@ -1,5 +1,5 @@
 from src.vqe_runner import VQERunner
-from src.molecules import H2, LiH, HF, BeH2, H4
+from src.molecules import *
 from src.ansatz_element_lists import *
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
@@ -33,8 +33,8 @@ import qiskit
 
 if __name__ == "__main__":
 
-    molecule = H4
-    r = 0.735
+    molecule = H2O
+    r = 0.995
 
     # logging
     LogUtils.log_cofig()

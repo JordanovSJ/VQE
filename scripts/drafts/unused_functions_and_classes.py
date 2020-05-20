@@ -307,6 +307,7 @@ def parity_controlled_phase_gate(parity_qubits, qubit_1, qubit_2, reverse=False)
 
     return ''.join(qasm)
 
+
 class CustomDoubleExcitation(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, parity_dependence=False):
         self.qubit_pair_1 = qubit_pair_1
@@ -349,3 +350,62 @@ class CustomDoubleExcitation(AnsatzElement):
         return self.custom_double_excitation(parameter, self.qubit_pair_1,
                                              self.qubit_pair_2)  # , parity_dependence=self.parity_dependence)
 
+
+def optimized_d_bosonic_excitation(angle, qubit_pair_1, qubit_pair_2):
+    qasm = ['']
+
+    # 1st term
+    qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_2[1]))  # S^
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_2[0]))
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[1]))
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[0]))
+
+    qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+    qasm.append('rz({}) q[{}];\n'.format(angle, qubit_pair_2[1]))
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+    # 2nd term
+    qasm.append('rz({}) q[{}];\n'.format(angle, qubit_pair_2[1]))
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))
+
+    # 3rd term (-)
+    qasm.append('rz({}) q[{}];\n'.format(-angle, qubit_pair_2[1]))
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+    # 4rd term (-)
+    qasm.append('rz({}) q[{}];\n'.format(-angle, qubit_pair_2[1]))
+    qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[1]))  # S^
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[1]))
+
+    # 5th term
+    qasm.append('rz({}) q[{}];\n'.format(angle, qubit_pair_2[1]))
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+    # 6th term
+    qasm.append('rz({}) q[{}];\n'.format(angle, qubit_pair_2[1]))
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))
+
+    # 7th term
+    qasm.append('rz({}) q[{}];\n'.format(-angle, qubit_pair_2[1]))
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[0], qubit_pair_2[1]))
+
+    # 8th term
+    qasm.append('rz({}) q[{}];\n'.format(-angle, qubit_pair_2[1]))
+    qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_2[0]))
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[1]))
+    qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[0]))
+
+    qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[1]))  # S
+
+    return ''.join(qasm)

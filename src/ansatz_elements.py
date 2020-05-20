@@ -26,7 +26,7 @@ class AnsatzElement:
     def get_qasm(self, var_parameters):
         if self.element_type == 'excitation':
             assert len(var_parameters) == 1
-            return QasmUtils.fermi_excitation_qasm(self.excitation, var_parameters[0])
+            return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
         else:
             var_parameters = numpy.array(var_parameters)
             # TODO
@@ -51,7 +51,7 @@ class SingleFermiExcitation(AnsatzElement):
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return QasmUtils.fermi_excitation_qasm(self.excitation, var_parameters[0])
+        return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
 
 
 class DoubleFermiExcitation(AnsatzElement):
@@ -68,7 +68,7 @@ class DoubleFermiExcitation(AnsatzElement):
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return QasmUtils.fermi_excitation_qasm(self.excitation, var_parameters[0])
+        return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
 
 
 class SingleBosExcitation(AnsatzElement):
@@ -182,7 +182,7 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
 
     @staticmethod
     def efficient_double_fermi_excitation(angle, qubit_pair_1, qubit_pair_2):
-        angle = angle * 2  # for consistency with the conventional fermi excitation
+        angle = - angle * 2  # the factor of -2 is for consistency with the conventional fermi excitation
         theta = angle / 8
 
         qasm = ['']
@@ -197,7 +197,7 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
         if len(parity_qubits) > 0:
             for i in range(len(parity_qubits) - 1):
                 parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
-            parity_cnot_ladder.append('x q[{}];\n'.format(parity_qubits[-1]))
+            # parity_cnot_ladder.append('x q[{}];\n'.format(parity_qubits[-1]))
 
         # determine the parity of the two pairs
         qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
