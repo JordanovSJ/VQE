@@ -15,7 +15,21 @@ from src import config
 
 class QasmUtils:
 
-    @ staticmethod
+    @staticmethod
+    def get_qasm_from_ansatz_elements(ansatz_elements, var_parameters):
+        qasm = ['']
+        # perform ansatz operations
+        n_used_var_pars = 0
+        for element in ansatz_elements:
+            # take unused var. parameters for the ansatz element
+            element_var_pars = var_parameters[n_used_var_pars:(n_used_var_pars + element.n_var_parameters)]
+            n_used_var_pars += len(element_var_pars)
+            qasm_element = element.get_qasm(element_var_pars)
+            qasm.append(qasm_element)
+
+        return qasm
+
+    @staticmethod
     def gate_count(qasm, n_qubits):
         gate_counter = {}
         for i in range(n_qubits):
@@ -27,6 +41,9 @@ class QasmUtils:
             cnot_count += qasm.count(', q[{}]'.format(i))
             gate_counter['q{}'.format(i)] = {'cx': cnot_count, 'u1': qubit_count-cnot_count}
         return gate_counter
+
+    # @staticmethod
+    # def get
 
     @staticmethod
     def qasm_header(n_qubits):
@@ -65,6 +82,21 @@ class QasmUtils:
         qasm.append('cx q[{}], q[{}];\n'.format(control, target))
         qasm.append('ry({}) q[{}];\n'.format(-angle/2, target))
         qasm.append('cx q[{}], q[{}];\n'.format(control, target))
+
+        return ''.join(qasm)
+
+    # equivalent single qubit excitation
+    @staticmethod
+    def partial_exchange(angle, qubit_1, qubit_2):
+        theta = numpy.pi / 2 + angle
+        qasm = ['']
+        qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
+
+        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
 
         return ''.join(qasm)
 

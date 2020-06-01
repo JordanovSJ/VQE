@@ -78,24 +78,9 @@ class SingleQubitExcitation(AnsatzElement):
         super(SingleQubitExcitation, self).__init__(element='s_exc {}, {}'.format(qubit_1, qubit_2)
                                                     , element_type=str(self), n_var_parameters=1)
 
-    # single qubit excitation
-    @staticmethod
-    def partial_exchange(angle, qubit_1, qubit_2):
-        theta = numpy.pi / 2 + angle
-        qasm = ['']
-        qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
-
-        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
-        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
-
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
-
-        return ''.join(qasm)
-
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return self.partial_exchange(var_parameters[0], self.qubit_1, self.qubit_2)
+        return QasmUtils.partial_exchange(var_parameters[0], self.qubit_1, self.qubit_2)
 
 
 class DoubleQubitExcitation(AnsatzElement):

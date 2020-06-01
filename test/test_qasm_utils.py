@@ -58,7 +58,7 @@ class QasmUtilsTest(unittest.TestCase):
             statevector_1 = QiskitSimulation.\
                 get_statevector_from_qasm(qasm_1 + QasmUtils.partial_exchange(angle, qubit_1, qubit_2)).round(3)
 
-            expected_statevector_1 = numpy.array([0, numpy.cos(angle), numpy.sin(angle), 0])
+            expected_statevector_1 = numpy.array([0, numpy.cos(angle), -numpy.sin(angle), 0])
             expected_statevector_1 = expected_statevector_1.round(3)
 
             for i in range(len(statevector_1)):
@@ -67,7 +67,7 @@ class QasmUtilsTest(unittest.TestCase):
             statevector_2 = QiskitSimulation.\
                 get_statevector_from_qasm(qasm_2 + QasmUtils.partial_exchange(angle, qubit_1, qubit_2)).round(3)
 
-            expected_statevector_2 = numpy.array([0, - numpy.sin(angle), numpy.cos(angle), 0])
+            expected_statevector_2 = numpy.array([0, numpy.sin(angle), numpy.cos(angle), 0])
             expected_statevector_2 = expected_statevector_2.round(3)
 
             for i in range(len(statevector_2)):
