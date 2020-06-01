@@ -22,16 +22,16 @@ class AnsatzElement:
         else:
             self.excitation_order = excitation_order
 
-    # TODO not used
-    def get_qasm(self, var_parameters):
-        if self.element_type == 'excitation':
-            assert len(var_parameters) == 1
-            return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
-        else:
-            var_parameters = numpy.array(var_parameters)
-            # TODO
-            # return self.excitation.format(*var_parameters)
-            return self.element.format(*var_parameters)
+    # # TODO not used
+    # def get_qasm(self, var_parameters):
+    #     if self.element_type == 'excitation':
+    #         assert len(var_parameters) == 1
+    #         return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
+    #     else:
+    #         var_parameters = numpy.array(var_parameters)
+    #         # TODO
+    #         # return self.excitation.format(*var_parameters)
+    #         return self.element.format(*var_parameters)
 
     def get_excitation_order(self):
         terms = list(self.excitation)
@@ -71,27 +71,42 @@ class DoubleFermiExcitation(AnsatzElement):
         return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
 
 
-class SingleBosExcitation(AnsatzElement):
+class SingleQubitExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
-        super(SingleBosExcitation, self).__init__(element='s_exc {}, {}'.format(qubit_1, qubit_2)
-                                                  , element_type=str(self), n_var_parameters=1)
+        super(SingleQubitExcitation, self).__init__(element='s_exc {}, {}'.format(qubit_1, qubit_2)
+                                                    , element_type=str(self), n_var_parameters=1)
+
+    # single qubit excitation
+    @staticmethod
+    def partial_exchange(angle, qubit_1, qubit_2):
+        theta = numpy.pi / 2 + angle
+        qasm = ['']
+        qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
+
+        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
+
+        return ''.join(qasm)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return QasmUtils.partial_exchange(var_parameters[0], self.qubit_1, self.qubit_2)
+        return self.partial_exchange(var_parameters[0], self.qubit_1, self.qubit_2)
 
 
-class DoubleBosExcitation(AnsatzElement):
+class DoubleQubitExcitation(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
-        super(DoubleBosExcitation, self).__init__(element='optimized_d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
-                                                  element_type=str(self), n_var_parameters=1)
+        super(DoubleQubitExcitation, self).__init__(element='optimized_d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
+                                                    element_type=str(self), n_var_parameters=1)
 
     @staticmethod
-    def bos_double_excitation(angle, qubit_pair_1, qubit_pair_2):
+    def double_qubit_excitation(angle, qubit_pair_1, qubit_pair_2):
         qasm = ['']
         angle = angle * 2  # for consistency with the conventional fermi excitation
         theta = angle / 8
@@ -170,7 +185,61 @@ class DoubleBosExcitation(AnsatzElement):
         assert len(var_parameters) == 1
         parameter = var_parameters[0]
 
-        return self.bos_double_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
+        return self.double_qubit_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
+
+
+class EfficientSingleFermiExcitation(AnsatzElement):
+    def __init__(self, qubit_1, qubit_2):
+        self.qubit_1 = qubit_1
+        self.qubit_2 = qubit_2
+        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(qubit_2, qubit_1))
+        excitation = jordan_wigner(fermi_operator)
+
+        super(EfficientSingleFermiExcitation, self).__init__(element=fermi_operator, excitation=excitation,
+                                                             excitation_order=1, element_type=str(self), n_var_parameters=1)
+
+    @staticmethod
+    def efficient_single_fermi_excitation(angle, qubit_1, qubit_2):
+        theta = numpy.pi / 2 + angle
+        qasm = ['']
+        if qubit_2 < qubit_1:
+            x = qubit_1
+            qubit_1 = qubit_2
+            qubit_2 = x
+
+        parity_qubits = list(range(qubit_1 + 1, qubit_2))
+
+        parity_cnot_ladder = ['']
+        if len(parity_qubits) > 0:
+            for i in range(len(parity_qubits) - 1):
+                parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
+
+            qasm += parity_cnot_ladder
+            # parity dependence
+            qasm.append('h q[{}];\n'.format(qubit_1))
+            qasm.append('cx q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_1))
+            qasm.append('h q[{}];\n'.format(qubit_1))
+
+        qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
+
+        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
+
+        if len(parity_qubits) > 0:
+            qasm.append('h q[{}];\n'.format(qubit_1))
+            qasm.append('cx q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_1))
+            qasm.append('h q[{}];\n'.format(qubit_1))
+
+            qasm += parity_cnot_ladder[::-1]
+
+        return ''.join(qasm)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        return self.efficient_single_fermi_excitation(var_parameters[0], self.qubit_1, self.qubit_2)
 
 
 class EfficientDoubleFermiExcitation(AnsatzElement):
