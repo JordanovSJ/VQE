@@ -52,13 +52,13 @@ def matrix_to_str(matrix):
 if __name__ == "__main__":
 
     angle = 0.1
-    n = 2
+    n = 4
     qasm_init = ['']
     qasm_init.append(QasmUtils.qasm_header(n))
-    # qasm_init.append('x q[0];\n')
+    qasm_init.append('x q[0];\n')
     # # qasm_init.append('x q[0];\n')
-    # qasm_init.append('h q[1];\n')
-    # qasm_init.append('x q[2];\n')
+    qasm_init.append('h q[1];\n')
+    qasm_init.append('h q[2];\n')
     # qasm_init.append('h q[4];\n')
 
     qasm_1 = ['']
@@ -66,9 +66,7 @@ if __name__ == "__main__":
 
     # qasm_1.append(DoubleExchange([0, 1], [2, 3], d_exc_correction=False, parity_dependence=False,
     #                              rescaled_parameter=False).get_qasm([angle]))
-    # qasm_1.append(DoubleFermiExcitation([0, 2], [3, 5]).get_qasm([angle]))
-    qasm_1.append(QasmUtils.controlled_xz(0, 1))
-    # qasm_1.append(SingleBosExcitation(0,1).get_qasm([angle]))
+    qasm_1.append(SingleFermiExcitation(0, 3).get_qasm([angle]))
     statevector_1 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_1)).round(10)
 
     print(statevector_1)
@@ -76,24 +74,8 @@ if __name__ == "__main__":
     qasm_2 = ['']
     qasm_2 += qasm_init
 
-    qasm_2.append('rz({}) q[{}];\n'.format(numpy.pi/2, 0))
-    qasm_2.append('ry({}) q[{}];\n'.format(-numpy.pi/2, 1))
-    qasm_2.append('rz({}) q[{}];\n'.format(-numpy.pi/2, 1))
-    qasm_2.append('cx q[{}], q[{}];\n'.format(0, 1))
-
-    qasm_2.append('rz({}) q[{}];\n'.format(-numpy.pi/2, 1))
-    qasm_2.append('ry({}) q[{}];\n'.format(angle/2, 0))
-    qasm_2.append('cx q[{}], q[{}];\n'.format(0, 1))
-
-    qasm_2.append('ry({}) q[{}];\n'.format(-angle/2, 0))
-    qasm_2.append('h q[{}];\n'.format(1))
-    qasm_2.append('cx q[{}], q[{}];\n'.format(0, 1))
-
-
-
     # qasm_2.append(DoubleBosExcitation([0, 1], [2, 3]).get_qasm([angle]))
-    # qasm_2.append(QasmUtils.efficient_fermi_excitation(angle, 0, 3))
-    # qasm_2.append(SingleBosExcitation(0, 3).get_qasm([angle]))
+    qasm_2.append(EfficientSingleFermiExcitation(0, 3).get_qasm([angle]))
 
     statevector_2 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_2)).round(10)
 

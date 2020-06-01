@@ -21,11 +21,9 @@ class SDElements:
                 self.rescaled = d_exchange_vars['rescaled']
                 self.parity_dependence = d_exchange_vars['parity_dependence']
                 self.d_exc_correction = d_exchange_vars['d_exc_correction']
-                self.bosonic_excitation = d_exchange_vars['bosonic_excitation']
             else:
                 self.rescaled = False
                 self.parity_dependence = False
-                self.bosonic_excitation = False
 
     def get_single_excitations(self):
         single_excitations = []
@@ -33,11 +31,10 @@ class SDElements:
             for j in range(self.n_electrons, self.n_orbitals):
                 if self.element_type == 'fermi_excitation':
                     single_excitations.append(SingleFermiExcitation(i, j))
-                elif self.element_type == 'bos_excitation' or self.element_type == 'exchange':
+                elif self.element_type == 'qubit_excitation' or self.element_type == 'exchange':
                     single_excitations.append(SingleQubitExcitation(i, j))
                 elif self.element_type == 'efficient_fermi_excitation':
-                    # TODO change tp efficient single fermi excitation ...
-                    single_excitations.append(SingleFermiExcitation(i, j))
+                    single_excitations.append(EfficientSingleFermiExcitation(i, j))
                 else:
                     raise Exception('Invalid single excitation type.')
 
@@ -51,7 +48,7 @@ class SDElements:
                     for l in range(k + 1, self.n_orbitals):
                         if self.element_type == 'fermi_excitation':
                             double_excitations.append(DoubleFermiExcitation([i, j], [k, l]))
-                        elif self.element_type == 'bosonic_excitation':
+                        elif self.element_type == 'qubit_excitation':
                             double_excitations.append(DoubleQubitExcitation([i, j], [k, l]))
                         elif self.element_type == 'efficient_fermi_excitation':
                             double_excitations.append(EfficientDoubleFermiExcitation([i, j], [k, l]))
