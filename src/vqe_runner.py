@@ -95,7 +95,7 @@ class VQERunner:
             logging.info('Parallel process. Energy {}. Iteration duration: {}'.format(energy, time.time() - t_start))
         else:
             if update_gate_counter or self.iteration == 1:
-                self.gate_counter = QasmUtils.gate_count(qasm, self.n_qubits)
+                self.gate_counter = QasmUtils.gate_count_from_qasm(qasm, self.n_qubits)
 
             # print info
             self.new_energy = energy
@@ -112,13 +112,6 @@ class VQERunner:
             self.iteration += 1
 
         return energy
-
-    # Not used
-    # def callback(self, xk):
-    #     print('pars')
-    #     if self.print_var_parameters:
-    #
-    #         print(xk)
 
     def vqe_run(self, ansatz_elements=None, initial_var_parameters=None, initial_statevector_qasm=None):
 
@@ -171,6 +164,7 @@ class VQERunner:
         print('Gate counter', self.gate_counter)
         logging.info('Gate counter' + str(self.gate_counter))
 
+        opt_energy['n_iters'] = self.iteration  # cheating
         return opt_energy
 
     @ray.remote
@@ -182,6 +176,7 @@ class VQERunner:
             assert len(initial_var_parameters) == sum([element.n_var_parameters for element in ansatz_elements])
             var_parameters = initial_var_parameters
 
+        # create it as a list so we can pass it by reference
         local_iteration = [0]
 
         # partial function to be used in the optimizer
@@ -211,4 +206,5 @@ class VQERunner:
             logging.info(message)
             print(message)
 
+        opt_energy['n_iters'] = local_iteration[0]  # cheating
         return opt_energy

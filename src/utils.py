@@ -16,7 +16,7 @@ from src import config
 class QasmUtils:
 
     @staticmethod
-    def get_qasm_from_ansatz_elements(ansatz_elements, var_parameters):
+    def qasm_from_ansatz_elements(ansatz_elements, var_parameters):
         qasm = ['']
         # perform ansatz operations
         n_used_var_pars = 0
@@ -27,23 +27,42 @@ class QasmUtils:
             qasm_element = element.get_qasm(element_var_pars)
             qasm.append(qasm_element)
 
-        return qasm
+        return ''.join(qasm)
 
     @staticmethod
-    def gate_count(qasm, n_qubits):
+    def gate_count_from_qasm(qasm, n_qubits):
         gate_counter = {}
+        max_cnot_depth = 0
+        max_u1_depth = 0
+        total_cnot_count = 0
+        total_u1_count = 0
         for i in range(n_qubits):
             # count all occurrences of a qubit (can get a few more because of the header)
-            qubit_count = qasm.count('q[{}]'.format(i))
             cnot_count = qasm.count('q[{}],'.format(i))
             cnot_count += qasm.count(',q[{}]'.format(i))
             cnot_count += qasm.count('q[{}] ,'.format(i))
             cnot_count += qasm.count(', q[{}]'.format(i))
-            gate_counter['q{}'.format(i)] = {'cx': cnot_count, 'u1': qubit_count-cnot_count}
-        return gate_counter
+            total_cnot_count += cnot_count
+            max_cnot_depth = max(max_cnot_depth, cnot_count)
 
-    # @staticmethod
-    # def get
+            qubit_count = qasm.count('q[{}]'.format(i))
+            u1_count = qubit_count - cnot_count
+            total_u1_count += u1_count
+            max_u1_depth = max(max_u1_depth, u1_count)
+
+            gate_counter['q{}'.format(i)] = {'cx': cnot_count, 'u1': u1_count}
+        return {'gate_count': gate_counter, 'u1_depth': max_u1_depth, 'cnot_depth': max_cnot_depth,
+                'cnot_count': total_cnot_count/2, 'u1_count': total_u1_count}
+
+    @staticmethod
+    def gate_count_from_ansatz_elements(ansatz_elements, n_qubits, var_parameters=None):
+        n_var_parameters = sum([x.n_var_parameters for x in ansatz_elements])
+        if var_parameters is None:
+            var_parameters = numpy.zeros(n_var_parameters)
+        else:
+            assert n_var_parameters == len(var_parameters)
+        qasm = QasmUtils.qasm_from_ansatz_elements(ansatz_elements, var_parameters)
+        return QasmUtils.gate_count_from_qasm(qasm, n_qubits)
 
     @staticmethod
     def qasm_header(n_qubits):
