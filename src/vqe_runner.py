@@ -144,7 +144,7 @@ class VQERunner:
         message += '-----Number of orbitals: {}-----\n'.format(self.n_orbitals)
         message += '-----Numeber of ansatz elements: {}-----\n'.format(len(self.ansatz_elements))
         if len(ansatz_elements) == 1:
-            message += '-----Ansatz type {}------\n'.format(ansatz_elements[0].element_type)
+            message += '-----Ansatz type {}------\n'.format(ansatz_elements[0].element)
         message += '-----Statevector and energy calculated using {}------\n'.format(self.backend)
         message += '-----Optimizer {}------\n'.format(self.optimizer)
         print(message)

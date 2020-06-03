@@ -18,5 +18,64 @@ from functools import partial
 
 if __name__ == "__main__":
 
+    molecule = HF
+
+    # logging
+    LogUtils.log_cofig()
+
+    ansatz_elements = [DoubleQubitExcitation([4, 5], [10, 11]), DoubleQubitExcitation([3, 4], [10, 11]),
+                       DoubleQubitExcitation([2, 3], [10, 11]), DoubleQubitExcitation([2, 5], [10, 11]),
+                       DoubleQubitExcitation([6, 7], [10, 11]), DoubleQubitExcitation([8, 9], [10, 11]),
+                       SingleQubitExcitation(5, 11), SingleQubitExcitation(4, 10), SingleQubitExcitation(3, 11),
+                       DoubleQubitExcitation([0, 1], [10, 11]), DoubleQubitExcitation([0, 3], [10, 11]),
+                       DoubleQubitExcitation([1, 2], [10, 11]),
+                       SingleQubitExcitation(2, 10),
+                       DoubleQubitExcitation([1, 4], [10, 11]), DoubleQubitExcitation([0, 5], [10, 11])]
+
+    initial_var_parameters = [-0.1348821853363791, -0.030308892233037205, -0.02438520854419213, 0.030421484789544904,
+                              -0.017923593172760655, -0.017926644529627764, -0.016163632894877294, 0.015997841462461835,
+                              -0.0031624799369282075, -0.0004065477078839333, 0.0004266015854361852, -0.0005520783699704946,
+                              0.001601246718874758, -9.07917533487873e-05, 8.196598228859834e-06]
+
+    var_parameters = initial_var_parameters
+    energies_1 = []
+    rs_1 = []
+    for i in range(10):
+        r = 0.995 + i*0.025
+        molecule_params = {'distance': r}
+
+        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
+        result = vqe_runner.vqe_run(ansatz_elements, var_parameters)
+        energy = result.fun
+        # next var parameters
+        var_parameters = result.x
+
+        energies_1.append(energy)
+        rs_1.append(r)
+
+    var_parameters = initial_var_parameters
+    energies_2 = []
+    rs_2 = []
+    for i in range(10):
+        r = 0.995 - (1-i) * 0.025
+        molecule_params = {'distance': r}
+
+        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
+        result = vqe_runner.vqe_run(ansatz_elements, var_parameters)
+        energy = result.fun
+        # next var parameters
+        var_parameters = result.x
+
+        energies_2.append(energy)
+        rs_2.append(r)
+
+    energies = energies_2[::-1] + energies_1
+    rs = rs_2[::-1] + rs_1
+
+    print(energies)
+    print(rs)
+
+    plt.plot(rs, energies)
+    plt.show()
 
     print('Bona Dea')
