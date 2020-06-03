@@ -33,19 +33,19 @@ import qiskit
 
 if __name__ == "__main__":
 
-    molecule = H2
-    r = 0.995
+    molecule = H2O
+    # r = 0.995
+    molecule_params = None
 
     # logging
     LogUtils.log_cofig()
 
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
 
-    ansatz_elements = [uccsd.get_ansatz_elements()[0]]
+    ansatz_elements = uccsd.get_ansatz_elements()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
-                           molecule_geometry_params={'distance': r}, print_var_parameters=True)#, optimizer='Nelder-Mead', optimizer_options={'xatol': 2e-3, 'fatol': 1e-3})
-
+                           molecule_geometry_params=molecule_params, print_var_parameters=True)
     t0 = time.time()
     result = vqe_runner.vqe_run()#ansatz_elements=ansatz_elements, initial_var_parameters=var_parameters)
     t = time.time()

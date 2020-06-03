@@ -9,18 +9,10 @@ import numpy
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< individual ansatz elements >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class AnsatzElement:
-    def __init__(self, element_type, element, excitation=None, n_var_parameters=1, excitation_order=None):
-        self.excitation = excitation
-        self.element_type = element_type
+    def __init__(self, element, n_var_parameters=1, order=None):
+        self.order = order
         self.n_var_parameters = n_var_parameters
         self.element = element
-
-        if (self.element_type == 'excitation') and (excitation_order is None):
-            assert type(self.excitation) == QubitOperator
-            assert n_var_parameters == 1
-            self.excitation_order = self.get_excitation_order()
-        else:
-            self.excitation_order = excitation_order
 
     # # TODO not used
     # def get_qasm(self, var_parameters):
@@ -33,21 +25,17 @@ class AnsatzElement:
     #         # return self.excitation.format(*var_parameters)
     #         return self.element.format(*var_parameters)
 
-    def get_excitation_order(self):
-        terms = list(self.excitation)
-        n_terms = len(terms)
-        return max([len(terms[i]) for i in range(n_terms)])
-
 
 class SingleFermiExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
-        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(qubit_2, qubit_1))
-        excitation = jordan_wigner(fermi_operator)
 
-        super(SingleFermiExcitation, self).__init__(element=fermi_operator, excitation=excitation, excitation_order=1
-                                                    , element_type=str(self), n_var_parameters=1)
+        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.qubit_2, self.qubit_1))
+        self.excitation = jordan_wigner(fermi_operator)
+
+        super(SingleFermiExcitation, self).\
+            __init__(element='s_f_exc_{}_{}'.format(qubit_1, qubit_2), order=1, n_var_parameters=1)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
@@ -60,14 +48,16 @@ class DoubleFermiExcitation(AnsatzElement):
         self.qubit_pair_2 = qubit_pair_2
 
         fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
-                                         .format(qubit_pair_1[0], qubit_pair_1[1], qubit_pair_2[0], qubit_pair_2[1]))
-        excitation = jordan_wigner(fermi_operator)
+                                         .format(self.qubit_pair_1[0], self.qubit_pair_1[1],
+                                                 self.qubit_pair_2[0], self.qubit_pair_2[1]))
+        self.excitation = jordan_wigner(fermi_operator)
 
-        super(DoubleFermiExcitation, self).__init__(element=fermi_operator, excitation=excitation, excitation_order=2
-                                                    , element_type=str(self), n_var_parameters=1)
+        super(DoubleFermiExcitation, self).\
+            __init__(element='d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), order=2, n_var_parameters=1)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
+
         return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
 
 
@@ -75,8 +65,8 @@ class SingleQubitExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
-        super(SingleQubitExcitation, self).__init__(element='s_exc {}, {}'.format(qubit_1, qubit_2)
-                                                    , element_type=str(self), n_var_parameters=1)
+        super(SingleQubitExcitation, self).\
+            __init__(element='s_q_exc_{}_{}'.format(qubit_1, qubit_2), n_var_parameters=1)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
@@ -87,8 +77,8 @@ class DoubleQubitExcitation(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
-        super(DoubleQubitExcitation, self).__init__(element='optimized_d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
-                                                    element_type=str(self), n_var_parameters=1)
+        super(DoubleQubitExcitation, self).\
+            __init__(element='d_q_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), n_var_parameters=1)
 
     @staticmethod
     def double_qubit_excitation(angle, qubit_pair_1, qubit_pair_2):
@@ -177,11 +167,9 @@ class EfficientSingleFermiExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
-        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(qubit_2, qubit_1))
-        excitation = jordan_wigner(fermi_operator)
 
-        super(EfficientSingleFermiExcitation, self).__init__(element=fermi_operator, excitation=excitation,
-                                                             excitation_order=1, element_type=str(self), n_var_parameters=1)
+        super(EfficientSingleFermiExcitation, self).\
+            __init__(element='eff_s_f_exc_{}_{}'.format(qubit_2, qubit_1), order=1, n_var_parameters=1)
 
     @staticmethod
     def efficient_single_fermi_excitation(angle, qubit_1, qubit_2):
@@ -231,8 +219,8 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
-        super(EfficientDoubleFermiExcitation, self).__init__(element='optimized_d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
-                                                             element_type=str(self), n_var_parameters=1)
+        super(EfficientDoubleFermiExcitation, self).\
+            __init__(element='eff_d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), n_var_parameters=1)
 
     @staticmethod
     def efficient_double_fermi_excitation(angle, qubit_pair_1, qubit_pair_2):
@@ -343,6 +331,7 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
         return self.efficient_double_fermi_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
 
 
+# Not used :(
 class DoubleExchange(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, rescaled_parameter=False, parity_dependence=False, d_exc_correction=False):
         self.qubit_pair_1 = qubit_pair_1
@@ -350,8 +339,8 @@ class DoubleExchange(AnsatzElement):
         self.rescaled_parameter = rescaled_parameter
         self.parity_dependence = parity_dependence
         self.d_exc_correction = d_exc_correction
-        super(DoubleExchange, self).__init__(element='d_exc {}, {}'.format(qubit_pair_1, qubit_pair_2),
-                                             element_type=str(self), n_var_parameters=1)
+        super(DoubleExchange, self).\
+            __init__(element='d_exchange_{}_{}'.format(qubit_pair_1, qubit_pair_2), n_var_parameters=1)
 
     @staticmethod
     def second_angle(x):

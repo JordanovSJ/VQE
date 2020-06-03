@@ -1,12 +1,10 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
--!!!  TUNE THE GRADIENT DECREASE OPTIMIZER  !!!
+-scripts to generate data for dissociation curve plots
 
--(create a custom optimizer!!!)
--consider making the single exchange more "flexible" .. add phase change (preferably without introducing 2nd parameter)
+-gradient based adapt VQE
 
 *********************************************
-0. Try using only double excitations
 
 1. Implementation for Riggeti real QPU
 
@@ -17,7 +15,6 @@
 
 3. Add functionality to choose encoding method
 
-4.Search for best classical optimizer
 
 8.Excited states functionality
 
@@ -27,7 +24,14 @@
 
 13. A method to calculate parameter gradients, to feed to a non-gradient free optimizer
 
+14.(create a custom optimizer!!!)
+
+
 DONE:
+
+0. Try using only double excitations
+
+4.Search for best classical optimizer
 
 10. Logging
 

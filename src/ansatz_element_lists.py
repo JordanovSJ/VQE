@@ -172,7 +172,7 @@ class UCCGSD:
             fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(* indices))
             excitation = jordan_wigner(fermi_operator)
             single_excitations.append(AnsatzElement('excitation', excitation=excitation, element=fermi_operator,
-                                                    excitation_order=1))
+                                                    order=1))
         return single_excitations
 
     def get_double_excitations(self):
@@ -181,7 +181,7 @@ class UCCGSD:
             fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(* indices))
             excitation = jordan_wigner(fermi_operator)
             double_excitations.append(AnsatzElement('excitation', excitation=excitation, element=fermi_operator,
-                                                    excitation_order=2))
+                                                    order=2))
         return double_excitations
 
     def get_ansatz_elements(self):

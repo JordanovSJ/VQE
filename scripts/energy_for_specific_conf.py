@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.molecules import H2, LiH, HF, BeH2
-from src.ansatz_elements import UCCGSD, UCCSD, DoubleExchange, SingleQubitExcitation, CustomDoubleExcitation
+from src.ansatz_element_lists import *
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
 
@@ -126,13 +126,6 @@ if __name__ == "__main__":
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation,
                            molecule_geometry_params={'distance': r})
-
-    # var_parameters = [-0.0065128523203437354, 0.02321899604703268, 0.01767897410373476, 0.013030636489892819,
-    #                   0.016591824072023514, 0.021628392156845887, 0.021650230787297917, -0.017140504232529656,
-    #                   -0.01710588486162598, 0.038206336858573886, 0.010456460058682412, 0.009490079862521126,
-    #                   -0.00617656567425933, -0.019701873935962483, -0.011193926432043514, 0.01094580764824237,
-    #                   -0.0014180166517939082, -0.0014196312906968578, 0.0012033041124553299, 0.0012017031176923489,
-    #                   0.0006889241133224969, 0.0006843416243886342, -0.004472240537827521]
 
     var_parameters = [0.028669163026094503, 0.022537232912906303, 0.017489866500661134, 0.01629385690836846,
                       0.020851881457013468, -0.017647056790242338, -0.015327407983115066, 0.01789008153595026,

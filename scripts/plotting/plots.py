@@ -5,11 +5,11 @@ import ast
 
 if __name__ == "__main__":
 
-    fixed_ansatz = pd.read_csv('results/fix_ansatz_h2.csv')
-    uccsd_ansatz = pd.read_csv('results/uccsd_ansatz_h2.csv')
+    fixed_ansatz = pd.read_csv('adapt_vqe_results/fix_ansatz_h2.csv')
+    uccsd_ansatz = pd.read_csv('adapt_vqe_results/uccsd_ansatz_h2.csv')
 
-    fixed_ansatz_2 = pd.read_csv('results/fix_ansatz_h2_2.csv')
-    uccsd_ansatz_2 = pd.read_csv('results/uccsd_ansatz_h2_2.csv')
+    fixed_ansatz_2 = pd.read_csv('adapt_vqe_results/fix_ansatz_h2_2.csv')
+    uccsd_ansatz_2 = pd.read_csv('adapt_vqe_results/uccsd_ansatz_h2_2.csv')
 
     fix_results = []
     uccsd_results = []

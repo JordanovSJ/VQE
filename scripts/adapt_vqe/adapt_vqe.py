@@ -118,10 +118,10 @@ if __name__ == "__main__":
     # save the data to a secv file
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
     try:
-        df_data.to_csv('../../results/results/{}_{}.csv'.format(molecule.name, time_stamp))
+        df_data.to_csv('../../results/adapt_vqe_results/{}_{}.csv'.format(molecule.name, time_stamp))
     except FileNotFoundError:
         try:
-            df_data.to_csv('results/results/{}_{}.csv'.format(molecule.name, time_stamp))
+            df_data.to_csv('results/adapt_vqe_results/{}_{}.csv'.format(molecule.name, time_stamp))
         except FileNotFoundError as fnf:
             print(fnf)
 
