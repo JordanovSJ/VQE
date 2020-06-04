@@ -39,6 +39,7 @@ if __name__ == "__main__":
 
     var_parameters = initial_var_parameters
     energies_1 = []
+    fci_energies_1 = []
     rs_1 = []
     for i in range(10):
         r = 0.995 + i*0.025
@@ -46,36 +47,43 @@ if __name__ == "__main__":
 
         vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
         result = vqe_runner.vqe_run(ansatz_elements, var_parameters)
-        energy = result.fun
+
         # next var parameters
         var_parameters = result.x
 
-        energies_1.append(energy)
+        fci_energies_1.append(vqe_runner.fci_energy)
+        energies_1.append(result.fun)
         rs_1.append(r)
 
     var_parameters = initial_var_parameters
     energies_2 = []
+    fci_energies_2 = []
     rs_2 = []
     for i in range(10):
-        r = 0.995 - (1-i) * 0.025
+        r = 0.995 - (1+i) * 0.025
         molecule_params = {'distance': r}
 
         vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
         result = vqe_runner.vqe_run(ansatz_elements, var_parameters)
-        energy = result.fun
+
         # next var parameters
         var_parameters = result.x
 
-        energies_2.append(energy)
+        energies_2.append(result.fun)
+        fci_energies_2.append(vqe_runner.fci_energy)
         rs_2.append(r)
 
     energies = energies_2[::-1] + energies_1
+    fci_energies = fci_energies_2[::-1] + fci_energies_1
+    errors = list(numpy.array(energies) - numpy.array(fci_energies))
     rs = rs_2[::-1] + rs_1
 
-    print(energies)
-    print(rs)
+    df_data = pandas.DataFrame({'r': rs, 'E': energies, 'fci_E': fci_energies, 'error': errors})
+    time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+    df_data.to_csv('../results/{}_dis_curve_{}'.format(molecule.name, time_stamp))
 
-    plt.plot(rs, energies)
-    plt.show()
+    print(energies)
+    print(fci_energies)
+    print(rs)
 
     print('Bona Dea')

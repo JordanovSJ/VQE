@@ -16,21 +16,36 @@ from src.backends import QiskitSimulation
 from src.utils import LogUtils, AdaptAnsatzUtils
 
 
+def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
+    if ansatz_element_type is None:
+        ansatz_element_type = 'unspecified'
+
+    try:
+        df_data.to_csv('../../results/adapt_vqe_results/{}_{}_{}.csv'.format(molecule.name, ansatz_element_type, time_stamp))
+    except FileNotFoundError:
+        try:
+            df_data.to_csv('results/adapt_vqe_results/{}_{}_{}.csv'.format(molecule.name, ansatz_element_type, time_stamp))
+        except FileNotFoundError as fnf:
+            print(fnf)
+
+
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    molecule = H2
-    r = 0.735
+    molecule = LiH
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     molecule_params = {'distance': r}  #, 'theta': theta}
 
-    ansatz_element_type = 'efficient_fermi_excitation'
-    # ansatz_element_type = 'qubit_excitation'
+    # ansatz_element_type = 'efficient_fermi_excitation'
+    ansatz_element_type = 'qubit_excitation'
 
-    accuracy = 1e-6  # 1e-3 for chemical accuracy
-    threshold = 1e-7
+    accuracy = 1e-13  # 1e-3 for chemical accuracy
+    threshold = 1e-14
     max_ansatz_elements = 30
 
     multithread = True
+
+    time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     LogUtils.log_cofig()
@@ -74,7 +89,8 @@ if __name__ == "__main__":
     previous_energy = 0
 
     # dataFrame to collect the simulation data
-    df_data = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth', 'u1_depth'])
+    df_data = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth',
+                                        'u1_depth', 'element', 'element_qubits'])
 
     while previous_energy - current_energy >= accuracy and count <= max_ansatz_elements:
         count += 1
@@ -96,12 +112,23 @@ if __name__ == "__main__":
         if delta_e > 0:
             ansatz_elements.append(element_to_add)
 
-            # add step data
+            # step data
+            if element_to_add.order == 1:
+                element_qubits = [element_to_add.qubit_1, element_to_add.qubit_2]
+            elif element_to_add.order == 2:
+                element_qubits = [element_to_add.qubit_pair_1, element_to_add.qubit_pair_2]
+            else:
+                element_qubits = []
+
             gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
             df_data.loc[count] = {'n': count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
                                   'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
                                   'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
-                                  'u1_depth': gate_count['u1_depth']}
+                                  'u1_depth': gate_count['u1_depth'], 'element': element_to_add.element,
+                                  'element_qubits': element_qubits}
+            df_data['var_parameters'] = result.x
+            # save data
+            save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
             message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, var. parameters: {}' \
                 .format(element_to_add.element, current_energy, delta_e, var_parameters)
@@ -115,15 +142,8 @@ if __name__ == "__main__":
 
         print('Added element ', ansatz_elements[-1].element)
 
-    # save the data to a secv file
-    time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
-    try:
-        df_data.to_csv('../../results/adapt_vqe_results/{}_{}.csv'.format(molecule.name, time_stamp))
-    except FileNotFoundError:
-        try:
-            df_data.to_csv('results/adapt_vqe_results/{}_{}.csv'.format(molecule.name, time_stamp))
-        except FileNotFoundError as fnf:
-            print(fnf)
+    # save data
+    save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
     vqe_runner_final = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}

@@ -66,7 +66,7 @@ class SingleQubitExcitation(AnsatzElement):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
         super(SingleQubitExcitation, self).\
-            __init__(element='s_q_exc_{}_{}'.format(qubit_1, qubit_2), n_var_parameters=1)
+            __init__(element='s_q_exc_{}_{}'.format(qubit_1, qubit_2),  order=1, n_var_parameters=1)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
@@ -78,7 +78,7 @@ class DoubleQubitExcitation(AnsatzElement):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
         super(DoubleQubitExcitation, self).\
-            __init__(element='d_q_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), n_var_parameters=1)
+            __init__(element='d_q_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1)
 
     @staticmethod
     def double_qubit_excitation(angle, qubit_pair_1, qubit_pair_2):
@@ -220,7 +220,7 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
         super(EfficientDoubleFermiExcitation, self).\
-            __init__(element='eff_d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), n_var_parameters=1)
+            __init__(element='eff_d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1)
 
     @staticmethod
     def efficient_double_fermi_excitation(angle, qubit_pair_1, qubit_pair_2):
@@ -340,7 +340,7 @@ class DoubleExchange(AnsatzElement):
         self.parity_dependence = parity_dependence
         self.d_exc_correction = d_exc_correction
         super(DoubleExchange, self).\
-            __init__(element='d_exchange_{}_{}'.format(qubit_pair_1, qubit_pair_2), n_var_parameters=1)
+            __init__(element='d_exchange_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1)
 
     @staticmethod
     def second_angle(x):

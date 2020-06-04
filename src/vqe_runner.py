@@ -117,6 +117,7 @@ class VQERunner:
 
         self.iteration = 1
 
+        # TODO: make the option to supply only initial_var_parameters valid
         if ansatz_elements is None:
             var_parameters = self.var_parameters
             ansatz_elements = self.ansatz_elements
@@ -142,7 +143,7 @@ class VQERunner:
         message += '-----Running VQE for: {}-----\n'.format(self.molecule_name)
         message += '-----Number of electrons: {}-----\n'.format(self.n_electrons)
         message += '-----Number of orbitals: {}-----\n'.format(self.n_orbitals)
-        message += '-----Numeber of ansatz elements: {}-----\n'.format(len(self.ansatz_elements))
+        message += '-----Numeber of ansatz elements: {}-----\n'.format(len(ansatz_elements))
         if len(ansatz_elements) == 1:
             message += '-----Ansatz type {}------\n'.format(ansatz_elements[0].element)
         message += '-----Statevector and energy calculated using {}------\n'.format(self.backend)
