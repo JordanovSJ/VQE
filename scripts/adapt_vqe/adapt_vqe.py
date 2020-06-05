@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
     accuracy = 1e-13  # 1e-3 for chemical accuracy
     threshold = 1e-14
-    max_ansatz_elements = 30
+    max_ansatz_elements = 40
 
     multithread = True
 
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     # dataFrame to collect the simulation data
     df_data = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth',
-                                        'u1_depth', 'element', 'element_qubits'])
+                                        'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     while previous_energy - current_energy >= accuracy and count <= max_ansatz_elements:
         count += 1
@@ -105,6 +105,8 @@ if __name__ == "__main__":
                                                                                       initial_ansatz=ansatz_elements,
                                                                                       multithread=multithread)
         current_energy = result.fun
+        # TODO: We add 0 valued var parameters for the next ansatz elemnet, which in general we do not know how many parameters has
+        # TODO: correct this! It will fail if we have anasatz elements with different number of var. parameters
         # get initial guess for the var. params. for the next iteration
         var_parameters = list(result.x) + list(numpy.zeros(element_to_add.n_var_parameters))
         delta_e = previous_energy - current_energy
@@ -125,8 +127,9 @@ if __name__ == "__main__":
                                   'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
                                   'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
                                   'u1_depth': gate_count['u1_depth'], 'element': element_to_add.element,
-                                  'element_qubits': element_qubits}
+                                  'element_qubits': element_qubits, 'var_parameters': 0}
             df_data['var_parameters'] = result.x
+            # df_data['var_parameters'] = var_parameters
             # save data
             save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
@@ -142,7 +145,7 @@ if __name__ == "__main__":
 
         print('Added element ', ansatz_elements[-1].element)
 
-    # save data
+    # save data. Not required?
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
