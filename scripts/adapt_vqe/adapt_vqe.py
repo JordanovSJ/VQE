@@ -31,6 +31,7 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
 
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
     molecule = LiH
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
@@ -44,8 +45,18 @@ if __name__ == "__main__":
     max_ansatz_elements = 40
 
     multithread = True
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+
+    # create a vqe runner object
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
+    hf_energy = vqe_runner.hf_energy
+    fci_energy = vqe_runner.fci_energy
+
+    # dataFrame to collect the simulation data
+    df_data = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth',
+                                        'u1_depth', 'element', 'element_qubits', 'var_parameters'])
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     LogUtils.log_cofig()
@@ -54,10 +65,6 @@ if __name__ == "__main__":
     # create a pool of ansatz elements
     initial_ansatz_elements_pool = SDElements(molecule.n_orbitals, molecule.n_electrons,
                                               element_type=ansatz_element_type).get_double_excitations()
-
-    # create a vqe runner object
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
-    hf_energy = vqe_runner.hf_energy
 
     # New pool
     # get a new ansatz element pool, from elements that decrease <H> by at least dE = threshold
@@ -86,12 +93,7 @@ if __name__ == "__main__":
     var_parameters = []
     count = 0
     current_energy = hf_energy
-    fci_energy = vqe_runner.fci_energy
     previous_energy = 0
-
-    # dataFrame to collect the simulation data
-    df_data = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth',
-                                        'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     while previous_energy - current_energy >= accuracy and count <= max_ansatz_elements:
         count += 1
