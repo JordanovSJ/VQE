@@ -73,6 +73,7 @@ if __name__ == "__main__":
         logging.info(message)
         print(message)
 
+    # get single excitaitons
     new_ansatz_element_pool += SDElements(molecule.n_orbitals, molecule.n_electrons,
                                           element_type=ansatz_element_type).get_single_excitations()
 
