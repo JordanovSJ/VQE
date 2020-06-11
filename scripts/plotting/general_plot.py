@@ -7,10 +7,10 @@ import pandas
 
 if __name__ == "__main__":
 
-    db_data = pandas.read_csv('../../results/dissociation_curves/HF_dis_curve_04-Jun-2020 (14:49:22.755434).csv')
+    db_data = pandas.read_csv('../../results/dissociation_curves/LiH_dis_curve_10-Jun-2020 (19:17:59.600939).csv')
 
-    plt.plot(db_data['r'], db_data['error'], label='vqe')
-    # plt.plot(db_data['r'], db_data['fci_E'], label='fci')
+    # plt.plot(db_data['r'], db_data['error'], label='vqe')
+    plt.plot(db_data['r'], db_data['fci_E'], label='fci')
     plt.legend()
     # plt.yscale('log')
 

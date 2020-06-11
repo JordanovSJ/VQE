@@ -114,4 +114,9 @@ class QiskitSimulation:
 
         return energy.real, statevector, qasm
 
+    @staticmethod
+    def get_energy_gradient():
+        # TOOD
+        return 0
+
 

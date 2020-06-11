@@ -1,6 +1,7 @@
 from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
 from openfermionpsi4 import run_psi4
 from openfermion.hamiltonians import MolecularData
+from openfermion.utils import freeze_orbitals
 
 import src.backends as backends
 from src.utils import QasmUtils, LogUtils
@@ -21,7 +22,7 @@ class VQERunner:
     # Works for a single geometry
     def __init__(self, molecule, ansatz_elements=None, basis='sto-3g', molecule_geometry_params=None,
                  backend=backends.QiskitSimulation, initial_statevector_qasm=None, optimizer=None,
-                 optimizer_options=None, print_var_parameters=False, run_fci=True):
+                 optimizer_options=None, print_var_parameters=False, run_fci=True, frozen_els=None):
 
         LogUtils.vqe_info(molecule, ansatz_elements=ansatz_elements, basis=basis,
                           molecule_geometry_params=molecule_geometry_params, backend=backend)
@@ -31,8 +32,6 @@ class VQERunner:
 
         self.molecule_name = molecule.name
         self.n_electrons = molecule.n_electrons
-        self.n_orbitals = molecule.n_orbitals
-        self.n_qubits = self.n_orbitals
 
         self.molecule_data = MolecularData(geometry=molecule.geometry(**molecule_geometry_params),
                                            basis=basis, multiplicity=molecule.multiplicity, charge=molecule.charge)
@@ -40,7 +39,15 @@ class VQERunner:
 
         # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
-        self.fermion_ham = get_fermion_operator(self.molecule_ham)
+        if frozen_els is None:
+            self.n_orbitals = molecule.n_orbitals
+            self.n_qubits = self.n_orbitals
+            self.fermion_ham = get_fermion_operator(self.molecule_ham)
+        else:
+            self.n_orbitals = molecule.n_orbitals - len(frozen_els['occupied']) - len(frozen_els['unoccupied'])
+            self.n_qubits = self.n_orbitals
+            self.fermion_ham = freeze_orbitals(get_fermion_operator(self.molecule_ham), occupied=frozen_els['occupied'],
+                                               unoccupied=frozen_els['unoccupied'], prune=True)
         self.jw_ham_qubit_operator = jordan_wigner(self.fermion_ham)
         self.hf_energy = self.molecule_psi4.hf_energy.item()
         self.fci_energy = self.molecule_psi4.fci_energy.item()

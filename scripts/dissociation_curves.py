@@ -14,35 +14,47 @@ import datetime
 import scipy
 import qiskit
 from functools import partial
+import ast
 
 
 if __name__ == "__main__":
 
-    molecule = HF
+    molecule = LiH
+    r_0 = 1.546
+
+    time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+    df_data = pandas.DataFrame(columns=['r', 'E', 'fci_E', 'error', 'n_iters'])
+    df_count = 0
 
     # logging
     LogUtils.log_cofig()
 
-    ansatz_elements = [DoubleQubitExcitation([4, 5], [10, 11]), DoubleQubitExcitation([3, 4], [10, 11]),
-                       DoubleQubitExcitation([2, 3], [10, 11]), DoubleQubitExcitation([2, 5], [10, 11]),
-                       DoubleQubitExcitation([6, 7], [10, 11]), DoubleQubitExcitation([8, 9], [10, 11]),
-                       SingleQubitExcitation(5, 11), SingleQubitExcitation(4, 10), SingleQubitExcitation(3, 11),
-                       DoubleQubitExcitation([0, 1], [10, 11]), DoubleQubitExcitation([0, 3], [10, 11]),
-                       DoubleQubitExcitation([1, 2], [10, 11]),
-                       SingleQubitExcitation(2, 10),
-                       DoubleQubitExcitation([1, 4], [10, 11]), DoubleQubitExcitation([0, 5], [10, 11])]
+    df = pandas.read_csv('../results/adapt_vqe_results/LiH_SDEFE_05-Jun-2020.csv')
 
-    initial_var_parameters = [-0.1348821853363791, -0.030308892233037205, -0.02438520854419213, 0.030421484789544904,
-                              -0.017923593172760655, -0.017926644529627764, -0.016163632894877294, 0.015997841462461835,
-                              -0.0031624799369282075, -0.0004065477078839333, 0.0004266015854361852, -0.0005520783699704946,
-                              0.001601246718874758, -9.07917533487873e-05, 8.196598228859834e-06]
+    ansatz_elements = []
+    for i in range(len(df)):
+        element = df.loc[i]['element']
+        element_qubits = df.loc[i]['element_qubits']
+        if element[0] == 'e' and element[4] == 's':
+            ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'e' and element[4] == 'd':
+            ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 's' and element[2] == 'q':
+            ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'd' and element[2] == 'q':
+            ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
 
-    var_parameters = initial_var_parameters
+    init_var_parameters = list(df['var_parameters'])
+
+    var_parameters = init_var_parameters
     energies_1 = []
     fci_energies_1 = []
     rs_1 = []
-    for i in range(10):
-        r = 0.995 + i*0.025
+    for i in range(25, 35):
+        r = r_0 + i*0.05
         molecule_params = {'distance': r}
 
         vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
@@ -51,16 +63,22 @@ if __name__ == "__main__":
         # next var parameters
         var_parameters = result.x
 
-        fci_energies_1.append(vqe_runner.fci_energy)
-        energies_1.append(result.fun)
+        fci_E = vqe_runner.fci_energy
+        fci_energies_1.append(fci_E)
+        E = result.fun
+        energies_1.append(E)
         rs_1.append(r)
 
-    var_parameters = initial_var_parameters
+        df_data.loc[df_count] = {'r': r, 'E': E, 'fci_E': fci_E, 'error': E-fci_E, 'n_iters': result.nfev}
+        df_data.to_csv('../results/dissociation_curves/{}_{}.csv'.format(molecule.name, time_stamp))
+        df_count += 1
+
+    var_parameters = init_var_parameters
     energies_2 = []
     fci_energies_2 = []
     rs_2 = []
-    for i in range(10):
-        r = 0.995 - (1+i) * 0.025
+    for i in range(10, 20):
+        r = r_0 - (1+i) * 0.05
         molecule_params = {'distance': r}
 
         vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
@@ -69,18 +87,24 @@ if __name__ == "__main__":
         # next var parameters
         var_parameters = result.x
 
-        energies_2.append(result.fun)
-        fci_energies_2.append(vqe_runner.fci_energy)
+        fci_E = result.fci_energy
+        E = result.fun
+        energies_2.append(E)
+        fci_energies_2.append(fci_E)
         rs_2.append(r)
+
+        df_data.loc[df_count] = {'r': r, 'E': E, 'fci_E': fci_E, 'error': E - fci_E, 'n_iters': result.nfev}
+        df_data.to_csv('../results/dissociation_curves/{}_{}.csv'.format(molecule.name, time_stamp))
+        df_count += 1
 
     energies = energies_2[::-1] + energies_1
     fci_energies = fci_energies_2[::-1] + fci_energies_1
     errors = list(numpy.array(energies) - numpy.array(fci_energies))
     rs = rs_2[::-1] + rs_1
 
-    df_data = pandas.DataFrame({'r': rs, 'E': energies, 'fci_E': fci_energies, 'error': errors})
-    time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
-    df_data.to_csv('../results/{}_dis_curve_{}'.format(molecule.name, time_stamp))
+    # df_data = pandas.DataFrame({'r': rs, 'E': energies, 'fci_E': fci_energies, 'error': errors})
+    # time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+    # df_data.to_csv('../results/{}_dis_curve_{}'.format(molecule.name, time_stamp))
 
     print(energies)
     print(fci_energies)

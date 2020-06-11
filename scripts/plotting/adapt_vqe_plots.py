@@ -7,13 +7,13 @@ import pandas
 
 if __name__ == "__main__":
 
-    db_qe = pandas.read_csv('../../results/adapt_vqe_results/HF_02-Jun-2020_adapt_SDQE.csv')
-    db_efe = pandas.read_csv('../../results/adapt_vqe_results/HF_02-Jun-2020_adapt_SDEFE.csv')
+    db_efe = pandas.read_csv('../../results/adapt_vqe_results/LiH_SDEFE_05-Jun-2020.csv')
+    db_qe = pandas.read_csv('../../results/adapt_vqe_results/LiH_SDQE_05-Jun-2020.csv')
 
-    plt.plot(db_qe['cnot_count'], db_qe['error'], label='qubit_excitations')
-    plt.plot(db_efe['cnot_count'], db_efe['error'], label='fermi_excitations')
+    plt.plot(db_qe['n'], np.log(db_qe['error'])/np.log(10), label='qubit_excitations')
+    plt.plot(db_efe['n'], np.log(db_efe['error'])/np.log(10), label='fermi_excitations')
     plt.legend()
-    plt.yscale('log')
+    # plt.yscale('log')
 
     plt.show()
 
