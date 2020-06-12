@@ -48,7 +48,7 @@ class VQERunner:
             self.n_qubits = self.n_orbitals
             self.fermion_ham = freeze_orbitals(get_fermion_operator(self.molecule_ham), occupied=frozen_els['occupied'],
                                                unoccupied=frozen_els['unoccupied'], prune=True)
-        self.jw_ham_qubit_operator = jordan_wigner(self.fermion_ham)
+        self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
         self.hf_energy = self.molecule_psi4.hf_energy.item()
         self.fci_energy = self.molecule_psi4.fci_energy.item()
 
@@ -84,7 +84,7 @@ class VQERunner:
         t_start = time.time()
         # var_parameters = var_parameters[::-1]  # TODO cheat
         energy, statevector, qasm = self.backend.get_energy(var_parameters=var_parameters,
-                                                            qubit_hamiltonian=self.jw_ham_qubit_operator,
+                                                            qubit_hamiltonian=self.jw_qubit_ham,
                                                             ansatz_elements=ansatz_elements,
                                                             n_qubits=self.n_qubits,
                                                             n_electrons=self.n_electrons,

@@ -115,8 +115,22 @@ class QiskitSimulation:
         return energy.real, statevector, qasm
 
     @staticmethod
-    def get_energy_gradient():
-        # TOOD
-        return 0
+    def get_exponent_energy_gradient(qubit_hamiltonian, exponent_term, ansatz_elements, var_parameters, n_qubits, n_electrons,
+                            initial_statevector_qasm=None):
+
+        assert type(exponent_term) == QubitOperator
+        exponent_matrix = get_sparse_operator(exponent_term, n_qubits).todense()
+
+        assert type(qubit_hamiltonian) == QubitOperator
+        hamiltonian_matrix = get_sparse_operator(qubit_hamiltonian).todense()
+
+        statevector, qasm = QiskitSimulation.get_statevector_from_ansatz_elements(ansatz_elements, var_parameters,
+                                                                                  n_qubits, n_electrons,
+                                                                                  initial_statevector_qasm=initial_statevector_qasm)
+
+        commutator = hamiltonian_matrix.dot(exponent_matrix) - exponent_matrix.dot(hamiltonian_matrix)
+        gradient = statevector.conj().dot(commutator).dot(statevector)[0, 0]
+
+        return gradient.real
 
 

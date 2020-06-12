@@ -65,6 +65,14 @@ class QasmUtils:
         return QasmUtils.gate_count_from_qasm(qasm, n_qubits)
 
     @staticmethod
+    def get_circuit_matrix(qasm):
+        backend = qiskit.Aer.get_backend('unitary_simulator')
+        qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm)
+        result = qiskit.execute(qiskit_circuit, backend).result()
+        matrix = result.get_unitary(qiskit_circuit, decimals=5)
+        return matrix
+
+    @staticmethod
     def qasm_header(n_qubits):
         return 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[{0}];\ncreg c[{0}];\n'.format(n_qubits)
 

@@ -1,26 +1,10 @@
-from openfermion.hamiltonians import MolecularData
-from openfermionpsi4 import run_psi4
-from openfermion import QubitOperator
-from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
-from scipy.linalg import eigh
-from openfermion.utils import jw_hartree_fock_state
-import scipy
 from src.ansatz_element_lists import *
-from src.test_ansatz_elements import EfficientDoubleExchange, EfficientDoubleExcitation2
-import numpy
-from src.backends import QiskitSimulation, MatrixCalculation
-from src.vqe_runner import VQERunner
-from src.molecules import H2, HF
-import openfermion
+from src.backends import QiskitSimulation
 import qiskit
-import time
-
-from scripts.drafts.unused_functions_and_classes import *
-
-import matplotlib.pyplot as plt
 
 from src.utils import QasmUtils
-from src import backends
+from src.vqe_runner import *
+from src.molecules import *
 
 
 def get_circuit_matrix(qasm):
@@ -50,42 +34,29 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
+    molecule = H2
+    r = 0.735
 
-    angle = 0.1
-    n = 4
-    qasm_init = ['']
-    qasm_init.append(QasmUtils.qasm_header(n))
-    # qasm_init.append('x q[0];\n')
-    # qasm_init.append('x q[3];\n')
-    # qasm_init.append('h q[1];\n')
-    # qasm_init.append('h q[2];\n')
-    # qasm_init.append('h q[4];\n')
+    uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
 
-    # qasm_1 = ['']
-    # qasm_1 += qasm_init
-    #
-    # # qasm_1.append(DoubleExchange([0, 1], [2, 3], d_exc_correction=False, parity_dependence=False,
-    # #                              rescaled_parameter=False).get_qasm([angle]))
-    # qasm_1.append(SingleFermiExcitation(0, 3).get_qasm([angle]))
-    # statevector_1 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_1)).round(10)
-    #
-    # print(statevector_1)
+    ansatz_elements = uccsd.get_ansatz_elements()
+    target_ansatz_element = ansatz_elements[0]
 
-    qasm_2 = ['']
-    qasm_2 += qasm_init
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation)
 
-    # qasm_2.append(DoubleBosExcitation([0, 1], [2, 3]).get_qasm([angle]))
-    # qasm_2.append(EfficientSingleFermiExcitation(0, 3).get_qasm([angle]))
-    #
+    q_H = vqe_runner.jw_qubit_ham
 
-    qasm_2.append(ExpDoubleQubitExcitation.exp_double_qubit_excitation(angle, [0, 1], [2, 3]))
+    if target_ansatz_element.order == 1:
+        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(target_ansatz_element.qubit_2, target_ansatz_element.qubit_1))
+        exponent_term = jordan_wigner(fermi_operator)
+    elif target_ansatz_element.order == 2:
+        fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
+                                         .format(*target_ansatz_element.qubit_pair_1,
+                                                 *target_ansatz_element.qubit_pair_2))
+        exponent_term = jordan_wigner(fermi_operator)
+    else:
+        raise Exception('Invalid ansatz element.')
 
-    statevector_2 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_2)).round(10)
-
-    print(statevector_2)
-
-    # print(matrix_to_str(get_circuit_matrix(''.join(qasm_1))))
-    print(matrix_to_str(get_circuit_matrix(''.join(qasm_2))))
-
-
+    gradient = backends.QiskitSimulation.get_exponent_energy_gradient(q_H, exponent_term, [], [], 4, 2)
+    print(gradient)
     print('spagetti')

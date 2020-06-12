@@ -166,6 +166,7 @@ if __name__ == "__main__":
 
     molecule = LiH
     r = 1.546
+    frozen_els =  None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
     molecule_params = None
 
     # logging
@@ -175,14 +176,14 @@ if __name__ == "__main__":
 
     ansatz_elements = uccsd.get_ansatz_elements()
 
-    optimizer = 'Nelder-Mead'
-    # optimizer_options = {'maxcor': 20, 'ftol': 1e-10, 'gtol': 1e-08, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1000,
-    #                      'iprint': -1, 'maxls': 10}
+    # optimizer = 'Nelder-Mead'
+    # # optimizer_options = {'maxcor': 20, 'ftol': 1e-10, 'gtol': 1e-08, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1000,
+    # #                      'iprint': -1, 'maxls': 10}
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params,
-                           print_var_parameters=False, optimizer=optimizer)#, optimizer_options=optimizer_options)
+                           print_var_parameters=False, frozen_els=frozen_els )#, optimizer=optimizer)#, optimizer_options=optimizer_options)
 
     t0 = time.time()
-    result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements, initial_var_parameters=var_parameters)
+    result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements)#, initial_var_parameters=var_parameters)
     t = time.time()
 
     logging.critical(result)

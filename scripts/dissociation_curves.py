@@ -53,8 +53,9 @@ if __name__ == "__main__":
     energies_1 = []
     fci_energies_1 = []
     rs_1 = []
-    for i in range(25, 35):
-        r = r_0 + i*0.05
+    for i in range(1, 13):
+        # r = r_0 + i*0.05
+        r = 2.146 + i*0.05
         molecule_params = {'distance': r}
 
         vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
@@ -77,8 +78,8 @@ if __name__ == "__main__":
     energies_2 = []
     fci_energies_2 = []
     rs_2 = []
-    for i in range(10, 20):
-        r = r_0 - (1+i) * 0.05
+    for i in range(0):
+        r = r_0 - (1+i) * 0.025
         molecule_params = {'distance': r}
 
         vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
