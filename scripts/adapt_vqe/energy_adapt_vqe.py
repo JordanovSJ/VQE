@@ -33,10 +33,9 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    molecule = H2
-    r = 1.546
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
-    molecule_params = {'distance': r}  #, 'theta': theta}
+    molecule = H2()
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
@@ -51,9 +50,9 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create a vqe runner object
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
-    hf_energy = vqe_runner.hf_energy
-    fci_energy = vqe_runner.fci_energy
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation)
+    hf_energy = molecule.hf_energy
+    fci_energy = molecule.fci_energy
 
     # dataFrame to collect the simulation data
     df_data = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth',
@@ -153,8 +152,7 @@ if __name__ == "__main__":
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}
-                                 , ansatz_elements=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements)
     final_result = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
     t = time.time()
 

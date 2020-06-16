@@ -50,8 +50,8 @@ class VQERunner:
         self.iteration = 0
         self.gate_counter = None
 
-    def get_energy(self, var_parameters, ansatz_elements, multithread=False, initial_statevector_qasm=None,
-                   update_gate_counter=False, multithread_iteration=None):
+    def get_energy(self, var_parameters, ansatz_elements, multithread=False, update_gate_counter=False,
+                   multithread_iteration=None):
 
         t_start = time.time()
 
@@ -59,8 +59,7 @@ class VQERunner:
                                                                        qubit_operator=self.q_system.jw_qubit_ham,
                                                                        ansatz_elements=ansatz_elements,
                                                                        n_qubits=self.q_system.n_qubits,
-                                                                       n_electrons=self.q_system.n_electrons,
-                                                                       initial_statevector_qasm=initial_statevector_qasm)
+                                                                       n_electrons=self.q_system.n_electrons)
 
         # TODO: the code below is a mess .. FIX
         # if we run in parallel process don't print and update info
@@ -109,8 +108,7 @@ class VQERunner:
                 var_parameters = initial_var_parameters
 
         # partial function to be used in the optimizer
-        get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
-                             initial_statevector_qasm=initial_statevector_qasm)
+        get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements)
 
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
@@ -159,7 +157,7 @@ class VQERunner:
 
         # partial function to be used in the optimizer
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements, multithread=True,
-                             initial_statevector_qasm=initial_statevector_qasm, multithread_iteration=local_iteration)
+                             multithread_iteration=local_iteration)
 
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
