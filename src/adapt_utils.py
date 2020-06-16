@@ -55,13 +55,14 @@ class GradAdaptUtils:
 
     @staticmethod
     @ray.remote
-    def get_excitation_energy_gradient_multithread(excitation_element, ansatz_elements, var_parameters, qubit_hamiltonian, n_qubits,
-                                                   n_electrons, backend, initial_statevector_qasm=None):
+    def get_excitation_energy_gradient_multithread(excitation_element, ansatz_elements, var_parameters, qubit_hamiltonian,
+                                                   n_qubits, n_electrons, backend, initial_statevector_qasm=None):
 
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
         assert type(qubit_hamiltonian) == QubitOperator
 
+        # TODO consider not doing this if commutator matrix is supplied
         commutator = qubit_hamiltonian*excitation - excitation*qubit_hamiltonian
 
         gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, n_qubits, n_electrons,
@@ -126,4 +127,4 @@ class GradAdaptUtils:
         elements_results = GradAdaptUtils.get_ansatz_elements_gradients(ansatz_elements, qubit_ham, n_qubits, n_electrons,
                                                                         backend, initial_var_parameters=initial_var_parameters,
                                                                         initial_ansatz=initial_ansatz, multithread=multithread)
-        return min(elements_results, key=lambda x: x[1])
+        return max(elements_results, key=lambda x: abs(x[1]))

@@ -47,7 +47,7 @@ class LiH:
     n_electrons: int = 4
 
     @staticmethod
-    def geometry(distance= 1.546):
+    def geometry(distance=1.546):
         return [
             ['Li', [0, 0, 0]],
             ['H', [0, 0, distance]]]

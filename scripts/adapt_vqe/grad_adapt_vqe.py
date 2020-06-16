@@ -33,8 +33,8 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    molecule = HF
-    r = 0.995
+    molecule = LiH
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     molecule_params = {'distance': r}  #, 'theta': theta}
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     accuracy = 1e-8  # 1e-3 for chemical accuracy
     # threshold = 1e-14
-    max_ansatz_elements = 25
+    max_ansatz_elements = 45
 
     multithread = True
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

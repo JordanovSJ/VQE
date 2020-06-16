@@ -101,15 +101,18 @@ class QiskitSimulation:
         return statevector, qasm
 
     @staticmethod
-    def get_expectation_value(qubit_operator, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
+    def get_expectation_value(qubit_operator, ansatz_elements, var_parameters, n_qubits, n_electrons,
+                              initial_statevector_qasm=None, operator_matrix=None):
 
         # get the resulting statevector from the Qiskit simulator
         statevector, qasm = QiskitSimulation.get_statevector_from_ansatz_elements(ansatz_elements, var_parameters,
                                                                                   n_qubits, n_electrons,
                                                                                   initial_statevector_qasm=initial_statevector_qasm)
 
-        # get the Hamiltonian in the form of a matrix
-        operator_matrix = get_sparse_operator(qubit_operator).todense()
+        # get the operator in the form of a matrix
+        if operator_matrix is None:
+            operator_matrix = get_sparse_operator(qubit_operator).todense()
+
         expectation_value = statevector.conj().dot(operator_matrix).dot(statevector)[0, 0]
 
         return expectation_value.real, statevector, qasm
