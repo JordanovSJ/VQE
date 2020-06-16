@@ -1,5 +1,5 @@
 from src.vqe_runner import VQERunner
-from src.molecules import *
+from src.q_systems import *
 from src.ansatz_element_lists import *
 from src.backends import QiskitSimulation
 from src.utils import LogUtils
@@ -164,23 +164,21 @@ var_parameters = [ 2.46464498e-04, -4.11845750e-05, -3.83831930e-05, -3.83562229
 
 if __name__ == "__main__":
 
-    molecule = LiH
-    r = 1.546
-    frozen_els =  None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    molecule_params = None
+    r = 0.735
+    frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
+    q_system = H2(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_cofig()
 
-    uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
+    uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
 
     ansatz_elements = uccsd.get_ansatz_elements()
 
     # optimizer = 'Nelder-Mead'
     # # optimizer_options = {'maxcor': 20, 'ftol': 1e-10, 'gtol': 1e-08, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1000,
     # #                      'iprint': -1, 'maxls': 10}
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params,
-                           print_var_parameters=False, frozen_els=frozen_els )#, optimizer=optimizer)#, optimizer_options=optimizer_options)
+    vqe_runner = VQERunner(q_system, backend=QiskitSimulation, print_var_parameters=False)#, optimizer=optimizer)#, optimizer_options=optimizer_options)
 
     t0 = time.time()
     result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements)#, initial_var_parameters=var_parameters)

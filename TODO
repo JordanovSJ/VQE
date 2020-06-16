@@ -4,7 +4,8 @@
 
 -gradient based adapt VQE
 
--combine qubit_hamiltonian, fci_energy, hf_enerfy etc.. in class molecule and remove them from vqe_runner
+-combine qubit_hamiltonian, fci_energy, hf_enerfy etc.. in class molecule and remove them from vqe_runner DONE
+-create function commutator for class q_sysyem and the option to save commutators
 
 *********************************************
 

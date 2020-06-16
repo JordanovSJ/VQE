@@ -55,35 +55,32 @@ class GradAdaptUtils:
 
     @staticmethod
     @ray.remote
-    def get_excitation_energy_gradient_multithread(excitation_element, ansatz_elements, var_parameters, qubit_hamiltonian,
-                                                   n_qubits, n_electrons, backend, initial_statevector_qasm=None):
+    def get_excitation_energy_gradient_multithread(excitation_element, ansatz_elements, var_parameters, q_system,
+                                                   backend):
 
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
-        assert type(qubit_hamiltonian) == QubitOperator
 
         # TODO consider not doing this if commutator matrix is supplied
-        commutator = qubit_hamiltonian*excitation - excitation*qubit_hamiltonian
+        commutator = q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham
 
-        gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, n_qubits, n_electrons,
-                                                 initial_statevector_qasm=initial_statevector_qasm)[0]
+        gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, q_system.n_qubits,
+                                                 q_system.n_electrons)[0]
 
         message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
         print(message)
         return gradient
 
     @staticmethod
-    def get_excitation_energy_gradient(excitation_element, ansatz_elements, var_parameters, qubit_hamiltonian, n_qubits,
-                                       n_electrons, backend, initial_statevector_qasm=None):
+    def get_excitation_energy_gradient(excitation_element, ansatz_elements, var_parameters, q_system, backend):
 
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
-        assert type(qubit_hamiltonian) == QubitOperator
 
-        commutator = qubit_hamiltonian * excitation - excitation * qubit_hamiltonian
+        commutator = q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham
 
-        gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, n_qubits, n_electrons,
-                                                 initial_statevector_qasm=initial_statevector_qasm)[0]
+        gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, q_system.n_qubits,
+                                                 q_system.n_electrons)[0]
 
         message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
         print(message)
@@ -92,7 +89,7 @@ class GradAdaptUtils:
 
     # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
-    def get_ansatz_elements_gradients(ansatz_elements, qubit_ham, n_qubits, n_electrons, backend, initial_var_parameters=None,
+    def get_ansatz_elements_gradients(ansatz_elements, q_system, backend, initial_var_parameters=None,
                                       initial_ansatz=None, multithread=False):
 
         if initial_ansatz is None:
@@ -102,8 +99,8 @@ class GradAdaptUtils:
             elements_ray_ids = [
                 [element,
                  GradAdaptUtils.get_excitation_energy_gradient_multithread.remote(element, initial_ansatz,
-                                                                                  initial_var_parameters,
-                                                                                  qubit_ham, n_qubits, n_electrons, backend)]
+                                                                                  initial_var_parameters, q_system,
+                                                                                  backend)]
                 for element in ansatz_elements
             ]
             elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
@@ -111,9 +108,8 @@ class GradAdaptUtils:
             ray.shutdown()
         else:
             elements_results = [
-                [element, GradAdaptUtils.get_excitation_energy_gradient(element, initial_ansatz,
-                                                                        initial_var_parameters,
-                                                                        qubit_ham, n_qubits, n_electrons, backend)]
+                [element, GradAdaptUtils.get_excitation_energy_gradient(element, initial_ansatz, initial_var_parameters,
+                                                                        q_system, backend)]
                 for element in ansatz_elements
             ]
 
@@ -121,10 +117,11 @@ class GradAdaptUtils:
 
     # returns the ansatz element that achieves lowest energy (together with the energy value)
     @staticmethod
-    def get_most_significant_ansatz_element(ansatz_elements, qubit_ham, n_qubits, n_electrons, backend,
-                                            initial_var_parameters=None, initial_ansatz=None, multithread=False):
+    def get_most_significant_ansatz_element(ansatz_elements, q_system, backend, initial_var_parameters=None,
+                                            initial_ansatz=None, multithread=False):
 
-        elements_results = GradAdaptUtils.get_ansatz_elements_gradients(ansatz_elements, qubit_ham, n_qubits, n_electrons,
-                                                                        backend, initial_var_parameters=initial_var_parameters,
-                                                                        initial_ansatz=initial_ansatz, multithread=multithread)
+        elements_results = GradAdaptUtils.get_ansatz_elements_gradients(ansatz_elements, q_system, backend,
+                                                                        initial_var_parameters=initial_var_parameters,
+                                                                        initial_ansatz=initial_ansatz,
+                                                                        multithread=multithread)
         return max(elements_results, key=lambda x: abs(x[1]))

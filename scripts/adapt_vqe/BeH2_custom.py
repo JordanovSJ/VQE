@@ -2,7 +2,7 @@ import sys
 sys.path.append('../')
 
 from src.vqe_runner import VQERunner
-from src.molecules import H2, LiH, HF, BeH2
+from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_elements import UCCGSD, UCCSD, ESD, EGSD, DoubleExchange, SingleQubitExcitation, DoubleFermiExcitation, SingleFermiExcitation
 from src.backends import QiskitSimulation
 from src.utils import LogUtils, AdaptAnsatzUtils
