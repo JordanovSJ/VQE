@@ -5,10 +5,10 @@ import time
 
 from src.utils import QasmUtils, MatrixUtils
 
-import qiskit
 import qiskit.qasm
 import scipy
 import numpy
+import ray
 
 
 class MatrixCalculation:
@@ -101,7 +101,7 @@ class QiskitSimulation:
         return statevector, qasm
 
     @staticmethod
-    def get_energy(qubit_hamiltonian, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
+    def get_expectation_value(qubit_operator, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
 
         # get the resulting statevector from the Qiskit simulator
         statevector, qasm = QiskitSimulation.get_statevector_from_ansatz_elements(ansatz_elements, var_parameters,
@@ -109,28 +109,7 @@ class QiskitSimulation:
                                                                                   initial_statevector_qasm=initial_statevector_qasm)
 
         # get the Hamiltonian in the form of a matrix
-        hamiltonian_matrix = get_sparse_operator(qubit_hamiltonian).todense()
-        energy = statevector.conj().dot(hamiltonian_matrix).dot(statevector)[0, 0]
+        operator_matrix = get_sparse_operator(qubit_operator).todense()
+        expectation_value = statevector.conj().dot(operator_matrix).dot(statevector)[0, 0]
 
-        return energy.real, statevector, qasm
-
-    @staticmethod
-    def get_exponent_energy_gradient(qubit_hamiltonian, exponent_term, ansatz_elements, var_parameters, n_qubits, n_electrons,
-                            initial_statevector_qasm=None):
-
-        assert type(exponent_term) == QubitOperator
-        exponent_matrix = get_sparse_operator(exponent_term, n_qubits).todense()
-
-        assert type(qubit_hamiltonian) == QubitOperator
-        hamiltonian_matrix = get_sparse_operator(qubit_hamiltonian).todense()
-
-        statevector, qasm = QiskitSimulation.get_statevector_from_ansatz_elements(ansatz_elements, var_parameters,
-                                                                                  n_qubits, n_electrons,
-                                                                                  initial_statevector_qasm=initial_statevector_qasm)
-
-        commutator = hamiltonian_matrix.dot(exponent_matrix) - exponent_matrix.dot(hamiltonian_matrix)
-        gradient = statevector.conj().dot(commutator).dot(statevector)[0, 0]
-
-        return gradient.real
-
-
+        return expectation_value.real, statevector, qasm

@@ -13,7 +13,8 @@ from src.vqe_runner import VQERunner
 from src.molecules import *
 from src.ansatz_element_lists import *
 from src.backends import QiskitSimulation
-from src.utils import LogUtils, AdaptAnsatzUtils
+from src.utils import LogUtils
+from src.adapt_utils import EnergyAdaptUtils
 
 
 def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
@@ -32,7 +33,7 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    molecule = LiH
+    molecule = H2
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
     molecule_params = {'distance': r}  #, 'theta': theta}
@@ -69,7 +70,7 @@ if __name__ == "__main__":
     # New pool
     # get a new ansatz element pool, from elements that decrease <H> by at least dE = threshold
     new_ansatz_element_pool = []
-    elements_results = AdaptAnsatzUtils.get_ansatz_elements_above_threshold(vqe_runner,
+    elements_results = EnergyAdaptUtils.get_ansatz_elements_below_threshold(vqe_runner,
                                                                             initial_ansatz_elements_pool,
                                                                             hf_energy - threshold,
                                                                             multithread=multithread)
@@ -102,7 +103,7 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, result = AdaptAnsatzUtils.get_most_significant_ansatz_element(vqe_runner,
+        element_to_add, result = EnergyAdaptUtils.get_most_significant_ansatz_element(vqe_runner,
                                                                                       new_ansatz_element_pool,
                                                                                       initial_var_parameters=var_parameters,
                                                                                       initial_ansatz=ansatz_elements,

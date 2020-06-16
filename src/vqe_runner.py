@@ -83,12 +83,12 @@ class VQERunner:
                    update_gate_counter=False, multithread_iteration=None):
         t_start = time.time()
         # var_parameters = var_parameters[::-1]  # TODO cheat
-        energy, statevector, qasm = self.backend.get_energy(var_parameters=var_parameters,
-                                                            qubit_hamiltonian=self.jw_qubit_ham,
-                                                            ansatz_elements=ansatz_elements,
-                                                            n_qubits=self.n_qubits,
-                                                            n_electrons=self.n_electrons,
-                                                            initial_statevector_qasm=initial_statevector_qasm)
+        energy, statevector, qasm = self.backend.get_expectation_value(var_parameters=var_parameters,
+                                                                       qubit_operator=self.jw_qubit_ham,
+                                                                       ansatz_elements=ansatz_elements,
+                                                                       n_qubits=self.n_qubits,
+                                                                       n_electrons=self.n_electrons,
+                                                                       initial_statevector_qasm=initial_statevector_qasm)
 
         # if we run parallel process dont print and update info
         if multithread:

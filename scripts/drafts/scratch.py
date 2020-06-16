@@ -2,9 +2,9 @@ from src.ansatz_element_lists import *
 from src.backends import QiskitSimulation
 import qiskit
 
-from src.utils import QasmUtils
 from src.vqe_runner import *
 from src.molecules import *
+from src.adapt_utils import GradAdaptUtils
 
 
 def get_circuit_matrix(qasm):
@@ -40,23 +40,15 @@ if __name__ == "__main__":
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
 
     ansatz_elements = uccsd.get_ansatz_elements()
-    target_ansatz_element = ansatz_elements[0]
+    target_ansatz_element = ansatz_elements[-1]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSimulation)
 
     q_H = vqe_runner.jw_qubit_ham
 
-    if target_ansatz_element.order == 1:
-        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(target_ansatz_element.qubit_2, target_ansatz_element.qubit_1))
-        exponent_term = jordan_wigner(fermi_operator)
-    elif target_ansatz_element.order == 2:
-        fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
-                                         .format(*target_ansatz_element.qubit_pair_1,
-                                                 *target_ansatz_element.qubit_pair_2))
-        exponent_term = jordan_wigner(fermi_operator)
-    else:
-        raise Exception('Invalid ansatz element.')
+    backend = backends.QiskitSimulation
 
-    gradient = backends.QiskitSimulation.get_exponent_energy_gradient(q_H, exponent_term, [], [], 4, 2)
-    print(gradient)
+    grads = GradAdaptUtils.get_most_significant_ansatz_element(ansatz_elements, q_H, 4, 2, backend, multithread=True)
+
+    print(grads)
     print('spagetti')

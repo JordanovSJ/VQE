@@ -4,6 +4,8 @@
 
 -gradient based adapt VQE
 
+-combine qubit_hamiltonian, fci_energy, hf_enerfy etc.. in class molecule and remove them from vqe_runner
+
 *********************************************
 
 1. Implementation for Riggeti real QPU

@@ -100,8 +100,8 @@ class QiskitSimulationTest(unittest.TestCase):
         ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
         var_parameters = numpy.zeros(len(ansatz_elements))
         var_parameters[-1] = 0.11
-        energy_qiskit_sim = QiskitSimulation.get_energy(h, ansatz_elements, var_parameters, molecule.n_orbitals,
-                                                        molecule.n_electrons)[0].real
+        energy_qiskit_sim = QiskitSimulation.get_expectation_value(h, ansatz_elements, var_parameters, molecule.n_orbitals,
+                                                                   molecule.n_electrons)[0].real
         energy_matrix_mult = MatrixCalculation.get_energy(h, ansatz_elements, var_parameters, molecule.n_orbitals,
                                                           molecule.n_electrons)[0].real
 

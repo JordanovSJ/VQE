@@ -1,4 +1,5 @@
 import scipy
+from scipy import optimize
 import numpy
 
 vqe_params = {'chemical_accuracy': 1e-3, 'max_n_iterations': 2000}
