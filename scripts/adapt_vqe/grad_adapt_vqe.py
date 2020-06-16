@@ -33,15 +33,15 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    molecule = LiH
-    r = 1.546
+    molecule = HF
+    r = 0.995
     # theta = 0.538*numpy.pi # for H20
     molecule_params = {'distance': r}  #, 'theta': theta}
 
-    # ansatz_element_type = 'efficient_fermi_excitation'
-    ansatz_element_type = 'qubit_excitation'
+    ansatz_element_type = 'efficient_fermi_excitation'
+    #ansatz_element_type = 'qubit_excitation'
 
-    accuracy = 1e-8  # 1e-3 for chemical accuracy
+    accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14
     max_ansatz_elements = 45
 
