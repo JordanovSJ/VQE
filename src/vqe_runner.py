@@ -20,37 +20,13 @@ import ray
 
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, molecule, ansatz_elements=None, basis='sto-3g', molecule_geometry_params=None,
-                 backend=backends.QiskitSimulation, initial_statevector_qasm=None, optimizer=None,
-                 optimizer_options=None, print_var_parameters=False, run_fci=True, frozen_els=None):
+    def __init__(self, q_system, ansatz_elements=None, backend=backends.QiskitSimulation, optimizer=config.optimizer,
+                 optimizer_options=config.optimizer_options, print_var_parameters=False):
 
-        LogUtils.vqe_info(molecule, ansatz_elements=ansatz_elements, basis=basis,
-                          molecule_geometry_params=molecule_geometry_params, backend=backend)
+        LogUtils.vqe_info(q_system, ansatz_elements=ansatz_elements, basis=q_system.basis,
+                          molecule_geometry_params=q_system.get_geometry, backend=backend)
 
-        if molecule_geometry_params is None:
-            molecule_geometry_params = {}
-
-        self.molecule_name = molecule.name
-        self.n_electrons = molecule.n_electrons
-
-        self.molecule_data = MolecularData(geometry=molecule.geometry(**molecule_geometry_params),
-                                           basis=basis, multiplicity=molecule.multiplicity, charge=molecule.charge)
-        self.molecule_psi4 = run_psi4(self.molecule_data, run_fci=run_fci)
-
-        # Hamiltonian transforms
-        self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
-        if frozen_els is None:
-            self.n_orbitals = molecule.n_orbitals
-            self.n_qubits = self.n_orbitals
-            self.fermion_ham = get_fermion_operator(self.molecule_ham)
-        else:
-            self.n_orbitals = molecule.n_orbitals - len(frozen_els['occupied']) - len(frozen_els['unoccupied'])
-            self.n_qubits = self.n_orbitals
-            self.fermion_ham = freeze_orbitals(get_fermion_operator(self.molecule_ham), occupied=frozen_els['occupied'],
-                                               unoccupied=frozen_els['unoccupied'], prune=True)
-        self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
-        self.hf_energy = self.molecule_psi4.hf_energy.item()
-        self.fci_energy = self.molecule_psi4.fci_energy.item()
+        self.q_system = q_system
 
         # ansatz_elements
         if ansatz_elements is None:
@@ -59,38 +35,35 @@ class VQERunner:
             self.ansatz_elements = ansatz_elements
 
         self.var_parameters = numpy.zeros(sum([element.n_var_parameters for element in self.ansatz_elements]))
-        # self.statevector = numpy.zeros(2**self.n_qubits)  # NOT used
-        self.initial_statevector_qasm = initial_statevector_qasm
 
         # backend
         self.backend = backend
         self.optimizer = optimizer
         self.optimizer_options = optimizer_options
 
-        if optimizer is None:
-            logging.info('Optimizer: {}. Optimizer options: {}'.format(config.optimizer, config.optimizer_options))
-        else:
-            logging.info('Optimizer: {}. Optimizer options: {}'.format(optimizer, optimizer_options))
+        logging.info('Optimizer: {}. Optimizer options: {}'.format(optimizer, optimizer_options))
 
         # call back function variables
         self.print_var_parameters = print_var_parameters
-        self.previous_energy = self.hf_energy
+        self.previous_energy = self.q_system.hf_energy
         self.new_energy = None
         self.iteration = 0
         self.gate_counter = None
 
     def get_energy(self, var_parameters, ansatz_elements, multithread=False, initial_statevector_qasm=None,
                    update_gate_counter=False, multithread_iteration=None):
+
         t_start = time.time()
-        # var_parameters = var_parameters[::-1]  # TODO cheat
+
         energy, statevector, qasm = self.backend.get_expectation_value(var_parameters=var_parameters,
-                                                                       qubit_operator=self.jw_qubit_ham,
+                                                                       qubit_operator=self.q_system.jw_qubit_ham,
                                                                        ansatz_elements=ansatz_elements,
-                                                                       n_qubits=self.n_qubits,
-                                                                       n_electrons=self.n_electrons,
+                                                                       n_qubits=self.q_system.n_qubits,
+                                                                       n_electrons=self.q_system.n_electrons,
                                                                        initial_statevector_qasm=initial_statevector_qasm)
 
-        # if we run parallel process dont print and update info
+        # TODO: the code below is a mess .. FIX
+        # if we run in parallel process don't print and update info
         if multithread:
             if multithread_iteration is not None:
                 try:
@@ -102,7 +75,7 @@ class VQERunner:
             logging.info('Parallel process. Energy {}. Iteration duration: {}'.format(energy, time.time() - t_start))
         else:
             if update_gate_counter or self.iteration == 1:
-                self.gate_counter = QasmUtils.gate_count_from_qasm(qasm, self.n_qubits)
+                self.gate_counter = QasmUtils.gate_count_from_qasm(qasm, self.q_system.n_qubits)
 
             # print info
             self.new_energy = energy
@@ -135,9 +108,6 @@ class VQERunner:
                 assert len(initial_var_parameters) == sum([element.n_var_parameters for element in ansatz_elements])
                 var_parameters = initial_var_parameters
 
-        if initial_statevector_qasm is None:
-            initial_statevector_qasm = self.initial_statevector_qasm
-
         # partial function to be used in the optimizer
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
                              initial_statevector_qasm=initial_statevector_qasm)
@@ -147,9 +117,9 @@ class VQERunner:
             return get_energy(var_parameters)
 
         message = ''
-        message += '-----Running VQE for: {}-----\n'.format(self.molecule_name)
-        message += '-----Number of electrons: {}-----\n'.format(self.n_electrons)
-        message += '-----Number of orbitals: {}-----\n'.format(self.n_orbitals)
+        message += '-----Running VQE for: {}-----\n'.format(self.q_system.name)
+        message += '-----Number of electrons: {}-----\n'.format(self.q_system.n_electrons)
+        message += '-----Number of orbitals: {}-----\n'.format(self.q_system.n_orbitals)
         message += '-----Numeber of ansatz elements: {}-----\n'.format(len(ansatz_elements))
         if len(ansatz_elements) == 1:
             message += '-----Ansatz type {}------\n'.format(ansatz_elements[0].element)

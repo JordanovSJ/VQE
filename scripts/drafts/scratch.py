@@ -3,7 +3,7 @@ from src.backends import QiskitSimulation
 import qiskit
 
 from src.vqe_runner import *
-from src.molecules import *
+from src.q_systems import *
 from src.adapt_utils import GradAdaptUtils
 
 
