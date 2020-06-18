@@ -41,6 +41,34 @@ class AnsatzElement:
     #         return self.element.format(*var_parameters)
 
 
+class PauliWordExcitation(AnsatzElement):
+    def __init__(self, pauli_word_excitation):
+        assert type(pauli_word_excitation) == QubitOperator
+        assert len(pauli_word_excitation.terms) == 1
+        assert list(pauli_word_excitation.terms.values())[0].real == 0  # it should be skew-Hermitian
+
+        self.excitation = pauli_word_excitation
+
+        super(PauliWordExcitation, self).__init__(element=str(pauli_word_excitation), order=self.pauli_word_order(),
+                                                  n_var_parameters=1)
+
+    def pauli_word_order(self):
+
+        pauli_ops = list(self.excitation.terms.keys())[0]
+        order = 0
+
+        for pauli_op in pauli_ops:
+            assert pauli_op[1] in ['X', 'Y', 'Z']
+            if pauli_op[1] != 'Z':
+                order += 1
+
+        return order
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
+
+
 class SingleFermiExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2):
         self.qubit_1 = qubit_1

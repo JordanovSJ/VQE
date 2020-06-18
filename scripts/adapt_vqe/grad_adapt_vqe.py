@@ -33,16 +33,17 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 0.995
+    r = 1.316
     # theta = 0.538*numpy.pi # for H20
-    molecule = H2()
+    molecule = BeH2()
 
     ansatz_element_type = 'efficient_fermi_excitation'
-    #ansatz_element_type = 'qubit_excitation'
+    # ansatz_element_type = 'qubit_excitation'
+    # ansatz_element_type = 'pauli_word_excitation'
 
     accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14
-    max_ansatz_elements = 45
+    max_ansatz_elements = 60
 
     multithread = True
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -63,8 +64,8 @@ if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     # get single excitaitons
-    ansatz_element_pool = SDElements(molecule.n_orbitals, molecule.n_electrons,
-                                     element_type=ansatz_element_type).get_ansatz_elements()
+    ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                        element_type=ansatz_element_type).get_ansatz_elements()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
@@ -89,8 +90,23 @@ if __name__ == "__main__":
                                                 initial_var_parameters=var_parameters, initial_ansatz=ansatz_elements,
                                                 multithread=multithread)
 
-        result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
-                                    initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
+        # result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
+        #                             initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
+
+        # calculate the new energy starting from the current var pars and from the zeros. Hopefully avoid local minima
+        set_var_pars = [
+            var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)),
+            numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]]))
+            ]
+
+        ray.init(num_cpus=2)
+        ray_ids = [vqe_runner.vqe_run_multithread.remote(self=vqe_runner,
+                                                         ansatz_elements=ansatz_elements+[element_to_add],
+                                                         initial_var_parameters=var_pars)
+                   for var_pars in set_var_pars]
+        results = [ray.get(ray_id) for ray_id in ray_ids]
+        result = min(results, key=lambda x: x.fun)
+        ray.shutdown()
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
@@ -102,12 +118,16 @@ if __name__ == "__main__":
             ansatz_elements.append(element_to_add)
 
             # write iteration data
-            if element_to_add.order == 1:
-                element_qubits = [element_to_add.qubit_1, element_to_add.qubit_2]
-            elif element_to_add.order == 2:
-                element_qubits = [element_to_add.qubit_pair_1, element_to_add.qubit_pair_2]
-            else:
-                element_qubits = []
+            try:
+                if element_to_add.order == 1:
+                    element_qubits = [element_to_add.qubit_1, element_to_add.qubit_2]
+                elif element_to_add.order == 2:
+                    element_qubits = [element_to_add.qubit_pair_1, element_to_add.qubit_pair_2]
+                else:
+                    element_qubits = []
+            except AttributeError:
+                # this case corresponds to Pauli word excitation
+                element_qubits = element_to_add.excitation
 
             gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
             df_data.loc[count] = {'n': count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,

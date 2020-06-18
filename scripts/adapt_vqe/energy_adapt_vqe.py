@@ -63,8 +63,8 @@ if __name__ == "__main__":
     logging.info('{}, r={} ,{}'.format(molecule.name, r, ansatz_element_type))
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = SDElements(molecule.n_orbitals, molecule.n_electrons,
-                                              element_type=ansatz_element_type).get_double_excitations()
+    initial_ansatz_elements_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                                 element_type=ansatz_element_type).get_double_excitations()
 
     # New pool
     # get a new ansatz element pool, from elements that decrease <H> by at least dE = threshold
@@ -81,8 +81,8 @@ if __name__ == "__main__":
         print(message)
 
     # get single excitaitons
-    new_ansatz_element_pool += SDElements(molecule.n_orbitals, molecule.n_electrons,
-                                          element_type=ansatz_element_type).get_single_excitations()
+    new_ansatz_element_pool += SDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                             element_type=ansatz_element_type).get_single_excitations()
 
     message = 'Length of new pool', len(new_ansatz_element_pool)
     logging.info(message)

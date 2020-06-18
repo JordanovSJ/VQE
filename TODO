@@ -1,10 +1,7 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
--scripts to generate data for dissociation curve plots
+-hybrid adapt_vqe: use gradients and energies
 
--gradient based adapt VQE
-
--combine qubit_hamiltonian, fci_energy, hf_enerfy etc.. in class molecule and remove them from vqe_runner DONE
 -create function commutator for class q_sysyem and the option to save commutators
 
 *********************************************

@@ -145,7 +145,6 @@ class VQERunner:
 
     @ray.remote
     def vqe_run_multithread(self, ansatz_elements, initial_var_parameters=None, initial_statevector_qasm=None):
-
         if initial_var_parameters is None or initial_var_parameters == []:
             var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements]))
         else:

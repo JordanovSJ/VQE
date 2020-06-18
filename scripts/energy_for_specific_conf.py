@@ -19,13 +19,13 @@ import ast
 
 if __name__ == "__main__":
 
-    molecule = LiH
+    molecule = BeH2()
     r = 1.546
 
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv('../results/adapt_vqe_results/LiH_SDEFE_05-Jun-2020.csv')
+    df = pandas.read_csv('../results/adapt_vqe_results/BeH2_energy_adapt_SDQE_10-Jun-2020.csv')
 
     ansatz_elements = []
     for i in range(len(df)):
@@ -45,13 +45,11 @@ if __name__ == "__main__":
 
     init_var_parameters = list(df['var_parameters'])
 
-    optimizer = 'L-BFGS-B'
-    optimizer_options = {'maxcor': 20, 'ftol': 1e-10, 'gtol': 1e-08, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1000,
-                         'iprint': -1, 'maxls': 10}
+    optimizer = 'Nelder-Mead'
+    optimizer_options = {'adaptive': True}
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}, optimizer=optimizer,
-                           optimizer_options=optimizer_options)
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, optimizer=optimizer, optimizer_options=optimizer_options)
 
-    energy = vqe_runner.vqe_run(ansatz_elements=ansatz_elements)#, initial_var_parameters=init_var_parameters)
+    energy = vqe_runner.vqe_run(ansatz_elements=ansatz_elements, initial_var_parameters=init_var_parameters)
 
     print(energy)

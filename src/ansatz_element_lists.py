@@ -10,7 +10,7 @@ import numpy
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-class SDElements:
+class SDExcitations:
     def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
@@ -35,6 +35,10 @@ class SDElements:
                     single_excitations.append(SingleQubitExcitation(i, j))
                 elif self.element_type == 'efficient_fermi_excitation':
                     single_excitations.append(EfficientSingleFermiExcitation(i, j))
+                elif self.element_type == 'pauli_word_excitation':
+                    qubit_excitation = SingleQubitExcitation(i, j).excitation
+                    single_excitations += [PauliWordExcitation(1j*QubitOperator(term)) for term in
+                                           qubit_excitation.terms]
                 else:
                     raise Exception('Invalid single excitation type.')
 
@@ -56,6 +60,10 @@ class SDElements:
                             double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
                                                                      parity_dependence=self.parity_dependence,
                                                                      d_exc_correction=self.d_exc_correction))
+                        elif self.element_type == 'pauli_word_excitation':
+                            qubit_excitation = DoubleQubitExcitation([i, j], [k, l]).excitation
+                            double_excitations += [PauliWordExcitation(1j*QubitOperator(term)) for term in
+                                                   qubit_excitation.terms]
                         else:
                             raise Exception('invalid double excitation type.')
 
@@ -63,6 +71,17 @@ class SDElements:
 
     def get_ansatz_elements(self):
         return self.get_single_excitations() + self.get_double_excitations()
+
+
+# class QSDPauliWordExcitations:
+#     def __init__(self, n_orbitals, n_electrons):
+#         self.n_orbitals = n_orbitals
+#         self.n_electrons = n_electrons
+#
+#     def get_single_excitations(self):
+#         single_excitations = []
+#         for i in range(self.n_electrons):
+#             for j in range(self.n_electrons, self.n_orbitals):
 
 
 # exchange single and double

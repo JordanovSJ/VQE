@@ -4,6 +4,7 @@ from openfermion.utils import jw_hartree_fock_state
 import time
 
 from src.utils import QasmUtils, MatrixUtils
+from src import config
 
 import qiskit.qasm
 import scipy
@@ -58,9 +59,10 @@ class QiskitSimulation:
     # return a statevector in the form of an array from a qasm circuit
     @staticmethod
     def get_statevector_from_qasm(qasm_circuit):
-        n_threads = 2
-        backend_options = {"method": "statevector", "zero_threshold": 10e-9, "max_parallel_threads": n_threads,
-                           "max_parallel_experiments": n_threads, "max_parallel_shots": n_threads}
+        n_threads = config.qiskit_n_threads
+        backend_options = {"method": "statevector", "zero_threshold": config.qiskit_zero_threshold,
+                           "max_parallel_threads": n_threads, "max_parallel_experiments": n_threads,
+                           "max_parallel_shots": n_threads}
         backend = qiskit.Aer.get_backend('statevector_simulator')
         qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm_circuit)
         result = qiskit.execute(qiskit_circuit, backend, backend_options=backend_options).result()
@@ -69,7 +71,8 @@ class QiskitSimulation:
 
     # return a statevector in the form of an array from a list of ansatz elements
     @staticmethod
-    def get_statevector_from_ansatz_elements(ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector_qasm=None):
+    def get_statevector_from_ansatz_elements(ansatz_elements, var_parameters, n_qubits, n_electrons,
+                                             initial_statevector_qasm=None):
         assert n_electrons < n_qubits
         qasm = ['']
         qasm.append(QasmUtils.qasm_header(n_qubits))

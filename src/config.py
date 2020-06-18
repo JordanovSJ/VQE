@@ -2,11 +2,11 @@ import scipy
 from scipy import optimize
 import numpy
 
-vqe_params = {'chemical_accuracy': 1e-3, 'max_n_iterations': 2000}
+multithread = {'n_cpus': 2}
 
-multithread = {'n_cpus': 5}
+qiskit_n_threads = 3
+qiskit_zero_threshold = 10e-9
 
-adaptive_ansatz_params = {'energy_threshold': 1e-6, 'max_ansatz_elements': 10}
 
 # <<<<<<<CLASSICAL OPTIMIZER>>>>>>>>>>>>
 optimizer = 'L-BFGS-B'

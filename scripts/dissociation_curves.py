@@ -29,7 +29,7 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv('../results/adapt_vqe_results/LiH_SDEFE_05-Jun-2020.csv')
+    df = pandas.read_csv('../results/adapt_vqe_results/LiH_energy_adapt_SDEFE_05-Jun-2020.csv')
 
     ansatz_elements = []
     for i in range(len(df)):
