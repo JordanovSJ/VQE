@@ -4,7 +4,7 @@ import numpy
 
 multithread = {'n_cpus': 2}
 
-qiskit_n_threads = 3
+qiskit_n_threads = 4
 qiskit_zero_threshold = 10e-9
 
 

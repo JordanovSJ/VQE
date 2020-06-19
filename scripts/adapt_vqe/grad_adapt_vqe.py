@@ -33,19 +33,20 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.316
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
-    molecule = BeH2()
+    molecule = LiH()
 
-    ansatz_element_type = 'efficient_fermi_excitation'
+    # ansatz_element_type = 'efficient_fermi_excitation'
     # ansatz_element_type = 'qubit_excitation'
-    # ansatz_element_type = 'pauli_word_excitation'
+    ansatz_element_type = 'pauli_word_excitation'
 
     accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14
     max_ansatz_elements = 60
 
     multithread = True
+    dynamic_commutators = False
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -70,6 +71,14 @@ if __name__ == "__main__":
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
     print(message)
+
+    # pre-compute commutator matrices. This will take time
+    if dynamic_commutators:
+        message = 'Generatin commutators'
+        print(message)
+        logging.info(message)
+        molecule.generate_commutator_matrices(ansatz_element_pool)
+
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     ansatz_elements = []
@@ -88,7 +97,7 @@ if __name__ == "__main__":
         element_to_add, grad = GradAdaptUtils.\
             get_most_significant_ansatz_element(ansatz_element_pool, molecule, vqe_runner.backend,
                                                 initial_var_parameters=var_parameters, initial_ansatz=ansatz_elements,
-                                                multithread=multithread)
+                                                multithread=multithread, dynamic_commutators=dynamic_commutators)
 
         # result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
         #                             initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
@@ -154,6 +163,7 @@ if __name__ == "__main__":
 
     # save data. Not required?
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
+
 
     # calculate the VQE for the final ansatz
     vqe_runner_final = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements)

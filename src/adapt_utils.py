@@ -56,31 +56,40 @@ class GradAdaptUtils:
     @staticmethod
     @ray.remote
     def get_excitation_energy_gradient_multithread(excitation_element, ansatz_elements, var_parameters, q_system,
-                                                   backend):
+                                                   backend, dynamic_commutators=False):
 
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
 
-        # TODO consider not doing this if commutator matrix is supplied
-        commutator = q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham
-
-        gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, q_system.n_qubits,
-                                                 q_system.n_electrons)[0]
+        # TODO make pretier
+        if dynamic_commutators:
+            commutator_matrix = q_system.get_commutator_matrix(excitation_element)
+            gradient = backend.get_expectation_value(None, ansatz_elements, var_parameters, q_system.n_qubits,
+                                                     q_system.n_electrons, operator_matrix=commutator_matrix)[0]
+        else:
+            commutator = q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham
+            gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, q_system.n_qubits,
+                                                     q_system.n_electrons)[0]
 
         message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
         print(message)
         return gradient
 
     @staticmethod
-    def get_excitation_energy_gradient(excitation_element, ansatz_elements, var_parameters, q_system, backend):
+    def get_excitation_energy_gradient(excitation_element, ansatz_elements, var_parameters, q_system, backend,
+                                       dynamic_commutators=False):
 
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
 
-        commutator = q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham
-
-        gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, q_system.n_qubits,
-                                                 q_system.n_electrons)[0]
+        if dynamic_commutators:
+            commutator_matrix = q_system.get_commutator_matrix(excitation_element)
+            gradient = backend.get_expectation_value(None, ansatz_elements, var_parameters, q_system.n_qubits,
+                                                     q_system.n_electrons, operator_matrix=commutator_matrix)[0]
+        else:
+            commutator = q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham
+            gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, q_system.n_qubits,
+                                                     q_system.n_electrons)[0]
 
         message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
         print(message)
@@ -90,7 +99,7 @@ class GradAdaptUtils:
     # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
     def get_ansatz_elements_gradients(ansatz_elements, q_system, backend, initial_var_parameters=None,
-                                      initial_ansatz=None, multithread=False):
+                                      initial_ansatz=None, multithread=False, dynamic_commutators=False):
 
         if initial_ansatz is None:
             initial_ansatz = []
@@ -100,7 +109,7 @@ class GradAdaptUtils:
                 [element,
                  GradAdaptUtils.get_excitation_energy_gradient_multithread.remote(element, initial_ansatz,
                                                                                   initial_var_parameters, q_system,
-                                                                                  backend)]
+                                                                                  backend, dynamic_commutators)]
                 for element in ansatz_elements
             ]
             elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
@@ -109,7 +118,7 @@ class GradAdaptUtils:
         else:
             elements_results = [
                 [element, GradAdaptUtils.get_excitation_energy_gradient(element, initial_ansatz, initial_var_parameters,
-                                                                        q_system, backend)]
+                                                                        q_system, backend, dynamic_commutators)]
                 for element in ansatz_elements
             ]
 
@@ -118,10 +127,11 @@ class GradAdaptUtils:
     # returns the ansatz element that achieves lowest energy (together with the energy value)
     @staticmethod
     def get_most_significant_ansatz_element(ansatz_elements, q_system, backend, initial_var_parameters=None,
-                                            initial_ansatz=None, multithread=False):
+                                            initial_ansatz=None, multithread=False, dynamic_commutators=False):
 
         elements_results = GradAdaptUtils.get_ansatz_elements_gradients(ansatz_elements, q_system, backend,
                                                                         initial_var_parameters=initial_var_parameters,
                                                                         initial_ansatz=initial_ansatz,
-                                                                        multithread=multithread)
+                                                                        multithread=multithread,
+                                                                        dynamic_commutators=dynamic_commutators)
         return max(elements_results, key=lambda x: abs(x[1]))

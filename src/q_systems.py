@@ -1,5 +1,5 @@
 from openfermion.hamiltonians import MolecularData
-from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner
+from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner, get_sparse_operator
 from openfermionpsi4 import run_psi4
 
 import numpy
@@ -36,6 +36,24 @@ class QSystem:
         self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
         self.hf_energy = self.molecule_psi4.hf_energy.item()
         self.fci_energy = self.molecule_psi4.fci_energy.item()
+
+        self.commutators = {}
+
+    def generate_commutator_matrices(self, ansatz_elements):
+
+        for i, ansatz_element in enumerate(ansatz_elements):
+            if i % 10 == 0:
+                print(i)
+            element_excitation = ansatz_element.excitation
+            key = str(element_excitation)
+            commutator = self.jw_qubit_ham * element_excitation - element_excitation * self.jw_qubit_ham
+            commutator_matrix = get_sparse_operator(commutator).todense()
+            self.commutators[key] = commutator_matrix
+
+    def get_commutator_matrix(self, ansatz_element):
+        element_excitation = ansatz_element.excitation
+        key = str(element_excitation)
+        return self.commutators[key]
 
 
 class H2(QSystem):
