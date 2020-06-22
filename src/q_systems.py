@@ -7,12 +7,11 @@ import abc
 
 
 class QSystem:
-
+    # frozen_els = {'occupied': [0,1], 'unoccupied': [6,7]}
     def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None):
         self.name = name
         self.multiplicity = multiplicity
         self.charge = charge
-        self.n_electrons = n_electrons
         self.basis = basis
         self.geometry = geometry
 
@@ -23,19 +22,21 @@ class QSystem:
 
         # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
+        self.hf_energy = self.molecule_psi4.hf_energy.item()
+        self.fci_energy = self.molecule_psi4.fci_energy.item()
 
         if frozen_els is None:
+            self.n_electrons = n_electrons
             self.n_orbitals = n_orbitals
             self.n_qubits = n_orbitals
             self.fermion_ham = get_fermion_operator(self.molecule_ham)
         else:
+            self.n_electrons = n_electrons - len(frozen_els['occupied'])
             self.n_orbitals = n_orbitals - len(frozen_els['occupied']) - len(frozen_els['unoccupied'])
             self.n_qubits = self.n_orbitals
             self.fermion_ham = freeze_orbitals(get_fermion_operator(self.molecule_ham), occupied=frozen_els['occupied'],
                                                unoccupied=frozen_els['unoccupied'], prune=True)
         self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
-        self.hf_energy = self.molecule_psi4.hf_energy.item()
-        self.fci_energy = self.molecule_psi4.fci_energy.item()
 
         self.commutators = {}
 
