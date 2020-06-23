@@ -33,13 +33,13 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.546
+    r = 1.316
     # theta = 0.538*numpy.pi # for H20
-    molecule = LiH()
+    molecule = BeH2() #(frozen_els={'occupied': [0, 1], 'unoccupied': []})
 
-    # ansatz_element_type = 'efficient_fermi_excitation'
+    ansatz_element_type = 'efficient_fermi_excitation'
     # ansatz_element_type = 'qubit_excitation'
-    ansatz_element_type = 'pauli_word_excitation'
+    # ansatz_element_type = 'pauli_word_excitation'
 
     accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14
@@ -105,10 +105,12 @@ if __name__ == "__main__":
         # calculate the new energy starting from the current var pars and from the zeros. Hopefully avoid local minima
         set_var_pars = [
             var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)),
-            numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]]))
+            numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5,
+            numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5,
+            numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements + [element_to_add]])) - 0.5
             ]
 
-        ray.init(num_cpus=2)
+        ray.init(num_cpus=4)
         ray_ids = [vqe_runner.vqe_run_multithread.remote(self=vqe_runner,
                                                          ansatz_elements=ansatz_elements+[element_to_add],
                                                          initial_var_parameters=var_pars)

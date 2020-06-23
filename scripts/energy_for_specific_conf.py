@@ -67,10 +67,11 @@ if __name__ == "__main__":
 
     init_var_parameters = beh2_var_pars  # list(df['var_parameters'])
     for i in range(len(init_var_parameters)):
-        init_var_parameters[i] += 0.01
+        init_var_parameters[i] += 0.01*((init_var_parameters[i] > 0) - 0.5)*2
 
     optimizer = 'L-BFGS-B'
-
+    # optimizer = 'BFGS'
+    # optimizer_options = None
     optimizer_options = {'maxcor': 25, 'ftol': 1e-11, 'gtol': 1e-9, 'eps': 1e-06, 'maxfun': 1500, 'maxiter': 1500,
                          'iprint': -1, 'maxls': 25}
 

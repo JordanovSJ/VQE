@@ -2,9 +2,9 @@ import scipy
 from scipy import optimize
 import numpy
 
-multithread = {'n_cpus': 2}
+multithread = {'n_cpus': 4}
 
-qiskit_n_threads = 6
+qiskit_n_threads = 2
 qiskit_zero_threshold = 10e-9
 
 
