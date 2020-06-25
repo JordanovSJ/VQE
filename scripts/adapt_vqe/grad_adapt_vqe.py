@@ -17,15 +17,15 @@ from src.utils import LogUtils
 from src.adapt_utils import GradAdaptUtils
 
 
-def save_data(df_data, molecule, time_stamp, ansatz_element_type=None):
+def save_data(df_data, molecule, time_stamp, ansatz_element_type=None, frozen_els=None):
     if ansatz_element_type is None:
         ansatz_element_type = 'unspecified'
 
     try:
-        df_data.to_csv('../../results/adapt_vqe_results/{}_{}_{}.csv'.format(molecule.name, ansatz_element_type, time_stamp))
+        df_data.to_csv('../../results/adapt_vqe_results/{}_{}_{}_{}.csv'.format(molecule.name, ansatz_element_type, frozen_els, time_stamp))
     except FileNotFoundError:
         try:
-            df_data.to_csv('results/adapt_vqe_results/{}_{}_{}.csv'.format(molecule.name, ansatz_element_type, time_stamp))
+            df_data.to_csv('results/adapt_vqe_results/{}_{}_{}_{}.csv'.format(molecule.name, ansatz_element_type, frozen_els, time_stamp))
         except FileNotFoundError as fnf:
             print(fnf)
 
@@ -35,7 +35,8 @@ if __name__ == "__main__":
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
     r = 1.316
     # theta = 0.538*numpy.pi # for H20
-    molecule = BeH2() #(frozen_els={'occupied': [0, 1], 'unoccupied': []})
+    frozen_els = {'occupied': [0, 1], 'unoccupied': [12,13]}
+    molecule = BeH2(frozen_els=frozen_els)
 
     ansatz_element_type = 'efficient_fermi_excitation'
     # ansatz_element_type = 'qubit_excitation'
@@ -43,7 +44,7 @@ if __name__ == "__main__":
 
     accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14
-    max_ansatz_elements = 60
+    max_ansatz_elements = 70
 
     multithread = True
     dynamic_commutators = False
@@ -55,7 +56,10 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create a vqe runner object
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation)
+    optimizer = 'L-BFGS-B'
+    optimizer_options = {'maxcor': 15, 'ftol': 1e-09, 'gtol': 1e-08, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1500,
+                         'iprint': -1, 'maxls': 15}
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, optimizer=optimizer, optimizer_options=optimizer_options)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
 
@@ -102,12 +106,27 @@ if __name__ == "__main__":
         # result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
         #                             initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
 
+        # TODO uugly
+        init_state_qasm = QasmUtils.hf_state(molecule.n_electrons) + \
+                          QasmUtils.qasm_from_ansatz_elements(ansatz_elements, var_parameters)
+        result_1 = vqe_runner.vqe_run([element_to_add], initial_var_parameters=[0],
+                                      initial_statevector_qasm=init_state_qasm)
+        current_energy_1 = result_1.fun
+        new_pars = list(result_1.x)
+        assert len(new_pars) == element_to_add.n_var_parameters
+        delta_e_1 = previous_energy - current_energy_1
+        print('New parameter vqe, energy: {}, energy change: {}'.format(current_energy_1, delta_e_1))
+        if delta_e_1 > 0:
+            new_pars_init_values = new_pars
+        else:
+            new_pars_init_values = list(numpy.zeros(len(new_pars)))
+
         # calculate the new energy starting from the current var pars and from the zeros. Hopefully avoid local minima
         set_var_pars = [
-            var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)),
-            numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5,
-            numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5,
-            numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements + [element_to_add]])) - 0.5
+            var_parameters + new_pars_init_values,
+            (numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5)/5,
+            (numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5)/5,
+            numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements + [element_to_add]]))
             ]
 
         ray.init(num_cpus=4)
@@ -149,7 +168,7 @@ if __name__ == "__main__":
             df_data['var_parameters'] = result.x
             # df_data['var_parameters'] = var_parameters
             # save data
-            save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
+            save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type, frozen_els=frozen_els)
 
             message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, Grad{}, var. parameters: {}' \
                 .format(element_to_add.element, current_energy, delta_e, grad, var_parameters)

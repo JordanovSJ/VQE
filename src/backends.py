@@ -16,7 +16,7 @@ class MatrixCalculation:
 
     @staticmethod
     def prepare_statevector(ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector=None):
-        assert len(ansatz_elements) == len(var_parameters)
+        assert len(ansatz_elements) == len(var_parameters)  # TODO this is wrong
         assert n_qubits >= n_electrons
 
         # initiate statevector as the HF state or as the 0th state
@@ -105,11 +105,13 @@ class QiskitSimulation:
 
     @staticmethod
     def get_expectation_value(qubit_operator, ansatz_elements, var_parameters, n_qubits, n_electrons,
-                              operator_matrix=None):
+                              operator_matrix=None, initial_statevector_qasm=None):
 
         # get the resulting statevector from the Qiskit simulator
         statevector, qasm = QiskitSimulation.get_statevector_from_ansatz_elements(ansatz_elements, var_parameters,
-                                                                                  n_qubits, n_electrons)
+                                                                                  n_qubits, n_electrons,
+                                                                                  initial_statevector_qasm
+                                                                                  =initial_statevector_qasm)
 
         # get the operator in the form of a matrix
         if operator_matrix is None:

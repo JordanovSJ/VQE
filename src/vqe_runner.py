@@ -21,7 +21,7 @@ import ray
 class VQERunner:
     # Works for a single geometry
     def __init__(self, q_system, ansatz_elements=None, backend=backends.QiskitSimulation, optimizer=config.optimizer,
-                 optimizer_options=config.optimizer_options, print_var_parameters=False):
+                 optimizer_options=config.optimizer_options, print_var_parameters=False, global_optimization=False):
 
         LogUtils.vqe_info(q_system, ansatz_elements=ansatz_elements, basis=q_system.basis,
                           molecule_geometry_params=q_system.get_geometry, backend=backend)
@@ -40,6 +40,7 @@ class VQERunner:
         self.backend = backend
         self.optimizer = optimizer
         self.optimizer_options = optimizer_options
+        self.global_optimization = global_optimization
 
         logging.info('Optimizer: {}. Optimizer options: {}'.format(optimizer, optimizer_options))
 
@@ -51,7 +52,7 @@ class VQERunner:
         self.gate_counter = None
 
     def get_energy(self, var_parameters, ansatz_elements, multithread=False, update_gate_counter=False,
-                   multithread_iteration=None):
+                   multithread_iteration=None, initial_statevector_qasm=None):
 
         t_start = time.time()
 
@@ -59,7 +60,8 @@ class VQERunner:
                                                                        qubit_operator=self.q_system.jw_qubit_ham,
                                                                        ansatz_elements=ansatz_elements,
                                                                        n_qubits=self.q_system.n_qubits,
-                                                                       n_electrons=self.q_system.n_electrons)
+                                                                       n_electrons=self.q_system.n_electrons,
+                                                                       initial_statevector_qasm=initial_statevector_qasm)
 
         # TODO: the code below is a mess .. FIX
         # if we run in parallel process don't print and update info
@@ -108,7 +110,8 @@ class VQERunner:
                 var_parameters = initial_var_parameters
 
         # partial function to be used in the optimizer
-        get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements)
+        get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
+                             initial_statevector_qasm=initial_statevector_qasm)
 
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
@@ -127,9 +130,16 @@ class VQERunner:
         logging.info(message)
 
         if self.optimizer is None:
-            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
-                                                 options=config.optimizer_options, tol=config.optimizer_tol,
-                                                 bounds=config.optimizer_bounds)
+            self.optimizer = config.optimizer
+            self.optimizer_options = config.optimizer_options
+            # opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
+            #                                      options=config.optimizer_options, tol=config.optimizer_tol,
+            #                                      bounds=config.optimizer_bounds)
+        if self.global_optimization:
+            minimizer_kwargs = {'method': self.optimizer, 'options': self.optimizer_options}
+            bounds = [(-config.optimizer_bounds_val, config.optimizer_bounds_val)]*len(var_parameters)
+            opt_energy = scipy.optimize.shgo(get_energy, bounds=bounds, minimizer_kwargs=minimizer_kwargs,
+                                             options={'f_min': self.q_system.fci_energy, 'f_tol': config.optimizer_tol})
         else:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
                                                  options=self.optimizer_options, tol=config.optimizer_tol,

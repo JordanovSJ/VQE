@@ -178,7 +178,7 @@ if __name__ == "__main__":
     # optimizer = 'Nelder-Mead'
     # # optimizer_options = {'maxcor': 20, 'ftol': 1e-10, 'gtol': 1e-08, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1000,
     # #                      'iprint': -1, 'maxls': 10}
-    vqe_runner = VQERunner(q_system, backend=QiskitSimulation, print_var_parameters=False)#, optimizer=optimizer)#, optimizer_options=optimizer_options)
+    vqe_runner = VQERunner(q_system, backend=QiskitSimulation, print_var_parameters=False, global_optimization=False)#, optimizer=optimizer)#, optimizer_options=optimizer_options)
 
     t0 = time.time()
     result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements)#, initial_var_parameters=var_parameters)

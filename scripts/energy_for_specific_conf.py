@@ -39,44 +39,52 @@ beh2_var_pars = [3.86557742e-02,  2.40575234e-02,  2.40577222e-02,  2.89344303e-
 
 if __name__ == "__main__":
 
-    molecule = BeH2()
+    molecule = LiH(frozen_els={'occupied': [0, 1], 'unoccupied': []})
     r = 1.546
 
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv('../results/adapt_vqe_results/BeH2_energy_adapt_SDEFE_10-Jun-2020.csv')
+    df = pandas.read_csv("../results/adapt_vqe_results/LiH_efficient_fermi_excitation_{'occupied': [0, 1], 'unoccupied': []}_24-Jun-2020 (14:57:29.205783).csv")
 
-    ansatz_elements = []
+    init_ansatz_elements = []
     for i in range(len(df)):
         element = df.loc[i]['element']
         element_qubits = df.loc[i]['element_qubits']
         if element[0] == 'e' and element[4] == 's':
-            ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
+            init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
         elif element[0] == 'e' and element[4] == 'd':
-            ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
+            init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
         elif element[0] == 's' and element[2] == 'q':
-            ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
+            init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
         elif element[0] == 'd' and element[2] == 'q':
-            ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
+            init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
         else:
             print(element, element_qubits)
             raise Exception('Unrecognized ansatz element.')
 
-    ansatz_elements += ansatz_elements
+    # ansatz_elements += ansatz_elements
 
-    init_var_parameters = beh2_var_pars  # list(df['var_parameters'])
-    for i in range(len(init_var_parameters)):
-        init_var_parameters[i] += 0.01*((init_var_parameters[i] > 0) - 0.5)*2
+    init_var_parameters = list(df['var_parameters'])
+    # for i in range(len(init_var_parameters)):
+    #     init_var_parameters[i] += 0.01*((init_var_parameters[i] > 0) - 0.5)*2
+
+    init_state_qasm = QasmUtils.hf_state(molecule.n_electrons)\
+                      + QasmUtils.qasm_from_ansatz_elements(init_ansatz_elements, init_var_parameters)
+
+    ansatz_elements = [EfficientDoubleFermiExcitation([0, 1], [6, 7])]
+    var_pars = [0]
 
     optimizer = 'L-BFGS-B'
     # optimizer = 'BFGS'
-    # optimizer_options = None
+    optimizer_options = None
     optimizer_options = {'maxcor': 25, 'ftol': 1e-11, 'gtol': 1e-9, 'eps': 1e-06, 'maxfun': 1500, 'maxiter': 1500,
                          'iprint': -1, 'maxls': 25}
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, optimizer=optimizer, optimizer_options=optimizer_options)
+    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, optimizer=optimizer, optimizer_options=optimizer_options,
+                           print_var_parameters=True)
 
-    energy = vqe_runner.vqe_run(ansatz_elements=ansatz_elements, initial_var_parameters=init_var_parameters)
+    energy = vqe_runner.vqe_run(ansatz_elements=ansatz_elements, initial_var_parameters=var_pars,
+                                initial_statevector_qasm=init_state_qasm)
 
     print(energy)
