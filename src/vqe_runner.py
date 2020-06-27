@@ -20,7 +20,7 @@ import ray
 
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, q_system, ansatz_elements=None, backend=backends.QiskitSimulation, optimizer=config.optimizer,
+    def __init__(self, q_system, ansatz_elements=None, backend=backends.QiskitSim, optimizer=config.optimizer,
                  optimizer_options=config.optimizer_options, print_var_parameters=False, global_optimization=False):
 
         LogUtils.vqe_info(q_system, ansatz_elements=ansatz_elements, basis=q_system.basis,

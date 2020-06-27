@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_element_lists import UCCGSD, UCCSD, DoubleExchange, SingleQubitExcitation, DoubleQubitExcitation
-from src.backends import QiskitSimulation
+from src.backends import QiskitSim
 from src.utils import LogUtils
 
 import matplotlib.pyplot as plt
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     # ansatz_element_1 = uccsd.get_double_excitation_list()[414]
     ansatz_elements = [ansatz_element_1] #ansatz_element_1, ansatz_element_2, ansatz_element_3, ansatz_element_4, ansatz_element_5,ansatz_element_6]
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, ansatz_elements=ansatz_elements,
                            molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')
 
     angles = (numpy.arange(40) - 20)*numpy.pi/200 - 0.1

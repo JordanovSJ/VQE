@@ -1,6 +1,7 @@
 from src.ansatz_element_lists import *
-from src.backends import QiskitSimulation
+from src.backends import QiskitSim
 import qiskit
+import time
 
 from src.vqe_runner import *
 from src.q_systems import *
@@ -34,22 +35,22 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
-    molecule = HF
-    r = 0.995
+    molecule = BeH2()
+    # r = 1.
 
     uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
 
     ansatz_elements = uccsd.get_ansatz_elements()
-    target_ansatz_element = DoubleQubitExcitation([4,5],[10,11])
+    var_params = list(numpy.zeros(len(ansatz_elements)))
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation)
+    q_H = molecule.jw_qubit_ham
 
-    q_H = vqe_runner.jw_qubit_ham
+    backend = backends.QiskitSim
 
-    backend = backends.QiskitSimulation
+    t0 = time.time()
+    print(t0)
+    grad_1 = QiskitSim.ansatz_gradient(molecule, ansatz_elements, var_params)
+    print(time.time() - t0)
 
-    # grad = GradAdaptUtils.get_excitation_energy_gradient(target_ansatz_element, [], [], q_H, 12, 10, backend)
-    grads = GradAdaptUtils.get_most_significant_ansatz_element(ansatz_elements, q_H, 12, 10, backend, multithread=False)
-
-    print(grads)
+    print(grad_1)
     print('spagetti')

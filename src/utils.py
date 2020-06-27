@@ -15,7 +15,7 @@ from src import config
 class QasmUtils:
 
     @staticmethod
-    def qasm_from_ansatz_elements(ansatz_elements, var_parameters):
+    def ansatz_qasm(ansatz_elements, var_parameters):
         qasm = ['']
         # perform ansatz operations
         n_used_var_pars = 0
@@ -60,7 +60,7 @@ class QasmUtils:
             var_parameters = numpy.zeros(n_var_parameters)
         else:
             assert n_var_parameters == len(var_parameters)
-        qasm = QasmUtils.qasm_from_ansatz_elements(ansatz_elements, var_parameters)
+        qasm = QasmUtils.ansatz_qasm(ansatz_elements, var_parameters)
         return QasmUtils.gate_count_from_qasm(qasm, n_qubits)
 
     @staticmethod
@@ -75,20 +75,17 @@ class QasmUtils:
     def qasm_header(n_qubits):
         return 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[{0}];\ncreg c[{0}];\n'.format(n_qubits)
 
-    # NOT USED
     @staticmethod
-    def pauli_operator_qasm(qubit_operator):
-        assert type(qubit_operator) == QubitOperator
-        assert len(qubit_operator.terms) == 1
+    def pauli_word_qasm(operator):
+        assert type(operator) == QubitOperator
+        assert len(operator.terms) == 1
+        assert next(iter(operator.terms.values())) == 1
 
-        operator = next(iter(qubit_operator.terms.keys()))
-        coeff = next(iter(qubit_operator.terms.values()))
-        assert coeff == 1
+        pauli_word = next(iter(operator.terms.keys()))
 
-        # represent the qasm as a list of strings
         qasm = ['']
 
-        for gate in operator:
+        for gate in pauli_word:
             qubit = gate[0]
             if gate[1] == 'X':
                 qasm.append('x q[{0}];\n'.format(qubit))
@@ -97,7 +94,7 @@ class QasmUtils:
             elif gate[1] == 'Z':
                 qasm.append('z q[{0}];\n'.format(qubit))
             else:
-                raise ValueError('Invalid qubit operator. {} is not a Pauli operator'.format(gate[1]))
+                raise ValueError('Invalid Pauli-word operator. {} is not a Pauli operator'.format(gate[1]))
 
         return ''.join(qasm)
 
@@ -247,9 +244,9 @@ class MatrixUtils:
 
     # returns the compressed sparse row matrix for the exponent of a qubit operator
     @staticmethod
-    def get_qubit_operator_exponent_matrix(qubit_operator, n_qubits, parameter=1):
+    def get_excitation_matrix(excitation_operator, n_qubits, parameter=1):
         assert parameter.imag == 0  # TODO remove?
-        qubit_operator_matrix = get_sparse_operator(qubit_operator, n_qubits)
+        qubit_operator_matrix = get_sparse_operator(excitation_operator, n_qubits)
         return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
 
 

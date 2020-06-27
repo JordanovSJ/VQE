@@ -4,7 +4,7 @@ sys.path.append('../')
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_elements import UCCGSD, UCCSD, ESD, EGSD, DoubleExchange, SingleQubitExcitation, DoubleFermiExcitation, SingleFermiExcitation
-from src.backends import QiskitSimulation
+from src.backends import QiskitSim
 from src.utils import LogUtils, AdaptAnsatzUtils
 
 import logging
@@ -83,7 +83,7 @@ if __name__ == "__main__":
                        SingleQubitExcitation(3, 13),
                        ]
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}, )
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params={'distance': r}, )
     hf_energy = vqe_runner.hf_energy
 
     count = 0
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         print('Added element ', ansatz_elements[-1].element)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params={'distance': r}
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params={'distance': r}
                                  , ansatz_elements=ansatz_elements)
     final_result = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
     t = time.time()

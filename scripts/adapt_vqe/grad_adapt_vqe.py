@@ -12,7 +12,7 @@ sys.path.append('../')
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_lists import *
-from src.backends import QiskitSimulation
+from src.backends import QiskitSim
 from src.utils import LogUtils
 from src.adapt_utils import GradAdaptUtils
 
@@ -57,9 +57,9 @@ if __name__ == "__main__":
 
     # create a vqe runner object
     optimizer = 'L-BFGS-B'
-    optimizer_options = {'maxcor': 15, 'ftol': 1e-09, 'gtol': 1e-08, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1500,
+    optimizer_options = {'maxcor': 15, 'ftol': 1e-09, 'gtol': 1e-08, 'eps': 1e-04, 'maxfun': 1500, 'maxiter': 1500,
                          'iprint': -1, 'maxls': 15}
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, optimizer=optimizer, optimizer_options=optimizer_options)
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
         # TODO uugly
         init_state_qasm = QasmUtils.hf_state(molecule.n_electrons) + \
-                          QasmUtils.qasm_from_ansatz_elements(ansatz_elements, var_parameters)
+                          QasmUtils.ansatz_qasm(ansatz_elements, var_parameters)
         result_1 = vqe_runner.vqe_run([element_to_add], initial_var_parameters=[0],
                                       initial_statevector_qasm=init_state_qasm)
         current_energy_1 = result_1.fun
@@ -187,7 +187,7 @@ if __name__ == "__main__":
 
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz_elements=ansatz_elements)
     final_result = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
     t = time.time()
 

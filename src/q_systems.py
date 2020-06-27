@@ -7,8 +7,9 @@ import abc
 
 
 class QSystem:
-    # frozen_els = {'occupied': [0,1], 'unoccupied': [6,7]}
-    def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None):
+
+    def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None,
+                 calculate_hamiltonian_matrix=True):
         self.name = name
         self.multiplicity = multiplicity
         self.charge = charge
@@ -37,6 +38,12 @@ class QSystem:
             self.fermion_ham = freeze_orbitals(get_fermion_operator(self.molecule_ham), occupied=frozen_els['occupied'],
                                                unoccupied=frozen_els['unoccupied'], prune=True)
         self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
+        if calculate_hamiltonian_matrix:
+            self.sparse_matrix_jw_ham = get_sparse_operator(self.jw_qubit_ham)
+            self.dense_matrix_jw_ham = self.sparse_matrix_jw_ham.todense()
+        else:
+            self.sparse_matrix_jw_ham = None
+            self.dense_matrix_jw_ham = None
 
         self.commutators = {}
 
@@ -70,7 +77,7 @@ class H2(QSystem):
 
 
 class LiH(QSystem):
-
+    # frozen_els = {'occupied': [0,1], 'unoccupied': []}
     def __init__(self, r=1.546, basis='sto-3g', frozen_els=None):
         super(LiH, self).__init__(name='LiH', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
                                   n_electrons=4, basis=basis, frozen_els=frozen_els)
@@ -94,7 +101,7 @@ class HF(QSystem):
 
 
 class BeH2(QSystem):
-
+    # frozen_els = {'occupied': [0,1], 'unoccupied': [6,7]}
     def __init__(self, r=1.316, basis='sto-3g', frozen_els=None):
         super(BeH2, self).__init__(name='BeH2', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=14,
                                    n_electrons=6, basis=basis, frozen_els=frozen_els)

@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_element_lists import *
-from src.backends import QiskitSimulation
+from src.backends import QiskitSim
 from src.utils import LogUtils
 
 import matplotlib.pyplot as plt
@@ -58,7 +58,7 @@ if __name__ == "__main__":
         r = 2.146 + i*0.05
         molecule_params = {'distance': r}
 
-        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
+        vqe_runner = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params=molecule_params)
         result = vqe_runner.vqe_run(ansatz_elements, var_parameters)
 
         # next var parameters
@@ -82,7 +82,7 @@ if __name__ == "__main__":
         r = r_0 - (1+i) * 0.025
         molecule_params = {'distance': r}
 
-        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, molecule_geometry_params=molecule_params)
+        vqe_runner = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params=molecule_params)
         result = vqe_runner.vqe_run(ansatz_elements, var_parameters)
 
         # next var parameters
