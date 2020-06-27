@@ -113,7 +113,7 @@ import qiskit
 
 if __name__ == "__main__":
 
-    molecule = H2O
+    molecule = BeH2
     # r = 0.995
     molecule_params = None
 
