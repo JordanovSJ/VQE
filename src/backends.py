@@ -65,6 +65,7 @@ class QiskitSim:
                            "max_parallel_shots": n_threads}
         backend = qiskit.Aer.get_backend('statevector_simulator')
         qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm_circuit)
+
         result = qiskit.execute(qiskit_circuit, backend, backend_options=backend_options).result()
         statevector = result.get_statevector(qiskit_circuit)
         return statevector
@@ -99,33 +100,31 @@ class QiskitSim:
 
     # TODO add q_system and use q_system.matrix_jw_ham
     @staticmethod
-    def get_expectation_value(qubit_operator, ansatz_elements, var_parameters, n_qubits, n_electrons,
-                              operator_matrix=None, initial_statevector_qasm=None):
+    def get_expectation_value(q_system, ansatz_elements, var_parameters, operator_matrix=None,
+                              initial_statevector_qasm=None):
 
+        t = time.time()
         # get the resulting statevector from the Qiskit simulator
         statevector, qasm = QiskitSim.statevector_from_ansatz(ansatz_elements, var_parameters,
-                                                              n_qubits, n_electrons,
+                                                              q_system.n_qubits, q_system.n_electrons,
                                                               initial_statevector_qasm=initial_statevector_qasm)
-
         # get the operator in the form of a matrix
         if operator_matrix is None:
-            operator_matrix = get_sparse_operator(qubit_operator).todense()
+            operator_matrix = q_system.dense_matrix_jw_ham
 
         expectation_value = statevector.conj().dot(operator_matrix).dot(statevector)[0, 0]
 
         return expectation_value.real, statevector, qasm
 
     @staticmethod
-    def ansatz_gradient(q_system, ansatz, var_parameters, init_state_qasm=None):
+    def ansatz_gradient(var_parameters, q_system, ansatz, init_state_qasm=None, ansatz_statevector=None):
         assert len(ansatz) == len(var_parameters)
 
-        ansatz_statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_qubits,
-                                                               q_system.n_electrons, initial_statevector_qasm=init_state_qasm)[0]
+        if ansatz_statevector is None:
+            ansatz_statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_qubits,
+                                                                   q_system.n_electrons, initial_statevector_qasm=init_state_qasm)[0]
 
-        # if init_state_qasm is None:
-        #     init_state_qasm = QasmUtils.hf_state(q_system.n_electrons)
-
-        t0 = time.time()
+        # t0 = time.time()
 
         ansatz_grad = []
         # transformed_ham = q_system.dense_matrix_jw_ham
@@ -133,43 +132,39 @@ class QiskitSim:
 
         for i in range(len(ansatz))[::-1]:
 
-            t1 = time.time()
+            # t1 = time.time()
             transformed_statevector = QiskitSim.statevector_from_ansatz(ansatz[:i], var_parameters[:i], q_system.n_qubits,
                                                                         q_system.n_electrons, initial_statevector_qasm=init_state_qasm)[0]
-            print('dt 1 {}'.format(time.time() - t1))
+            # print('dt 1 {}'.format(time.time() - t1))
 
-            t1 = time.time()
+            # t1 = time.time()
             excitation_i_matrix = get_sparse_operator(ansatz[i].excitation, n_qubits=q_system.n_qubits).todense()
-            print('dt 2 {}'.format(time.time() - t1))
+            # print('dt 2 {}'.format(time.time() - t1))
 
-            t1 = time.time()
+            # t1 = time.time()
             grad_i = 2*ansatz_statevector.conj().dot(transformed_ham.todense()).dot(excitation_i_matrix).dot(transformed_statevector)[0, 0].round(15)
-            print('dt 3 {}'.format(time.time() - t1))
+            # print('dt 3 {}'.format(time.time() - t1))
 
             assert grad_i.imag == 0
-            # try:
-            #     assert abs(grad_i.imag) < abs(grad_i.real*1e-5) # made up
-            # except AssertionError:
-            #     assert abs(grad_i.imag) < 1e-16
 
             ansatz_grad.append(grad_i.real)
 
-            t1 = time.time()
+            # t1 = time.time()
             ansatz_element_matrix = MatrixUtils.get_excitation_matrix(ansatz[i].excitation, q_system.n_qubits,
-                                                                      var_parameters[i])#.todense()
-            print('dt 4 {}'.format(time.time() - t1))
+                                                                      var_parameters[i])
+            # print('dt 4 {}'.format(time.time() - t1))
 
-            t1 = time.time()
+            # t1 = time.time()
             transformed_ham = transformed_ham.dot(ansatz_element_matrix)
-            print('dt 5 {}'.format(time.time() - t1))
+            # print('dt 5 {}'.format(time.time() - t1))
 
-            print('grad element {}'.format(i))
-            print('dt = {}'.format(time.time()-t0))
-            t0 = time.time()
+            # print('grad element {}'.format(i))
+            # print('dt = {}'.format(time.time()-t0))
+            # t0 = time.time()
 
         ansatz_grad = ansatz_grad[::-1]
 
-        return ansatz_grad
+        return numpy.array(ansatz_grad)
 
     # Not used
     @staticmethod

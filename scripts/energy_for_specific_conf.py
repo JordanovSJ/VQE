@@ -17,59 +17,57 @@ import qiskit
 from functools import partial
 import ast
 
-beh2_var_pars = [3.86557742e-02,  2.40575234e-02,  2.40577222e-02,  2.89344303e-02,
-                2.01598918e-02,  2.71039758e-02, -2.10362088e-02, -2.10362519e-02,
-                2.71532263e-02,  1.39725253e-02, -5.08023631e-03,  3.15346769e-03,
-                3.15268540e-03, -5.08068790e-03, -1.56073686e-03,  1.56017065e-03,
-               -1.56062101e-03,  1.56010834e-03,  9.25733767e-04,  9.05770367e-04,
-                2.22456202e-03,  7.67901879e-04,  7.67970851e-04,  2.20877250e-03,
-                6.34260849e-04, -6.34861962e-04,  1.06689473e-03,  3.87889011e-04,
-                1.06820789e-03, -3.88338244e-04,  2.38506681e-04,  2.38383255e-04,
-               -2.27543143e-04, -2.27508539e-04,  1.82170178e-04,  8.71565328e-05,
-                8.71543570e-05,  3.86302074e-02,  2.40734320e-02,  2.40732943e-02,
-                2.89696322e-02,  2.01764525e-02,  2.70476403e-02, -2.10443891e-02,
-               -2.10444292e-02,  2.70850551e-02,  1.39625478e-02, -5.21817800e-03,
-                3.16708024e-03,  3.16937398e-03, -5.22124052e-03, -1.56684391e-03,
-                1.56656281e-03, -1.56711871e-03,  1.56652500e-03,  9.40514266e-04,
-                9.06030827e-04,  2.05803260e-03,  7.65976533e-04,  7.65345584e-04,
-                2.04244237e-03,  6.44241939e-04, -6.44646726e-04,  1.11834289e-03,
-                3.92579004e-04,  1.11744296e-03, -3.93116213e-04,  2.36599212e-04,
-                2.36594268e-04, -2.22603598e-04, -2.22548668e-04,  1.97498169e-04,
-                1.02656777e-04,  1.02658435e-04]
+beh2_var_pars =[ 0.15165819,  0.09736567,  0.10228814,  0.00339765,  0.01015889,
+        0.22078285, -0.01306282, -0.00261087,  0.22717355, -0.04463201,
+       -0.21654193, -0.0035964 ,  0.00554479, -0.21853316,  0.03356841,
+       -0.02597601,  0.0263118 , -0.02846377,  0.00750505,  0.01461668,
+        0.02029264,  0.00494764,  0.00589723, -0.00233985,  0.00034058,
+        0.00181185,  0.00973092,  0.00516921,  0.0322556 , -0.00172135,
+       -0.0006497 ,  0.00279393,  0.00882293,  0.00922108,  0.01697921,
+        0.02370743,  0.01712358, -0.07632847, -0.05274612, -0.05821446,
+        0.06638091,  0.03089694, -0.17389571, -0.03158068, -0.04257354,
+       -0.17068236,  0.07219871,  0.18029454,  0.0100354 ,  0.00167378,
+        0.18389292, -0.03479518,  0.02746876, -0.02798771,  0.02963268,
+       -0.00515208, -0.01265535, -0.00584082, -0.00323024, -0.0043157 ,
+        0.01916254,  0.00087151, -0.00310928, -0.00970359, -0.00358728,
+       -0.03133639,  0.00028345,  0.00139419, -0.00216603, -0.00903253,
+       -0.00935104, -0.01840185, -0.02189118, -0.02022312]
 
 
 if __name__ == "__main__":
 
-    molecule = LiH()  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
-    r = 1.546
+    molecule = BeH2()  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
+    # r = 1.546
 
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv("../results/adapt_vqe_results/LiH_grad_adapt_pwe_21-Jun-2020.csv")
+    df = pandas.read_csv("../results/adapt_vqe_results/BeH2_energy_adapt_SDEFE_10-Jun-2020.csv")
 
     init_ansatz_elements = []
-    # for i in range(len(df)):
-    #     element = df.loc[i]['element']
-    #     element_qubits = df.loc[i]['element_qubits']
-    #     if element[0] == 'e' and element[4] == 's':
-    #         init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
-    #     elif element[0] == 'e' and element[4] == 'd':
-    #         init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
-    #     elif element[0] == 's' and element[2] == 'q':
-    #         init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
-    #     elif element[0] == 'd' and element[2] == 'q':
-    #         init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
-    #     else:
-    #         print(element, element_qubits)
-    #         raise Exception('Unrecognized ansatz element.')
     for i in range(len(df)):
-        excitation = QubitOperator(df.loc[i]['element'])
-        init_ansatz_elements.append(PauliWordExcitation(excitation))
+        element = df.loc[i]['element']
+        element_qubits = df.loc[i]['element_qubits']
+        if element[0] == 'e' and element[4] == 's':
+            init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'e' and element[4] == 'd':
+            init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 's' and element[2] == 'q':
+            init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'd' and element[2] == 'q':
+            init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
+    # for i in range(len(df)):
+    #     excitation = QubitOperator(df.loc[i]['element'])
+    #     init_ansatz_elements.append(PauliWordExcitation(excitation))
 
+    init_ansatz_elements += init_ansatz_elements
     # ansatz_elements += ansatz_elements
 
     init_var_parameters = list(df['var_parameters'])
+    init_var_parameters += list(numpy.zeros(len(init_var_parameters)))
     # for i in range(len(init_var_parameters)):
     #     init_var_parameters[i] += 0.01*((init_var_parameters[i] > 0) - 0.5)*2
 
@@ -86,7 +84,7 @@ if __name__ == "__main__":
     #                      'iprint': -1, 'maxls': 25}
 
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
-                           print_var_parameters=False)
+                           print_var_parameters=True)
 
     energy = vqe_runner.vqe_run(ansatz_elements=init_ansatz_elements, initial_var_parameters=init_var_parameters,
                                 initial_statevector_qasm=None)

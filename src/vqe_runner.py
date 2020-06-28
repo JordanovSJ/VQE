@@ -21,7 +21,7 @@ import ray
 class VQERunner:
     # Works for a single geometry
     def __init__(self, q_system, ansatz_elements=None, backend=backends.QiskitSim, optimizer=config.optimizer,
-                 optimizer_options=config.optimizer_options, print_var_parameters=False, global_optimization=False):
+                 optimizer_options=config.optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
 
         LogUtils.vqe_info(q_system, ansatz_elements=ansatz_elements, basis=q_system.basis,
                           molecule_geometry_params=q_system.get_geometry, backend=backend)
@@ -40,7 +40,7 @@ class VQERunner:
         self.backend = backend
         self.optimizer = optimizer
         self.optimizer_options = optimizer_options
-        self.global_optimization = global_optimization
+        self.use_ansatz_gradient = use_ansatz_gradient
 
         logging.info('Optimizer: {}. Optimizer options: {}'.format(optimizer, optimizer_options))
 
@@ -50,18 +50,19 @@ class VQERunner:
         self.new_energy = None
         self.iteration = 0
         self.gate_counter = None
+        self.statevector = None
 
     def get_energy(self, var_parameters, ansatz_elements, multithread=False, update_gate_counter=False,
                    multithread_iteration=None, initial_statevector_qasm=None):
 
         t_start = time.time()
 
-        energy, statevector, qasm = self.backend.get_expectation_value(var_parameters=var_parameters,
-                                                                       qubit_operator=self.q_system.jw_qubit_ham,
+        energy, statevector, qasm = self.backend.get_expectation_value(q_system=self.q_system,
+                                                                       var_parameters=var_parameters,
                                                                        ansatz_elements=ansatz_elements,
-                                                                       n_qubits=self.q_system.n_qubits,
-                                                                       n_electrons=self.q_system.n_electrons,
                                                                        initial_statevector_qasm=initial_statevector_qasm)
+
+        self.statevector = statevector
 
         # TODO: the code below is a mess .. FIX
         # if we run in parallel process don't print and update info
@@ -113,6 +114,9 @@ class VQERunner:
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
                              initial_statevector_qasm=initial_statevector_qasm)
 
+        ansatz_gradient = partial(self.backend.ansatz_gradient, q_system=self.q_system, ansatz=ansatz_elements,
+                                  init_state_qasm=initial_statevector_qasm, ansatz_statevector=self.statevector)
+
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
             return get_energy(var_parameters)
@@ -132,14 +136,11 @@ class VQERunner:
         if self.optimizer is None:
             self.optimizer = config.optimizer
             self.optimizer_options = config.optimizer_options
-            # opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=config.optimizer,
-            #                                      options=config.optimizer_options, tol=config.optimizer_tol,
-            #                                      bounds=config.optimizer_bounds)
-        if self.global_optimization:
-            minimizer_kwargs = {'method': self.optimizer, 'options': self.optimizer_options}
-            bounds = [(-config.optimizer_bounds_val, config.optimizer_bounds_val)]*len(var_parameters)
-            opt_energy = scipy.optimize.shgo(get_energy, bounds=bounds, minimizer_kwargs=minimizer_kwargs,
-                                             options={'f_min': self.q_system.fci_energy, 'f_tol': config.optimizer_tol})
+
+        if self.use_ansatz_gradient:
+            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer, jac=ansatz_gradient,
+                                                 options=self.optimizer_options, tol=config.optimizer_tol,
+                                                 bounds=config.optimizer_bounds)
         else:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
                                                  options=self.optimizer_options, tol=config.optimizer_tol,
@@ -153,6 +154,7 @@ class VQERunner:
         opt_energy['n_iters'] = self.iteration  # cheating
         return opt_energy
 
+    # TODO add ansatz grad
     @ray.remote
     def vqe_run_multithread(self, ansatz_elements, initial_var_parameters=None, initial_statevector_qasm=None):
         if initial_var_parameters is None or initial_var_parameters == []:

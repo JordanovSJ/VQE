@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
     r = 0.735
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = BeH2() #(r=r, frozen_els=frozen_els)
+    q_system = H2() #(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_cofig()
@@ -175,10 +175,9 @@ if __name__ == "__main__":
 
     ansatz_elements = uccsd.get_ansatz_elements()
 
-    # optimizer = 'Nelder-Mead'
-    # # optimizer_options = {'maxcor': 20, 'ftol': 1e-10, 'gtol': 1e-08, 'eps': 1e-03, 'maxfun': 1500, 'maxiter': 1000,
-    # #                      'iprint': -1, 'maxls': 10}
-    vqe_runner = VQERunner(q_system, backend=QiskitSim, print_var_parameters=False, global_optimization=False)#, optimizer=optimizer)#, optimizer_options=optimizer_options)
+    optimizer = 'BFGS'
+    optimizer_options = {'gtol': 10e-7}
+    vqe_runner = VQERunner(q_system, backend=QiskitSim, print_var_parameters=False, use_ansatz_gradient=False, optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()
     result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements)#, initial_var_parameters=var_parameters)
