@@ -53,14 +53,15 @@ class VQERunner:
         self.statevector = None
 
     def get_energy(self, var_parameters, ansatz_elements, multithread=False, update_gate_counter=False,
-                   multithread_iteration=None, initial_statevector_qasm=None):
+                   multithread_iteration=None, initial_statevector_qasm=None, ham_matrix=None):
 
         t_start = time.time()
 
         energy, statevector, qasm = self.backend.get_expectation_value(q_system=self.q_system,
                                                                        var_parameters=var_parameters,
                                                                        ansatz_elements=ansatz_elements,
-                                                                       initial_statevector_qasm=initial_statevector_qasm)
+                                                                       initial_statevector_qasm=initial_statevector_qasm,
+                                                                       operator_matrix=ham_matrix)
 
         self.statevector = statevector
 
@@ -111,8 +112,9 @@ class VQERunner:
                 var_parameters = initial_var_parameters
 
         # partial function to be used in the optimizer
+        ham_matrix = get_sparse_operator(self.q_system.jw_qubit_ham).todense()
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
-                             initial_statevector_qasm=initial_statevector_qasm)
+                             initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix)
 
         ansatz_gradient = partial(self.backend.ansatz_gradient, q_system=self.q_system, ansatz=ansatz_elements,
                                   init_state_qasm=initial_statevector_qasm, ansatz_statevector=self.statevector)
@@ -167,8 +169,9 @@ class VQERunner:
         local_iteration = [0]
 
         # partial function to be used in the optimizer
+        ham_matrix = get_sparse_operator(self.q_system.jw_qubit_ham).todense()
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements, multithread=True,
-                             multithread_iteration=local_iteration)
+                             multithread_iteration=local_iteration, ham_matrix=ham_matrix)
 
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:

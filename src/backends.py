@@ -98,7 +98,6 @@ class QiskitSim:
 
         return statevector, qasm
 
-    # TODO add q_system and use q_system.matrix_jw_ham
     @staticmethod
     def get_expectation_value(q_system, ansatz_elements, var_parameters, operator_matrix=None,
                               initial_statevector_qasm=None):
@@ -110,7 +109,7 @@ class QiskitSim:
                                                               initial_statevector_qasm=initial_statevector_qasm)
         # get the operator in the form of a matrix
         if operator_matrix is None:
-            operator_matrix = q_system.dense_matrix_jw_ham
+            operator_matrix = get_sparse_operator(q_system.jw_qubit_ham).todense()
 
         expectation_value = statevector.conj().dot(operator_matrix).dot(statevector)[0, 0]
 

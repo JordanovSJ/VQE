@@ -7,6 +7,7 @@ import pandas
 import datetime
 
 import sys
+import ast
 sys.path.append('../')
 
 from src.vqe_runner import VQERunner
@@ -30,13 +31,35 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None, frozen_el
             print(fnf)
 
 
+def get_ansatz_from_csv(db):
+    ansatz = []
+    for i in range(len(init_db)):
+        element = init_db.loc[i]['element']
+        element_qubits = init_db.loc[i]['element_qubits']
+        if element[0] == 'e' and element[4] == 's':
+            ansatz.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'e' and element[4] == 'd':
+            ansatz.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 's' and element[2] == 'q':
+            ansatz.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'd' and element[2] == 'q':
+            ansatz.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
+
+    var_pars = list(init_db['var_parameters'])
+
+    return ansatz, var_pars
+
+
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
     r = 1.316
     # theta = 0.538*numpy.pi # for H20
-    frozen_els = {'occupied': [0, 1], 'unoccupied': [12,13]}
-    molecule = BeH2(frozen_els=frozen_els)
+    frozen_els = {'occupied': [], 'unoccupied': []}
+    molecule = BeH2(ham_matrix=True) #(frozen_els=frozen_els)
 
     ansatz_element_type = 'efficient_fermi_excitation'
     # ansatz_element_type = 'qubit_excitation'
@@ -47,7 +70,8 @@ if __name__ == "__main__":
     max_ansatz_elements = 70
 
     multithread = True
-    dynamic_commutators = False
+
+    init_db = pandas.read_csv("../../results/adapt_vqe_results/BeH2_grad_adapt_EFE_17-Jun-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -56,9 +80,8 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create a vqe runner object
-    optimizer = 'L-BFGS-B'
-    optimizer_options = {'maxcor': 15, 'ftol': 1e-09, 'gtol': 1e-08, 'eps': 1e-04, 'maxfun': 1500, 'maxiter': 1500,
-                         'iprint': -1, 'maxls': 15}
+    optimizer = 'BFGS'
+    optimizer_options = {'gtol': 1e-07}
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
@@ -68,7 +91,7 @@ if __name__ == "__main__":
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    # get single excitaitons
+    # get single excitations
     ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                         element_type=ansatz_element_type).get_ansatz_elements()
 
@@ -76,67 +99,64 @@ if __name__ == "__main__":
     logging.info(message)
     print(message)
 
-    # pre-compute commutator matrices. This will take time
-    if dynamic_commutators:
-        message = 'Generatin commutators'
-        print(message)
-        logging.info(message)
-        molecule.generate_commutator_matrices(ansatz_element_pool)
-
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    ansatz_elements = []
-    var_parameters = []
-    count = 0
+    if init_db is None:
+        ansatz_elements = []
+        var_parameters = []
+    else:
+        ansatz_elements, var_parameters = get_ansatz_from_csv(init_db)
+
+    iter_count = 0
     current_energy = hf_energy
     previous_energy = 0
 
-    while previous_energy - current_energy >= accuracy and count <= max_ansatz_elements:
-        count += 1
+    while previous_energy - current_energy >= accuracy and iter_count <= max_ansatz_elements:
+        iter_count += 1
 
-        print('New cycle ', count)
+        print('New cycle ', iter_count)
 
         previous_energy = current_energy
 
         element_to_add, grad = GradAdaptUtils.\
             get_most_significant_ansatz_element(ansatz_element_pool, molecule, vqe_runner.backend,
                                                 initial_var_parameters=var_parameters, initial_ansatz=ansatz_elements,
-                                                multithread=multithread, dynamic_commutators=dynamic_commutators)
+                                                multithread=multithread)
 
-        # result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
-        #                             initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
+        result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
+                                    initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
 
-        # TODO uugly
-        init_state_qasm = QasmUtils.hf_state(molecule.n_electrons) + \
-                          QasmUtils.ansatz_qasm(ansatz_elements, var_parameters)
-        result_1 = vqe_runner.vqe_run([element_to_add], initial_var_parameters=[0],
-                                      initial_statevector_qasm=init_state_qasm)
-        current_energy_1 = result_1.fun
-        new_pars = list(result_1.x)
-        assert len(new_pars) == element_to_add.n_var_parameters
-        delta_e_1 = previous_energy - current_energy_1
-        print('New parameter vqe, energy: {}, energy change: {}'.format(current_energy_1, delta_e_1))
-        if delta_e_1 > 0:
-            new_pars_init_values = new_pars
-        else:
-            new_pars_init_values = list(numpy.zeros(len(new_pars)))
+        # # TODO uugly
+        # init_state_qasm = QasmUtils.hf_state(molecule.n_electrons) + \
+        #                   QasmUtils.ansatz_qasm(ansatz_elements, var_parameters)
+        # result_1 = vqe_runner.vqe_run([element_to_add], initial_var_parameters=[0],
+        #                               initial_statevector_qasm=init_state_qasm)
+        # current_energy_1 = result_1.fun
+        # new_pars = list(result_1.x)
+        # assert len(new_pars) == element_to_add.n_var_parameters
+        # delta_e_1 = previous_energy - current_energy_1
+        # print('New parameter vqe, energy: {}, energy change: {}'.format(current_energy_1, delta_e_1))
+        # if delta_e_1 > 0:
+        #     new_pars_init_values = new_pars
+        # else:
+        #     new_pars_init_values = list(numpy.zeros(len(new_pars)))
 
         # calculate the new energy starting from the current var pars and from the zeros. Hopefully avoid local minima
-        set_var_pars = [
-            var_parameters + new_pars_init_values,
-            (numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5)/5,
-            (numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5)/5,
-            numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements + [element_to_add]]))
-            ]
+        # set_var_pars = [
+        #     var_parameters + [0],
+        #     (numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5)/5,
+        #     (numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5)/5,
+        #     numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements + [element_to_add]]))
+        #     ]
 
-        ray.init(num_cpus=4)
-        ray_ids = [vqe_runner.vqe_run_multithread.remote(self=vqe_runner,
-                                                         ansatz_elements=ansatz_elements+[element_to_add],
-                                                         initial_var_parameters=var_pars)
-                   for var_pars in set_var_pars]
-        results = [ray.get(ray_id) for ray_id in ray_ids]
-        result = min(results, key=lambda x: x.fun)
-        ray.shutdown()
+        # ray.init(num_cpus=4)
+        # ray_ids = [vqe_runner.vqe_run_multithread.remote(self=vqe_runner,
+        #                                                  ansatz_elements=ansatz_elements+[element_to_add],
+        #                                                  initial_var_parameters=var_pars)
+        #            for var_pars in set_var_pars]
+        # results = [ray.get(ray_id) for ray_id in ray_ids]
+        # result = min(results, key=lambda x: x.fun)
+        # ray.shutdown()
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
@@ -160,11 +180,11 @@ if __name__ == "__main__":
                 element_qubits = element_to_add.excitation
 
             gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
-            df_data.loc[count] = {'n': count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
-                                  'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
-                                  'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
-                                  'u1_depth': gate_count['u1_depth'], 'element': element_to_add.element,
-                                  'element_qubits': element_qubits, 'var_parameters': 0}
+            df_data.loc[iter_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
+                                       'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
+                                       'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
+                                       'u1_depth': gate_count['u1_depth'], 'element': element_to_add.element,
+                                       'element_qubits': element_qubits, 'var_parameters': 0}
             df_data['var_parameters'] = result.x
             # df_data['var_parameters'] = var_parameters
             # save data
@@ -184,7 +204,6 @@ if __name__ == "__main__":
 
     # save data. Not required?
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
-
 
     # calculate the VQE for the final ansatz
     vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz_elements=ansatz_elements)

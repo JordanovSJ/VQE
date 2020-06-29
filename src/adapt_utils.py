@@ -61,15 +61,15 @@ class GradAdaptUtils:
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
 
-        # TODO make pretier
+        # # TODO make pretier
         if dynamic_commutators:
             commutator_matrix = q_system.get_commutator_matrix(excitation_element)
-            gradient = backend.get_expectation_value(None, ansatz_elements, var_parameters, q_system.n_qubits,
-                                                     q_system.n_electrons, operator_matrix=commutator_matrix)[0]
         else:
-            commutator = q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham
-            gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, q_system.n_qubits,
-                                                     q_system.n_electrons)[0]
+            commutator_matrix = \
+                get_sparse_operator(q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham).todense()
+
+        gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,
+                                                 operator_matrix=commutator_matrix)[0]
 
         message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
         print(message)
@@ -84,12 +84,12 @@ class GradAdaptUtils:
 
         if dynamic_commutators:
             commutator_matrix = q_system.get_commutator_matrix(excitation_element)
-            gradient = backend.get_expectation_value(None, ansatz_elements, var_parameters, q_system.n_qubits,
-                                                     q_system.n_electrons, operator_matrix=commutator_matrix)[0]
         else:
-            commutator = q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham
-            gradient = backend.get_expectation_value(commutator, ansatz_elements, var_parameters, q_system.n_qubits,
-                                                     q_system.n_electrons)[0]
+            commutator_matrix = \
+                get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham).todense()
+
+        gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,
+                                                 operator_matrix=commutator_matrix)[0]
 
         message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
         print(message)

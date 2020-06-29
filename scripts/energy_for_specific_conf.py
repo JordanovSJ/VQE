@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv("../results/adapt_vqe_results/BeH2_energy_adapt_SDEFE_10-Jun-2020.csv")
+    df = pandas.read_csv("../results/adapt_vqe_results/BeH2_energy_adapt_SDQE_10-Jun-2020.csv")
 
     init_ansatz_elements = []
     for i in range(len(df)):
@@ -77,9 +77,9 @@ if __name__ == "__main__":
     # ansatz_elements = [EfficientDoubleFermiExcitation([0, 1], [6, 7])]
     # var_pars = [0]
 
-    # optimizer = 'L-BFGS-B'
     optimizer = 'BFGS'
-    optimizer_options = {'gtol': 1e-9}
+    # optimizer = 'BFGS'
+    optimizer_options = {'gtol': 1e-7}
     # optimizer_options = {'maxcor': 25, 'ftol': 1e-11, 'gtol': 1e-9, 'eps': 1e-06, 'maxfun': 1500, 'maxiter': 1500,
     #                      'iprint': -1, 'maxls': 25}
 

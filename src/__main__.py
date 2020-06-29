@@ -164,9 +164,9 @@ var_parameters = [ 2.46464498e-04, -4.11845750e-05, -3.83831930e-05, -3.83562229
 
 if __name__ == "__main__":
 
-    r = 0.735
+    # r = 0.735
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = H2() #(r=r, frozen_els=frozen_els)
+    q_system = BeH2() #(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_cofig()
