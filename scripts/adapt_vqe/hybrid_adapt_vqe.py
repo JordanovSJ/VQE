@@ -31,30 +31,24 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None, frozen_el
             print(fnf)
 
 
-def get_ansatz_from_csv(db, ansatz_element_type=None ):
+def get_ansatz_from_csv(db):
     ansatz = []
+    for i in range(len(init_db)):
+        element = init_db.loc[i]['element']
+        element_qubits = init_db.loc[i]['element_qubits']
+        if element[0] == 'e' and element[4] == 's':
+            ansatz.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'e' and element[4] == 'd':
+            ansatz.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 's' and element[2] == 'q':
+            ansatz.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'd' and element[2] == 'q':
+            ansatz.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
 
-    if ansatz_element_type == 'pauli_word_excitation':
-        for i in range(len(db)):
-            excitation = QubitOperator(db.loc[i]['element'])
-            ansatz.append(PauliWordExcitation(excitation))
-    else:
-        for i in range(len(db)):
-            element = init_db.loc[i]['element']
-            element_qubits = init_db.loc[i]['element_qubits']
-            if element[0] == 'e' and element[4] == 's':
-                ansatz.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
-            elif element[0] == 'e' and element[4] == 'd':
-                ansatz.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
-            elif element[0] == 's' and element[2] == 'q':
-                ansatz.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
-            elif element[0] == 'd' and element[2] == 'q':
-                ansatz.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
-            else:
-                print(element, element_qubits)
-                raise Exception('Unrecognized ansatz element.')
-
-    var_pars = list(db['var_parameters'])
+    var_pars = list(init_db['var_parameters'])
 
     return ansatz, var_pars
 
@@ -62,14 +56,14 @@ def get_ansatz_from_csv(db, ansatz_element_type=None ):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.546
+    r = 1.316
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH() #(frozen_els=frozen_els)
+    molecule = BeH2(ham_matrix=True) #(frozen_els=frozen_els)
 
-    # ansatz_element_type = 'efficient_fermi_excitation'
+    ansatz_element_type = 'efficient_fermi_excitation'
     # ansatz_element_type = 'qubit_excitation'
-    ansatz_element_type = 'pauli_word_excitation'
+    # ansatz_element_type = 'pauli_word_excitation'
 
     accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14
@@ -77,7 +71,7 @@ if __name__ == "__main__":
 
     multithread = True
 
-    init_db = pandas.read_csv("../../results/adapt_vqe_results/LiH_grad_adapt_pwe_27-Jun-2020_updated.csv")
+    init_db = pandas.read_csv("../../results/adapt_vqe_results/BeH2_grad_adapt_EFE_17-Jun-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -87,7 +81,7 @@ if __name__ == "__main__":
 
     # create a vqe runner object
     optimizer = 'BFGS'
-    optimizer_options = {'gtol': 1e-06}
+    optimizer_options = {'gtol': 1e-07}
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
@@ -111,13 +105,11 @@ if __name__ == "__main__":
         ansatz_elements = []
         var_parameters = []
     else:
-        ansatz_elements, var_parameters = get_ansatz_from_csv(init_db, ansatz_element_type=ansatz_element_type)
-        assert len(ansatz_elements) == len(var_parameters)
+        ansatz_elements, var_parameters = get_ansatz_from_csv(init_db)
 
     iter_count = 0
     current_energy = hf_energy
     previous_energy = 0
-    init_ansatz_length = len(ansatz_elements) #  blalbal
 
     while previous_energy - current_energy >= accuracy and iter_count <= max_ansatz_elements:
         iter_count += 1
@@ -133,6 +125,24 @@ if __name__ == "__main__":
 
         result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
                                     initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
+
+
+        # calculate the new energy starting from the current var pars and from the zeros. Hopefully avoid local minima
+        # set_var_pars = [
+        #     var_parameters + [0],
+        #     (numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5)/5,
+        #     (numpy.random.random(sum([element.n_var_parameters for element in ansatz_elements+[element_to_add]])) - 0.5)/5,
+        #     numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements + [element_to_add]]))
+        #     ]
+
+        # ray.init(num_cpus=4)
+        # ray_ids = [vqe_runner.vqe_run_multithread.remote(self=vqe_runner,
+        #                                                  ansatz_elements=ansatz_elements+[element_to_add],
+        #                                                  initial_var_parameters=var_pars)
+        #            for var_pars in set_var_pars]
+        # results = [ray.get(ray_id) for ray_id in ray_ids]
+        # result = min(results, key=lambda x: x.fun)
+        # ray.shutdown()
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
@@ -161,7 +171,7 @@ if __name__ == "__main__":
                                        'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
                                        'u1_depth': gate_count['u1_depth'], 'element': element_to_add.element,
                                        'element_qubits': element_qubits, 'var_parameters': 0}
-            df_data['var_parameters'] = list(result.x)[init_ansatz_length:]
+            df_data['var_parameters'] = result.x
             # df_data['var_parameters'] = var_parameters
             # save data
             save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type, frozen_els=frozen_els)

@@ -108,8 +108,7 @@ if __name__ == "__main__":
                                                                                       initial_ansatz=ansatz_elements,
                                                                                       multithread=multithread)
         current_energy = result.fun
-        # TODO: We add 0 valued var parameters for the next ansatz elemnet, which in general we do not know how many parameters has
-        # TODO: correct this! It will fail if we have anasatz elements with different number of var. parameters
+
         # get initial guess for the var. params. for the next iteration
         var_parameters = list(result.x) + list(numpy.zeros(element_to_add.n_var_parameters))
         delta_e = previous_energy - current_energy

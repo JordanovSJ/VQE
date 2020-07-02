@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     optimizer = 'BFGS'
     # optimizer = 'BFGS'
-    optimizer_options = {'gtol': 1e-7}
+    optimizer_options = {'gtol': 1e-6}
     # optimizer_options = {'maxcor': 25, 'ftol': 1e-11, 'gtol': 1e-9, 'eps': 1e-06, 'maxfun': 1500, 'maxiter': 1500,
     #                      'iprint': -1, 'maxls': 25}
 
