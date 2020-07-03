@@ -73,11 +73,11 @@ if __name__ == "__main__":
 
     accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14
-    max_ansatz_elements = 70
+    max_ansatz_elements = 90
 
     multithread = True
 
-    init_db = pandas.read_csv("../../results/adapt_vqe_results/LiH_grad_adapt_pwe_27-Jun-2020_updated.csv")
+    init_db = pandas.read_csv("../../results/adapt_vqe_results/LiH_grad_adapt_pwe_27-Jun-2020_updated_2.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
     # create a vqe runner object
     optimizer = 'BFGS'
-    optimizer_options = {'gtol': 1e-06}
+    optimizer_options = {'gtol': 1e-08}
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
@@ -112,6 +112,8 @@ if __name__ == "__main__":
         var_parameters = []
     else:
         ansatz_elements, var_parameters = get_ansatz_from_csv(init_db, ansatz_element_type=ansatz_element_type)
+        ansatz_elements = ansatz_elements[:40]
+        var_parameters = var_parameters[:40]
         assert len(ansatz_elements) == len(var_parameters)
 
     iter_count = 0
@@ -127,9 +129,9 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         element_to_add, grad = GradAdaptUtils.\
-            get_most_significant_ansatz_element(ansatz_element_pool, molecule, vqe_runner.backend,
-                                                initial_var_parameters=var_parameters, initial_ansatz=ansatz_elements,
-                                                multithread=multithread)
+            most_significant_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend,
+                                             var_parameters=var_parameters, ansatz=ansatz_elements,
+                                             multithread=multithread)[0]
 
         result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
                                     initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))

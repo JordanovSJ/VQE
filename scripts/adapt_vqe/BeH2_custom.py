@@ -103,11 +103,11 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, result = AdaptAnsatzUtils.get_most_significant_ansatz_element(vqe_runner,
-                                                                                      new_ansatz_element_pool,
-                                                                                      initial_var_parameters=var_parameters,
-                                                                                      initial_ansatz=ansatz_elements,
-                                                                                      multithread=multithread)
+        element_to_add, result = AdaptAnsatzUtils.most_significant_ansatz_elements(vqe_runner,
+                                                                                   new_ansatz_element_pool,
+                                                                                   var_parameters=var_parameters,
+                                                                                   ansatz=ansatz_elements,
+                                                                                   multithread=multithread)
         current_energy = result.fun
         # get initial guess for the var. params. for the next iteration
         var_parameters = list(result.x) + list(numpy.zeros(element_to_add.n_var_parameters))

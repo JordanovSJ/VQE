@@ -16,7 +16,7 @@ class EnergyAdaptUtils:
             elements_ray_ids = [
                 [element,
                  vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=initial_ansatz + [element],
-                                                       initial_var_parameters=initial_var_parameters)]
+                                                       initial_var_parameters=initial_var_parameters + [0])]  # TODO this will work only if the ansatz element has 1 var. par.
                 for element in ansatz_elements
             ]
             elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in elements_ray_ids]
@@ -98,8 +98,8 @@ class GradAdaptUtils:
 
     # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
-    def get_ansatz_elements_gradients(ansatz_elements, q_system, backend, initial_var_parameters=None,
-                                      initial_ansatz=None, multithread=False, dynamic_commutators=False):
+    def ansatz_elements_gradients(ansatz_elements, q_system, backend, initial_var_parameters=None,
+                                  initial_ansatz=None, multithread=False, dynamic_commutators=False):
 
         if initial_ansatz is None:
             initial_ansatz = []
@@ -126,12 +126,13 @@ class GradAdaptUtils:
 
     # returns the ansatz element that achieves lowest energy (together with the energy value)
     @staticmethod
-    def get_most_significant_ansatz_element(ansatz_elements, q_system, backend, initial_var_parameters=None,
-                                            initial_ansatz=None, multithread=False, dynamic_commutators=False):
+    def most_significant_ansatz_elements(ansatz_elements, q_system, backend, var_parameters=None, ansatz=None, n=1,
+                                         multithread=False, dynamic_commutators=False):
 
-        elements_results = GradAdaptUtils.get_ansatz_elements_gradients(ansatz_elements, q_system, backend,
-                                                                        initial_var_parameters=initial_var_parameters,
-                                                                        initial_ansatz=initial_ansatz,
-                                                                        multithread=multithread,
-                                                                        dynamic_commutators=dynamic_commutators)
-        return max(elements_results, key=lambda x: abs(x[1]))
+        elements_results = GradAdaptUtils.ansatz_elements_gradients(ansatz_elements, q_system, backend,
+                                                                    initial_var_parameters=var_parameters,
+                                                                    initial_ansatz=ansatz,
+                                                                    multithread=multithread,
+                                                                    dynamic_commutators=dynamic_commutators)
+        elements_results.sort(key=lambda x: x[1])
+        return elements_results[:n]

@@ -109,8 +109,10 @@ if __name__ == "__main__":
                                                                                       multithread=multithread)
         current_energy = result.fun
 
+        # TODO works only if all elements have single var par
         # get initial guess for the var. params. for the next iteration
-        var_parameters = list(result.x) + list(numpy.zeros(element_to_add.n_var_parameters))
+        # var_parameters = list(result.x) + list(numpy.zeros(element_to_add.n_var_parameters))
+        var_parameters = list(result.x)
         delta_e = previous_energy - current_energy
 
         if delta_e > 0:
