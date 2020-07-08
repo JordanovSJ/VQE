@@ -80,12 +80,12 @@ if __name__ == "__main__":
 
     optimizer = 'BFGS'
     # optimizer = 'BFGS'
-    optimizer_options = {'gtol': 1e-6}
+    optimizer_options = {'gtol': 1e-9}
     # optimizer_options = {'maxcor': 25, 'ftol': 1e-11, 'gtol': 1e-9, 'eps': 1e-06, 'maxfun': 1500, 'maxiter': 1500,
     #                      'iprint': -1, 'maxls': 25}
 
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
-                           print_var_parameters=True)
+                           print_var_parameters=False)
 
     energy = vqe_runner.vqe_run(ansatz_elements=init_ansatz_elements, initial_var_parameters=init_var_parameters,
                                 initial_statevector_qasm=None)

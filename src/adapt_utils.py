@@ -42,8 +42,8 @@ class EnergyAdaptUtils:
 
     # get ansatz elements that contribute to energy decrease below(above) some threshold value
     @staticmethod
-    def get_ansatz_elements_below_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=None,
-                                            initial_ansatz=None, multithread=False):
+    def get_ansatz_elements_below_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=[],
+                                            initial_ansatz=[], multithread=False):
         elements_results = EnergyAdaptUtils.get_ansatz_elements_vqe_energies(vqe_runner, ansatz_elements,
                                                                              initial_var_parameters=initial_var_parameters,
                                                                              initial_ansatz=initial_ansatz,
@@ -134,5 +134,5 @@ class GradAdaptUtils:
                                                                     initial_ansatz=ansatz,
                                                                     multithread=multithread,
                                                                     dynamic_commutators=dynamic_commutators)
-        elements_results.sort(key=lambda x: x[1])
-        return elements_results[:n]
+        elements_results.sort(key=lambda x: abs(x[1]))
+        return elements_results[-n:]

@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     n_largest_grads = 9
 
-    init_db = None # pandas.read_csv("../../results/adapt_vqe_results/BeH2_grad_adapt_EFE_17-Jun-2020.csv")
+    init_db = pandas.read_csv("../../results/adapt_vqe_results/LiH_h_adapt_qe_06-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()

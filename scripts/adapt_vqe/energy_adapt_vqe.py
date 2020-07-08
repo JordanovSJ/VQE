@@ -35,7 +35,7 @@ if __name__ == "__main__":
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
     r = 1.316
     # theta = 0.538*numpy.pi # for H20
-    molecule = BeH2()
+    molecule = LiH()
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
