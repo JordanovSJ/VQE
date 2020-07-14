@@ -6,6 +6,7 @@ import time
 from src.vqe_runner import *
 from src.q_systems import *
 from src.adapt_utils import GradAdaptUtils
+import numpy, math
 
 
 def get_circuit_matrix(qasm):
@@ -34,23 +35,31 @@ def matrix_to_str(matrix):
     return str_m
 
 
+def find_ys(x):
+    ys = []
+    for y in range(1,x):
+        if math.gcd(x,y) == 1:
+            ys.append(y)
+    return ys
+
+
 if __name__ == "__main__":
-    molecule = BeH2()
-    # r = 1.
 
-    uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
+    Ds = list(numpy.zeros(1001))
+    count = 0
+    x = 2
+    while Ds[1000] == 0:
+        if (x / 1000) % 1 == 0:
+            print('len D {}'.format(count))
+            print('X ', x)
 
-    ansatz_elements = uccsd.get_ansatz_elements()
-    var_params = list(numpy.zeros(len(ansatz_elements)))
-
-    q_H = molecule.jw_qubit_ham
-
-    backend = backends.QiskitSim
-
-    t0 = time.time()
-    print(t0)
-    grad_1 = QiskitSim.ansatz_gradient(molecule, ansatz_elements, var_params)
-    print(time.time() - t0)
-
-    print(grad_1)
+        ys = find_ys(x)
+        for y in ys:
+            D = (x**2 - 1)/y**2
+            if D % 1 == 0 and D <= 1000:
+                if Ds[int(D)] == 0:
+                    count += 1
+                    Ds[int(D)] = x
+        x += 1
+    print(max(Ds))
     print('spagetti')

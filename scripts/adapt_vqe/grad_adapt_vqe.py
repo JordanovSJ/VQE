@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     multithread = True
 
-    init_db = pandas.read_csv("../../results/adapt_vqe_results/LiH_grad_adapt_pwe_27-Jun-2020_updated_2.csv")
+    init_db = pandas.read_csv("../../results/adapt_vqe_results/LiH_g_adapt_pwe_full.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -112,9 +112,11 @@ if __name__ == "__main__":
         var_parameters = []
     else:
         ansatz_elements, var_parameters = get_ansatz_from_csv(init_db, ansatz_element_type=ansatz_element_type)
-        ansatz_elements = ansatz_elements[:40]
-        var_parameters = var_parameters[:40]
+        ansatz_elements = ansatz_elements
+        var_parameters = var_parameters
         assert len(ansatz_elements) == len(var_parameters)
+
+    # var_parameters = list(vqe_runner.vqe_run(ansatz_elements, var_parameters).x)
 
     iter_count = 0
     current_energy = hf_energy
