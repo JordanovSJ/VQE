@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
-    # ansatz_element_type = 'pauli_word_excitation'
+    ## ansatz_element_type = 'pauli_word_excitation'
 
     accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14
@@ -71,9 +71,9 @@ if __name__ == "__main__":
 
     multithread = True
 
-    n_largest_grads = 9
+    n_largest_grads = 19
 
-    init_db = pandas.read_csv("../../results/adapt_vqe_results/LiH_h_adapt_qe_06-Jul-2020.csv")
+    init_db = None  #pandas.read_csv("../../results/adapt_vqe_results/BeH2_h_qe_26-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -94,8 +94,8 @@ if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     # get single excitations
-    ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                        element_type=ansatz_element_type).get_ansatz_elements()
+    ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                         element_type=ansatz_element_type).get_ansatz_elements()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
@@ -108,6 +108,8 @@ if __name__ == "__main__":
         var_parameters = []
     else:
         ansatz_elements, var_parameters = get_ansatz_from_csv(init_db)
+
+    # var_parameters = list(vqe_runner.vqe_run(ansatz_elements, var_parameters).x)
 
     iter_count = 0
     current_energy = hf_energy

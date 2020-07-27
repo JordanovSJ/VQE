@@ -401,10 +401,10 @@ class ExpSingleQubitExcitation(AnsatzElement):
         qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_1))
         qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_2))
 
-        qasm.append('cx q[0], q[1];\n'.format(qubit_1, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
         qasm.append('rx({}) q[{}];\n'.format(angle, qubit_1))
         qasm.append('rz({}) q[{}];\n'.format(angle, qubit_2))
-        qasm.append('cx q[0], q[1];\n'.format(qubit_1, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
 
         qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_1))
         qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_2))
