@@ -142,6 +142,7 @@ if __name__ == "__main__":
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
+        init_ansatz_length = len(ansatz_elements)
 
         # get initial guess for the var. params. for the next iteration
         var_parameters = list(result.x)
@@ -167,7 +168,7 @@ if __name__ == "__main__":
                                        'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
                                        'u1_depth': gate_count['u1_depth'], 'element': element_to_add.element,
                                        'element_qubits': element_qubits, 'var_parameters': 0}
-            df_data['var_parameters'] = result.x
+            df_data['var_parameters'] = list(result.x)[init_ansatz_length:]
             # df_data['var_parameters'] = var_parameters
             # save data
             save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type, frozen_els=frozen_els)

@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     multithread = True
 
-    init_db = None #pandas.read_csv("../../results/adapt_vqe_results/LiH_g_adapt_pwe_full.csv")
+    init_db = None #pandas.read_csv("../../results/adapt_vqe_results/LiH_g_adapt_sdpwe_full.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()

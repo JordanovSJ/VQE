@@ -5,8 +5,12 @@ import time
 
 from src.vqe_runner import *
 from src.q_systems import *
+from src.backends import  *
 from src.adapt_utils import GradAdaptUtils
 import numpy, math
+
+import pandas
+import ast
 
 
 def get_circuit_matrix(qasm):
@@ -35,31 +39,42 @@ def matrix_to_str(matrix):
     return str_m
 
 
-def find_ys(x):
-    ys = []
-    for y in range(1,x):
-        if math.gcd(x,y) == 1:
-            ys.append(y)
-    return ys
-
-
 if __name__ == "__main__":
 
-    Ds = list(numpy.zeros(1001))
-    count = 0
-    x = 2
-    while Ds[1000] == 0:
-        if (x / 1000) % 1 == 0:
-            print('len D {}'.format(count))
-            print('X ', x)
+    molecule = H2()  # frozen_els={'occupied': [0, 1], 'unoccupied': []})
+    # r = 1.546
 
-        ys = find_ys(x)
-        for y in ys:
-            D = (x**2 - 1)/y**2
-            if D % 1 == 0 and D <= 1000:
-                if Ds[int(D)] == 0:
-                    count += 1
-                    Ds[int(D)] = x
-        x += 1
-    print(max(Ds))
+    # logging
+    LogUtils.log_cofig()
+
+    df = pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
+
+    init_ansatz_elements = []
+    for i in range(len(df)):
+        element = df.loc[i]['element']
+        element_qubits = df.loc[i]['element_qubits']
+        if element[0] == 'e' and element[4] == 's':
+            init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'e' and element[4] == 'd':
+            init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 's' and element[2] == 'q':
+            init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'd' and element[2] == 'q':
+            init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
+    # for i in range(len(df)):
+    #     excitation = QubitOperator(df.loc[i]['element'])
+    #     init_ansatz_elements.append(PauliWordExcitation(excitation))
+
+    init_ansatz_elements = UCCSD(4, 2).get_ansatz_elements()
+
+    init_var_parameters = [0,0,0,0,0] #list(df['var_parameters'])
+
+    t0 = time.time()
+    grad = QiskitSim.ansatz_gradient(init_var_parameters, molecule, init_ansatz_elements)
+    print(time.time() - t0)
+    print(grad)
+
     print('spagetti')
