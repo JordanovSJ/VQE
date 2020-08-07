@@ -59,7 +59,7 @@ if __name__ == "__main__":
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2() #(frozen_els=frozen_els)
+    molecule = LiH() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     max_ansatz_size = 90
 
     multithread = True
-    use_grad = True
+    use_grad = False
     compute_exc_mtrx = use_grad
 
     n_largest_grads = 19
@@ -118,6 +118,7 @@ if __name__ == "__main__":
     iter_count = 0
     current_energy = hf_energy
     previous_energy = 0
+    init_ansatz_length = len(ansatz_elements)
 
     while previous_energy - current_energy >= accuracy and iter_count <= max_ansatz_size:
         iter_count += 1
@@ -146,7 +147,6 @@ if __name__ == "__main__":
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
-        init_ansatz_length = len(ansatz_elements)
 
         # get initial guess for the var. params. for the next iteration
         var_parameters = list(result.x)

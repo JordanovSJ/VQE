@@ -52,30 +52,33 @@ class VQERunner:
         self.gate_counter = None
         self.statevector = None
 
-        # this is required for precomputing the statevector for ansatz_gradient. This works with the Quantum simulator only
-        self.previous_var_parameters = None
-
         # ugly
         self.t_previous_iter = 0
 
-    def get_energy(self, var_parameters, ansatz_elements, multithread=False, update_gate_counter=False,
+    def get_energy(self, var_parameters, ansatz_elements, precomputed_statevector=None, previous_var_parameters=None,
+                   multithread=False, update_gate_counter=False,
                    multithread_iteration=None, initial_statevector_qasm=None, ham_matrix=None):
 
         if multithread is False:
             iteration_duration = time.time() - self.t_previous_iter
             self.t_previous_iter = time.time()
 
-        # if self.use_ansatz_gradient:
-        #     statevector = self.current_statevector(ansatz_elements, var_parameters)
-        # else:
-        #     statevector = None
+        if self.use_ansatz_gradient and precomputed_statevector is not None:
+            if list(previous_var_parameters[0]) != list(var_parameters):
+                previous_var_parameters[0] = var_parameters.copy()
+                precomputed_statevector[0] = self.backend.statevector_from_ansatz(ansatz_elements, var_parameters,
+                                                                                  self.q_system.n_orbitals,
+                                                                                  self.q_system.n_electrons)[0]
+            statevector = precomputed_statevector[0].copy()
+        else:
+            statevector = None
 
         energy, statevector, qasm = self.backend.get_expectation_value(q_system=self.q_system,
                                                                        var_parameters=var_parameters,
                                                                        ansatz_elements=ansatz_elements,
                                                                        initial_statevector_qasm=initial_statevector_qasm,
-                                                                       operator_matrix=ham_matrix)
-                                                                       # precomputed_statevector=statevector)
+                                                                       operator_matrix=ham_matrix,
+                                                                       precomputed_statevector=statevector)
 
         self.statevector = statevector
 
@@ -110,22 +113,21 @@ class VQERunner:
 
         return energy
 
-    # this can be used so that the energy and gradient evaluation do not compute the statevector twice
-    # .. but it exploits the current code badly
-    # TODO double check and change to something prettier
-    def current_statevector(self, ansatz_elements, var_parameters):
-        if self.previous_var_parameters is None or list(var_parameters) != list(self.previous_var_parameters):
-            self.previous_var_parameters = var_parameters
-            self.statevector = self.backend.statevector_from_ansatz(ansatz_elements, var_parameters,
-                                                                    self.q_system.n_orbitals,
-                                                                    self.q_system.n_electrons)[0]
-        return self.statevector
+    def get_ansatz_gradient(self, var_parameters, ansatz_elements, precomputed_statevector=None, previous_var_parameters=None,
+                            ham_sparse_matrix=None, initial_statevector_qasm=None):
+        if precomputed_statevector is not None:
+            if list(previous_var_parameters[0]) != list(var_parameters):
+                previous_var_parameters[0] = var_parameters.copy()
+                precomputed_statevector[0] = self.backend.statevector_from_ansatz(ansatz_elements, var_parameters,
+                                                                                  self.q_system.n_orbitals,
+                                                                                  self.q_system.n_electrons)[0]
+            statevector = precomputed_statevector[0].copy()
+        else:
+            statevector = None
 
-    def get_ansatz_gradient(self, var_parameters, ansatz_elements, ham_sparse_matrix, initial_statevector_qasm=None):
-        # statevector = self.current_statevector(ansatz_elements, var_parameters)
         return self.backend.ansatz_gradient(var_parameters, q_system=self.q_system, ansatz=ansatz_elements,
                                             init_state_qasm=initial_statevector_qasm,
-                                            # ansatz_statevector=statevector,
+                                            precomputed_statevector=statevector,
                                             ham_sparse_matrix=ham_sparse_matrix)
 
     def vqe_run(self, ansatz_elements=None, initial_var_parameters=None, initial_statevector_qasm=None):
@@ -153,10 +155,6 @@ class VQERunner:
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
                              initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix)
 
-        get_gradient = partial(self.get_ansatz_gradient, ansatz_elements=ansatz_elements,
-                               ham_sparse_matrix=ham_sparse_matrix,
-                               initial_statevector_qasm=initial_statevector_qasm)
-
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
             return get_energy(var_parameters)
@@ -178,6 +176,17 @@ class VQERunner:
             self.optimizer_options = config.optimizer_options
 
         if self.use_ansatz_gradient:
+            statevector_ref = [[]]
+            var_parameters_ref = [[]]
+
+            get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
+                                 initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix,
+                                 precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref)
+
+            get_gradient = partial(self.get_ansatz_gradient, ansatz_elements=ansatz_elements,
+                                   ham_sparse_matrix=ham_sparse_matrix, initial_statevector_qasm=initial_statevector_qasm,
+                                   precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref)
+
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer, jac=get_gradient,
                                                  options=self.optimizer_options, tol=config.optimizer_tol,
                                                  bounds=config.optimizer_bounds)
@@ -213,10 +222,6 @@ class VQERunner:
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements, multithread=True,
                              multithread_iteration=local_iteration, ham_matrix=ham_matrix)
 
-        get_gradient = partial(self.get_ansatz_gradient, ansatz_elements=ansatz_elements,
-                               ham_sparse_matrix=ham_sparse_matrix,
-                               initial_statevector_qasm=initial_statevector_qasm)
-
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
             return get_energy(var_parameters)
@@ -226,6 +231,18 @@ class VQERunner:
             self.optimizer_options = config.optimizer_options
 
         if self.use_ansatz_gradient:
+            statevector_ref = [[]]
+            var_parameters_ref = [[]]
+
+            get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
+                                 initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix,
+                                 precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref)
+
+            get_gradient = partial(self.get_ansatz_gradient, ansatz_elements=ansatz_elements,
+                                   ham_sparse_matrix=ham_sparse_matrix,
+                                   initial_statevector_qasm=initial_statevector_qasm,
+                                   precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref)
+
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer, jac=get_gradient,
                                                  options=self.optimizer_options, tol=config.optimizer_tol,
                                                  bounds=config.optimizer_bounds)

@@ -56,7 +56,7 @@ class GradAdaptUtils:
     @staticmethod
     @ray.remote
     def get_excitation_energy_gradient_multithread(excitation_element, ansatz_elements, var_parameters, q_system,
-                                                   backend, dynamic_commutators=False):
+                                                   backend, dynamic_commutators=False, precomputed_statevector=None):
 
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
@@ -69,7 +69,8 @@ class GradAdaptUtils:
                 get_sparse_operator(q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham).todense()
 
         gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,
-                                                 operator_matrix=commutator_matrix)[0]
+                                                 operator_matrix=commutator_matrix,
+                                                 precomputed_statevector=precomputed_statevector)[0]
 
         message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
         print(message)
@@ -103,13 +104,19 @@ class GradAdaptUtils:
 
         if initial_ansatz is None:
             initial_ansatz = []
+            initial_var_parameters = []
+
+        precomputed_statevector = None#backend.statevector_from_ansatz(initial_ansatz, initial_var_parameters,
+                                      #                            q_system.n_orbitals, q_system.n_electrons)[0]
+
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [element,
                  GradAdaptUtils.get_excitation_energy_gradient_multithread.remote(element, initial_ansatz,
                                                                                   initial_var_parameters, q_system,
-                                                                                  backend, dynamic_commutators)]
+                                                                                  backend, dynamic_commutators=dynamic_commutators,
+                                                                                  precomputed_statevector=precomputed_statevector)]
                 for element in ansatz_elements
             ]
             elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
