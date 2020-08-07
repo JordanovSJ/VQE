@@ -59,7 +59,7 @@ if __name__ == "__main__":
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH() #(frozen_els=frozen_els)
+    molecule = H2() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
@@ -70,6 +70,8 @@ if __name__ == "__main__":
     max_ansatz_size = 90
 
     multithread = True
+    use_grad = True
+    compute_exc_mtrx = use_grad
 
     n_largest_grads = 19
 
@@ -84,7 +86,8 @@ if __name__ == "__main__":
     # create a vqe runner object
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-08}
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options)
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
+                           use_ansatz_gradient=use_grad)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
 
@@ -95,7 +98,8 @@ if __name__ == "__main__":
 
     # get single excitations
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()
+                                         element_type=ansatz_element_type,
+                                         compute_exc_mtrx=compute_exc_mtrx).get_ansatz_elements()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)

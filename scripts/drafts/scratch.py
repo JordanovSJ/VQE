@@ -3,6 +3,7 @@ from src.backends import QiskitSim
 import qiskit
 import time
 
+from src.ansatz_elements import *
 from src.vqe_runner import *
 from src.q_systems import *
 from src.backends import  *
@@ -40,41 +41,45 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
+    angle = 0.1
 
-    molecule = H2()  # frozen_els={'occupied': [0, 1], 'unoccupied': []})
-    # r = 1.546
+    qasm_1 = ['']
+    qasm_1.append(QasmUtils.qasm_header(4))
 
-    # logging
-    LogUtils.log_cofig()
+    qasm_1.append('x q[0];\n')
+    qasm_1.append('x q[1];\n')
+    # qasm_1.append('h q[3];\n')
+    # qasm_1.append('h q[2];\n')
+    # qasm_1.append('h q[2];\n')
+    # qasm_1.append('h q[3];\n')
+    # qasm_1.append('h q[4];\n')
+    # qasm_1.append('h q[5];\n')
 
-    df = pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
+    # qasm_1.append(QasmUtils.partial_exchange_gate(angle, 0, 2))
+    # qasm_1.append(QasmUtils.partial_exchange_gate(angle,  1, 3))
+    # qasm_1.append('cz q[{}], q[{}];\n'.format(2, 3))
+    # qasm_1.append(QasmUtils.partial_exchange_gate(-angle, 0, 2))
+    # qasm_1.append(QasmUtils.partial_exchange_gate(-angle, 1, 3))
 
-    init_ansatz_elements = []
-    for i in range(len(df)):
-        element = df.loc[i]['element']
-        element_qubits = df.loc[i]['element_qubits']
-        if element[0] == 'e' and element[4] == 's':
-            init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
-        elif element[0] == 'e' and element[4] == 'd':
-            init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
-        elif element[0] == 's' and element[2] == 'q':
-            init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
-        elif element[0] == 'd' and element[2] == 'q':
-            init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
-        else:
-            print(element, element_qubits)
-            raise Exception('Unrecognized ansatz element.')
-    # for i in range(len(df)):
-    #     excitation = QubitOperator(df.loc[i]['element'])
-    #     init_ansatz_elements.append(PauliWordExcitation(excitation))
+    qasm_1.append(EfficientDoubleFermiExcitation([0, 1], [2, 3]).get_qasm([angle]))
+    statevector_1 = QiskitSim.statevector_from_qasm(''.join(qasm_1)).round(5)
 
-    init_ansatz_elements = UCCSD(4, 2).get_ansatz_elements()
+    print(statevector_1)
 
-    init_var_parameters = [0,0,0,0,0] #list(df['var_parameters'])
+    qasm_2 = ['']
+    qasm_2.append(QasmUtils.qasm_header(4))
+    qasm_2.append('x q[0];\n')
+    qasm_2.append('x q[1];\n')
+    # qasm_2.append('h q[3];\n')
+    # qasm_2.append('h q[2];\n')
+    # qasm_2.append('h q[2];\n')
+    # qasm_2.append('h q[3];\n')
+    # qasm_2.append('h q[4];\n')
+    # qasm_2.append('h q[5];\n')
 
-    t0 = time.time()
-    grad = QiskitSim.ansatz_gradient(init_var_parameters, molecule, init_ansatz_elements)
-    print(time.time() - t0)
-    print(grad)
+    qasm_2.append(DoubleQubitExcitation([0, 1], [2, 3]).get_qasm([angle]))
+    statevector_2 = QiskitSim.statevector_from_qasm(''.join(qasm_2)).round(10)
+
+    print(statevector_2)
 
     print('spagetti')

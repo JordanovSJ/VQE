@@ -4,6 +4,7 @@ from openfermion.utils import hermitian_conjugated
 
 from src.utils import QasmUtils, MatrixUtils
 
+import openfermion
 import itertools
 import numpy
 
@@ -23,8 +24,8 @@ class AnsatzElement:
         term_1 = QubitOperator('')
 
         for qubit_1, qubit_2 in zip(qubits_1, qubits_2):
-            term_1 *= (QubitOperator('X{}'.format(qubit_1), 0.5) - QubitOperator('Y{}'.format(qubit_1), 0.5j))
-            term_1 *= (QubitOperator('X{}'.format(qubit_2), 0.5) + QubitOperator('Y{}'.format(qubit_2), 0.5j))
+            term_1 *= (QubitOperator('X{}'.format(qubit_1), 0.5) + QubitOperator('Y{}'.format(qubit_1), 0.5j))
+            term_1 *= (QubitOperator('X{}'.format(qubit_2), 0.5) - QubitOperator('Y{}'.format(qubit_2), 0.5j))
 
         term_2 = hermitian_conjugated(term_1)
 
@@ -42,12 +43,14 @@ class AnsatzElement:
 
 
 class PauliWordExcitation(AnsatzElement):
-    def __init__(self, pauli_word_excitation):
+    def __init__(self, pauli_word_excitation, n_qubits=None, compute_exc_mtrx=False):
         assert type(pauli_word_excitation) == QubitOperator
         assert len(pauli_word_excitation.terms) == 1
         assert list(pauli_word_excitation.terms.values())[0].real == 0  # it should be skew-Hermitian
 
         self.excitation = pauli_word_excitation
+        if compute_exc_mtrx and n_qubits is not None:
+            self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
         super(PauliWordExcitation, self).__init__(element=str(pauli_word_excitation), order=self.pauli_word_order(),
                                                   n_var_parameters=1)
@@ -70,12 +73,14 @@ class PauliWordExcitation(AnsatzElement):
 
 
 class SingleFermiExcitation(AnsatzElement):
-    def __init__(self, qubit_1, qubit_2):
+    def __init__(self, qubit_1, qubit_2, compute_exc_mtrx=False, n_qubits=None):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
 
         fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.qubit_2, self.qubit_1))
         self.excitation = jordan_wigner(fermi_operator)
+        if compute_exc_mtrx and n_qubits is not None:
+            self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
         super(SingleFermiExcitation, self).\
             __init__(element='s_f_exc_{}_{}'.format(qubit_1, qubit_2), order=1, n_var_parameters=1)
@@ -86,7 +91,7 @@ class SingleFermiExcitation(AnsatzElement):
 
 
 class DoubleFermiExcitation(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2):
+    def __init__(self, qubit_pair_1, qubit_pair_2, compute_exc_mtrx=False, n_qubits=None):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
 
@@ -94,6 +99,8 @@ class DoubleFermiExcitation(AnsatzElement):
                                          .format(self.qubit_pair_1[0], self.qubit_pair_1[1],
                                                  self.qubit_pair_2[0], self.qubit_pair_2[1]))
         self.excitation = jordan_wigner(fermi_operator)
+        if compute_exc_mtrx and n_qubits is not None:
+            self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
         super(DoubleFermiExcitation, self).\
             __init__(element='d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), order=2, n_var_parameters=1)
@@ -105,23 +112,30 @@ class DoubleFermiExcitation(AnsatzElement):
 
 
 class SingleQubitExcitation(AnsatzElement):
-    def __init__(self, qubit_1, qubit_2):
+    def __init__(self, qubit_1, qubit_2, compute_exc_mtrx=False, n_qubits=None):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
         self.excitation = self.get_qubit_excitation([qubit_1], [qubit_2])
+        if compute_exc_mtrx and n_qubits is not None:
+            self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
+
         super(SingleQubitExcitation, self).\
             __init__(element='s_q_exc_{}_{}'.format(qubit_1, qubit_2),  order=1, n_var_parameters=1)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return QasmUtils.partial_exchange(var_parameters[0], self.qubit_1, self.qubit_2)
+        return QasmUtils.partial_exchange(-var_parameters[0], self.qubit_1, self.qubit_2)  # the minus sign is important for consistence with the d_q_exc, as well obtaining the correct sign for grads...
 
 
 class DoubleQubitExcitation(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2):
+    def __init__(self, qubit_pair_1, qubit_pair_2, compute_exc_mtrx=False, n_qubits=None):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
         self.excitation = self.get_qubit_excitation(qubit_pair_1, qubit_pair_2)
+
+        if compute_exc_mtrx and n_qubits is not None:
+            self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
+
         super(DoubleQubitExcitation, self).\
             __init__(element='d_q_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1)
 
@@ -209,12 +223,15 @@ class DoubleQubitExcitation(AnsatzElement):
 
 
 class EfficientSingleFermiExcitation(AnsatzElement):
-    def __init__(self, qubit_1, qubit_2):
+    def __init__(self, qubit_1, qubit_2, compute_exc_mtrx=False, n_qubits=None):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
 
         fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.qubit_2, self.qubit_1))
         self.excitation = jordan_wigner(fermi_operator)
+
+        if compute_exc_mtrx and n_qubits is not None:
+            self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
         super(EfficientSingleFermiExcitation, self).\
             __init__(element='eff_s_f_exc_{}_{}'.format(qubit_2, qubit_1), order=1, n_var_parameters=1)
@@ -264,7 +281,7 @@ class EfficientSingleFermiExcitation(AnsatzElement):
 
 
 class EfficientDoubleFermiExcitation(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2):
+    def __init__(self, qubit_pair_1, qubit_pair_2, compute_exc_mtrx=False, n_qubits=None):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
 
@@ -272,6 +289,9 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
                                          .format(self.qubit_pair_1[0], self.qubit_pair_1[1],
                                                  self.qubit_pair_2[0], self.qubit_pair_2[1]))
         self.excitation = jordan_wigner(fermi_operator)
+
+        if compute_exc_mtrx and n_qubits is not None:
+            self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
         super(EfficientDoubleFermiExcitation, self).\
             __init__(element='eff_d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1)

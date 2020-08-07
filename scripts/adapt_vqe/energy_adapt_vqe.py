@@ -45,12 +45,14 @@ if __name__ == "__main__":
     max_ansatz_elements = 40
 
     multithread = True
+    use_grad = True
+    compute_exc_mtrx = use_grad
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create a vqe runner object
-    vqe_runner = VQERunner(molecule, backend=QiskitSim)
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, use_ansatz_gradient=use_grad)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
 
@@ -63,8 +65,9 @@ if __name__ == "__main__":
     logging.info('{}, r={} ,{}'.format(molecule.name, r, ansatz_element_type))
 
     # create a pool of ansatz elements
-    initial_ansatz_elements_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                 element_type=ansatz_element_type).get_double_excitations()
+    initial_ansatz_elements_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                                  element_type=ansatz_element_type,
+                                                  compute_exc_mtrx=compute_exc_mtrx).get_double_excitations()
 
     # New pool
     # get a new ansatz element pool, from elements that decrease <H> by at least dE = threshold

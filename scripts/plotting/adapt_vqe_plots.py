@@ -7,9 +7,9 @@ import pandas
 
 if __name__ == "__main__":
 
-    db_h_qe = pandas.read_csv('../../results/adapt_vqe_results/LiH_h_adapt_sdqe_full.csv')
-    db_g_pwe = pandas.read_csv('../../results/adapt_vqe_results/LiH_g_adapt_sdpwe_full.csv')
-    db_g_efe = pandas.read_csv('../../results/adapt_vqe_results/LiH_g_adapt_sdfe_09-Jul-2020_full.csv')
+    db_h_qe = pandas.read_csv('../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv')
+    db_g_pwe = pandas.read_csv('../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdpwe_27-Jul-2020.csv')
+    db_g_efe = pandas.read_csv('../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdfe_27-Jul-2020.csv')
     db_g_qe = pandas.read_csv('../../results/adapt_vqe_results/vip/LiH_g_adapt_sdqe_12-Jul-2020_full.csv')
 
     plt.plot(db_h_qe['n'], db_h_qe['error'], label='h_qe')

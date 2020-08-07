@@ -11,10 +11,12 @@ import numpy
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 class SDExcitations:
-    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None):
+    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None,
+                 compute_exc_mtrx=False):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.element_type = element_type
+        self.compute_exc_mtrx = compute_exc_mtrx
 
         if element_type == 'exchange':
             if d_exchange_vars is not None:
@@ -30,14 +32,18 @@ class SDExcitations:
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
                 if self.element_type == 'fermi_excitation':
-                    single_excitations.append(SingleFermiExcitation(i, j))
+                    single_excitations.append(SingleFermiExcitation(i, j, compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                    n_qubits=self.n_orbitals))
                 elif self.element_type == 'qubit_excitation' or self.element_type == 'exchange':
-                    single_excitations.append(SingleQubitExcitation(i, j))
+                    single_excitations.append(SingleQubitExcitation(i, j, compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                    n_qubits=self.n_orbitals))
                 elif self.element_type == 'efficient_fermi_excitation':
-                    single_excitations.append(EfficientSingleFermiExcitation(i, j))
+                    single_excitations.append(EfficientSingleFermiExcitation(i, j, compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                             n_qubits=self.n_orbitals))
                 elif self.element_type == 'pauli_word_excitation':
                     qubit_excitation = SingleQubitExcitation(i, j).excitation
-                    single_excitations += [PauliWordExcitation(1j*QubitOperator(term)) for term in
+                    single_excitations += [PauliWordExcitation(1j*QubitOperator(term), compute_exc_mtrx=self.compute_exc_mtrx,
+                                                               n_qubits=self.n_orbitals) for term in
                                            qubit_excitation.terms]
                 else:
                     raise Exception('Invalid single excitation type.')
@@ -51,9 +57,13 @@ class SDExcitations:
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
                         if self.element_type == 'fermi_excitation':
-                            double_excitations.append(DoubleFermiExcitation([i, j], [k, l]))
+                            double_excitations.append(DoubleFermiExcitation([i, j], [k, l],
+                                                                            compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                            n_qubits=self.n_orbitals))
                         elif self.element_type == 'qubit_excitation':
-                            double_excitations.append(DoubleQubitExcitation([i, j], [k, l]))
+                            double_excitations.append(DoubleQubitExcitation([i, j], [k, l],
+                                                                            compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                            n_qubits=self.n_orbitals))
                         elif self.element_type == 'efficient_fermi_excitation':
                             double_excitations.append(EfficientDoubleFermiExcitation([i, j], [k, l]))
                         elif self.element_type == 'exchange':
@@ -62,7 +72,8 @@ class SDExcitations:
                                                                      d_exc_correction=self.d_exc_correction))
                         elif self.element_type == 'pauli_word_excitation':
                             qubit_excitation = DoubleQubitExcitation([i, j], [k, l]).excitation
-                            double_excitations += [PauliWordExcitation(1j*QubitOperator(term)) for term in
+                            double_excitations += [PauliWordExcitation(1j*QubitOperator(term), compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                       n_qubits=self.n_orbitals) for term in
                                                    qubit_excitation.terms]
                         else:
                             raise Exception('invalid double excitation type.')
@@ -74,10 +85,12 @@ class SDExcitations:
 
 
 class GSDExcitations:
-    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None):
+    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None,
+                 compute_exc_mtrx=False):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.element_type = element_type
+        self.compute_exc_mtrx = compute_exc_mtrx
 
         if element_type == 'exchange':
             if d_exchange_vars is not None:
@@ -92,14 +105,18 @@ class GSDExcitations:
         single_excitations = []
         for i, j in itertools.combinations(range(self.n_orbitals), 2):
             if self.element_type == 'fermi_excitation':
-                single_excitations.append(SingleFermiExcitation(i, j))
+                single_excitations.append(SingleFermiExcitation(i, j, compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                n_qubits=self.n_orbitals))
             elif self.element_type == 'qubit_excitation' or self.element_type == 'exchange':
-                single_excitations.append(SingleQubitExcitation(i, j))
+                single_excitations.append(SingleQubitExcitation(i, j, compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                n_qubits=self.n_orbitals))
             elif self.element_type == 'efficient_fermi_excitation':
-                single_excitations.append(EfficientSingleFermiExcitation(i, j))
+                single_excitations.append(EfficientSingleFermiExcitation(i, j, compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                         n_qubits=self.n_orbitals))
             elif self.element_type == 'pauli_word_excitation':
                 qubit_excitation = SingleQubitExcitation(i, j).excitation
-                single_excitations += [PauliWordExcitation(1j*QubitOperator(term)) for term in
+                single_excitations += [PauliWordExcitation(1j*QubitOperator(term), compute_exc_mtrx=self.compute_exc_mtrx,
+                                                           n_qubits=self.n_orbitals) for term in
                                        qubit_excitation.terms]
             else:
                 raise Exception('Invalid single excitation type.')
@@ -110,18 +127,22 @@ class GSDExcitations:
         double_excitations = []
         for i, j, k, l in itertools.combinations(range(self.n_orbitals), 4):
             if self.element_type == 'fermi_excitation':
-                double_excitations.append(DoubleFermiExcitation([i, j], [k, l]))
+                double_excitations.append(DoubleFermiExcitation([i, j], [k, l], compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                n_qubits=self.n_orbitals))
             elif self.element_type == 'qubit_excitation':
-                double_excitations.append(DoubleQubitExcitation([i, j], [k, l]))
+                double_excitations.append(DoubleQubitExcitation([i, j], [k, l], compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                n_qubits=self.n_orbitals))
             elif self.element_type == 'efficient_fermi_excitation':
-                double_excitations.append(EfficientDoubleFermiExcitation([i, j], [k, l]))
+                double_excitations.append(EfficientDoubleFermiExcitation([i, j], [k, l], compute_exc_mtrx=self.compute_exc_mtrx,
+                                                                         n_qubits=self.n_orbitals))
             elif self.element_type == 'exchange':
                 double_excitations.append(DoubleExchange([i, j], [k, l], rescaled_parameter=self.rescaled,
                                                          parity_dependence=self.parity_dependence,
                                                          d_exc_correction=self.d_exc_correction))
             elif self.element_type == 'pauli_word_excitation':
                 qubit_excitation = DoubleQubitExcitation([i, j], [k, l]).excitation
-                double_excitations += [PauliWordExcitation(1j*QubitOperator(term)) for term in
+                double_excitations += [PauliWordExcitation(1j*QubitOperator(term), compute_exc_mtrx=self.compute_exc_mtrx,
+                                                           n_qubits=self.n_orbitals) for term in
                                        qubit_excitation.terms]
             else:
                 raise Exception('invalid double excitation type.')
