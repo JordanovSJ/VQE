@@ -65,17 +65,11 @@ class VQERunner:
             iteration_duration = time.time() - self.t_previous_iter
             self.t_previous_iter = time.time()
 
-        # if self.use_ansatz_gradient:
-        #     statevector = self.current_statevector(ansatz_elements, var_parameters)
-        # else:
-        #     statevector = None
-
         energy, statevector, qasm = self.backend.get_expectation_value(q_system=self.q_system,
                                                                        var_parameters=var_parameters,
                                                                        ansatz_elements=ansatz_elements,
                                                                        initial_statevector_qasm=initial_statevector_qasm,
                                                                        operator_matrix=ham_matrix)
-                                                                       # precomputed_statevector=statevector)
 
         self.statevector = statevector
 
@@ -110,22 +104,9 @@ class VQERunner:
 
         return energy
 
-    # this can be used so that the energy and gradient evaluation do not compute the statevector twice
-    # .. but it exploits the current code badly
-    # TODO double check and change to something prettier
-    def current_statevector(self, ansatz_elements, var_parameters):
-        if self.previous_var_parameters is None or list(var_parameters) != list(self.previous_var_parameters):
-            self.previous_var_parameters = var_parameters
-            self.statevector = self.backend.statevector_from_ansatz(ansatz_elements, var_parameters,
-                                                                    self.q_system.n_orbitals,
-                                                                    self.q_system.n_electrons)[0]
-        return self.statevector
-
     def get_ansatz_gradient(self, var_parameters, ansatz_elements, ham_sparse_matrix, initial_statevector_qasm=None):
-        # statevector = self.current_statevector(ansatz_elements, var_parameters)
         return self.backend.ansatz_gradient(var_parameters, q_system=self.q_system, ansatz=ansatz_elements,
                                             init_state_qasm=initial_statevector_qasm,
-                                            # ansatz_statevector=statevector,
                                             ham_sparse_matrix=ham_sparse_matrix)
 
     def vqe_run(self, ansatz_elements=None, initial_var_parameters=None, initial_statevector_qasm=None):

@@ -67,9 +67,9 @@ if __name__ == "__main__":
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = H2() #(frozen_els=frozen_els)
 
-    # ansatz_element_type = 'efficient_fermi_excitation'
+    ansatz_element_type = 'efficient_fermi_excitation'
     ##  ansatz_element_type = 'qubit_excitation'
-    ansatz_element_type = 'pauli_word_excitation'
+    # ansatz_element_type = 'pauli_word_excitation'
 
     accuracy = 1e-11  # 1e-3 for chemical accuracy
     # threshold = 1e-14

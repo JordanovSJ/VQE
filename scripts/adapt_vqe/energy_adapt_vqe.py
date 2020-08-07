@@ -35,7 +35,7 @@ if __name__ == "__main__":
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
     r = 1.316
     # theta = 0.538*numpy.pi # for H20
-    molecule = LiH()
+    molecule = H2()
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     max_ansatz_elements = 40
 
     multithread = True
-    use_grad = True
+    use_grad = False
     compute_exc_mtrx = use_grad
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

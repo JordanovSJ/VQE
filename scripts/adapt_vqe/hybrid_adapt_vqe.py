@@ -118,6 +118,7 @@ if __name__ == "__main__":
     iter_count = 0
     current_energy = hf_energy
     previous_energy = 0
+    init_ansatz_length = len(ansatz_elements)
 
     while previous_energy - current_energy >= accuracy and iter_count <= max_ansatz_size:
         iter_count += 1
@@ -146,7 +147,6 @@ if __name__ == "__main__":
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
-        init_ansatz_length = len(ansatz_elements)
 
         # get initial guess for the var. params. for the next iteration
         var_parameters = list(result.x)
