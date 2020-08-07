@@ -148,8 +148,11 @@ class VQERunner:
         # ugly
         self.t_previous_iter = time.time()
 
+        # precompute frequently used variables
         ham_sparse_matrix = get_sparse_operator(self.q_system.jw_qubit_ham)
         ham_matrix = ham_sparse_matrix.todense()
+        for element in ansatz_elements:
+            element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
 
         # partial function to be used in the optimizer
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
@@ -194,6 +197,10 @@ class VQERunner:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
                                                  options=self.optimizer_options, tol=config.optimizer_tol,
                                                  bounds=config.optimizer_bounds)
+
+        # # Not sure if needed
+        # for element in ansatz_elements:
+        #     element.delete_excitation_mtrx()
 
         print(opt_energy)
         logging.info(opt_energy)

@@ -1,15 +1,8 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
-
--reduce accuracy of statevecotr
--consider not using Aer
--optimize the gradient computation routine
+-fix ray?memory leak with precomputation of excitation matrices!!!!!!!!!!
 
 -class ansatz: combine ansatz_elements and var_paramaters + recompute element_grads every time the ansatz state is change
-
--hybrid adapt_vqe: use gradients and energies
-
--create function commutator for class q_sysyem and the option to save commutators
 
 *********************************************
 

@@ -59,7 +59,7 @@ if __name__ == "__main__":
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH() #(frozen_els=frozen_els)
+    molecule = BeH2() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     use_grad = True
     compute_exc_mtrx = use_grad
 
-    do_precompute_statevector = True
+    do_precompute_statevector = False
 
     n_largest_grads = 19
 

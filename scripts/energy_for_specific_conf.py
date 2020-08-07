@@ -33,17 +33,13 @@ if __name__ == "__main__":
         element = df.loc[i]['element']
         element_qubits = df.loc[i]['element_qubits']
         if element[0] == 'e' and element[4] == 's':
-            init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits),
-                                                                       compute_exc_mtrx=True, n_qubits=molecule.n_qubits))
+            init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'e' and element[4] == 'd':
-            init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits),
-                                                                       compute_exc_mtrx=True, n_qubits=molecule.n_qubits))
+            init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
         elif element[0] == 's' and element[2] == 'q':
-            init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits),
-                                                              compute_exc_mtrx=True, n_qubits=molecule.n_qubits))
+            init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
         elif element[0] == 'd' and element[2] == 'q':
-            init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits),
-                                                              compute_exc_mtrx=True, n_qubits=molecule.n_qubits))
+            init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
         else:
             print(element, element_qubits)
             raise Exception('Unrecognized ansatz element.')

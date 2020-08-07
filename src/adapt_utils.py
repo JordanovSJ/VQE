@@ -59,6 +59,7 @@ class GradAdaptUtils:
     def get_excitation_energy_gradient_multithread(excitation_element, ansatz_elements, var_parameters, q_system,
                                                    backend, dynamic_commutators=False, precomputed_statevector=None):
 
+        t0 = time.time()
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
 
@@ -69,7 +70,6 @@ class GradAdaptUtils:
             commutator_matrix = \
                 get_sparse_operator(q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham).todense()
 
-        t0 = time.time()
         gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,
                                                  operator_matrix=commutator_matrix,
                                                  precomputed_statevector=precomputed_statevector)[0]
