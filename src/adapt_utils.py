@@ -2,6 +2,7 @@ import ray
 from openfermion import get_sparse_operator, QubitOperator
 from src import config
 from src import backends
+import time
 
 
 class EnergyAdaptUtils:
@@ -68,18 +69,21 @@ class GradAdaptUtils:
             commutator_matrix = \
                 get_sparse_operator(q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham).todense()
 
+        t0 = time.time()
         gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,
                                                  operator_matrix=commutator_matrix,
                                                  precomputed_statevector=precomputed_statevector)[0]
 
-        message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
+        message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation_element.element, gradient,
+                                                                      time.time()-t0)
         print(message)
         return gradient
 
     @staticmethod
     def get_excitation_energy_gradient(excitation_element, ansatz_elements, var_parameters, q_system, backend,
-                                       dynamic_commutators=False):
+                                       dynamic_commutators=False, precomputed_statevector=None):
 
+        t0 = time.time()
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
 
@@ -90,9 +94,11 @@ class GradAdaptUtils:
                 get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham).todense()
 
         gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,
-                                                 operator_matrix=commutator_matrix)[0]
+                                                 operator_matrix=commutator_matrix,
+                                                 precomputed_statevector=precomputed_statevector)[0]
 
-        message = 'Excitation {}. Excitation grad {}'.format(excitation_element.element, gradient)
+        message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation_element.element, gradient,
+                                                                      time.time()-t0)
         print(message)
 
         return gradient
@@ -100,14 +106,18 @@ class GradAdaptUtils:
     # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
     def ansatz_elements_gradients(ansatz_elements, q_system, backend, initial_var_parameters=None,
-                                  initial_ansatz=None, multithread=False, dynamic_commutators=False):
+                                  initial_ansatz=None, multithread=False, dynamic_commutators=False,
+                                  do_precompute_statevector=False):
 
         if initial_ansatz is None:
             initial_ansatz = []
             initial_var_parameters = []
 
-        precomputed_statevector = None#backend.statevector_from_ansatz(initial_ansatz, initial_var_parameters,
-                                      #                            q_system.n_orbitals, q_system.n_electrons)[0]
+        if do_precompute_statevector:
+            precomputed_statevector = backend.statevector_from_ansatz(initial_ansatz, initial_var_parameters,
+                                                                      q_system.n_orbitals, q_system.n_electrons)[0]
+        else:
+            precomputed_statevector = None
 
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
@@ -125,7 +135,9 @@ class GradAdaptUtils:
         else:
             elements_results = [
                 [element, GradAdaptUtils.get_excitation_energy_gradient(element, initial_ansatz, initial_var_parameters,
-                                                                        q_system, backend, dynamic_commutators)]
+                                                                        q_system, backend,
+                                                                        dynamic_commutators=dynamic_commutators,
+                                                                        precomputed_statevector=precomputed_statevector)]
                 for element in ansatz_elements
             ]
 
@@ -134,12 +146,13 @@ class GradAdaptUtils:
     # returns the ansatz element that achieves lowest energy (together with the energy value)
     @staticmethod
     def most_significant_ansatz_elements(ansatz_elements, q_system, backend, var_parameters=None, ansatz=None, n=1,
-                                         multithread=False, dynamic_commutators=False):
+                                         multithread=False, dynamic_commutators=False, do_precompute_statevector=False):
 
         elements_results = GradAdaptUtils.ansatz_elements_gradients(ansatz_elements, q_system, backend,
                                                                     initial_var_parameters=var_parameters,
                                                                     initial_ansatz=ansatz,
                                                                     multithread=multithread,
-                                                                    dynamic_commutators=dynamic_commutators)
+                                                                    dynamic_commutators=dynamic_commutators,
+                                                                    do_precompute_statevector=do_precompute_statevector)
         elements_results.sort(key=lambda x: abs(x[1]))
         return elements_results[-n:]

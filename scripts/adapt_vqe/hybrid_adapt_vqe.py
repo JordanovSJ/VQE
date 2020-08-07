@@ -70,8 +70,10 @@ if __name__ == "__main__":
     max_ansatz_size = 90
 
     multithread = True
-    use_grad = False
+    use_grad = True
     compute_exc_mtrx = use_grad
+
+    do_precompute_statevector = True
 
     n_largest_grads = 19
 
@@ -131,7 +133,7 @@ if __name__ == "__main__":
         elements_grads = GradAdaptUtils.\
             most_significant_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend, n=n_largest_grads,
                                              var_parameters=var_parameters, ansatz=ansatz_elements,
-                                             multithread=multithread)
+                                             multithread=multithread, do_precompute_statevector=do_precompute_statevector)
 
         elements = [e_g[0] for e_g in elements_grads]
         grads = [e_g[1] for e_g in elements_grads]

@@ -62,22 +62,24 @@ def get_ansatz_from_csv(db, ansatz_element_type=None ):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.546
+    r = 1.316
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2() #(frozen_els=frozen_els)
+    molecule = BeH2() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ##  ansatz_element_type = 'qubit_excitation'
     ansatz_element_type = 'pauli_word_excitation'
 
-    accuracy = 1e-11  # 1e-3 for chemical accuracy
+    accuracy = 1e-12  # 1e-3 for chemical accuracy
     # threshold = 1e-14
-    max_ansatz_elements = 90
+    max_ansatz_elements = 150
 
     multithread = True
     use_grad = True
-    compute_exc_mtrx = use_grad
+    compute_exc_mtrx = False
+
+    do_precompute_statevector = True
 
     init_db = None #pandas.read_csv("../../results/adapt_vqe_results/LiH_g_adapt_sdpwe_full.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -137,7 +139,8 @@ if __name__ == "__main__":
         element_to_add, grad = GradAdaptUtils.\
             most_significant_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend,
                                              var_parameters=var_parameters, ansatz=ansatz_elements,
-                                             multithread=multithread)[0]
+                                             multithread=multithread,
+                                             do_precompute_statevector=do_precompute_statevector)[0]
 
         result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
                                     initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
