@@ -59,7 +59,7 @@ if __name__ == "__main__":
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2() #(frozen_els=frozen_els)
+    molecule = LiH() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
@@ -72,11 +72,11 @@ if __name__ == "__main__":
     multithread = True
     use_grad = True
 
-    do_precompute_statevector = False
+    do_precompute_statevector = True
 
     n_largest_grads = 19
 
-    init_db = None  #pandas.read_csv("../../results/adapt_vqe_results/BeH2_h_qe_26-Jul-2020.csv")
+    init_db = pandas.read_csv("results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()

@@ -63,13 +63,15 @@ class PauliWordExcitation(AnsatzElement):
         # if compute_exc_mtrx and n_qubits is not None:
         #     self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
-        super(PauliWordExcitation, self).__init__(element=str(pauli_word_excitation), order=self.pauli_word_order(),
+        super(PauliWordExcitation, self).__init__(element=str(pauli_word_excitation),
+                                                  order=self.pauli_word_order(pauli_word_excitation),
                                                   n_var_parameters=1, excitation=pauli_word_excitation,
                                                   system_n_qubits=system_n_qubits)
 
-    def pauli_word_order(self):
+    @staticmethod
+    def pauli_word_order(excitation):
 
-        pauli_ops = list(self.excitation.terms.keys())[0]
+        pauli_ops = list(excitation.terms.keys())[0]
         order = 0
 
         for pauli_op in pauli_ops:

@@ -62,10 +62,10 @@ def get_ansatz_from_csv(db, ansatz_element_type=None ):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.316
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2() #(frozen_els=frozen_els)
+    molecule = LiH() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ##  ansatz_element_type = 'qubit_excitation'
@@ -77,11 +77,10 @@ if __name__ == "__main__":
 
     multithread = True
     use_grad = True
-    compute_exc_mtrx = False
 
     do_precompute_statevector = True
 
-    init_db = None #pandas.read_csv("../../results/adapt_vqe_results/LiH_g_adapt_sdpwe_full.csv")
+    init_db = pandas.read_csv("results/adapt_vqe_results/vip/LiH_g_adapt_gsdpwe_27-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -104,8 +103,7 @@ if __name__ == "__main__":
 
     # get single excitations
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type,
-                                         compute_exc_mtrx=compute_exc_mtrx).get_ansatz_elements()
+                                         element_type=ansatz_element_type).get_ansatz_elements()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
