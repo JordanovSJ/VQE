@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv("../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
+    df = pandas.read_csv("../results/adapt_vqe_results/vip/LiH_h_adapt_gradient_gsdqe_07-Aug-2020.csv")
 
     init_ansatz_elements = []
     for i in range(len(df)):
@@ -47,9 +47,10 @@ if __name__ == "__main__":
     #     excitation = QubitOperator(df.loc[i]['element'])
     #     init_ansatz_elements.append(PauliWordExcitation(excitation))
 
-    ansatz_elements = init_ansatz_elements
+    ansatz_elements = init_ansatz_elements[:37]
 
-    var_parameters = list(numpy.zeros(len(ansatz_elements)))
+    # var_parameters = list(df['var_parameters'])
+    var_parameters = list(numpy.zeros(len(ansatz_elements)))[:37]
 
     # ansatz_elements = []
     # var_parameters = []
@@ -59,7 +60,7 @@ if __name__ == "__main__":
     #         var_parameters.append(init_var_parameters[i])
 
     optimizer = 'BFGS'
-    optimizer_options = {'gtol': 1e-9}
+    optimizer_options = {'gtol': 1e-8}
 
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
                            print_var_parameters=False, use_ansatz_gradient=True)

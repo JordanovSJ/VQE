@@ -1,6 +1,8 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
--fix ray?memory leak with precomputation of excitation matrices!!!!!!!!!!
+-fix ray?memory leak with precomputation of excitation matrices!!!!!!!!!!  DONE?
+
+-fix the commutators memory leak?
 
 -class ansatz: combine ansatz_elements and var_paramaters + recompute element_grads every time the ansatz state is change
 

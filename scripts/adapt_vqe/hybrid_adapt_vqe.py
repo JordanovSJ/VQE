@@ -71,7 +71,6 @@ if __name__ == "__main__":
 
     multithread = True
     use_grad = True
-    compute_exc_mtrx = use_grad
 
     do_precompute_statevector = False
 
@@ -100,8 +99,7 @@ if __name__ == "__main__":
 
     # get single excitations
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type,
-                                         compute_exc_mtrx=compute_exc_mtrx).get_ansatz_elements()
+                                         element_type=ansatz_element_type).get_ansatz_elements()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)

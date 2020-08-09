@@ -151,8 +151,10 @@ class VQERunner:
         # precompute frequently used variables
         ham_sparse_matrix = get_sparse_operator(self.q_system.jw_qubit_ham)
         ham_matrix = ham_sparse_matrix.todense()
-        for element in ansatz_elements:
-            element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
+        # required for faster ansatz_grad evaluation
+        if self.use_ansatz_gradient:
+            for element in ansatz_elements:
+                element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
 
         # partial function to be used in the optimizer
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,

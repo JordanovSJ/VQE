@@ -11,12 +11,10 @@ import numpy
 # <<<<<<<<<<<<<<<<<<<<<<<<<< ansatzes (lists of ansatz elements) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 class SDExcitations:
-    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None,
-                 compute_exc_mtrx=False):
+    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.element_type = element_type
-        self.compute_exc_mtrx = compute_exc_mtrx
 
         if element_type == 'exchange':
             if d_exchange_vars is not None:
@@ -78,12 +76,10 @@ class SDExcitations:
 
 
 class GSDExcitations:
-    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None,
-                 compute_exc_mtrx=False):
+    def __init__(self, n_orbitals, n_electrons, element_type='fermi_excitation', d_exchange_vars=None):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.element_type = element_type
-        self.compute_exc_mtrx = compute_exc_mtrx
 
         if element_type == 'exchange':
             if d_exchange_vars is not None:
