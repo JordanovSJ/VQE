@@ -56,8 +56,8 @@ class VQERunner:
         self.t_previous_iter = 0
 
     def get_energy(self, var_parameters, ansatz_elements, precomputed_statevector=None, previous_var_parameters=None,
-                   multithread=False, update_gate_counter=False,
-                   multithread_iteration=None, initial_statevector_qasm=None, ham_matrix=None):
+                   multithread=False, update_gate_counter=False, multithread_iteration=None,
+                   initial_statevector_qasm=None, ham_matrix=None):
 
         if multithread is False:
             iteration_duration = time.time() - self.t_previous_iter
@@ -200,9 +200,9 @@ class VQERunner:
                                                  options=self.optimizer_options, tol=config.optimizer_tol,
                                                  bounds=config.optimizer_bounds)
 
-        # # Not sure if needed
-        # for element in ansatz_elements:
-        #     element.delete_excitation_mtrx()
+        # Not sure if needed
+        for element in ansatz_elements:
+            element.delete_excitation_mtrx()
 
         print(opt_energy)
         logging.info(opt_energy)
@@ -215,6 +215,7 @@ class VQERunner:
     # TODO add ansatz grad
     @ray.remote
     def vqe_run_multithread(self, ansatz_elements, initial_var_parameters=None, initial_statevector_qasm=None):
+
         if initial_var_parameters is None or initial_var_parameters == []:
             var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz_elements]))
         else:
@@ -227,6 +228,9 @@ class VQERunner:
         # partial function to be used in the optimizer
         ham_sparse_matrix = get_sparse_operator(self.q_system.jw_qubit_ham)
         ham_matrix = ham_sparse_matrix.todense()
+        if self.use_ansatz_gradient:
+            for element in ansatz_elements:
+                element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
 
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements, multithread=True,
                              multithread_iteration=local_iteration, ham_matrix=ham_matrix)
@@ -245,7 +249,8 @@ class VQERunner:
 
             get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
                                  initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix,
-                                 precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref)
+                                 precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref,
+                                 multithread=True)
 
             get_gradient = partial(self.get_ansatz_gradient, ansatz_elements=ansatz_elements,
                                    ham_sparse_matrix=ham_sparse_matrix,

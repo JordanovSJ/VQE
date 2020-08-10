@@ -31,19 +31,19 @@ def save_data(df_data, molecule, time_stamp, ansatz_element_type=None, frozen_el
             print(fnf)
 
 
-def get_ansatz_from_csv(db):
+def get_ansatz_from_csv(db, molecule):
     ansatz = []
     for i in range(len(db)):
         element = db.loc[i]['element']
         element_qubits = db.loc[i]['element_qubits']
         if element[0] == 'e' and element[4] == 's':
-            ansatz.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits)))
+            ansatz.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'e' and element[4] == 'd':
-            ansatz.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits)))
+            ansatz.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 's' and element[2] == 'q':
-            ansatz.append(SingleQubitExcitation(*ast.literal_eval(element_qubits)))
+            ansatz.append(SingleQubitExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'd' and element[2] == 'q':
-            ansatz.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits)))
+            ansatz.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         else:
             print(element, element_qubits)
             raise Exception('Unrecognized ansatz element.')
@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
     n_largest_grads = 19
 
-    init_db = pandas.read_csv("results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
+    init_db = pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
     # get single excitations
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()
+                                         element_type=ansatz_element_type).get_ansatz_elements()[-5:]
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
         ansatz_elements = []
         var_parameters = []
     else:
-        ansatz_elements, var_parameters = get_ansatz_from_csv(init_db)
+        ansatz_elements, var_parameters = get_ansatz_from_csv(init_db, molecule)
 
     # var_parameters = list(vqe_runner.vqe_run(ansatz_elements, var_parameters).x)
 

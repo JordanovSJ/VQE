@@ -147,9 +147,8 @@ class QiskitSim:
 
         for i in range(len(ansatz))[::-1]:
 
-            try:
-                excitation_i_matrix = ansatz[i].excitation_matrix
-            except AttributeError:
+            excitation_i_matrix = ansatz[i].excitation_matrix
+            if excitation_i_matrix is None:
                 excitation_i_matrix = get_sparse_operator(ansatz[i].excitation, n_qubits=q_system.n_qubits)
 
             grad_i = 2 * (psi.transpose().conj().dot(excitation_i_matrix).dot(phi)).todense()[0, 0]
