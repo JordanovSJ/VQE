@@ -28,6 +28,8 @@ if __name__ == "__main__":
 
     df = pandas.read_csv("../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
 
+    var_pars = []
+
     init_ansatz_elements = []
     for i in range(len(df)):
         element = df.loc[i]['element']
@@ -41,9 +43,11 @@ if __name__ == "__main__":
         elif element[0] == 's' and element[2] == 'q':
             init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits),
                                                               compute_exc_mtrx=True, n_qubits=molecule.n_qubits))
+            var_pars.append(df.loc[i]['var_parameters']*(-1))
         elif element[0] == 'd' and element[2] == 'q':
             init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits),
                                                               compute_exc_mtrx=True, n_qubits=molecule.n_qubits))
+            var_pars.append(df.loc[i]['var_parameters'])
         else:
             print(element, element_qubits)
             raise Exception('Unrecognized ansatz element.')
@@ -54,6 +58,8 @@ if __name__ == "__main__":
     ansatz_elements = init_ansatz_elements
 
     var_parameters = list(numpy.zeros(len(ansatz_elements)))
+    # var_parameters = list(df['var_parameters'])
+    # var_parameters = var_pars
 
     # ansatz_elements = []
     # var_parameters = []
