@@ -48,21 +48,21 @@ class QSystem:
 
         self.commutators = {}
 
-    def generate_commutator_matrices(self, ansatz_elements):
-
-        for i, ansatz_element in enumerate(ansatz_elements):
-            if i % 10 == 0:
-                print(i)
-            element_excitation = ansatz_element.excitation
-            key = str(element_excitation)
-            commutator = self.jw_qubit_ham * element_excitation - element_excitation * self.jw_qubit_ham
-            commutator_matrix = get_sparse_operator(commutator)
-            self.commutators[key] = commutator_matrix
-
-    def get_commutator_matrix(self, ansatz_element):
-        element_excitation = ansatz_element.excitation
-        key = str(element_excitation)
-        return self.commutators[key]
+    # def generate_commutator_matrices(self, ansatz_elements):
+    #
+    #     for i, ansatz_element in enumerate(ansatz_elements):
+    #         if i % 10 == 0:
+    #             print(i)
+    #         element_excitation = ansatz_element.excitation
+    #         key = str(element_excitation)
+    #         commutator = self.jw_qubit_ham * element_excitation - element_excitation * self.jw_qubit_ham
+    #         commutator_matrix = get_sparse_operator(commutator)
+    #         self.commutators[key] = commutator_matrix
+    #
+    # def get_commutator_matrix(self, ansatz_element):
+    #     element_excitation = ansatz_element.excitation
+    #     key = str(element_excitation)
+    #     return self.commutators[key]
 
 
 class H2(QSystem):

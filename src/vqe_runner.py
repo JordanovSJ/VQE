@@ -57,7 +57,7 @@ class VQERunner:
 
     def get_energy(self, var_parameters, ansatz_elements, precomputed_statevector=None, previous_var_parameters=None,
                    multithread=False, update_gate_counter=False, multithread_iteration=None,
-                   initial_statevector_qasm=None, ham_matrix=None):
+                   initial_statevector_qasm=None, ham_sparse_matrix=None):
 
         if multithread is False:
             iteration_duration = time.time() - self.t_previous_iter
@@ -77,7 +77,7 @@ class VQERunner:
                                                                        var_parameters=var_parameters,
                                                                        ansatz_elements=ansatz_elements,
                                                                        initial_statevector_qasm=initial_statevector_qasm,
-                                                                       operator_sparse_matrix=ham_matrix,
+                                                                       operator_sparse_matrix=ham_sparse_matrix,
                                                                        precomputed_statevector=statevector)
 
         self.statevector = statevector
@@ -150,7 +150,6 @@ class VQERunner:
 
         # precompute frequently used variables
         ham_sparse_matrix = get_sparse_operator(self.q_system.jw_qubit_ham)
-        ham_matrix = ham_sparse_matrix.todense()
         # required for faster ansatz_grad evaluation
         if self.use_ansatz_gradient:
             for element in ansatz_elements:
@@ -158,7 +157,7 @@ class VQERunner:
 
         # partial function to be used in the optimizer
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
-                             initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix)
+                             initial_statevector_qasm=initial_statevector_qasm, ham_sparse_matrix=ham_sparse_matrix)
 
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
@@ -185,7 +184,7 @@ class VQERunner:
             var_parameters_ref = [[]]
 
             get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
-                                 initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix,
+                                 initial_statevector_qasm=initial_statevector_qasm, ham_sparse_matrix=ham_sparse_matrix,
                                  precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref)
 
             get_gradient = partial(self.get_ansatz_gradient, ansatz_elements=ansatz_elements,
@@ -227,13 +226,12 @@ class VQERunner:
 
         # partial function to be used in the optimizer
         ham_sparse_matrix = get_sparse_operator(self.q_system.jw_qubit_ham)
-        ham_matrix = ham_sparse_matrix.todense()
         if self.use_ansatz_gradient:
             for element in ansatz_elements:
                 element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
 
         get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements, multithread=True,
-                             multithread_iteration=local_iteration, ham_matrix=ham_matrix)
+                             multithread_iteration=local_iteration, ham_sparse_matrix=ham_sparse_matrix)
 
         # if no ansatz elements supplied, calculate the energy without using the optimizer
         if len(ansatz_elements) == 0:
@@ -248,7 +246,7 @@ class VQERunner:
             var_parameters_ref = [[]]
 
             get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
-                                 initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix,
+                                 initial_statevector_qasm=initial_statevector_qasm, ham_sparse_matrix=ham_sparse_matrix,
                                  precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref,
                                  multithread=True, multithread_iteration=local_iteration)
 

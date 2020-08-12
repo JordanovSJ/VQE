@@ -78,7 +78,7 @@ if __name__ == "__main__":
     multithread = False
     use_grad = True
 
-    do_precompute_statevector = False
+    do_precompute_statevector = True
 
     init_db = None # pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdpwe_27-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

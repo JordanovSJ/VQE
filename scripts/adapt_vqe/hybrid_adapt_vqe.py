@@ -72,7 +72,7 @@ if __name__ == "__main__":
     multithread = True
     use_grad = True  # for optimizer
 
-    do_precompute_statevector = False  # for ansatz elements grad computation
+    do_precompute_statevector = True  # for ansatz elements grad computation
 
     n_largest_grads = 19
 
