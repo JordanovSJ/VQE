@@ -75,7 +75,7 @@ if __name__ == "__main__":
     # threshold = 1e-14
     max_ansatz_elements = 250
 
-    multithread = True
+    multithread = False
     use_grad = True
 
     do_precompute_statevector = False

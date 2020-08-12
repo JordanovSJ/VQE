@@ -54,6 +54,21 @@ class EnergyAdaptUtils:
 
 class GradAdaptUtils:
 
+    # @staticmethod
+    # def compute_commutators(ham_sparse_mtrx, ansatz_elements):
+    #     commutators = {}
+    #
+    #     for i, ansatz_element in enumerate(ansatz_elements):
+    #         if i % 10 == 0:
+    #             print(i)
+    #         element_excitation = ansatz_element.excitation
+    #         key = str(element_excitation)
+    #         commutator = ham_sparse_mtrx * element_excitation - element_excitation * ham_sparse_mtrx
+    #         commutator_matrix = get_sparse_operator(commutator)
+    #         commutators[key] = commutator_matrix
+    #
+    #     return commutators
+
     @staticmethod
     @ray.remote
     def get_excitation_energy_gradient_multithread(excitation_element, ansatz_elements, var_parameters, q_system,
@@ -71,7 +86,7 @@ class GradAdaptUtils:
                 get_sparse_operator(q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham).todense()
 
         gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,
-                                                 operator_matrix=commutator_matrix,
+                                                 operator_sparse_matrix=commutator_matrix,
                                                  precomputed_statevector=precomputed_statevector)[0]
 
         message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation_element.element, gradient,
@@ -86,16 +101,19 @@ class GradAdaptUtils:
         t0 = time.time()
         excitation = excitation_element.excitation
         assert type(excitation) == QubitOperator
-
+        # print('1  ', time.time() - t0)
+        # t0 = time.time()
         if dynamic_commutators:
-            commutator_matrix = q_system.get_commutator_matrix(excitation_element)
+            commutator_sparse_matrix = q_system.get_commutator_matrix(excitation_element)
         else:
-            commutator_matrix = \
-                get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham).todense()
-
+            commutator_sparse_matrix = \
+                get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham)
+        # print('2  ', time.time() - t0)
+        # t0 = time.time()
         gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,
-                                                 operator_matrix=commutator_matrix,
+                                                 operator_sparse_matrix=commutator_sparse_matrix,
                                                  precomputed_statevector=precomputed_statevector)[0]
+        # print('3  ', time.time() - t0)
 
         message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation_element.element, gradient,
                                                                       time.time()-t0)

@@ -77,7 +77,7 @@ class VQERunner:
                                                                        var_parameters=var_parameters,
                                                                        ansatz_elements=ansatz_elements,
                                                                        initial_statevector_qasm=initial_statevector_qasm,
-                                                                       operator_matrix=ham_matrix,
+                                                                       operator_sparse_matrix=ham_matrix,
                                                                        precomputed_statevector=statevector)
 
         self.statevector = statevector

@@ -99,7 +99,7 @@ class QiskitSim:
         return statevector, qasm
 
     @staticmethod
-    def get_expectation_value(q_system, ansatz_elements, var_parameters, operator_matrix=None,
+    def get_expectation_value(q_system, ansatz_elements, var_parameters, operator_sparse_matrix=None,
                               initial_statevector_qasm=None, precomputed_statevector=None):
 
         t = time.time()
@@ -112,11 +112,14 @@ class QiskitSim:
             statevector = precomputed_statevector
             qasm = ''
 
-        # get the operator in the form of a matrix
-        if operator_matrix is None:
-            operator_matrix = get_sparse_operator(q_system.jw_qubit_ham).todense()
+        sparse_statevector = scipy.sparse.csr_matrix(statevector)
 
-        expectation_value = statevector.conj().dot(operator_matrix).dot(statevector)[0, 0]
+        # get the operator in the form of a matrix
+        if operator_sparse_matrix is None:
+            operator_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+
+        expectation_value =\
+            sparse_statevector.dot(operator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
 
         return expectation_value.real, statevector, qasm
 
