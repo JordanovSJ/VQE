@@ -200,7 +200,7 @@ class VQERunner:
                                                  options=self.optimizer_options, tol=config.optimizer_tol,
                                                  bounds=config.optimizer_bounds)
 
-        # Not sure if needed
+        # Prevents memory overflow with ray
         for element in ansatz_elements:
             element.delete_excitation_mtrx()
 
@@ -250,7 +250,7 @@ class VQERunner:
             get_energy = partial(self.get_energy, ansatz_elements=ansatz_elements,
                                  initial_statevector_qasm=initial_statevector_qasm, ham_matrix=ham_matrix,
                                  precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref,
-                                 multithread=True)
+                                 multithread=True, multithread_iteration=local_iteration)
 
             get_gradient = partial(self.get_ansatz_gradient, ansatz_elements=ansatz_elements,
                                    ham_sparse_matrix=ham_sparse_matrix,
@@ -274,6 +274,10 @@ class VQERunner:
             message = 'Ran VQE. Energy {}. Iterations {}'.format(opt_energy.fun, local_iteration[0])
             logging.info(message)
             print(message)
+
+        # Prevents memory overflow with ray
+        for element in ansatz_elements:
+            element.delete_excitation_mtrx()
 
         opt_energy['n_iters'] = local_iteration[0]  # cheating
         return opt_energy

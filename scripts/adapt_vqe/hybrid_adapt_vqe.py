@@ -56,27 +56,27 @@ def get_ansatz_from_csv(db, molecule):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.546
+    r = 1.316
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH() #(frozen_els=frozen_els)
+    molecule = BeH2() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
     ## ansatz_element_type = 'pauli_word_excitation'
 
-    accuracy = 1e-11  # 1e-3 for chemical accuracy
+    accuracy = 1e-12  # 1e-3 for chemical accuracy
     # threshold = 1e-14
     max_ansatz_size = 90
 
     multithread = True
-    use_grad = True
+    use_grad = True  # for optimizer
 
-    do_precompute_statevector = True
+    do_precompute_statevector = False  # for ansatz elements grad computation
 
     n_largest_grads = 19
 
-    init_db = pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
+    init_db = None #pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     LogUtils.log_cofig()
@@ -95,11 +95,11 @@ if __name__ == "__main__":
     # dataFrame to collect the simulation data
     df_data = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth',
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
-    # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    # get single excitations
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()[-5:]
+                                         element_type=ansatz_element_type).get_ansatz_elements()
+
+    # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)

@@ -26,31 +26,31 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv("../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
+    df = pandas.read_csv("../results/adapt_vqe_results/vip/LiH_g_adapt_gsdpwe_27-Jul-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     init_ansatz_elements = []
-    for i in range(len(df)):
-        element = df.loc[i]['element']
-        element_qubits = df.loc[i]['element_qubits']
-        if element[0] == 'e' and element[4] == 's':
-            init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        elif element[0] == 'e' and element[4] == 'd':
-            init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
-        elif element[0] == 's' and element[2] == 'q':
-            init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
-        elif element[0] == 'd' and element[2] == 'q':
-            init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
-        else:
-            print(element, element_qubits)
-            raise Exception('Unrecognized ansatz element.')
     # for i in range(len(df)):
-    #     excitation = QubitOperator(df.loc[i]['element'])
-    #     init_ansatz_elements.append(PauliWordExcitation(excitation, system_n_qubits=molecule.n_qubits))
+    #     element = df.loc[i]['element']
+    #     element_qubits = df.loc[i]['element_qubits']
+    #     if element[0] == 'e' and element[4] == 's':
+    #         init_ansatz_elements.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 'e' and element[4] == 'd':
+    #         init_ansatz_elements.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 's' and element[2] == 'q':
+    #         init_ansatz_elements.append(SingleQubitExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 'd' and element[2] == 'q':
+    #         init_ansatz_elements.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits),system_n_qubits=molecule.n_qubits))
+    #     else:
+    #         print(element, element_qubits)
+    #         raise Exception('Unrecognized ansatz element.')
+    for i in range(len(df)):
+        excitation = QubitOperator(df.loc[i]['element'])
+        init_ansatz_elements.append(PauliWordExcitation(excitation, system_n_qubits=molecule.n_qubits))
 
-    ansatz_elements = init_ansatz_elements[:37]
+    ansatz_elements = init_ansatz_elements
 
-    var_parameters = list(df['var_parameters'])[:37]
+    var_parameters = list(df['var_parameters'])
     # var_parameters = list(numpy.zeros(len(ansatz_elements)))
 
     # ansatz_elements = []
