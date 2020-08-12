@@ -103,7 +103,7 @@ if __name__ == "__main__":
 
     # get single excitations
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()[-20:]
+                                         element_type=ansatz_element_type).get_ansatz_elements()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)

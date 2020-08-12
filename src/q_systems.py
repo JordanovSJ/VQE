@@ -4,7 +4,7 @@ from openfermionpsi4 import run_psi4
 
 import numpy
 import abc
-
+import time
 
 class QSystem:
 
@@ -56,7 +56,7 @@ class QSystem:
             element_excitation = ansatz_element.excitation
             key = str(element_excitation)
             commutator = self.jw_qubit_ham * element_excitation - element_excitation * self.jw_qubit_ham
-            commutator_matrix = get_sparse_operator(commutator).todense()
+            commutator_matrix = get_sparse_operator(commutator)
             self.commutators[key] = commutator_matrix
 
     def get_commutator_matrix(self, ansatz_element):
