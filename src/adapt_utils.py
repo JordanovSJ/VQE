@@ -63,7 +63,7 @@ class GradAdaptUtils:
             elements_ray_ids = [
                 [
                     element, GradAdaptUtils.get_commutator_matrix_multithread.
-                    remote(element, qubit_ham=qubit_ham)
+                    remote(QubitOperator(str(element.excitation)), qubit_ham=QubitOperator(str(qubit_ham))) # passing copies UGLY
                 ]
                 for element in ansatz_elements
             ]
@@ -85,12 +85,16 @@ class GradAdaptUtils:
 
     @staticmethod
     @ray.remote
-    def get_commutator_matrix_multithread(ansatz_element, qubit_ham):
+    def get_commutator_matrix_multithread(excitation, qubit_ham):
         t0 = time.time()
-        element_excitation = ansatz_element.excitation
-        commutator = qubit_ham * element_excitation - element_excitation * qubit_ham
-        print('Calculated commutator ', str(element_excitation), 'time ', time.time() - t0)
-        return get_sparse_operator(commutator)
+        commutator = qubit_ham * excitation - excitation * qubit_ham
+        commutator_sparse_matrix = get_sparse_operator(commutator)
+        print('Calculated commutator ', str(excitation), 'time ', time.time() - t0)
+        del commutator
+        del t0
+        del excitation
+        del qubit_ham
+        return commutator_sparse_matrix
 
     @staticmethod
     @ray.remote
