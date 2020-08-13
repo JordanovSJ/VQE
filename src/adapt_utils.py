@@ -59,7 +59,7 @@ class GradAdaptUtils:
     def compute_commutators(qubit_ham, ansatz_elements, multithread=False):
         commutators = {}
         if multithread:
-            ray.init(num_cpus=config.multithread['n_cpus'])
+            ray.init(num_cpus=config.multithread['n_cpus'], memory=1e10, object_store_memory=1e10)
             elements_ray_ids = [
                 [
                     element, GradAdaptUtils.get_commutator_matrix_multithread.
@@ -86,9 +86,10 @@ class GradAdaptUtils:
     @staticmethod
     @ray.remote
     def get_commutator_matrix_multithread(ansatz_element, qubit_ham):
+        t0 = time.time()
         element_excitation = ansatz_element.excitation
         commutator = qubit_ham * element_excitation - element_excitation * qubit_ham
-        print('Calculated commutator ', str(element_excitation))
+        print('Calculated commutator ', str(element_excitation), 'time ', time.time() - t0)
         return get_sparse_operator(commutator)
 
     @staticmethod
@@ -161,10 +162,17 @@ class GradAdaptUtils:
 
         def dynamic_commutator_matrix(element):
             if dynamic_commutators is None:
-                print('kor')
                 return None
             else:
-                return dynamic_commutators[str(element.excitation)].copy()
+                try:
+                    return dynamic_commutators[str(element.excitation)].copy()
+                except KeyError:
+                    t0 = time.time()
+                    commutator = q_system.jw_qubit_ham * element.excitation - element.excitation * q_system.jw_qubit_ham
+                    commutator_matrix = get_sparse_operator(commutator)
+                    dynamic_commutators[str(element.excitation)] = commutator_matrix
+                    print('Calculating commutator for ', element.excitation, 'time ', time.time() - t0)
+                    return commutator_matrix.copy()
 
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])

@@ -102,8 +102,9 @@ if __name__ == "__main__":
 
     # get the pool of ansatz elements
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()[:5]
+                                         element_type=ansatz_element_type).get_ansatz_elements()
     if precompute_commutators:
+        # dynamic_commutators = {}
         print('Calculating commutators')
         dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
                                                                  ansatz_elements=ansatz_element_pool, multithread=multithread)

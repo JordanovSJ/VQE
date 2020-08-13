@@ -69,12 +69,12 @@ if __name__ == "__main__":
     # threshold = 1e-14
     max_ansatz_size = 90
 
-    multithread = False
+    multithread = True
     use_grad = True  # for optimizer
-
+    precompute_commutators = True
     do_precompute_statevector = True  # for ansatz elements grad computation
 
-    n_largest_grads = 19
+    n_largest_grads = 20
 
     init_db = None #pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -98,6 +98,15 @@ if __name__ == "__main__":
 
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                          element_type=ansatz_element_type).get_ansatz_elements()
+
+    if precompute_commutators:
+        # dynamic_commutators = {}
+        print('Calculating commutators')
+        dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
+                                                                 ansatz_elements=ansatz_element_pool, multithread=multithread)
+        print('Finished calculating commutators')
+    else:
+        dynamic_commutators = None
 
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -131,7 +140,8 @@ if __name__ == "__main__":
         elements_grads = GradAdaptUtils.\
             most_significant_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend, n=n_largest_grads,
                                              var_parameters=var_parameters, ansatz=ansatz_elements,
-                                             multithread=multithread, do_precompute_statevector=do_precompute_statevector)
+                                             multithread=multithread, do_precompute_statevector=do_precompute_statevector,
+                                             dynamic_commutators=dynamic_commutators)
 
         elements = [e_g[0] for e_g in elements_grads]
         grads = [e_g[1] for e_g in elements_grads]
