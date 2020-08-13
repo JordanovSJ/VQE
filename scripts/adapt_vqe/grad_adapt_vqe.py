@@ -75,10 +75,10 @@ if __name__ == "__main__":
     # threshold = 1e-14
     max_ansatz_elements = 250
 
-    multithread = False
-    use_grad = True
-
-    do_precompute_statevector = True
+    multithread = True
+    use_grad = True  # for optimizer
+    precompute_commutators = True
+    do_precompute_statevector = True  # for gradients
 
     init_db = None # pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdpwe_27-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -99,11 +99,19 @@ if __name__ == "__main__":
     # dataFrame to collect the simulation data
     df_data = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth',
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
-    # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    # get single excitations
+    # get the pool of ansatz elements
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()
+                                         element_type=ansatz_element_type).get_ansatz_elements()[:5]
+    if precompute_commutators:
+        print('Calculating commutators')
+        dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
+                                                                 ansatz_elements=ansatz_element_pool, multithread=multithread)
+        print('Finished calculating commutators')
+    else:
+        dynamic_commutators = None
+
+    # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
@@ -138,7 +146,8 @@ if __name__ == "__main__":
             most_significant_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend,
                                              var_parameters=var_parameters, ansatz=ansatz_elements,
                                              multithread=multithread,
-                                             do_precompute_statevector=do_precompute_statevector)[0]
+                                             do_precompute_statevector=do_precompute_statevector,
+                                             dynamic_commutators=dynamic_commutators)[0]
 
         result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
                                     initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))

@@ -69,7 +69,7 @@ if __name__ == "__main__":
     # threshold = 1e-14
     max_ansatz_size = 90
 
-    multithread = True
+    multithread = False
     use_grad = True  # for optimizer
 
     do_precompute_statevector = True  # for ansatz elements grad computation

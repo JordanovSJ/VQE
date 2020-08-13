@@ -17,7 +17,8 @@ class EnergyAdaptUtils:
             elements_ray_ids = [
                 [element,
                  vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=initial_ansatz + [element],
-                                                       initial_var_parameters=initial_var_parameters + [0])]  # TODO this will work only if the ansatz element has 1 var. par.
+                                                       initial_var_parameters=initial_var_parameters + [0])]
+                # TODO this will work only if the ansatz element has 1 var. par.
                 for element in ansatz_elements
             ]
             elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in elements_ray_ids]
@@ -54,29 +55,41 @@ class EnergyAdaptUtils:
 
 class GradAdaptUtils:
 
-    # @staticmethod
-    # def compute_commutators(ham_sparse_mtrx, ansatz_elements, multithread=False):
-    #     commutators = {}
-    #     if multithread:
-    #         #TODO
-    #     else:
-    #         for i, ansatz_element in enumerate(ansatz_elements):
-    #             if i % 10 == 0:
-    #                 print(i)
-    #             element_excitation = ansatz_element.excitation
-    #             key = str(element_excitation)
-    #             commutator = ham_sparse_mtrx * element_excitation - element_excitation * ham_sparse_mtrx
-    #             commutator_matrix = get_sparse_operator(commutator)
-    #             commutators[key] = commutator_matrix
-    #
-    #     return commutators
+    @staticmethod
+    def compute_commutators(qubit_ham, ansatz_elements, multithread=False):
+        commutators = {}
+        if multithread:
+            ray.init(num_cpus=config.multithread['n_cpus'])
+            elements_ray_ids = [
+                [
+                    element, GradAdaptUtils.get_commutator_matrix_multithread.
+                    remote(element, qubit_ham=qubit_ham)
+                ]
+                for element in ansatz_elements
+            ]
+            for element_ray_id in elements_ray_ids:
+                key = str(element_ray_id[0].excitation)
+                commutators[key] = ray.get(element_ray_id[1])
 
-    # @staticmethod
-    # @ray.remote()
-    # def get_commutator_matrix(ham_sparse_mtrx, ansatz_element):
-    #     element_excitation = ansatz_element.excitation
-    #     commutator = ham_sparse_mtrx * element_excitation - element_excitation * ham_sparse_mtrx
-    #     return get_sparse_operator(commutator)
+            ray.shutdown()
+        else:
+            for i, ansatz_element in enumerate(ansatz_elements):
+                element_excitation = ansatz_element.excitation
+                key = str(element_excitation)
+                print('Calculated commutator ', key)
+                commutator = qubit_ham * element_excitation - element_excitation * qubit_ham
+                commutator_matrix = get_sparse_operator(commutator)
+                commutators[key] = commutator_matrix
+
+        return commutators
+
+    @staticmethod
+    @ray.remote
+    def get_commutator_matrix_multithread(ansatz_element, qubit_ham):
+        element_excitation = ansatz_element.excitation
+        commutator = qubit_ham * element_excitation - element_excitation * qubit_ham
+        print('Calculated commutator ', str(element_excitation))
+        return get_sparse_operator(commutator)
 
     @staticmethod
     @ray.remote
@@ -90,14 +103,16 @@ class GradAdaptUtils:
         # # TODO make pretier
         if commutator_sparse_mtrx is None:
             commutator_sparse_mtrx = \
-                get_sparse_operator(q_system.jw_qubit_ham*excitation - excitation*q_system.jw_qubit_ham)
+                get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham)
 
         gradient = backend.get_expectation_value(q_system, ansatz, var_parameters,
                                                  operator_sparse_matrix=commutator_sparse_mtrx,
                                                  precomputed_statevector=precomputed_statevector)[0]
 
         message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation_element.element, gradient,
-                                                                      time.time()-t0)
+                                                                      time.time() - t0)
+        # TODO check if required
+        del commutator_sparse_mtrx
         print(message)
         return gradient
 
@@ -123,7 +138,7 @@ class GradAdaptUtils:
         print('3  ', time.time() - t0)
 
         message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation_element.element, gradient,
-                                                                      time.time()-t0)
+                                                                      time.time() - t0)
         print(message)
 
         return gradient
@@ -146,18 +161,20 @@ class GradAdaptUtils:
 
         def dynamic_commutator_matrix(element):
             if dynamic_commutators is None:
+                print('kor')
                 return None
             else:
-                return dynamic_commutators[str(element.excitation)]
+                return dynamic_commutators[str(element.excitation)].copy()
 
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
-                [element,
-                 GradAdaptUtils.get_excitation_energy_gradient_multithread.remote(element, initial_ansatz,
-                                                                                  initial_var_parameters, q_system,
-                                                                                  backend, commutator_sparse_mtrx=dynamic_commutator_matrix(element),
-                                                                                  precomputed_statevector=precomputed_statevector)]  # precomputed_statevector.copy() ??
+                [
+                    element, GradAdaptUtils.get_excitation_energy_gradient_multithread.
+                    remote(element, initial_ansatz, initial_var_parameters, q_system,
+                           backend, commutator_sparse_mtrx=dynamic_commutator_matrix(element),
+                           precomputed_statevector=precomputed_statevector)  # precomputed_statevector.copy() ??
+                 ]
                 for element in ansatz_elements
             ]
             elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
@@ -165,10 +182,12 @@ class GradAdaptUtils:
             ray.shutdown()
         else:
             elements_results = [
-                [element, GradAdaptUtils.get_excitation_energy_gradient(element, initial_ansatz, initial_var_parameters,
-                                                                        q_system, backend,
-                                                                        commutator_sparse_mtrx=dynamic_commutator_matrix(element),
-                                                                        precomputed_statevector=precomputed_statevector)]
+                [
+                    element,
+                    GradAdaptUtils.get_excitation_energy_gradient(element, initial_ansatz,
+                                                                  initial_var_parameters, q_system, backend,
+                                                                  commutator_sparse_mtrx=dynamic_commutator_matrix(element),
+                                                                  precomputed_statevector=precomputed_statevector)]
                 for element in ansatz_elements
             ]
         return elements_results
