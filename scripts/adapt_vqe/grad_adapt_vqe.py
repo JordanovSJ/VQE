@@ -43,13 +43,13 @@ def get_ansatz_from_csv(db, molecule, ansatz_element_type=None ):
             element = init_db.loc[i]['element']
             element_qubits = init_db.loc[i]['element_qubits']
             if element[0] == 'e' and element[4] == 's':
-                ansatz.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                ansatz.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             elif element[0] == 'e' and element[4] == 'd':
-                ansatz.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                ansatz.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             elif element[0] == 's' and element[2] == 'q':
-                ansatz.append(SingleQubitExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                ansatz.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             elif element[0] == 'd' and element[2] == 'q':
-                ansatz.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                ansatz.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             else:
                 print(element, element_qubits)
                 raise Exception('Unrecognized ansatz element.')
@@ -62,12 +62,12 @@ def get_ansatz_from_csv(db, molecule, ansatz_element_type=None ):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.316
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2() #(frozen_els=frozen_els)
+    molecule = H4() #(frozen_els=frozen_els)
 
-    # ansatz_element_type = 'efficient_fermi_excitation'
+    #ansatz_element_type = 'efficient_fermi_excitation'
     ##  ansatz_element_type = 'qubit_excitation'
     ansatz_element_type = 'pauli_word_excitation'
 
@@ -78,6 +78,7 @@ if __name__ == "__main__":
     multithread = True
     use_grad = True  # for optimizer
     precompute_commutators = True
+    size_patch_commutators = 100
     do_precompute_statevector = True  # for gradients
 
     init_db = None # pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdpwe_27-Jul-2020.csv")
@@ -101,13 +102,34 @@ if __name__ == "__main__":
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     # get the pool of ansatz elements
-    ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()
+    # ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
+    #                                      element_type=ansatz_element_type).get_ansatz_elements()
+    ansatz_element_pool = SpinComplementGSDExcitations(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+
     if precompute_commutators:
-        # dynamic_commutators = {}
+        dynamic_commutators = {}
         print('Calculating commutators')
-        dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
-                                                                 ansatz_elements=ansatz_element_pool, multithread=multithread)
+        for i in range(int(len(ansatz_element_pool)/size_patch_commutators)):
+            patch_ansatz_elements = ansatz_element_pool[i*size_patch_commutators:(i+1)*size_patch_commutators]
+            patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
+                                                                           ansatz_elements=patch_ansatz_elements,
+                                                                           multithread=multithread)
+            print(i)
+            dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
+            mem_size = 0
+            for x in dynamic_commutators:
+                mem_size += dynamic_commutators[x].data.nbytes
+                print('Commutators size ', mem_size)
+            del patch_dynamic_commutators
+            del patch_ansatz_elements
+
+        patch_ansatz_elements = ansatz_element_pool[(int(len(ansatz_element_pool)/size_patch_commutators)) * size_patch_commutators:]
+        patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
+                                                                       ansatz_elements=patch_ansatz_elements,
+                                                                       multithread=multithread)
+        dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
+        del patch_dynamic_commutators
+        del patch_ansatz_elements
         print('Finished calculating commutators')
     else:
         dynamic_commutators = None
@@ -149,7 +171,7 @@ if __name__ == "__main__":
                                              multithread=multithread,
                                              do_precompute_statevector=do_precompute_statevector,
                                              dynamic_commutators=dynamic_commutators)[0]
-
+        print(element_to_add.element)
         result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
                                     initial_var_parameters=var_parameters + list(numpy.zeros(element_to_add.n_var_parameters)))
 

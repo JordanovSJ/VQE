@@ -26,7 +26,7 @@ class EnergyAdaptUtils:
         else:
             elements_results = [
                 [element, vqe_runner.vqe_run(ansatz_elements=initial_ansatz + [element],
-                                             initial_var_parameters=initial_var_parameters)]
+                                             initial_var_parameters=initial_var_parameters+[0])]
                 for element in ansatz_elements
             ]
 
@@ -35,10 +35,10 @@ class EnergyAdaptUtils:
     # returns the ansatz element that achieves lowest energy (together with the energy value)
     @staticmethod
     def get_most_significant_ansatz_element(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                            initial_ansatz=None, multithread=False):
+                                            ansatz=None, multithread=False):
         elements_results = EnergyAdaptUtils.get_ansatz_elements_vqe_energies(vqe_runner, ansatz_elements,
                                                                              initial_var_parameters=initial_var_parameters,
-                                                                             initial_ansatz=initial_ansatz,
+                                                                             initial_ansatz=ansatz,
                                                                              multithread=multithread)
         return min(elements_results, key=lambda x: x[1].fun)
 
@@ -71,6 +71,7 @@ class GradAdaptUtils:
                 key = str(element_ray_id[0].excitation)
                 commutators[key] = ray.get(element_ray_id[1])
 
+            del elements_ray_ids
             ray.shutdown()
         else:
             for i, ansatz_element in enumerate(ansatz_elements):

@@ -37,13 +37,13 @@ def get_ansatz_from_csv(db, molecule):
         element = db.loc[i]['element']
         element_qubits = db.loc[i]['element_qubits']
         if element[0] == 'e' and element[4] == 's':
-            ansatz.append(EfficientSingleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+            ansatz.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'e' and element[4] == 'd':
-            ansatz.append(EfficientDoubleFermiExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+            ansatz.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 's' and element[2] == 'q':
-            ansatz.append(SingleQubitExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+            ansatz.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'd' and element[2] == 'q':
-            ansatz.append(DoubleQubitExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+            ansatz.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         else:
             print(element, element_qubits)
             raise Exception('Unrecognized ansatz element.')
@@ -56,10 +56,10 @@ def get_ansatz_from_csv(db, molecule):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.316
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2() #(frozen_els=frozen_els)
+    molecule = H2() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
@@ -72,6 +72,8 @@ if __name__ == "__main__":
     multithread = True
     use_grad = True  # for optimizer
     precompute_commutators = True
+    size_patch_commutators = 5
+
     do_precompute_statevector = True  # for ansatz elements grad computation
 
     n_largest_grads = 20
@@ -100,10 +102,30 @@ if __name__ == "__main__":
                                          element_type=ansatz_element_type).get_ansatz_elements()
 
     if precompute_commutators:
-        # dynamic_commutators = {}
+        dynamic_commutators = {}
         print('Calculating commutators')
-        dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
-                                                                 ansatz_elements=ansatz_element_pool, multithread=multithread)
+        for i in range(int(len(ansatz_element_pool) / size_patch_commutators)):
+            patch_ansatz_elements = ansatz_element_pool[i * size_patch_commutators:(i + 1) * size_patch_commutators]
+            patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
+                                                                           ansatz_elements=patch_ansatz_elements,
+                                                                           multithread=multithread)
+            print(i)
+            dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
+            mem_size = 0
+            for x in dynamic_commutators:
+                mem_size += dynamic_commutators[x].data.nbytes
+                print('Commutators size ', mem_size)
+            del patch_dynamic_commutators
+            del patch_ansatz_elements
+
+        patch_ansatz_elements = ansatz_element_pool[
+                                int(len(ansatz_element_pool) / size_patch_commutators) * size_patch_commutators:]
+        patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
+                                                                       ansatz_elements=patch_ansatz_elements,
+                                                                       multithread=multithread)
+        dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
+        del patch_dynamic_commutators
+        del patch_ansatz_elements
         print('Finished calculating commutators')
     else:
         dynamic_commutators = None
@@ -153,7 +175,7 @@ if __name__ == "__main__":
         element_to_add, result =\
             EnergyAdaptUtils.get_most_significant_ansatz_element(vqe_runner, elements,
                                                                  initial_var_parameters=var_parameters,
-                                                                 initial_ansatz=ansatz_elements, multithread=multithread)
+                                                                 ansatz=ansatz_elements, multithread=multithread)
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy

@@ -10,7 +10,7 @@ qiskit_zero_threshold = 10e-9
 
 # <<<<<<<CLASSICAL OPTIMIZER>>>>>>>>>>>>
 optimizer = 'L-BFGS-B'
-optimizer_tol = 1e-8
+optimizer_tol = 1e-9
 optimizer_bounds_val = numpy.pi/10
 optimizer_bounds = scipy.optimize.Bounds(-optimizer_bounds_val, optimizer_bounds_val)
 # optimizer_bounds = None

@@ -108,7 +108,7 @@ if __name__ == "__main__":
         element_to_add, result = EnergyAdaptUtils.get_most_significant_ansatz_element(vqe_runner,
                                                                                       new_ansatz_element_pool,
                                                                                       initial_var_parameters=var_parameters,
-                                                                                      initial_ansatz=ansatz_elements,
+                                                                                      ansatz=ansatz_elements,
                                                                                       multithread=multithread)
         current_energy = result.fun
 

@@ -86,7 +86,7 @@ class PauliWordExcitation(AnsatzElement):
         return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
 
 
-class SingleFermiExcitation(AnsatzElement):
+class SFExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2, system_n_qubits=None):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
@@ -97,7 +97,7 @@ class SingleFermiExcitation(AnsatzElement):
         # if compute_exc_mtrx and n_qubits is not None:
         #     self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
-        super(SingleFermiExcitation, self).\
+        super(SFExcitation, self).\
             __init__(element='s_f_exc_{}_{}'.format(qubit_1, qubit_2), order=1, n_var_parameters=1,
                      excitation=excitation, system_n_qubits=system_n_qubits)
 
@@ -106,7 +106,7 @@ class SingleFermiExcitation(AnsatzElement):
         return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
 
 
-class DoubleFermiExcitation(AnsatzElement):
+class DFExcitation(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
@@ -118,7 +118,7 @@ class DoubleFermiExcitation(AnsatzElement):
         # if compute_exc_mtrx and n_qubits is not None:
         #     self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
-        super(DoubleFermiExcitation, self).\
+        super(DFExcitation, self).\
             __init__(element='d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), order=2, n_var_parameters=1,
                      excitation=excitation, system_n_qubits=system_n_qubits)
 
@@ -128,7 +128,7 @@ class DoubleFermiExcitation(AnsatzElement):
         return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
 
 
-class SingleQubitExcitation(AnsatzElement):
+class SQExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2, system_n_qubits=None):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
@@ -136,7 +136,7 @@ class SingleQubitExcitation(AnsatzElement):
         # if compute_exc_mtrx and n_qubits is not None:
         #     self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
-        super(SingleQubitExcitation, self).\
+        super(SQExcitation, self).\
             __init__(element='s_q_exc_{}_{}'.format(qubit_1, qubit_2),  order=1, n_var_parameters=1,
                      excitation=excitation, system_n_qubits=system_n_qubits)
 
@@ -145,7 +145,7 @@ class SingleQubitExcitation(AnsatzElement):
         return QasmUtils.partial_exchange(-var_parameters[0], self.qubit_1, self.qubit_2)  # the minus sign is important for consistence with the d_q_exc, as well obtaining the correct sign for grads...
 
 
-class DoubleQubitExcitation(AnsatzElement):
+class DQExcitation(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
@@ -154,12 +154,12 @@ class DoubleQubitExcitation(AnsatzElement):
         # if compute_exc_mtrx and n_qubits is not None:
             # self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
-        super(DoubleQubitExcitation, self).\
+        super(DQExcitation, self).\
             __init__(element='d_q_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1,
                      excitation=excitation, system_n_qubits=system_n_qubits)
 
     @staticmethod
-    def double_qubit_excitation(angle, qubit_pair_1, qubit_pair_2):
+    def d_q_exc_qasm(angle, qubit_pair_1, qubit_pair_2):
         qasm = ['']
         angle = angle * 2  # for consistency with the conventional fermi excitation
         theta = angle / 8
@@ -238,10 +238,10 @@ class DoubleQubitExcitation(AnsatzElement):
         assert len(var_parameters) == 1
         parameter = var_parameters[0]
 
-        return self.double_qubit_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
+        return self.d_q_exc_qasm(parameter, self.qubit_pair_1, self.qubit_pair_2)
 
 
-class EfficientSingleFermiExcitation(AnsatzElement):
+class EffSFExcitation(AnsatzElement):
     def __init__(self, qubit_1, qubit_2, system_n_qubits=None):
         self.qubit_1 = qubit_1
         self.qubit_2 = qubit_2
@@ -252,12 +252,12 @@ class EfficientSingleFermiExcitation(AnsatzElement):
         # if compute_exc_mtrx and n_qubits is not None:
             # self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
-        super(EfficientSingleFermiExcitation, self).\
+        super(EffSFExcitation, self).\
             __init__(element='eff_s_f_exc_{}_{}'.format(qubit_2, qubit_1), order=1, n_var_parameters=1,
                      excitation=excitation, system_n_qubits=system_n_qubits)
 
     @staticmethod
-    def efficient_single_fermi_excitation(angle, qubit_1, qubit_2):
+    def eff_s_f_exc_qasm(angle, qubit_1, qubit_2):
         theta = numpy.pi / 2 + angle
         qasm = ['']
         if qubit_2 < qubit_1:
@@ -297,10 +297,10 @@ class EfficientSingleFermiExcitation(AnsatzElement):
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return self.efficient_single_fermi_excitation(var_parameters[0], self.qubit_1, self.qubit_2)
+        return self.eff_s_f_exc_qasm(var_parameters[0], self.qubit_1, self.qubit_2)
 
 
-class EfficientDoubleFermiExcitation(AnsatzElement):
+class EffDFExcitation(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
         self.qubit_pair_1 = qubit_pair_1
         self.qubit_pair_2 = qubit_pair_2
@@ -313,16 +313,27 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
         # if compute_exc_mtrx and n_qubits is not None:
         #     self.excitation_matrix = openfermion.get_sparse_operator(self.excitation, n_qubits=n_qubits)
 
-        super(EfficientDoubleFermiExcitation, self).\
+        super(EffDFExcitation, self).\
             __init__(element='eff_d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1,
                      system_n_qubits=system_n_qubits, excitation=excitation)
 
     @staticmethod
-    def efficient_double_fermi_excitation(angle, qubit_pair_1, qubit_pair_2):
+    def eff_d_f_exc_qasm(angle, qubit_pair_1_ref, qubit_pair_2_ref):
+
+        qubit_pair_1 = qubit_pair_1_ref.copy()
+        qubit_pair_2 = qubit_pair_2_ref.copy()
+
+        # !!!!!!!!! accounts for the missing functionality in the eff_d_f_exc circuit !!!!!
+        if qubit_pair_1[0] > qubit_pair_1[1]:
+            angle *= -1
+        if qubit_pair_2[0] > qubit_pair_2[1]:
+            angle *= -1
+
         angle = - angle * 2  # the factor of -2 is for consistency with the conventional fermi excitation
         theta = angle / 8
 
         qasm = ['']
+
         qubit_pair_1.sort()
         qubit_pair_2.sort()
 
@@ -423,114 +434,87 @@ class EfficientDoubleFermiExcitation(AnsatzElement):
         assert len(var_parameters) == 1
         parameter = var_parameters[0]
 
-        return self.efficient_double_fermi_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
+        return self.eff_d_f_exc_qasm(parameter, self.qubit_pair_1, self.qubit_pair_2)
 
 
-class ExpSingleQubitExcitation(AnsatzElement):
-    def __init__(self, qubit_1, qubit_2):
-        self.qubit_1 = qubit_1
-        self.qubit_2 = qubit_2
-        super(ExpSingleQubitExcitation, self).\
-            __init__(element='s_q_exc_{}_{}'.format(qubit_1, qubit_2),  order=1, n_var_parameters=1)
+class SpinComplementSFExcitation(AnsatzElement):
+    def __init__(self, spatial_orbital_1, spatial_orbital_2, system_n_qubits=None):
+        # TODO make this work with spin-orbitals
+        assert spatial_orbital_1 % 2 == 0
+        assert spatial_orbital_2 % 2 == 0
 
-    @staticmethod
-    def exp_single_qubit_excitations(angle, qubit_1, qubit_2):
-        qasm = ['']
+        # these are required for printing results only
+        self.qubit_1 = spatial_orbital_1
+        self.qubit_2 = spatial_orbital_2
 
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_1))
+        self.spatial_orbital_1 = spatial_orbital_1
+        self.spatial_orbital_2 = spatial_orbital_2
 
-        qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_1))
-        qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_2))
+        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(spatial_orbital_2, spatial_orbital_1))
+        fermi_operator += FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(spatial_orbital_2 + 1, spatial_orbital_1 + 1))
 
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
-        qasm.append('rx({}) q[{}];\n'.format(angle, qubit_1))
-        qasm.append('rz({}) q[{}];\n'.format(angle, qubit_2))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        excitation = jordan_wigner(fermi_operator)
 
-        qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_1))
-        qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_2))
-
-        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_1))
-
-        return ''.join(qasm)
+        super(SpinComplementSFExcitation, self).\
+            __init__(element='spin_wise_s_f_exc_{}_{}'.format(spatial_orbital_2, spatial_orbital_1), order=1, n_var_parameters=1,
+                     excitation=excitation, system_n_qubits=system_n_qubits)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return self.exp_single_qubit_excitations(var_parameters[0], self.qubit_1, self.qubit_2)
+        return EffSFExcitation.eff_s_f_exc_qasm(var_parameters[0], self.spatial_orbital_1, self.spatial_orbital_2) \
+               + EffSFExcitation.eff_s_f_exc_qasm(var_parameters[0], self.spatial_orbital_1 + 1, self.spatial_orbital_2 + 1)
 
 
-class ExpDoubleQubitExcitation(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2):
-        self.qubit_pair_1 = qubit_pair_1
-        self.qubit_pair_2 = qubit_pair_2
-        super(ExpDoubleQubitExcitation, self).\
-            __init__(element='d_q_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1)
+class SpinComplementDFExcitation(AnsatzElement):
+    def __init__(self, orbitals_pair_1, orbitals_pair_2, system_n_qubits=None):
+
+        assert orbitals_pair_1[0] % 2 + orbitals_pair_1[1] % 2 == orbitals_pair_2[0] % 2 + orbitals_pair_2[1] % 2
+
+        # these are required for printing results only
+        self.qubit_pair_1 = orbitals_pair_1
+        self.qubit_pair_2 = orbitals_pair_2
+
+        self.orbitals_pair_1 = orbitals_pair_1
+        self.orbitals_pair_2 = orbitals_pair_2
+
+        self.complement_orbitals_pair_1 = [SpinComplementDFExcitation.complement_orbital(orbitals_pair_1[0]),
+                                           SpinComplementDFExcitation.complement_orbital(orbitals_pair_1[1])]
+        self.complement_orbitals_pair_2 = [SpinComplementDFExcitation.complement_orbital(orbitals_pair_2[0]),
+                                           SpinComplementDFExcitation.complement_orbital(orbitals_pair_2[1])]
+
+        fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
+                                         .format(self.orbitals_pair_1[0], self.orbitals_pair_1[1],
+                                                 self.orbitals_pair_2[0], self.orbitals_pair_2[1]))
+
+        fermi_operator += FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
+                                          .format(self.complement_orbitals_pair_1[0], self.complement_orbitals_pair_1[1],
+                                                  self.complement_orbitals_pair_2[0], self.complement_orbitals_pair_2[1]))
+
+        excitation = jordan_wigner(fermi_operator)
+
+        super(SpinComplementDFExcitation, self).\
+            __init__(element='spin_d_f_exc_{}_{}'.format(orbitals_pair_1, orbitals_pair_2),  order=2, n_var_parameters=1,
+                     system_n_qubits=system_n_qubits, excitation=excitation)
 
     @staticmethod
-    def exp_double_qubit_excitation(angle, qubit_pair_1, qubit_pair_2):
-        qasm = ['']
-        angle = angle * 2  # for consistency with the conventional fermi excitation
-        theta = angle / 8
-
-        # determine the parity of the two pairs
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
-        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
-        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
-
-        # apply a partial swap of qubits 0 and 2, controlled by 1 and 3 ##
-
-        # exp exchange interaction  >>>>>>>>>>>>>>>>>>>>>>
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
-
-        qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
-        qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_2[0]))
-
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
-
-        # ccRX
-        qasm.append('rx({}) q[{}];\n'.format(angle/4, qubit_pair_1[0]))
-        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_1[0]))
-        qasm.append('rx({}) q[{}];\n'.format(-angle / 4, qubit_pair_1[0]))
-        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[0]))
-        qasm.append('rx({}) q[{}];\n'.format(angle / 4, qubit_pair_1[0]))
-        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_1[0]))
-        qasm.append('rx({}) q[{}];\n'.format(-angle / 4, qubit_pair_1[0]))
-        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[0]))
-
-        # and ccRZ
-        qasm.append('rz({}) q[{}];\n'.format(angle/4, qubit_pair_2[0]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_2[0]))
-        qasm.append('rz({}) q[{}];\n'.format(-angle/4, qubit_pair_2[0]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[0]))
-        qasm.append('rz({}) q[{}];\n'.format(angle/4, qubit_pair_2[0]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_2[0]))
-        qasm.append('rz({}) q[{}];\n'.format(-angle/4, qubit_pair_2[0]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[0]))
-
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
-        qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_2[0]))
-
-        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
-        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-        # correct for parity determination
-        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
-        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
-
-        return ''.join(qasm)
+    def complement_orbital(orbital):
+        if orbital % 2 == 0:
+            return orbital + 1
+        else:
+            return orbital - 1
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        parameter = var_parameters[0]
+        parameter_1 = var_parameters[0]
 
-        return self.exp_double_qubit_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
+        if set(self.orbitals_pair_1) == set(self.complement_orbitals_pair_1) and set(self.orbitals_pair_2) == set(self.complement_orbitals_pair_2):
+            return EffDFExcitation.eff_d_f_exc_qasm(parameter_1, self.orbitals_pair_1, self.orbitals_pair_2)
+        else:
+            return EffDFExcitation.eff_d_f_exc_qasm(parameter_1, self.orbitals_pair_1, self.orbitals_pair_2) \
+                   + EffDFExcitation.eff_d_f_exc_qasm(parameter_1, self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
 
 
+#######################################################################################################################
 # Not used :(
 class DoubleExchange(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, rescaled_parameter=False, parity_dependence=False, d_exc_correction=False):
@@ -680,7 +664,4 @@ class DoubleExchange(AnsatzElement):
 
         return self.double_exchange(parameter, self.qubit_pair_1, self.qubit_pair_2,
                                     parity_dependence=self.parity_dependence, d_exc_correction=self.d_exc_correction)
-
-
-
 

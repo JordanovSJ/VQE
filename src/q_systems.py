@@ -77,6 +77,22 @@ class H2(QSystem):
                 ['H', [0, 0, r]]]
 
 
+class H4(QSystem):
+
+    def __init__(self, r=0.735, basis='sto-3g', frozen_els=None, ham_matrix=False):
+        super(H4, self).__init__(name='H4', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=8,
+                                 n_electrons=4, basis=basis, frozen_els=frozen_els, ham_matrix=ham_matrix)
+
+    @staticmethod
+    def get_geometry(distance=0.735):
+        return [
+            ['H', [0, 0, 0]],
+            ['H', [0, 0, distance]],
+            ['H', [0, 0, 2 * distance]],
+            ['H', [0, 0, 3 * distance]]
+          ]
+
+
 class LiH(QSystem):
     # frozen_els = {'occupied': [0,1], 'unoccupied': []}
     def __init__(self, r=1.546, basis='sto-3g', frozen_els=None, ham_matrix=False):
@@ -128,19 +144,5 @@ class H2O(QSystem):
             ['H', [0, r*numpy.sin(numpy.pi - theta), r*numpy.cos(numpy.pi - theta)]]
         ]
 
-#
-# class H4(System):
-#     name: str = 'H4'
-#     multiplicity: int = 1
-#     charge: int = 0
-#     n_orbitals: int = 8
-#     n_electrons: int = 4
-#
-#     @staticmethod
-#     def geometry(distance=0.735):
-#         return [
-#             ['H', [0, 0, 0]],
-#             ['H', [0, 0, distance]],
-#             ['H', [0, 0, 2 * distance]],
-#             ['H', [0, 0, 3 * distance]]
-#           ]
+
+
