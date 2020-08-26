@@ -116,10 +116,15 @@ class QiskitSim:
 
         # get the operator in the form of a matrix
         if operator_sparse_matrix is None:
-            operator_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+            operator_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham, n_qubits=q_system.n_orbitals)
 
-        expectation_value =\
-            sparse_statevector.dot(operator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
+        try:
+            expectation_value =\
+                sparse_statevector.dot(operator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
+        except Exception:
+
+            print('bla')
+            raise Exception
 
         return expectation_value.real, statevector, qasm
 

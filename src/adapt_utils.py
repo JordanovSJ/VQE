@@ -56,14 +56,14 @@ class EnergyAdaptUtils:
 class GradAdaptUtils:
 
     @staticmethod
-    def compute_commutators(qubit_ham, ansatz_elements, multithread=False):
+    def compute_commutators(qubit_ham, ansatz_elements, n_system_qubits, multithread=False):
         commutators = {}
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'], memory=1e10, object_store_memory=1e10)
             elements_ray_ids = [
                 [
                     element, GradAdaptUtils.get_commutator_matrix_multithread.
-                    remote(QubitOperator(str(element.excitation)), qubit_ham=QubitOperator(str(qubit_ham))) # passing copies UGLY
+                    remote(QubitOperator(str(element.excitation)), qubit_ham=QubitOperator(str(qubit_ham)), n_qubits=n_system_qubits) # passing copies UGLY
                 ]
                 for element in ansatz_elements
             ]
@@ -79,17 +79,17 @@ class GradAdaptUtils:
                 key = str(element_excitation)
                 print('Calculated commutator ', key)
                 commutator = qubit_ham * element_excitation - element_excitation * qubit_ham
-                commutator_matrix = get_sparse_operator(commutator)
+                commutator_matrix = get_sparse_operator(commutator, n_qubits=n_system_qubits)
                 commutators[key] = commutator_matrix
 
         return commutators
 
     @staticmethod
     @ray.remote
-    def get_commutator_matrix_multithread(excitation, qubit_ham):
+    def get_commutator_matrix_multithread(excitation, qubit_ham, n_qubits):
         t0 = time.time()
         commutator = qubit_ham * excitation - excitation * qubit_ham
-        commutator_sparse_matrix = get_sparse_operator(commutator)
+        commutator_sparse_matrix = get_sparse_operator(commutator,  n_qubits=n_qubits)
         print('Calculated commutator ', str(excitation), 'time ', time.time() - t0)
         del commutator
         del t0
@@ -109,7 +109,8 @@ class GradAdaptUtils:
         # # TODO make pretier
         if commutator_sparse_mtrx is None:
             commutator_sparse_mtrx = \
-                get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham)
+                get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham,
+                                    n_qubits=q_system.n_orbitals)
 
         gradient = backend.get_expectation_value(q_system, ansatz, var_parameters,
                                                  operator_sparse_matrix=commutator_sparse_mtrx,
@@ -135,7 +136,8 @@ class GradAdaptUtils:
         t0 = time.time()
         if commutator_sparse_mtrx is None:
             commutator_sparse_mtrx = \
-                get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham)
+                get_sparse_operator(q_system.jw_qubit_ham * excitation - excitation * q_system.jw_qubit_ham,
+                                    n_qubits=q_system.n_orbitals)
         print('2  ', time.time() - t0)
         t0 = time.time()
         gradient = backend.get_expectation_value(q_system, ansatz_elements, var_parameters,

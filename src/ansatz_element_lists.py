@@ -154,8 +154,6 @@ class SpinComplementGSDExcitations:
 
     def get_double_excitations(self):
         double_excitations = []
-        # for i, j, k, l in itertools.combinations(range(int(self.n_orbitals/2)), 4):
-        #     double_excitations.append(SpinComplementDFExcitation([2 * i, 2 * j], [2 * k, 2 * l], system_n_qubits=self.n_orbitals))
 
         for i, j, k, l in itertools.combinations(range(self.n_orbitals), 4):
             if i % 2 + j % 2 == k % 2 + l % 2:

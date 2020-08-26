@@ -62,14 +62,14 @@ def get_ansatz_from_csv(db, molecule, ansatz_element_type=None ):
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 0.735
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H4() #(frozen_els=frozen_els)
+    molecule = LiH() #(frozen_els=frozen_els)
 
-    #ansatz_element_type = 'efficient_fermi_excitation'
+    ansatz_element_type = 'efficient_fermi_excitation'
     ##  ansatz_element_type = 'qubit_excitation'
-    ansatz_element_type = 'pauli_word_excitation'
+    # ansatz_element_type = 'pauli_word_excitation'
 
     accuracy = 1e-12  # 1e-3 for chemical accuracy
     # threshold = 1e-14
@@ -113,6 +113,7 @@ if __name__ == "__main__":
             patch_ansatz_elements = ansatz_element_pool[i*size_patch_commutators:(i+1)*size_patch_commutators]
             patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
                                                                            ansatz_elements=patch_ansatz_elements,
+                                                                           n_system_qubits=molecule.n_orbitals,
                                                                            multithread=multithread)
             print(i)
             dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
@@ -126,6 +127,7 @@ if __name__ == "__main__":
         patch_ansatz_elements = ansatz_element_pool[(int(len(ansatz_element_pool)/size_patch_commutators)) * size_patch_commutators:]
         patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
                                                                        ansatz_elements=patch_ansatz_elements,
+                                                                       n_system_qubits=molecule.n_orbitals,
                                                                        multithread=multithread)
         dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
         del patch_dynamic_commutators
