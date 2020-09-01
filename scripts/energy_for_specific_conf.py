@@ -20,37 +20,48 @@ import ast
 
 if __name__ == "__main__":
 
-    molecule = BeH2()  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
+    molecule = LiH()  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
     # r = 1.546
 
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv("../results/adapt_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv")
+    df = pandas.read_csv("../results/adapt_vqe_results/LiH_g_adapt_spin_gsdefe_26-Aug-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     init_ansatz_elements = []
+
     for i in range(len(df)):
         element = df.loc[i]['element']
         element_qubits = df.loc[i]['element_qubits']
-        if element[0] == 'e' and element[4] == 's':
-            init_ansatz_elements.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        elif element[0] == 'e' and element[4] == 'd':
-            init_ansatz_elements.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        elif element[0] == 's' and element[2] == 'q':
-            init_ansatz_elements.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        elif element[0] == 'd' and element[2] == 'q':
-            init_ansatz_elements.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        else:
-            print(element, element_qubits)
-            raise Exception('Unrecognized ansatz element.')
+        if element[5] == 's':
+            init_ansatz_elements.append(SpinComplementSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+        elif element[5] == 'd':
+            init_ansatz_elements.append(SpinComplementDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+
+    # for i in range(len(df)):
+    #     element = df.loc[i]['element']
+    #     element_qubits = df.loc[i]['element_qubits']
+    #     if element[0] == 'e' and element[4] == 's':
+    #         init_ansatz_elements.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 'e' and element[4] == 'd':
+    #         init_ansatz_elements.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 's' and element[2] == 'q':
+    #         init_ansatz_elements.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 'd' and element[2] == 'q':
+    #         init_ansatz_elements.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     else:
+    #         print(element, element_qubits)
+    #         raise Exception('Unrecognized ansatz element.')
     # for i in range(len(df)):
     #     excitation = QubitOperator(df.loc[i]['element'])
     #     init_ansatz_elements.append(PauliWordExcitation(excitation, system_n_qubits=molecule.n_qubits))
 
     ansatz_elements = init_ansatz_elements
+    ansatz_elements.append(SpinComplementDFExcitation([2, 3], [5, 10], system_n_qubits=molecule.n_qubits))
 
     var_parameters = list(df['var_parameters'])
+    var_parameters.append(0)
     # var_parameters = list(numpy.zeros(len(ansatz_elements)))
 
     # ansatz_elements = []

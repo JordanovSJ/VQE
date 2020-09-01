@@ -147,8 +147,10 @@ class SpinComplementGSDExcitations:
 
     def get_single_excitations(self):
         single_excitations = []
-        for i, j in itertools.combinations(range(int(self.n_orbitals/2)), 2):
-            single_excitations.append(SpinComplementSFExcitation(i * 2, j * 2, system_n_qubits=self.n_orbitals))
+        for i, j in itertools.combinations(range(int(self.n_orbitals)), 2):
+            new_s_excitation = SpinComplementSFExcitation(i, j, system_n_qubits=self.n_orbitals)
+            if new_s_excitation.excitation != 0*openfermion.QubitOperator():
+                single_excitations.append(new_s_excitation)
 
         return single_excitations
 
@@ -156,8 +158,16 @@ class SpinComplementGSDExcitations:
         double_excitations = []
 
         for i, j, k, l in itertools.combinations(range(self.n_orbitals), 4):
-            if i % 2 + j % 2 == k % 2 + l % 2:
-                double_excitations.append(SpinComplementDFExcitation([i, j], [k, l], system_n_qubits=self.n_orbitals))
+            # if i % 2 + j % 2 == k % 2 + l % 2:
+            double_excitations.append(SpinComplementDFExcitation([i, j], [k, l], system_n_qubits=self.n_orbitals))
+            # if i % 2 + k % 2 == j % 2 + l % 2:
+            new_d_excitation = SpinComplementDFExcitation([i, k], [j, l], system_n_qubits=self.n_orbitals)
+            if new_d_excitation.excitation != 0*openfermion.QubitOperator():
+                double_excitations.append(new_d_excitation)
+            # if i % 2 + l % 2 == k % 2 + j % 2:
+            new_d_excitation = SpinComplementDFExcitation([i, l], [k, j], system_n_qubits=self.n_orbitals)
+            if new_d_excitation.excitation != 0*openfermion.QubitOperator():
+                double_excitations.append(new_d_excitation)
 
         return double_excitations
 

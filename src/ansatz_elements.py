@@ -337,8 +337,12 @@ class EffDFExcitation(AnsatzElement):
         qubit_pair_1.sort()
         qubit_pair_2.sort()
 
+        all_qubits = qubit_pair_1 + qubit_pair_2
+        all_qubits.sort()
+
         # do not include the first qubits of qubit_pair_1 and qubit_pair_2
-        parity_qubits = list(range(qubit_pair_1[0] + 1, qubit_pair_1[1])) + list(range(qubit_pair_2[0] + 1, qubit_pair_2[1]))
+        # parity_qubits = list(range(qubit_pair_1[0] + 1, qubit_pair_1[1])) + list(range(qubit_pair_2[0] + 1, qubit_pair_2[1]))
+        parity_qubits = list(range(all_qubits[0]+1, all_qubits[1])) + list(range(all_qubits[2]+1, all_qubits[3]))
 
         # ladder of CNOT used to determine the parity
         parity_cnot_ladder = ['']
@@ -438,37 +442,37 @@ class EffDFExcitation(AnsatzElement):
 
 
 class SpinComplementSFExcitation(AnsatzElement):
-    def __init__(self, spatial_orbital_1, spatial_orbital_2, system_n_qubits=None):
+    def __init__(self, spin_orbital_1, spin_orbital_2, system_n_qubits=None):
         # TODO make this work with spin-orbitals
-        assert spatial_orbital_1 % 2 == 0
-        assert spatial_orbital_2 % 2 == 0
+        # assert spatial_orbital_1 % 2 == 0
+        # assert spatial_orbital_2 % 2 == 0
 
         # these are required for printing results only
-        self.qubit_1 = spatial_orbital_1
-        self.qubit_2 = spatial_orbital_2
+        self.qubit_1 = spin_orbital_1
+        self.qubit_2 = spin_orbital_2
 
-        self.spatial_orbital_1 = spatial_orbital_1
-        self.spatial_orbital_2 = spatial_orbital_2
+        self.complement_qubit_1 = SpinComplementDFExcitation.complement_orbital(spin_orbital_1)
+        self.complement_qubit_2 = SpinComplementDFExcitation.complement_orbital(spin_orbital_2)
 
-        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(spatial_orbital_2, spatial_orbital_1))
-        fermi_operator += FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(spatial_orbital_2 + 1, spatial_orbital_1 + 1))
+        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(spin_orbital_2, spin_orbital_1))
+        fermi_operator += FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.complement_qubit_2, self.complement_qubit_1))
 
         excitation = jordan_wigner(fermi_operator)
 
         super(SpinComplementSFExcitation, self).\
-            __init__(element='spin_wise_s_f_exc_{}_{}'.format(spatial_orbital_2, spatial_orbital_1), order=1, n_var_parameters=1,
+            __init__(element='spin_s_f_exc_{}_{}'.format(spin_orbital_2, spin_orbital_1), order=1, n_var_parameters=1,
                      excitation=excitation, system_n_qubits=system_n_qubits)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return EffSFExcitation.eff_s_f_exc_qasm(var_parameters[0], self.spatial_orbital_1, self.spatial_orbital_2) \
-               + EffSFExcitation.eff_s_f_exc_qasm(var_parameters[0], self.spatial_orbital_1 + 1, self.spatial_orbital_2 + 1)
+        return EffSFExcitation.eff_s_f_exc_qasm(var_parameters[0], self.qubit_1, self.qubit_2) \
+               + EffSFExcitation.eff_s_f_exc_qasm(var_parameters[0], self.complement_qubit_1, self.complement_qubit_2)
 
 
 class SpinComplementDFExcitation(AnsatzElement):
     def __init__(self, orbitals_pair_1, orbitals_pair_2, system_n_qubits=None):
 
-        assert orbitals_pair_1[0] % 2 + orbitals_pair_1[1] % 2 == orbitals_pair_2[0] % 2 + orbitals_pair_2[1] % 2
+        # assert orbitals_pair_1[0] % 2 + orbitals_pair_1[1] % 2 == orbitals_pair_2[0] % 2 + orbitals_pair_2[1] % 2
 
         # these are required for printing results only
         self.qubit_pair_1 = orbitals_pair_1
