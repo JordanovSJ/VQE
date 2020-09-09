@@ -41,47 +41,35 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
-    angle = 0.1
+    molecule = BeH2()
+    df = pandas.read_csv("../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv")
+    n_cnot_counts = []
 
-    qasm_1 = ['']
-    qasm_1.append(QasmUtils.qasm_header(6))
+    for i in range(len(df)):
+        print(i)
+        element = df.loc[i]['element']
+        element_qubits = ast.literal_eval(df.loc[i]['element_qubits'])
 
-    # qasm_1.append('x q[0];\n')
-    # qasm_1.append('x q[1];\n')
-    # # qasm_1.append('h q[3];\n')
-    # # qasm_1.append('h q[2];\n')
-    # # qasm_1.append('h q[2];\n')
-    # # qasm_1.append('h q[3];\n')
-    # # qasm_1.append('h q[4];\n')
-    # # qasm_1.append('h q[5];\n')
-    #
-    # # qasm_1.append(QasmUtils.partial_exchange_gate(angle, 0, 2))
-    # # qasm_1.append(QasmUtils.partial_exchange_gate(angle,  1, 3))
-    # # qasm_1.append('cz q[{}], q[{}];\n'.format(2, 3))
-    # # qasm_1.append(QasmUtils.partial_exchange_gate(-angle, 0, 2))
-    # # qasm_1.append(QasmUtils.partial_exchange_gate(-angle, 1, 3))
-    #
-    # qasm_1.append(EffDFExcitation([0, 1], [2, 3]).get_qasm([angle]))
-    # statevector_1 = QiskitSim.statevector_from_qasm(''.join(qasm_1)).round(5)
-    #
-    # print(statevector_1)
+        if element[0] == 's':
+            assert len(element_qubits) == 2
+            n_cnots = 3 + 2*(element_qubits[1] - element_qubits[0])
+            if i == 0:
+                n_cnot_counts = [n_cnots]
+            else:
+                n_cnot_counts.append(n_cnot_counts[-1] + n_cnots)
+        elif element[0] == 'd':
+            assert len(element_qubits) == 2
+            n_cnots = 13 + 2*(element_qubits[1][1] - element_qubits[1][0] + element_qubits[0][1] - element_qubits[0][0]-2)
 
-    qasm_2 = ['']
-    qasm_2.append(QasmUtils.qasm_header(6))
-    # qasm_2.append('x q[0];\n')
-    # qasm_2.append('x q[1];\n')
-    # qasm_2.append('h q[3];\n')
-    # qasm_2.append('h q[2];\n')
-    # qasm_2.append('h q[2];\n')
-    # qasm_2.append('h q[3];\n')
-    # qasm_2.append('h q[4];\n')
-    # qasm_2.append('h q[5];\n')
+            if i == 0:
+                n_cnot_counts = [n_cnots]
+            else:
+                n_cnot_counts.append(n_cnot_counts[-1] + n_cnots)
 
-    qasm_2.append(EffDFExcitation([0, 3], [5, 4]).get_qasm([-angle]))
-    statevector_2 = QiskitSim.statevector_from_qasm(''.join(qasm_2)).round(10)
-
-    print(statevector_2)
-
-    print(matrix_to_str(get_circuit_matrix(''.join(qasm_2))))
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
+    df['cnot_count'] = n_cnot_counts
+    df.to_csv("../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdefe_corrected_09-Sep-2020.csv")
 
     print('spagetti')
