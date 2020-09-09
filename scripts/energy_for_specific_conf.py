@@ -20,56 +20,47 @@ import ast
 
 if __name__ == "__main__":
 
-    molecule = LiH()  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
-    # r = 1.546
+    r = 1.25
+    molecule = LiH(r=r)  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
 
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv("../results/adapt_vqe_results/LiH_g_adapt_spin_gsdefe_26-Aug-2020.csv")
+    df = pandas.read_csv("../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_r=1_03-Sep-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     init_ansatz_elements = []
 
-    for i in range(len(df)):
-        element = df.loc[i]['element']
-        element_qubits = df.loc[i]['element_qubits']
-        if element[5] == 's':
-            init_ansatz_elements.append(SpinComplementSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        elif element[5] == 'd':
-            init_ansatz_elements.append(SpinComplementDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-
     # for i in range(len(df)):
     #     element = df.loc[i]['element']
     #     element_qubits = df.loc[i]['element_qubits']
-    #     if element[0] == 'e' and element[4] == 's':
-    #         init_ansatz_elements.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    #     elif element[0] == 'e' and element[4] == 'd':
-    #         init_ansatz_elements.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    #     elif element[0] == 's' and element[2] == 'q':
-    #         init_ansatz_elements.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    #     elif element[0] == 'd' and element[2] == 'q':
-    #         init_ansatz_elements.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    #     else:
-    #         print(element, element_qubits)
-    #         raise Exception('Unrecognized ansatz element.')
+    #     if element[5] == 's':
+    #         init_ansatz_elements.append(SpinComplementSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     elif element[5] == 'd':
+    #         init_ansatz_elements.append(SpinComplementDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+
+    for i in range(len(df)):
+        element = df.loc[i]['element']
+        element_qubits = df.loc[i]['element_qubits']
+        if element[0] == 'e' and element[4] == 's':
+            init_ansatz_elements.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+        elif element[0] == 'e' and element[4] == 'd':
+            init_ansatz_elements.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+        elif element[0] == 's' and element[2] == 'q':
+            init_ansatz_elements.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+        elif element[0] == 'd' and element[2] == 'q':
+            init_ansatz_elements.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
     # for i in range(len(df)):
     #     excitation = QubitOperator(df.loc[i]['element'])
     #     init_ansatz_elements.append(PauliWordExcitation(excitation, system_n_qubits=molecule.n_qubits))
 
-    ansatz_elements = init_ansatz_elements
-    ansatz_elements.append(SpinComplementDFExcitation([2, 3], [5, 10], system_n_qubits=molecule.n_qubits))
+    ansatz_elements = init_ansatz_elements[:52]
 
-    var_parameters = list(df['var_parameters'])
-    var_parameters.append(0)
+    var_parameters = list(df['var_parameters'])[:52]
     # var_parameters = list(numpy.zeros(len(ansatz_elements)))
-
-    # ansatz_elements = []
-    # var_parameters = []
-    # for i in range(len(init_var_parameters)):
-    #     if abs(init_var_parameters[i]) > 1e-4:
-    #         ansatz_elements.append(init_ansatz_elements[i])
-    #         var_parameters.append(init_var_parameters[i])
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-9}

@@ -255,7 +255,7 @@ class UCCSD:
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
-                single_excitations.append(SFExcitation(i, j))
+                single_excitations.append(EffSFExcitation(i, j, system_n_qubits=self.n_orbitals))
         return single_excitations
 
     def get_double_excitations(self):
@@ -264,7 +264,7 @@ class UCCSD:
             for j in range(i+1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals-1):
                     for l in range(k+1, self.n_orbitals):
-                        double_excitations.append(DFExcitation([i, j], [k, l]))
+                        double_excitations.append(EffDFExcitation([i, j], [k, l], system_n_qubits=self.n_orbitals))
         return double_excitations
 
     def get_ansatz_elements(self):

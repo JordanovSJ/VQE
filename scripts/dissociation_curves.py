@@ -19,96 +19,74 @@ import ast
 
 if __name__ == "__main__":
 
-    molecule = LiH
-    r_0 = 1.546
+    molecule = BeH2()
 
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
     df_data = pandas.DataFrame(columns=['r', 'E', 'fci_E', 'error', 'n_iters'])
-    df_count = 0
 
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv('../results/adapt_vqe_results/LiH_energy_adapt_SDEFE_05-Jun-2020.csv')
-
-    ansatz_elements = []
+    df = pandas.read_csv('../results/adapt_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
+    #
+    ansatz = []
     for i in range(len(df)):
         element = df.loc[i]['element']
         element_qubits = df.loc[i]['element_qubits']
         if element[0] == 'e' and element[4] == 's':
-            ansatz_elements.append(EffSFExcitation(*ast.literal_eval(element_qubits)))
+            ansatz.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'e' and element[4] == 'd':
-            ansatz_elements.append(EffDFExcitation(*ast.literal_eval(element_qubits)))
+            ansatz.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 's' and element[2] == 'q':
-            ansatz_elements.append(SQExcitation(*ast.literal_eval(element_qubits)))
+            ansatz.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'd' and element[2] == 'q':
-            ansatz_elements.append(DQExcitation(*ast.literal_eval(element_qubits)))
+            ansatz.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         else:
             print(element, element_qubits)
             raise Exception('Unrecognized ansatz element.')
 
-    init_var_parameters = list(df['var_parameters'])
+    # ansatz = ansatz[:74]  # 74 for 1e-8
+    ansatz = UCCSD(molecule.n_qubits, molecule.n_electrons).get_ansatz_elements()
+    # ansatz = []
+    var_parameters = list(numpy.zeros(len(ansatz)))
 
-    var_parameters = init_var_parameters
-    energies_1 = []
-    fci_energies_1 = []
-    rs_1 = []
-    for i in range(1, 13):
-        # r = r_0 + i*0.05
-        r = 2.146 + i*0.05
-        molecule_params = {'distance': r}
+    optimizer = 'BFGS'
+    optimizer_options = {'gtol': 10e-8}
 
-        vqe_runner = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params=molecule_params)
-        result = vqe_runner.vqe_run(ansatz_elements, var_parameters)
+    energies = []
+    fci_energies = []
+    rs = [ 3, 3.25, 3.5, 3.75]
+    df_count = 0
 
-        # next var parameters
-        var_parameters = result.x
+    for r in rs:
+        molecule = BeH2(r=r)
 
-        fci_E = vqe_runner.fci_energy
-        fci_energies_1.append(fci_E)
-        E = result.fun
-        energies_1.append(E)
-        rs_1.append(r)
+        vqe_runner = VQERunner(molecule, backend=QiskitSim, use_ansatz_gradient=True, optimizer=optimizer,
+                               optimizer_options=optimizer_options)
 
-        df_data.loc[df_count] = {'r': r, 'E': E, 'fci_E': fci_E, 'error': E-fci_E, 'n_iters': result.nfev}
-        df_data.to_csv('../results/dissociation_curves/{}_{}.csv'.format(molecule.name, time_stamp))
-        df_count += 1
+        result = vqe_runner.vqe_run(ansatz, var_parameters)
 
-    var_parameters = init_var_parameters
-    energies_2 = []
-    fci_energies_2 = []
-    rs_2 = []
-    for i in range(0):
-        r = r_0 - (1+i) * 0.025
-        molecule_params = {'distance': r}
-
-        vqe_runner = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params=molecule_params)
-        result = vqe_runner.vqe_run(ansatz_elements, var_parameters)
+        fci_E = molecule.fci_energy
+        fci_energies.append(fci_E)
 
         # next var parameters
-        var_parameters = result.x
+        if len(ansatz) == 0:
+            var_parameters = []
+            E = result
+            n_iters = 1
+        else:
+            var_parameters = list(result.x)
+            E = result.fun
+            n_iters = result.nfev
 
-        fci_E = result.fci_energy
-        E = result.fun
-        energies_2.append(E)
-        fci_energies_2.append(fci_E)
-        rs_2.append(r)
+        energies.append(E)
 
-        df_data.loc[df_count] = {'r': r, 'E': E, 'fci_E': fci_E, 'error': E - fci_E, 'n_iters': result.nfev}
+        df_data.loc[df_count] = {'r': r, 'E': E, 'fci_E': fci_E, 'error': E-fci_E, 'n_iters': n_iters}
         df_data.to_csv('../results/dissociation_curves/{}_{}.csv'.format(molecule.name, time_stamp))
         df_count += 1
-
-    energies = energies_2[::-1] + energies_1
-    fci_energies = fci_energies_2[::-1] + fci_energies_1
-    errors = list(numpy.array(energies) - numpy.array(fci_energies))
-    rs = rs_2[::-1] + rs_1
 
     # df_data = pandas.DataFrame({'r': rs, 'E': energies, 'fci_E': fci_energies, 'error': errors})
     # time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
     # df_data.to_csv('../results/{}_dis_curve_{}'.format(molecule.name, time_stamp))
-
-    print(energies)
-    print(fci_energies)
-    print(rs)
 
     print('Bona Dea')
