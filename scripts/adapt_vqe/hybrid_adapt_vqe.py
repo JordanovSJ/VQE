@@ -37,13 +37,13 @@ def get_ansatz_from_csv(db, molecule):
         element = db.loc[i]['element']
         element_qubits = db.loc[i]['element_qubits']
         if element[0] == 'e' and element[4] == 's':
-            ansatz.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+            ansatz.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'e' and element[4] == 'd':
-            ansatz.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+            ansatz.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 's' and element[2] == 'q':
-            ansatz.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+            ansatz.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         elif element[0] == 'd' and element[2] == 'q':
-            ansatz.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+            ansatz.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
         else:
             print(element, element_qubits)
             raise Exception('Unrecognized ansatz element.')

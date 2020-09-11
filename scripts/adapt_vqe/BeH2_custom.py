@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
-from src.ansatz_elements import UCCGSD, UCCSD, ESD, EGSD, DoubleExchange, SQExcitation, DFExcitation, SFExcitation
+from src.ansatz_elements import UCCGSD, UCCSD, ESD, EGSD, DoubleExchange, SQExc, DFExc, SFExc
 from src.backends import QiskitSim
 from src.utils import LogUtils, AdaptAnsatzUtils
 
@@ -72,15 +72,15 @@ if __name__ == "__main__":
                                       parity_dependence=True),
                        DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-                       SQExcitation(3, 12), SQExcitation(4, 11),
+                       SQExc(3, 12), SQExc(4, 11),
                        DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-                       SQExcitation(2, 13),
+                       SQExc(2, 13),
                        DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
                        DoubleExchange([3, 4], [10, 13], rescaled_parameter=True, d_exc_correction=True,
                                       parity_dependence=True),
-                       SQExcitation(3, 13),
+                       SQExc(3, 13),
                        ]
 
     vqe_runner = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params={'distance': r}, )

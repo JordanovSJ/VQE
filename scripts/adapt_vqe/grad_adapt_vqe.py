@@ -37,29 +37,29 @@ def get_ansatz_from_csv(db, molecule, ansatz_element_type=None, spin_complement=
     if ansatz_element_type == 'pauli_word_excitation':
         for i in range(len(db)):
             excitation = QubitOperator(db.loc[i]['element'])
-            ansatz.append(PauliWordExcitation(excitation, system_n_qubits=molecule.n_qubits))
+            ansatz.append(PauliStringExc(excitation, system_n_qubits=molecule.n_qubits))
     elif spin_complement:
         for i in range(len(db)):
             element = db.loc[i]['element']
             element_qubits = db.loc[i]['element_qubits']
             if element[5] == 's':
                 ansatz.append(
-                    SpinComplementSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                    SpinCompSFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             elif element[5] == 'd':
                 ansatz.append(
-                    SpinComplementDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                    SpinCompDFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
     else:
         for i in range(len(db)):
             element = db.loc[i]['element']
             element_qubits = db.loc[i]['element_qubits']
             if element[0] == 'e' and element[4] == 's':
-                ansatz.append(EffSFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                ansatz.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             elif element[0] == 'e' and element[4] == 'd':
-                ansatz.append(EffDFExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                ansatz.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             elif element[0] == 's' and element[2] == 'q':
-                ansatz.append(SQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                ansatz.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             elif element[0] == 'd' and element[2] == 'q':
-                ansatz.append(DQExcitation(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+                ansatz.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
             else:
                 print(element, element_qubits)
                 raise Exception('Unrecognized ansatz element.')
@@ -77,8 +77,8 @@ if __name__ == "__main__":
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH() #(frozen_els=frozen_els)
 
-    ansatz_element_type = 'efficient_fermi_excitation'
-    # ansatz_element_type = 'qubit_excitation'
+    # ansatz_element_type = 'fermi_excitation'
+    ansatz_element_type = 'qubit_excitation'
     # ansatz_element_type = 'pauli_word_excitation'
     spin_complement = True  # only for fermionic and qubit excitations (not for PWEs)
 

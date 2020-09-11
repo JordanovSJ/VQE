@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
-from src.ansatz_element_lists import UCCGSD, UCCSD, DoubleExchange, SQExcitation, DQExcitation
+from src.ansatz_element_lists import UCCGSD, UCCSD, DoubleExchange, SQExc, DQExc
 from src.backends import QiskitSim
 from src.utils import LogUtils
 from src.ansatz_element_lists import *
@@ -29,13 +29,13 @@ if __name__ == "__main__":
         element = df.loc[i]['element']
         element_qubits = df.loc[i]['element_qubits']
         if element[0] == 'e' and element[4] == 's':
-            init_ansatz_elements.append(EffSFExcitation(*ast.literal_eval(element_qubits)))
+            init_ansatz_elements.append(EffSFExc(*ast.literal_eval(element_qubits)))
         elif element[0] == 'e' and element[4] == 'd':
-            init_ansatz_elements.append(EffDFExcitation(*ast.literal_eval(element_qubits)))
+            init_ansatz_elements.append(EffDFExc(*ast.literal_eval(element_qubits)))
         elif element[0] == 's' and element[2] == 'q':
-            init_ansatz_elements.append(SQExcitation(*ast.literal_eval(element_qubits)))
+            init_ansatz_elements.append(SQExc(*ast.literal_eval(element_qubits)))
         elif element[0] == 'd' and element[2] == 'q':
-            init_ansatz_elements.append(DQExcitation(*ast.literal_eval(element_qubits)))
+            init_ansatz_elements.append(DQExc(*ast.literal_eval(element_qubits)))
         else:
             print(element, element_qubits)
             raise Exception('Unrecognized ansatz element.')
