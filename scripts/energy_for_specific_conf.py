@@ -20,7 +20,7 @@ import ast
 
 if __name__ == "__main__":
 
-    r = 1.25
+    r = 1.546
     molecule = LiH(r=r)  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
 
     # logging
@@ -57,13 +57,15 @@ if __name__ == "__main__":
     #     excitation = QubitOperator(df.loc[i]['element'])
     #     init_ansatz_elements.append(PauliWordExcitation(excitation, system_n_qubits=molecule.n_qubits))
 
-    ansatz_elements = init_ansatz_elements[:52]
+    # ansatz_elements = init_ansatz_elements[:52]
 
-    var_parameters = list(df['var_parameters'])[:52]
-    # var_parameters = list(numpy.zeros(len(ansatz_elements)))
+    ansatz_elements = [SpinCompDQExc([2, 3], [10, 11], 12), SpinCompDQExc([2, 3], [5, 10], 12)]
+
+    # var_parameters = list(df['var_parameters'])[:52]
+    var_parameters = list(numpy.zeros(len(ansatz_elements)))
 
     optimizer = 'BFGS'
-    optimizer_options = {'gtol': 1e-9}
+    optimizer_options = {'gtol': 1e-8}
 
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
                            print_var_parameters=False, use_ansatz_gradient=True)

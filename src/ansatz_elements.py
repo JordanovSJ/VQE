@@ -166,10 +166,15 @@ class DQExc(AnsatzElement):
                      excitation=excitation, system_n_qubits=system_n_qubits)
 
     @staticmethod
-    def d_q_exc_qasm(angle, qubit_pair_1, qubit_pair_2):
-        qasm = ['']
+    def d_q_exc_qasm(angle, qubit_pair_1_ref, qubit_pair_2_ref):
+        # This is not required since the qubits are not ordered as for the fermi excitation
+        qubit_pair_1 = qubit_pair_1_ref.copy()
+        qubit_pair_2 = qubit_pair_2_ref.copy()
+
         angle = angle * 2  # for consistency with the conventional fermi excitation
         theta = angle / 8
+
+        qasm = ['']
 
         # determine the parity of the two pairs
         qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
@@ -562,8 +567,13 @@ class SpinCompDQExc(AnsatzElement):
         self.complement_orbitals_pair_2 = [self.spin_complement_orbital(orbitals_pair_2[0]),
                                            self.spin_complement_orbital(orbitals_pair_2[1])]
 
+        self.rel_parity = (-1)**((self.qubit_pair_1[0] > self.qubit_pair_1[1]) +
+                                 (self.qubit_pair_2[0] > self.qubit_pair_2[1]) +
+                                 (self.complement_orbitals_pair_1[0] > self.complement_orbitals_pair_1[1]) +
+                                 (self.complement_orbitals_pair_2[0] > self.complement_orbitals_pair_2[1]))
+
         excitation = self.get_qubit_excitation(self.orbitals_pair_1, self.orbitals_pair_2) \
-                     + self.get_qubit_excitation(self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
+                     + self.rel_parity*self.get_qubit_excitation(self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
 
         super(SpinCompDQExc, self).\
             __init__(element='spin_d_q_exc_{}_{}'.format(orbitals_pair_1, orbitals_pair_2),  order=2, n_var_parameters=1,
@@ -577,7 +587,7 @@ class SpinCompDQExc(AnsatzElement):
             return DQExc.d_q_exc_qasm(parameter_1, self.orbitals_pair_1, self.orbitals_pair_2)
         else:
             return DQExc.d_q_exc_qasm(parameter_1, self.orbitals_pair_1, self.orbitals_pair_2) \
-                   + DQExc.d_q_exc_qasm(parameter_1, self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
+                   + DQExc.d_q_exc_qasm(self.rel_parity*parameter_1, self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
 
 
 #######################################################################################################################
