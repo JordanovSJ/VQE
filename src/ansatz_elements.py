@@ -48,16 +48,6 @@ class AnsatzElement:
             return orbital + 1
         else:
             return orbital - 1
-    # # TODO not used
-    # def get_qasm(self, var_parameters):
-    #     if self.element_type == 'excitation':
-    #         assert len(var_parameters) == 1
-    #         return QasmUtils.fermi_excitation(self.excitation, var_parameters[0])
-    #     else:
-    #         var_parameters = numpy.array(var_parameters)
-    #         # TODO
-    #         # return self.excitation.format(*var_parameters)
-    #         return self.element.format(*var_parameters)
 
 
 class PauliStringExc(AnsatzElement):
@@ -502,9 +492,12 @@ class SpinCompDFExc(AnsatzElement):
                                          .format(self.orbitals_pair_1[0], self.orbitals_pair_1[1],
                                                  self.orbitals_pair_2[0], self.orbitals_pair_2[1]))
 
-        fermi_operator += FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
-                                          .format(self.complement_orbitals_pair_1[0], self.complement_orbitals_pair_1[1],
-                                                  self.complement_orbitals_pair_2[0], self.complement_orbitals_pair_2[1]))
+        if set(self.orbitals_pair_1) != set(self.complement_orbitals_pair_1) or \
+                set(self.orbitals_pair_2) != set(self.complement_orbitals_pair_2):
+
+            fermi_operator += FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
+                                              .format(self.complement_orbitals_pair_1[0], self.complement_orbitals_pair_1[1],
+                                                      self.complement_orbitals_pair_2[0], self.complement_orbitals_pair_2[1]))
 
         excitation = jordan_wigner(fermi_operator)
 
@@ -534,8 +527,11 @@ class SpinCompSQExc(AnsatzElement):
         self.complement_qubit_2 = self.spin_complement_orbital(spin_orbital_2)
 
         # TODO check signs
-        excitation = self.get_qubit_excitation([spin_orbital_1], [spin_orbital_1])\
-                     + self.get_qubit_excitation([self.complement_qubit_1], [self.complement_qubit_2])
+        if {self.qubit_1, self.qubit_2} == {self.complement_qubit_1, self.complement_qubit_2}:
+            excitation = self.get_qubit_excitation([spin_orbital_1], [spin_orbital_2])
+        else:
+            excitation = self.get_qubit_excitation([spin_orbital_1], [spin_orbital_2])\
+                         - self.get_qubit_excitation([self.complement_qubit_1], [self.complement_qubit_2])
 
         super(SpinCompSQExc, self).\
             __init__(element='spin_s_q_exc_{}_{}'.format(spin_orbital_2, spin_orbital_1), order=1, n_var_parameters=1,
@@ -548,7 +544,7 @@ class SpinCompSQExc(AnsatzElement):
             return QasmUtils.partial_exchange(-var_parameters[0], self.qubit_1, self.qubit_2)
         else:
             return QasmUtils.partial_exchange(-var_parameters[0], self.qubit_1, self.qubit_2) + \
-                   QasmUtils.partial_exchange(-var_parameters[0], self.complement_qubit_1, self.complement_qubit_2)
+                   QasmUtils.partial_exchange(var_parameters[0], self.complement_qubit_1, self.complement_qubit_2)
 
 
 class SpinCompDQExc(AnsatzElement):
@@ -567,13 +563,12 @@ class SpinCompDQExc(AnsatzElement):
         self.complement_orbitals_pair_2 = [self.spin_complement_orbital(orbitals_pair_2[0]),
                                            self.spin_complement_orbital(orbitals_pair_2[1])]
 
-        self.rel_parity = (-1)**((self.qubit_pair_1[0] > self.qubit_pair_1[1]) +
-                                 (self.qubit_pair_2[0] > self.qubit_pair_2[1]) +
-                                 (self.complement_orbitals_pair_1[0] > self.complement_orbitals_pair_1[1]) +
-                                 (self.complement_orbitals_pair_2[0] > self.complement_orbitals_pair_2[1]))
-
-        excitation = self.get_qubit_excitation(self.orbitals_pair_1, self.orbitals_pair_2) \
-                     + self.rel_parity*self.get_qubit_excitation(self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
+        if set(self.orbitals_pair_1) == set(self.complement_orbitals_pair_1) and \
+           set(self.orbitals_pair_2) == set(self.complement_orbitals_pair_2):
+            excitation = self.get_qubit_excitation(self.orbitals_pair_1, self.orbitals_pair_2)
+        else:
+            excitation = self.get_qubit_excitation(self.orbitals_pair_1, self.orbitals_pair_2) \
+                         - self.get_qubit_excitation(self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
 
         super(SpinCompDQExc, self).\
             __init__(element='spin_d_q_exc_{}_{}'.format(orbitals_pair_1, orbitals_pair_2),  order=2, n_var_parameters=1,
@@ -583,11 +578,12 @@ class SpinCompDQExc(AnsatzElement):
         assert len(var_parameters) == 1
         parameter_1 = var_parameters[0]
 
-        if set(self.orbitals_pair_1) == set(self.complement_orbitals_pair_1) and set(self.orbitals_pair_2) == set(self.complement_orbitals_pair_2):
+        if set(self.orbitals_pair_1) == set(self.complement_orbitals_pair_1) and \
+           set(self.orbitals_pair_2) == set(self.complement_orbitals_pair_2):
             return DQExc.d_q_exc_qasm(parameter_1, self.orbitals_pair_1, self.orbitals_pair_2)
         else:
             return DQExc.d_q_exc_qasm(parameter_1, self.orbitals_pair_1, self.orbitals_pair_2) \
-                   + DQExc.d_q_exc_qasm(self.rel_parity*parameter_1, self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
+                   + DQExc.d_q_exc_qasm(-parameter_1, self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
 
 
 #######################################################################################################################
