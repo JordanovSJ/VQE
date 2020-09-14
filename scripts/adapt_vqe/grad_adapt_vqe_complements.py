@@ -103,7 +103,7 @@ if __name__ == "__main__":
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H4() #(frozen_els=frozen_els)
+    molecule = LiH() #(frozen_els=frozen_els)
 
     # ansatz_element_type = 'eff_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
