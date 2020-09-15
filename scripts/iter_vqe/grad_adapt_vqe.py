@@ -69,34 +69,6 @@ def get_ansatz_from_csv(db, molecule, ansatz_element_type=None, spin_complement=
     return ansatz, var_pars
 
 
-def get_spin_compl_exc(qubits_1, qubits_2, element_type, n_qubits):
-
-    if element_type == 'qubit_excitation':
-        if len(qubits_1) == 1 and len(qubits_2) == 1:
-            return SQExc(AnsatzElement.spin_complement_orbital(qubits_1[0]),
-                         AnsatzElement.spin_complement_orbital(qubits_2[0]), system_n_qubits=n_qubits)
-        elif len(qubits_1) == 2 and len(qubits_2) == 2:
-            return DQExc([AnsatzElement.spin_complement_orbital(qubits_1[0]),
-                          AnsatzElement.spin_complement_orbital(qubits_1[1])],
-                         [AnsatzElement.spin_complement_orbital(qubits_2[0]),
-                          AnsatzElement.spin_complement_orbital(qubits_2[1])], system_n_qubits=n_qubits)
-        else:
-            raise Exception('Wrong qubits format')
-    elif element_type == 'fermionic_excitation':
-        if len(qubits_1) == 1 and len(qubits_2) == 1:
-            return EffSFExc(AnsatzElement.spin_complement_orbital(qubits_1[0]),
-                            AnsatzElement.spin_complement_orbital(qubits_2[0]), system_n_qubits=n_qubits)
-        elif len(qubits_1) == 2 and len(qubits_2) == 2:
-            return EffDFExc([AnsatzElement.spin_complement_orbital(qubits_1[0]),
-                             AnsatzElement.spin_complement_orbital(qubits_1[1])],
-                            [AnsatzElement.spin_complement_orbital(qubits_2[0]),
-                             AnsatzElement.spin_complement_orbital(qubits_2[1])], system_n_qubits=n_qubits)
-        else:
-            raise Exception('Wrong qubits format')
-    else:
-        raise Exception('Wrong element type')
-
-
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
@@ -105,8 +77,8 @@ if __name__ == "__main__":
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH() #(frozen_els=frozen_els)
 
-    # ansatz_element_type = 'eff_fermi_excitation'
-    ansatz_element_type = 'qubit_excitation'
+    ansatz_element_type = 'efficient_fermi_excitation'
+    # ansatz_element_type = 'qubit_excitation'
     # ansatz_element_type = 'pauli_word_excitation'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
@@ -204,7 +176,6 @@ if __name__ == "__main__":
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     iter_count = 0
-    df_count = 0
     current_energy = hf_energy
     previous_energy = 0
     init_ansatz_length = len(ansatz_elements) #  blalbal
@@ -224,39 +195,7 @@ if __name__ == "__main__":
                                              dynamic_commutators=dynamic_commutators)[0]
         print(element_to_add.element)
 
-        # TODO testing
-        compl_element_to_add = None
-        if element_to_add.order == 1:
-            # element_qubits = [element_to_add.qubit_1, element_to_add.qubit_2]
-            if {element_to_add.qubit_1, element_to_add.qubit_2} \
-                    != {AnsatzElement.spin_complement_orbital(element_to_add.qubit_1),
-                        AnsatzElement.spin_complement_orbital(element_to_add.qubit_2)}:
-
-                compl_element_to_add = get_spin_compl_exc([element_to_add.qubit_1], [element_to_add.qubit_2],
-                                                          ansatz_element_type, molecule.n_orbitals)
-                print('Add complement element: ', compl_element_to_add.element)
-
-        else:
-            # element_qubits = [element_to_add.qubit_pair_1, element_to_add.qubit_pair_2]
-            qubit_pair_1 = element_to_add.qubit_pair_1
-            comp_qubit_pair_1 = [AnsatzElement.spin_complement_orbital(qubit_pair_1[0]),
-                                 AnsatzElement.spin_complement_orbital(qubit_pair_1[1])]
-
-            qubit_pair_2 = element_to_add.qubit_pair_2
-            comp_qubit_pair_2 = [AnsatzElement.spin_complement_orbital(qubit_pair_2[0]),
-                                 AnsatzElement.spin_complement_orbital(qubit_pair_2[1])]
-
-            if set(qubit_pair_1) != set(comp_qubit_pair_1) or set(qubit_pair_2) != set(comp_qubit_pair_2):
-                compl_element_to_add = get_spin_compl_exc(element_to_add.qubit_pair_1, element_to_add.qubit_pair_2,
-                                                          ansatz_element_type, molecule.n_orbitals)
-                print('Add complement element: ', compl_element_to_add.element)
-
-        if compl_element_to_add is None:
-            result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
-                                        initial_var_parameters=var_parameters + [0])
-        else:
-            result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements + [element_to_add, compl_element_to_add],
-                                        initial_var_parameters=var_parameters + [0, 0])
+        result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add], initial_var_parameters=var_parameters + [0])
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
@@ -267,40 +206,34 @@ if __name__ == "__main__":
         if delta_e > 0:
 
             ansatz_elements.append(element_to_add)
-            elements_to_add = [element_to_add]
-            if compl_element_to_add is not None:
-                ansatz_elements.append(compl_element_to_add)
-                elements_to_add.append(compl_element_to_add)
 
-            for elementt in elements_to_add:
-                # write iteration data
-                try:
-                    if elementt.order == 1:
-                        element_qubits = [elementt.qubit_1, elementt.qubit_2]
-                    elif elementt.order == 2:
-                        element_qubits = [elementt.qubit_pair_1, elementt.qubit_pair_2]
-                    else:
-                        element_qubits = []
-                except AttributeError:
-                    # this case corresponds to Pauli word excitation
-                    element_qubits = elementt.excitation
+            # write iteration data
+            try:
+                if element_to_add.order == 1:
+                    element_qubits = [element_to_add.qubit_1, element_to_add.qubit_2]
+                elif element_to_add.order == 2:
+                    element_qubits = [element_to_add.qubit_pair_1, element_to_add.qubit_pair_2]
+                else:
+                    element_qubits = []
+            except AttributeError:
+                # this case corresponds to Pauli word excitation
+                element_qubits = element_to_add.excitation
 
-                gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
-                df_data.loc[df_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
-                                           'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
-                                           'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
-                                           'u1_depth': gate_count['u1_depth'], 'element': elementt.element,
-                                           'element_qubits': element_qubits, 'var_parameters': 0}
-                df_count += 1
-                df_data['var_parameters'] = list(result.x)[:df_count]
-                # df_data['var_parameters'] = var_parameters
-                # save data
-                save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type, frozen_els=frozen_els)
+            gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
+            df_data.loc[iter_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
+                                       'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
+                                       'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
+                                       'u1_depth': gate_count['u1_depth'], 'element': element_to_add.element,
+                                       'element_qubits': element_qubits, 'var_parameters': 0}
+            df_data['var_parameters'] = list(result.x)[init_ansatz_length:]
+            # df_data['var_parameters'] = var_parameters
+            # save data
+            save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type, frozen_els=frozen_els)
 
-                message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, Grad{}, var. parameters: {}' \
-                    .format(elementt.element, current_energy, delta_e, grad, var_parameters)
-                logging.info(message)
-                print(message)
+            message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, Grad{}, var. parameters: {}' \
+                .format(element_to_add.element, current_energy, delta_e, grad, var_parameters)
+            logging.info(message)
+            print(message)
         else:
             message = 'No contribution to energy decrease. Stop adding elements to the final ansatz'
             logging.info(message)

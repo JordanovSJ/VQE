@@ -108,6 +108,7 @@ if __name__ == "__main__":
             patch_ansatz_elements = ansatz_element_pool[i * size_patch_commutators:(i + 1) * size_patch_commutators]
             patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
                                                                            ansatz_elements=patch_ansatz_elements,
+                                                                           n_system_qubits=molecule.n_orbitals,
                                                                            multithread=multithread)
             print(i)
             dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
@@ -122,6 +123,7 @@ if __name__ == "__main__":
                                 int(len(ansatz_element_pool) / size_patch_commutators) * size_patch_commutators:]
         patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
                                                                        ansatz_elements=patch_ansatz_elements,
+                                                                       n_system_qubits=molecule.n_orbitals,
                                                                        multithread=multithread)
         dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
         del patch_dynamic_commutators

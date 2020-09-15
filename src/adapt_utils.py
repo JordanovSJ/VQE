@@ -59,7 +59,7 @@ class GradAdaptUtils:
     def compute_commutators(qubit_ham, ansatz_elements, n_system_qubits, multithread=False):
         commutators = {}
         if multithread:
-            ray.init(num_cpus=config.multithread['n_cpus'], memory=1e10, object_store_memory=1e10)
+            ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [
                     element, GradAdaptUtils.get_commutator_matrix_multithread.

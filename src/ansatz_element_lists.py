@@ -95,7 +95,7 @@ class GSDExcitations:
         for i, j in itertools.combinations(range(self.n_orbitals), 2):
             if self.element_type == 'fermi_excitation':
                 single_excitations.append(SFExc(i, j, system_n_qubits=self.n_orbitals))
-            elif self.element_type == 'qubit_excitation' or self.element_type == 'exchange':
+            elif self.element_type == 'qubit_excitation':
                 single_excitations.append(SQExc(i, j, system_n_qubits=self.n_orbitals))
             elif self.element_type == 'efficient_fermi_excitation':
                 single_excitations.append(EffSFExc(i, j, system_n_qubits=self.n_orbitals))
@@ -111,28 +111,37 @@ class GSDExcitations:
     def get_double_excitations(self):
         double_excitations = []
         for i, j, k, l in itertools.combinations(range(self.n_orbitals), 4):
-            if i % 2 + j % 2 == k % 2 + l % 2:  # for PWE include even-even - odd -odd
-                if self.element_type == 'fermi_excitation':
-                    # double_excitations.append(DFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+            if self.element_type == 'fermi_excitation':
+                # double_excitations.append(DFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + j % 2 == k % 2 + l % 2:
                     double_excitations.append(DFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + k % 2 == j % 2 + l % 2:
                     double_excitations.append(DFExc([i, k], [j, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + l % 2 == k % 2 + j % 2:
                     double_excitations.append(DFExc([i, l], [k, j], system_n_qubits=self.n_orbitals))
-                elif self.element_type == 'qubit_excitation':
-                    # double_excitations.append(DQExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+            elif self.element_type == 'qubit_excitation':
+                # double_excitations.append(DQExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + j % 2 == k % 2 + l % 2:
                     double_excitations.append(DQExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + k % 2 == j % 2 + l % 2:
                     double_excitations.append(DQExc([i, k], [j, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + l % 2 == k % 2 + j % 2:
                     double_excitations.append(DQExc([i, l], [k, j], system_n_qubits=self.n_orbitals))
-                elif self.element_type == 'efficient_fermi_excitation':
-                    # double_excitations.append(EffDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+            elif self.element_type == 'efficient_fermi_excitation':
+                # double_excitations.append(EffDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + j % 2 == k % 2 + l % 2:
                     double_excitations.append(EffDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + k % 2 == j % 2 + l % 2:
                     double_excitations.append(EffDFExc([i, k], [j, l], system_n_qubits=self.n_orbitals))
+                if i % 2 + l % 2 == k % 2 + j % 2:
                     double_excitations.append(EffDFExc([i, l], [k, j], system_n_qubits=self.n_orbitals))
-                elif self.element_type == 'pauli_word_excitation':
+            elif self.element_type == 'pauli_word_excitation':
+                if (i + j) % 2 == (k + l) % 2:
                     qubit_excitation = DQExc([i, j], [k, l]).excitation
                     double_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals) for term in
                                            qubit_excitation.terms]
-                else:
-                    raise Exception('invalid double excitation type.')
+            else:
+                raise Exception('invalid double excitation type.')
 
         return double_excitations
 
