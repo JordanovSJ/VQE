@@ -20,13 +20,13 @@ import ast
 
 if __name__ == "__main__":
 
-    r = 1.546
-    molecule = LiH(r=r)  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
+    r = 2
+    molecule = BeH2(r=r)  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
 
     # logging
     LogUtils.log_cofig()
 
-    df = pandas.read_csv("../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_r=1_03-Sep-2020.csv")
+    df = pandas.read_csv("../results/adapt_vqe_results/vip/BeH2_h_adapt_gsdqe_r=3_04-Sep-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     init_ansatz_elements = []
@@ -57,9 +57,9 @@ if __name__ == "__main__":
     #     excitation = QubitOperator(df.loc[i]['element'])
     #     init_ansatz_elements.append(PauliWordExcitation(excitation, system_n_qubits=molecule.n_qubits))
 
-    # ansatz_elements = init_ansatz_elements[:52]
+    ansatz_elements = init_ansatz_elements[:102]
 
-    ansatz_elements = [SpinCompDQExc([2, 3], [10, 11], 12), SpinCompDQExc([2, 3], [5, 10], 12)]
+    # ansatz_elements = [SpinCompDQExc([2, 3], [10, 11], 12), SpinCompDQExc([2, 3], [5, 10], 12)]
 
     # var_parameters = list(df['var_parameters'])[:52]
     var_parameters = list(numpy.zeros(len(ansatz_elements)))

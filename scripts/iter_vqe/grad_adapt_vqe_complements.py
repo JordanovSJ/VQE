@@ -105,7 +105,7 @@ if __name__ == "__main__":
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH() #(frozen_els=frozen_els)
 
-    ansatz_element_type = 'eff_fermi_excitation'
+    ansatz_element_type = 'efficient_fermi_excitation'
     # ansatz_element_type = 'qubit_excitation'
     # ansatz_element_type = 'pauli_word_excitation'
 

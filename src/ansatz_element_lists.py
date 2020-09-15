@@ -179,25 +179,24 @@ class SpinComplementGSDExcitations:
         double_excitations = []
 
         for i, j, k, l in itertools.combinations(range(self.n_orbitals), 4):
-            if i % 2 + j % 2 == k % 2 + l % 2:  # for PWE ?????? checked for H4
 
-                if self.element_type == 'fermi_excitation':
-                    new_d_excitation_1 = SpinCompDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals)
-                    new_d_excitation_2 = SpinCompDFExc([i, k], [j, l], system_n_qubits=self.n_orbitals)
-                    new_d_excitation_3 = SpinCompDFExc([i, l], [k, j], system_n_qubits=self.n_orbitals)
-                elif self.element_type == 'qubit_excitation':
-                    new_d_excitation_1 = SpinCompDQExc([i, j], [k, l], system_n_qubits=self.n_orbitals)
-                    new_d_excitation_2 = SpinCompDQExc([i, k], [j, l], system_n_qubits=self.n_orbitals)
-                    new_d_excitation_3 = SpinCompDQExc([i, l], [k, j], system_n_qubits=self.n_orbitals)
-                else:
-                    raise Exception('invalid single spin complement excitation type.')
+            if self.element_type == 'fermi_excitation':
+                new_d_excitation_1 = SpinCompDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals)
+                new_d_excitation_2 = SpinCompDFExc([i, k], [j, l], system_n_qubits=self.n_orbitals)
+                new_d_excitation_3 = SpinCompDFExc([i, l], [k, j], system_n_qubits=self.n_orbitals)
+            elif self.element_type == 'qubit_excitation':
+                new_d_excitation_1 = SpinCompDQExc([i, j], [k, l], system_n_qubits=self.n_orbitals)
+                new_d_excitation_2 = SpinCompDQExc([i, k], [j, l], system_n_qubits=self.n_orbitals)
+                new_d_excitation_3 = SpinCompDQExc([i, l], [k, j], system_n_qubits=self.n_orbitals)
+            else:
+                raise Exception('invalid single spin complement excitation type.')
 
-                if new_d_excitation_1.excitation != 0*openfermion.QubitOperator():
-                    double_excitations.append(new_d_excitation_1)
-                if new_d_excitation_2.excitation != 0*openfermion.QubitOperator():
-                    double_excitations.append(new_d_excitation_2)
-                if new_d_excitation_3.excitation != 0*openfermion.QubitOperator():
-                    double_excitations.append(new_d_excitation_3)
+            if new_d_excitation_1.excitation != 0*openfermion.QubitOperator() and (i % 2 + j % 2 == k % 2 + l % 2):
+                double_excitations.append(new_d_excitation_1)
+            if new_d_excitation_2.excitation != 0*openfermion.QubitOperator() and (i % 2 + k % 2 == j % 2 + l % 2):
+                double_excitations.append(new_d_excitation_2)
+            if new_d_excitation_3.excitation != 0*openfermion.QubitOperator() and (i % 2 + l % 2 == k % 2 + j % 2):
+                double_excitations.append(new_d_excitation_3)
 
         return double_excitations
 

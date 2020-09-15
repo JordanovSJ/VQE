@@ -567,8 +567,13 @@ class SpinCompDQExc(AnsatzElement):
            set(self.orbitals_pair_2) == set(self.complement_orbitals_pair_2):
             excitation = self.get_qubit_excitation(self.orbitals_pair_1, self.orbitals_pair_2)
         else:
-            excitation = self.get_qubit_excitation(self.orbitals_pair_1, self.orbitals_pair_2) \
-                         - self.get_qubit_excitation(self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
+            sign_1 = (-1)**((self.orbitals_pair_1[0] > self.orbitals_pair_1[1]) +
+                            (self.orbitals_pair_2[0] > self.orbitals_pair_2[1]))
+            sign_2 = (-1) ** ((self.complement_orbitals_pair_1[0] > self.complement_orbitals_pair_1[1]) +
+                              (self.complement_orbitals_pair_2[0] > self.complement_orbitals_pair_2[1]))
+
+            excitation = sign_1*self.get_qubit_excitation(self.orbitals_pair_1, self.orbitals_pair_2) \
+                         + sign_2*self.get_qubit_excitation(self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
 
         super(SpinCompDQExc, self).\
             __init__(element='spin_d_q_exc_{}_{}'.format(orbitals_pair_1, orbitals_pair_2),  order=2, n_var_parameters=1,
@@ -582,8 +587,12 @@ class SpinCompDQExc(AnsatzElement):
            set(self.orbitals_pair_2) == set(self.complement_orbitals_pair_2):
             return DQExc.d_q_exc_qasm(parameter_1, self.orbitals_pair_1, self.orbitals_pair_2)
         else:
-            return DQExc.d_q_exc_qasm(parameter_1, self.orbitals_pair_1, self.orbitals_pair_2) \
-                   + DQExc.d_q_exc_qasm(-parameter_1, self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
+            sign_1 = (-1) ** ((self.orbitals_pair_1[0] > self.orbitals_pair_1[1]) +
+                              (self.orbitals_pair_2[0] > self.orbitals_pair_2[1]))
+            sign_2 = (-1) ** ((self.complement_orbitals_pair_1[0] > self.complement_orbitals_pair_1[1]) +
+                              (self.complement_orbitals_pair_2[0] > self.complement_orbitals_pair_2[1]))
+            return DQExc.d_q_exc_qasm(sign_1*parameter_1, self.orbitals_pair_1, self.orbitals_pair_2) \
+                   + DQExc.d_q_exc_qasm(sign_2*parameter_1, self.complement_orbitals_pair_1, self.complement_orbitals_pair_2)
 
 
 #######################################################################################################################

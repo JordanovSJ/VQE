@@ -100,6 +100,7 @@ if __name__ == "__main__":
 
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                          element_type=ansatz_element_type).get_ansatz_elements()
+    print('Pool len: ', len(ansatz_element_pool))
 
     if precompute_commutators:
         dynamic_commutators = {}
