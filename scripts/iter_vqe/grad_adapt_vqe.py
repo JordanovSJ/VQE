@@ -77,10 +77,10 @@ if __name__ == "__main__":
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH() #(frozen_els=frozen_els)
 
-    ansatz_element_type = 'efficient_fermi_excitation'
-    # ansatz_element_type = 'qubit_excitation'
+    # ansatz_element_type = 'efficient_fermi_excitation'
+    ansatz_element_type = 'qubit_excitation'
     # ansatz_element_type = 'pauli_word_excitation'
-    spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
+    spin_complement = True  # only for fermionic and qubit excitations (not for PWEs)
 
     accuracy = 1e-12  # 1e-3 for chemical accuracy
     # threshold = 1e-14
