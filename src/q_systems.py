@@ -133,7 +133,7 @@ class BeH2(QSystem):
 class H2O(QSystem):
 
     def __init__(self, r=1.0285, theta=0.538*numpy.pi, basis='sto-3g', frozen_els=None, ham_matrix=False):
-        super(H2O, self).__init__(name='BeH2', geometry=self.get_geometry(r, theta), multiplicity=1, charge=0, n_orbitals=14,
+        super(H2O, self).__init__(name='H20', geometry=self.get_geometry(r, theta), multiplicity=1, charge=0, n_orbitals=14,
                                   n_electrons=10, basis=basis, frozen_els=frozen_els, ham_matrix=ham_matrix)
 
     @staticmethod
