@@ -20,7 +20,7 @@ import ast
 
 if __name__ == "__main__":
 
-    r = 1.25
+    r = 0.75
     molecule = BeH2(r=r)  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
 
     # logging
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     #     excitation = QubitOperator(df.loc[i]['element'])
     #     init_ansatz_elements.append(PauliWordExcitation(excitation, system_n_qubits=molecule.n_qubits))
 
-    ansatz_elements = init_ansatz_elements[:99]
+    ansatz_elements = init_ansatz_elements[:109]
 
     # ansatz_elements = [SpinCompDQExc([2, 3], [10, 11], 12), SpinCompDQExc([2, 3], [5, 10], 12)]
 

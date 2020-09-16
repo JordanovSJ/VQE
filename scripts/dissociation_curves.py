@@ -46,8 +46,8 @@ if __name__ == "__main__":
             raise Exception('Unrecognized ansatz element.')
 
     # ansatz = ansatz[:74]  # 74 for 1e-8
-    ansatz = UCCSD(molecule.n_qubits, molecule.n_electrons).get_ansatz_elements()
-    # ansatz = []
+    # ansatz = UCCSD(molecule.n_qubits, molecule.n_electrons).get_ansatz_elements()
+    ansatz = []
     var_parameters = list(numpy.zeros(len(ansatz)))
 
     optimizer = 'BFGS'
@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     energies = []
     fci_energies = []
-    rs = [ 3, 3.25, 3.5, 3.75]
+    rs = [0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5]
     df_count = 0
 
     for r in rs:
