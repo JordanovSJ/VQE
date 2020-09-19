@@ -25,8 +25,7 @@
 
 
 IDEAS for algorithms and papers:
--ADAPT based on energy contribution (DONE)
-    - iterate through elements until find a significant contribution, not maximum
+
 -computing excited states
 -other VQE applications
 -different classical optimizers for different ansatz elements: gradient descent for excitations; direct search otherwise
