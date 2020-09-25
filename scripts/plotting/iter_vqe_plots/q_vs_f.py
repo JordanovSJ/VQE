@@ -13,26 +13,32 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 if __name__ == "__main__":
 
     db_qe_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdqe_31-Jul-2020.csv')
+    # db_qe_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdqe_comp_pairs_14-Sep-2020.csv')
+    db_qe_lih['n_pars'] = numpy.arange(len(db_qe_lih)) + 1
     db_fe_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdfe_27-Jul-2020.csv')
+    # db_fe_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdfe_comp_pairs_16-Sep-2020.csv')
+    db_fe_lih['n_pars'] = numpy.arange(len(db_fe_lih)) + 1
 
     db_qe_beh2 = pandas.read_csv('../../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdqe_27-Aug-2020.csv')
+    db_qe_beh2['n_pars'] = numpy.arange(len(db_qe_beh2)) + 1
     db_fe_beh2 = pandas.read_csv('../../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv')
+    db_fe_beh2['n_pars'] = numpy.arange(len(db_fe_beh2)) + 1
 
     fig, ax = plt.subplots()
 
-    df_col = 'n'
+    df_col = 'n_pars'
     linewidth = 0.4
     marker = '_'
 
-    ax.plot(db_qe_lih[df_col], db_qe_lih['error'], label='LiH, qubit excitations', marker=marker, linewidth=linewidth, color='peru')
-    ax.plot(db_fe_lih[df_col], db_fe_lih['error'], label='LiH, fermionic excitations', marker=marker, linewidth=linewidth, color='blue')
+    ax.plot(db_qe_lih[df_col], db_qe_lih['error'], label='LiH, qubit excitations', marker=marker, linewidth=linewidth, color='navy')
+    ax.plot(db_fe_lih[df_col], db_fe_lih['error'], label='LiH, fermionic excitations', marker=marker, linewidth=linewidth, color='darkred')
 
-    ax.plot(db_qe_beh2[df_col], db_qe_beh2['error'], label='BeH2, qubit excitations', marker=marker, linewidth=linewidth, color='orange')
-    ax.plot(db_fe_beh2[df_col], db_fe_beh2['error'], label='BeH2, fermionic excitations', marker=marker, linewidth=linewidth, color='cornflowerblue')
+    ax.plot(db_qe_beh2[df_col], db_qe_beh2['error'], label='BeH2, qubit excitations', marker=marker, linewidth=linewidth, color='royalblue')
+    ax.plot(db_fe_beh2[df_col], db_fe_beh2['error'], label='BeH2, fermionic excitations', marker=marker, linewidth=linewidth, color='indianred')
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chemical accuracy')
 
-    ax.set_xlabel('Number of iterations/parameters')
+    ax.set_xlabel('Number of ansatz elements/excitations')
     ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
     ax.set_ylim(1e-9, 1e-1)
     ax.set_xlim(0, 120)
