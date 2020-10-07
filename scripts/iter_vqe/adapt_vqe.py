@@ -84,7 +84,7 @@ if __name__ == "__main__":
     # threshold = 1e-14
     max_ansatz_elements = 250
 
-    multithread = True
+    multithread = False
     use_grad = True  # for optimizer
     precompute_commutators = True
     size_patch_commutators = 500

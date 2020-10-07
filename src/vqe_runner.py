@@ -140,7 +140,9 @@ class VQERunner:
         return opt_energy
 
     @ray.remote
-    def vqe_run_multithread(self, ansatz, initial_var_parameters=None, initial_statevector_qasm=None):
+    def vqe_run_multithread(self, ansatz, initial_var_parameters=None, init_state_qasm=None):
+
+        assert len(ansatz) > 0
 
         if initial_var_parameters is None or initial_var_parameters == []:
             var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz]))
@@ -151,33 +153,19 @@ class VQERunner:
         # create it as a list so we can pass it by reference
         local_iteration = [0]
 
+        backend = self.backend_type(self.q_system)
+
         # partial function to be used in the optimizer
-        H_sparse_matrix = get_sparse_operator(self.q_system.jw_qubit_ham)
         if self.use_ansatz_gradient:
             for element in ansatz:
                 element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
 
-        get_energy = partial(self.get_energy, ansatz=ansatz, multithread=True,
-                             multithread_iteration=local_iteration, H_sparse_matrix=H_sparse_matrix)
+        get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm)
 
-        # if no ansatz elements supplied, calculate the energy without using the optimizer
-        if len(ansatz) == 0:
-            return get_energy(var_parameters)
+        get_gradient = partial(self.get_ansatz_gradient, ansatz=ansatz, backend=backend,
+                               init_state_qasm=init_state_qasm)
 
         if self.use_ansatz_gradient:
-            statevector_ref = [[]]
-            var_parameters_ref = [[]]
-
-            get_energy = partial(self.get_energy, ansatz=ansatz,
-                                 initial_statevector_qasm=initial_statevector_qasm, ham_sparse_matrix=H_sparse_matrix,
-                                 precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref,
-                                 multithread=True, multithread_iteration=local_iteration)
-
-            get_gradient = partial(self.get_ansatz_gradient, ansatz=ansatz,
-                                   ham_sparse_matrix=H_sparse_matrix,
-                                   initial_statevector_qasm=initial_statevector_qasm,
-                                   precomputed_statevector=statevector_ref, previous_var_parameters=var_parameters_ref)
-
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer, jac=get_gradient,
                                                  options=self.optimizer_options, tol=config.optimizer_tol,
                                                  bounds=config.optimizer_bounds)
