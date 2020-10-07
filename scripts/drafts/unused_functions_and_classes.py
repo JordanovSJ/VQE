@@ -84,7 +84,7 @@ class HeuristicAnsatz1:
 
         qasm = self.get_element_qasm(double_parameters)
         # return just a single ansatz element
-        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation_generator=qasm, element_type=self.ansatz_type,
                              n_var_parameters=(1+double_parameters)*self.n_orbitals)
 
 
@@ -121,7 +121,7 @@ class HeuristicAnsatz2:
 
         qasm = self.get_element_qasm(double_parameters)
         # return just a single ansatz element
-        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation_generator=qasm, element_type=self.ansatz_type,
                              n_var_parameters=1*(1+double_parameters)*self.n_orbitals+1)
 
 
@@ -176,7 +176,7 @@ class HeuristicAnsatz3:
 
         qasm = self.get_element_qasm(double_parameters, index)
         # return just a single ansatz element
-        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation_generator=qasm, element_type=self.ansatz_type,
                              n_var_parameters=self.n_parameters)
 
 
@@ -188,7 +188,7 @@ class ExchangeAnsatz1(AnsatzElement):
 
         n_var_parameters = min(n_electrons, n_orbitals - n_electrons)*(1 + n_blocks)
         super(ExchangeAnsatz1, self).\
-            __init__(excitation=None, element_type=str(self), n_var_parameters=n_var_parameters)
+            __init__(excitation_generator=None, element_type=str(self), n_var_parameters=n_var_parameters)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == self.n_var_parameters

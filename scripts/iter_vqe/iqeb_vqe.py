@@ -89,9 +89,7 @@ if __name__ == "__main__":
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = H4() #(frozen_els=frozen_els)
 
-    # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
-    ## ansatz_element_type = 'pauli_word_excitation'
 
     accuracy = 1e-12  # 1e-3 for chemical accuracy
     # threshold = 1e-14
@@ -238,10 +236,10 @@ if __name__ == "__main__":
             raise Exception('Wrong element order ..')
 
         if compl_element_to_add is None:
-            result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
+            result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add],
                                         initial_var_parameters=var_parameters + [0])
         else:
-            result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements + [element_to_add, compl_element_to_add],
+            result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add, compl_element_to_add],
                                         initial_var_parameters=var_parameters + [0, 0])
 
         current_energy = result.fun
@@ -268,7 +266,7 @@ if __name__ == "__main__":
                         element_qubits = []
                 except AttributeError:
                     # this case corresponds to Pauli word excitation
-                    element_qubits = elementt.excitation
+                    element_qubits = elementt.excitation_generator
 
                 gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
                 df_data.loc[df_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e,
@@ -299,8 +297,8 @@ if __name__ == "__main__":
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz_elements=ansatz_elements)
-    final_result = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz=ansatz_elements)
+    final_result = vqe_runner_final.vqe_run(ansatz=ansatz_elements)
     t = time.time()
 
     print(final_result)
