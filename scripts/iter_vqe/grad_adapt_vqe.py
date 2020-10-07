@@ -72,13 +72,13 @@ def get_ansatz_from_csv(db, molecule, ansatz_element_type=None, spin_complement=
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.546
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH() #(frozen_els=frozen_els)
+    molecule = H4() #(frozen_els=frozen_els)
 
-    # ansatz_element_type = 'efficient_fermi_excitation'
-    ansatz_element_type = 'qubit_excitation'
+    ansatz_element_type = 'fermi_excitation'
+    # ansatz_element_type = 'qubit_excitation'
     # ansatz_element_type = 'pauli_word_excitation'
     spin_complement = True  # only for fermionic and qubit excitations (not for PWEs)
 
