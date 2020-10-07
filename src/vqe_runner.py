@@ -127,8 +127,7 @@ class VQERunner:
 
         return self.backend.ansatz_gradient(var_parameters, q_system=self.q_system, ansatz=ansatz_elements,
                                             init_state_qasm=initial_statevector_qasm,
-                                            precomputed_statevector=statevector,
-                                            ham_sparse_matrix=ham_sparse_matrix)
+                                            precomputed_statevector=statevector, ham_sparse_matrix=ham_sparse_matrix)
 
     def vqe_run(self, ansatz_elements=None, initial_var_parameters=None, initial_statevector_qasm=None):
 

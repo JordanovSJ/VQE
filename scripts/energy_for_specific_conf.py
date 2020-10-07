@@ -29,6 +29,8 @@ if __name__ == "__main__":
     df = pandas.read_csv("../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_19-Sep-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
+    var_pars = []
+
     init_ansatz_elements = []
 
     for i in range(len(df)):
