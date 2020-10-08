@@ -42,7 +42,7 @@ def matrix_to_str(matrix):
 
 if __name__ == "__main__":
     molecule = BeH2()
-    df = pandas.read_csv("../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv")
+    df = pandas.read_csv("../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv")
     n_cnot_counts = []
 
     for i in range(len(df)):

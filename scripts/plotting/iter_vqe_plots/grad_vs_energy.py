@@ -12,11 +12,11 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_n_1_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdqe_comp_pairs_14-Sep-2020.csv')
-    db_n_3_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+    db_n_1_lih = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_comp_pairs_14-Sep-2020.csv')
+    db_n_3_lih = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
 
-    db_n_1_beh2 = pandas.read_csv('../../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdqe_comp_pairs_17-Sep-2020.csv')
-    db_n_3_beh2 = pandas.read_csv('../../../results/adapt_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+    db_n_1_beh2 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdqe_comp_pairs_17-Sep-2020.csv')
+    db_n_3_beh2 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
 
     fig, ax = plt.subplots()
 

@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_config()
 
-    df = pandas.read_csv("../results/adapt_vqe_results/BeH2_g_adapt_gsdfe_comp_exc_19-Sep-2020.csv")
+    df = pandas.read_csv("../results/iter_vqe_results/BeH2_g_adapt_gsdfe_comp_exc_19-Sep-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     var_pars = []

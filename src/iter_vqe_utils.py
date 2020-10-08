@@ -1,11 +1,14 @@
-import ray
 from openfermion import get_sparse_operator, QubitOperator
 from src import config
 from src import backends
+from src.ansatz_elements import *
+
 import time
+import ray
+import ast
 
 
-class EnergyAdaptUtils:
+class IterVQEEnergyUtils:
     # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
     def get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements, initial_var_parameters=None,
@@ -36,10 +39,10 @@ class EnergyAdaptUtils:
     @staticmethod
     def get_largest_energy_reduction_ansatz_element(vqe_runner, ansatz_elements, initial_var_parameters=None,
                                                     ansatz=None, multithread=False):
-        elements_results = EnergyAdaptUtils.get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements,
-                                                                                  initial_var_parameters=initial_var_parameters,
-                                                                                  initial_ansatz=ansatz,
-                                                                                  multithread=multithread)
+        elements_results = IterVQEEnergyUtils.get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements,
+                                                                                    initial_var_parameters=initial_var_parameters,
+                                                                                    initial_ansatz=ansatz,
+                                                                                    multithread=multithread)
         return min(elements_results, key=lambda x: x[1].fun)
 
     # NOT used
@@ -47,14 +50,14 @@ class EnergyAdaptUtils:
     @staticmethod
     def get_ansatz_elements_below_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=[],
                                             initial_ansatz=[], multithread=False):
-        elements_results = EnergyAdaptUtils.get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements,
-                                                                                  initial_var_parameters=initial_var_parameters,
-                                                                                  initial_ansatz=initial_ansatz,
-                                                                                  multithread=multithread)
+        elements_results = IterVQEEnergyUtils.get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements,
+                                                                                    initial_var_parameters=initial_var_parameters,
+                                                                                    initial_ansatz=initial_ansatz,
+                                                                                    multithread=multithread)
         return [element_result for element_result in elements_results if element_result[1].fun <= threshold]
 
 
-class GradAdaptUtils:
+class IterVQEGradientUtils:
 
     # calculate commutators the commutators of H, with the excitation generators of the ansatz_elements
     @staticmethod
@@ -64,7 +67,7 @@ class GradAdaptUtils:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [
-                    element, GradAdaptUtils.get_commutator_matrix_multithread.
+                    element, IterVQEGradientUtils.get_commutator_matrix_multithread.
                     remote(QubitOperator(str(element.excitation_generator)),
                            # H_qubit_operator and excitation_generator are passed by values, and deleted in
                            # get_commutator_matrix_multithread.Otherwise ray.threads keep local copies that fill the RAM
@@ -150,7 +153,7 @@ class GradAdaptUtils:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [
-                    element, GradAdaptUtils.get_excitation_gradient_multithread.
+                    element, IterVQEGradientUtils.get_excitation_gradient_multithread.
                     remote(element, ansatz, var_parameters, backend, commutator_sparse_matrix=get_commutator_matrix(element))
                  ]
                 for element in ansatz_elements
@@ -172,11 +175,57 @@ class GradAdaptUtils:
     def get_largest_gradient_ansatz_elements(ansatz_elements, q_system, backend_type=backends.QiskitSim, var_parameters=None
                                              , ansatz=None, n=1, multithread=False, dynamic_commutators=None):
 
-        elements_results = GradAdaptUtils.get_ansatz_elements_gradients(ansatz_elements, q_system,
-                                                                        var_parameters=var_parameters,
-                                                                        ansatz=ansatz,
-                                                                        multithread=multithread,
-                                                                        dynamic_commutator_matrices=dynamic_commutators,
-                                                                        backend_type=backend_type)
+        elements_results = IterVQEGradientUtils.get_ansatz_elements_gradients(ansatz_elements, q_system,
+                                                                              var_parameters=var_parameters,
+                                                                              ansatz=ansatz,
+                                                                              multithread=multithread,
+                                                                              dynamic_commutator_matrices=dynamic_commutators,
+                                                                              backend_type=backend_type)
         elements_results.sort(key=lambda x: abs(x[1]))
         return elements_results[-n:]
+
+
+class IterVQEDataUtils:
+    @staticmethod
+    def save_data(data_frame, molecule, time_stamp, ansatz_element_type=None, frozen_els=None, iter_vqe_type='iqeb'):
+        filename = '{}_{}_{}_{}_{}.csv'.format(molecule.name, iter_vqe_type, ansatz_element_type, frozen_els, time_stamp)
+        try:
+            data_frame.to_csv('../../results/iter_vqe_results/'+filename)
+        except FileNotFoundError:
+            try:
+                data_frame.to_csv('results/iter_vqe_results/'+filename)
+            except FileNotFoundError as fnf:
+                print(fnf)
+
+    # TODO: make this less ugly and more general
+    @staticmethod
+    def get_ansatz_from_data_frame(data_frame, q_system):
+        ansatz = []
+        for i in range(len(data_frame)):
+            element = data_frame.loc[i]['element']
+            element_qubits = data_frame.loc[i]['element_qubits']
+            if element[0] == 'e' and element[4] == 's':
+                ansatz.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[0] == 'e' and element[4] == 'd':
+                ansatz.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[0] == 's' and element[2] == 'q':
+                ansatz.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[0] == 'd' and element[2] == 'q':
+                ansatz.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[:2] == '1j':
+                ansatz.append(PauliStringExc(QubitOperator(element), system_n_qubits=q_system.n_qubits))
+            elif element[:8] == 'spin_s_f':
+                ansatz.append(SpinCompSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[:8] == 'spin_d_f':
+                ansatz.append(SpinCompDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[:8] == 'spin_s_q':
+                ansatz.append(SpinCompSQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[:8] == 'spin_d_q':
+                ansatz.append(SpinCompDQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            else:
+                print(element, element_qubits)
+                raise Exception('Unrecognized ansatz element.')
+
+        var_pars = list(data_frame['var_parameters'])
+
+        return ansatz, var_pars

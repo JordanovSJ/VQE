@@ -6,8 +6,9 @@ import pandas
 
 
 if __name__ == "__main__":
-    db_g_fe = pandas.read_csv('../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdfe_27-Jul-2020.csv')
-    db_g_spin_fe = pandas.read_csv('../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdfe_spin_complement_27-Aug-2020.csv')
+    db_g_fe = pandas.read_csv('../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_27-Jul-2020.csv')
+    db_g_spin_fe = pandas.read_csv(
+        '../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_spin_complement_27-Aug-2020.csv')
 
     fig, ax = plt.subplots()
 

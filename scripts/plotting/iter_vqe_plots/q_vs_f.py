@@ -12,16 +12,16 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_qe_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdqe_31-Jul-2020.csv')
+    db_qe_lih = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_31-Jul-2020.csv')
     # db_qe_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdqe_comp_pairs_14-Sep-2020.csv')
     db_qe_lih['n_pars'] = numpy.arange(len(db_qe_lih)) + 1
-    db_fe_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdfe_27-Jul-2020.csv')
+    db_fe_lih = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_27-Jul-2020.csv')
     # db_fe_lih = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdfe_comp_pairs_16-Sep-2020.csv')
     db_fe_lih['n_pars'] = numpy.arange(len(db_fe_lih)) + 1
 
-    db_qe_beh2 = pandas.read_csv('../../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdqe_27-Aug-2020.csv')
+    db_qe_beh2 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdqe_27-Aug-2020.csv')
     db_qe_beh2['n_pars'] = numpy.arange(len(db_qe_beh2)) + 1
-    db_fe_beh2 = pandas.read_csv('../../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv')
+    db_fe_beh2 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv')
     db_fe_beh2['n_pars'] = numpy.arange(len(db_fe_beh2)) + 1
 
     fig, ax = plt.subplots()

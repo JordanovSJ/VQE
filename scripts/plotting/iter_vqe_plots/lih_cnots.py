@@ -12,9 +12,9 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_iqeb = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
-    db_adapt = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_16-Sep-2020.csv')  # bad
-    db_q_adapt = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdpwe_15-Sep-2020.csv')
+    db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+    db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_16-Sep-2020.csv')  # bad
+    db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_15-Sep-2020.csv')
 
     fig, ax = plt.subplots()
 

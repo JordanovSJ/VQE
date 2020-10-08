@@ -8,65 +8,14 @@ import datetime
 
 import sys
 import ast
-sys.path.append('../')
+sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_lists import *
 from src.backends import QiskitSim
 from src.utils import LogUtils
-from src.adapt_utils import GradAdaptUtils
-
-
-def save_data(df_data, molecule, time_stamp, ansatz_element_type=None, frozen_els=None):
-    if ansatz_element_type is None:
-        ansatz_element_type = 'unspecified'
-
-    try:
-        df_data.to_csv('../../results/adapt_vqe_results/{}_{}_{}_{}.csv'.format(molecule.name, ansatz_element_type, frozen_els, time_stamp))
-    except FileNotFoundError:
-        try:
-            df_data.to_csv('results/adapt_vqe_results/{}_{}_{}_{}.csv'.format(molecule.name, ansatz_element_type, frozen_els, time_stamp))
-        except FileNotFoundError as fnf:
-            print(fnf)
-
-
-def get_ansatz_from_csv(db, molecule, ansatz_element_type=None, spin_complement=False ):
-    ansatz = []
-
-    if ansatz_element_type == 'pauli_word_excitation':
-        for i in range(len(db)):
-            excitation = QubitOperator(db.loc[i]['element'])
-            ansatz.append(PauliStringExc(excitation, system_n_qubits=molecule.n_qubits))
-    elif spin_complement:
-        for i in range(len(db)):
-            element = db.loc[i]['element']
-            element_qubits = db.loc[i]['element_qubits']
-            if element[5] == 's':
-                ansatz.append(
-                    SpinCompSFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-            elif element[5] == 'd':
-                ansatz.append(
-                    SpinCompDFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    else:
-        for i in range(len(db)):
-            element = db.loc[i]['element']
-            element_qubits = db.loc[i]['element_qubits']
-            if element[0] == 'e' and element[4] == 's':
-                ansatz.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-            elif element[0] == 'e' and element[4] == 'd':
-                ansatz.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-            elif element[0] == 's' and element[2] == 'q':
-                ansatz.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-            elif element[0] == 'd' and element[2] == 'q':
-                ansatz.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-            else:
-                print(element, element_qubits)
-                raise Exception('Unrecognized ansatz element.')
-
-    var_pars = list(db['var_parameters'])
-
-    return ansatz, var_pars
+from src.iter_vqe_utils import *
 
 
 if __name__ == "__main__":
@@ -96,8 +45,7 @@ if __name__ == "__main__":
         ansatz_elements = []
         var_parameters = []
     else:
-        ansatz_elements, var_parameters = get_ansatz_from_csv(init_db, molecule, ansatz_element_type=ansatz_element_type
-                                                              , spin_complement=spin_complement)
+        ansatz_elements, var_parameters = IterVQEDataUtils.get_ansatz_from_data_frame(init_db, molecule)
 
         print(len(ansatz_elements))
         print(len(var_parameters))
@@ -129,7 +77,7 @@ if __name__ == "__main__":
                                                            element_type=ansatz_element_type).get_ansatz_elements()
     else:
         ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                             element_type=ansatz_element_type).get_ansatz_elements()
+                                             ansatz_element_type=ansatz_element_type).get_ansatz_elements()
 
     print('Pool len: ', len(ansatz_element_pool))
 
@@ -138,10 +86,10 @@ if __name__ == "__main__":
         print('Calculating commutators')
         for i in range(int(len(ansatz_element_pool)/size_patch_commutators)):
             patch_ansatz_elements = ansatz_element_pool[i*size_patch_commutators:(i+1)*size_patch_commutators]
-            patch_dynamic_commutators = GradAdaptUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
-                                                                             ansatz_elements=patch_ansatz_elements,
-                                                                             n_system_qubits=molecule.n_orbitals,
-                                                                             multithread=multithread)
+            patch_dynamic_commutators = IterVQEGradientUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
+                                                                                   ansatz_elements=patch_ansatz_elements,
+                                                                                   n_system_qubits=molecule.n_orbitals,
+                                                                                   multithread=multithread)
             print(i)
             dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
             mem_size = 0
@@ -153,10 +101,10 @@ if __name__ == "__main__":
             del patch_ansatz_elements
 
         patch_ansatz_elements = ansatz_element_pool[(int(len(ansatz_element_pool)/size_patch_commutators)) * size_patch_commutators:]
-        patch_dynamic_commutators = GradAdaptUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
-                                                                         ansatz_elements=patch_ansatz_elements,
-                                                                         n_system_qubits=molecule.n_orbitals,
-                                                                         multithread=multithread)
+        patch_dynamic_commutators = IterVQEGradientUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
+                                                                               ansatz_elements=patch_ansatz_elements,
+                                                                               n_system_qubits=molecule.n_orbitals,
+                                                                               multithread=multithread)
         dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
         del patch_dynamic_commutators
         del patch_ansatz_elements
@@ -184,7 +132,7 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, grad = GradAdaptUtils.\
+        element_to_add, grad = IterVQEGradientUtils.\
             get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend_type=vqe_runner.backend_type,
                                                  var_parameters=var_parameters, ansatz=ansatz_elements,
                                                  multithread=multithread, dynamic_commutators=dynamic_commutators)[0]

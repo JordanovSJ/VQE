@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     # create a pool of ansatz elements
     initial_ansatz_elements_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                  element_type=ansatz_element_type,
+                                                  ansatz_element_type=ansatz_element_type,
                                                   compute_exc_mtrx=compute_exc_mtrx).get_double_excitations()
 
     # New pool

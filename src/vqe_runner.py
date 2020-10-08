@@ -148,7 +148,7 @@ class VQERunner:
                 element.compute_excitation_mtrx()
 
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm,
-                             multithread=True)
+                             multithread=True, multithread_iteration=local_thread_iteration)
 
         get_gradient = partial(self.get_ansatz_gradient, ansatz=ansatz, backend=backend,
                                init_state_qasm=init_state_qasm)

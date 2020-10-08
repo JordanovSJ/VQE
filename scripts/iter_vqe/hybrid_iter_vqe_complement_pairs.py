@@ -127,7 +127,7 @@ if __name__ == "__main__":
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()
+                                         ansatz_element_type=ansatz_element_type).get_ansatz_elements()
     print('Pool len: ', len(ansatz_element_pool))
 
     if do_precompute_commutators:

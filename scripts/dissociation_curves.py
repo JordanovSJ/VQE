@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_config()
 
-    df = pandas.read_csv('../results/adapt_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
+    df = pandas.read_csv('../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
     #
     ansatz = []
     for i in range(len(df)):

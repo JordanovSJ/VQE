@@ -12,8 +12,8 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_pairs = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdqe_comp_pairs_14-Sep-2020.csv')
-    db_exc = pandas.read_csv('../../../results/adapt_vqe_results/vip/LiH_g_adapt_gsdqe_comp_exc_19-Sep-2020.csv')
+    db_pairs = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_comp_pairs_14-Sep-2020.csv')
+    db_exc = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_comp_exc_19-Sep-2020.csv')
 
     fig, ax = plt.subplots()
 
