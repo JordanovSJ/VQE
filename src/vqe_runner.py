@@ -20,7 +20,7 @@ import ray
 
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, q_system, ansatz=None, backend_type=backends.QiskitSim, optimizer=config.optimizer,
+    def __init__(self, q_system, backend_type=backends.QiskitSim, optimizer=config.optimizer,
                  optimizer_options=config.optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
 
         self.backend_type = backend_type
@@ -35,36 +35,26 @@ class VQERunner:
         self.new_energy = None
 
         self.iteration = 0
-        self.t_previous_iter = 0
-
-        LogUtils.vqe_info(q_system, ansatz_elements=ansatz, basis=q_system.basis,
-                          molecule_geometry_params=q_system.get_geometry, backend=backend_type)
-        logging.info('Optimizer: {}. Optimizer options: {}'.format(optimizer, optimizer_options))
+        self.time_previous_iter = 0
 
     def get_energy(self, var_parameters, ansatz, backend, multithread=False, multithread_iteration=None,
                    init_state_qasm=None):
 
         if multithread is False:
-            iteration_duration = time.time() - self.t_previous_iter
-            self.t_previous_iter = time.time()
+            iteration_duration = time.time() - self.time_previous_iter
+            self.time_previous_iter = time.time()
 
         energy = backend.get_expectation_value(var_parameters=var_parameters, ansatz=ansatz,
                                                init_state_qasm=init_state_qasm)
 
-        # TODO: the code below is a mess .. FIX
-        # if we run in parallel process don't print and update info
+        # TODO: all this below should go into a proper call_back function supplied to the optimizer
         if multithread:
             if multithread_iteration is not None:
                 try:
                     multithread_iteration[0] += 1
                 except TypeError as te:
                     logging.warning(te)
-
-            # # TODO this logging does not work when running in parallel
-            # logging.info('Parallel process. Energy {}. Iteration duration: {}'.format(energy, time.time() - t_start))
         else:
-
-            # print info
             self.new_energy = energy
             delta_e = self.new_energy - self.previous_energy
             self.previous_energy = self.new_energy
@@ -74,7 +64,6 @@ class VQERunner:
             if self.print_var_parameters:
                 message += ' Params: ' + str(var_parameters)
             logging.info(message)
-            print(message)
 
             self.iteration += 1
 
@@ -103,11 +92,10 @@ class VQERunner:
             message += '-----Ansatz type {}------\n'.format(ansatz[0].element)
         message += '-----Statevector and energy calculated using {}------\n'.format(backend)
         message += '-----Optimizer {}------\n'.format(self.optimizer)
-        print(message)
         logging.info(message)
 
         self.iteration = 1
-        self.t_previous_iter = time.time()
+        self.time_previous_iter = time.time()
 
         # precompute frequently used quantities
         if self.use_ansatz_gradient:
@@ -133,7 +121,6 @@ class VQERunner:
         for element in ansatz:
             element.delete_excitation_mtrx()
 
-        print(opt_energy)
         logging.info(opt_energy)
 
         opt_energy['n_iters'] = self.iteration  # cheating
@@ -151,16 +138,17 @@ class VQERunner:
             var_parameters = initial_var_parameters
 
         # create it as a list so we can pass it by reference
-        local_iteration = [0]
+        local_thread_iteration = [0]
 
         backend = self.backend_type(self.q_system)
 
-        # partial function to be used in the optimizer
+        # precomputed excitation matrices.
         if self.use_ansatz_gradient:
             for element in ansatz:
-                element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
+                element.compute_excitation_mtrx()
 
-        get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm)
+        get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm,
+                             multithread=True)
 
         get_gradient = partial(self.get_ansatz_gradient, ansatz=ansatz, backend=backend,
                                init_state_qasm=init_state_qasm)
@@ -176,17 +164,17 @@ class VQERunner:
 
         if len(ansatz) == 1:
             message = 'Ran VQE for element {}. Energy {}. Iterations {}'.format(ansatz[0].element,
-                                                                                opt_energy.fun, local_iteration[0])
-            logging.info(message)
+                                                                                opt_energy.fun, local_thread_iteration[0])
+            # logging.info(message)
             print(message)
         else:
-            message = 'Ran VQE. Energy {}. Iterations {}'.format(opt_energy.fun, local_iteration[0])
-            logging.info(message)
+            message = 'Ran VQE. Energy {}. Iterations {}'.format(opt_energy.fun, local_thread_iteration[0])
+            # logging.info(message)
             print(message)
 
         # Prevents memory overflow with ray
         for element in ansatz:
             element.delete_excitation_mtrx()
 
-        opt_energy['n_iters'] = local_iteration[0]  # cheating
+        opt_energy['n_iters'] = local_thread_iteration[0]  # cheating
         return opt_energy

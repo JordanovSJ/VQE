@@ -61,7 +61,7 @@ if __name__ == "__main__":
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    LogUtils.log_cofig()
+    LogUtils.log_config()
     logging.info('{}, r={} ,{}'.format(molecule.name, r, ansatz_element_type))
 
     # create a pool of ansatz elements
@@ -105,11 +105,11 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, result = EnergyAdaptUtils.get_most_significant_ansatz_element(vqe_runner,
-                                                                                      new_ansatz_element_pool,
-                                                                                      initial_var_parameters=var_parameters,
-                                                                                      ansatz=ansatz_elements,
-                                                                                      multithread=multithread)
+        element_to_add, result = EnergyAdaptUtils.get_largest_energy_reduction_ansatz_element(vqe_runner,
+                                                                                              new_ansatz_element_pool,
+                                                                                              initial_var_parameters=var_parameters,
+                                                                                              ansatz=ansatz_elements,
+                                                                                              multithread=multithread)
         current_energy = result.fun
 
         # TODO works only if all elements have single var par

@@ -109,7 +109,7 @@ if __name__ == "__main__":
     # var_parameters = list(vqe_runner.vqe_run(ansatz_elements, var_parameters).x)
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-    LogUtils.log_cofig()
+    LogUtils.log_config()
     logging.info('{}, r={} ,{}'.format(molecule.name, r, ansatz_element_type))
 
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
@@ -141,10 +141,10 @@ if __name__ == "__main__":
         print('Calculating commutators')
         for i in range(int(len(ansatz_element_pool)/size_patch_commutators)):
             patch_ansatz_elements = ansatz_element_pool[i*size_patch_commutators:(i+1)*size_patch_commutators]
-            patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
-                                                                           ansatz_elements=patch_ansatz_elements,
-                                                                           n_system_qubits=molecule.n_orbitals,
-                                                                           multithread=multithread)
+            patch_dynamic_commutators = GradAdaptUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
+                                                                             ansatz_elements=patch_ansatz_elements,
+                                                                             n_system_qubits=molecule.n_orbitals,
+                                                                             multithread=multithread)
             print(i)
             dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
             mem_size = 0
@@ -156,10 +156,10 @@ if __name__ == "__main__":
             del patch_ansatz_elements
 
         patch_ansatz_elements = ansatz_element_pool[(int(len(ansatz_element_pool)/size_patch_commutators)) * size_patch_commutators:]
-        patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
-                                                                       ansatz_elements=patch_ansatz_elements,
-                                                                       n_system_qubits=molecule.n_orbitals,
-                                                                       multithread=multithread)
+        patch_dynamic_commutators = GradAdaptUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
+                                                                         ansatz_elements=patch_ansatz_elements,
+                                                                         n_system_qubits=molecule.n_orbitals,
+                                                                         multithread=multithread)
         dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
         del patch_dynamic_commutators
         del patch_ansatz_elements
@@ -188,11 +188,11 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         element_to_add, grad = GradAdaptUtils.\
-            most_significant_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend,
-                                             var_parameters=var_parameters, ansatz=ansatz_elements,
-                                             multithread=multithread,
-                                             do_precompute_statevector=do_precompute_statevector,
-                                             dynamic_commutators=dynamic_commutators)[0]
+            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend,
+                                                 var_parameters=var_parameters, ansatz=ansatz_elements,
+                                                 multithread=multithread,
+                                                 do_precompute_statevector=do_precompute_statevector,
+                                                 dynamic_commutators=dynamic_commutators)[0]
         print(element_to_add.element)
 
         result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add], initial_var_parameters=var_parameters + [0])

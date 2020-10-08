@@ -16,7 +16,7 @@ class QasmUtilsTest(unittest.TestCase):
         qasm = QasmUtils.qasm_header(2)
         qasm += 'x q[{}];\n'.format(control)
         qasm += QasmUtils.controlled_y_rotation(numpy.pi / 2, control, target)
-        statevector = QiskitSim.statevector_from_qasm(qasm).round(3)
+        statevector = QiskitSim.get_statevector_from_qasm(qasm).round(3)
 
         expected_statevector = numpy.array([0, 1, 0, 1])/numpy.sqrt(2)
         expected_statevector = expected_statevector.round(3)
@@ -33,7 +33,7 @@ class QasmUtilsTest(unittest.TestCase):
         qasm += 'x q[{}];\n'.format(control)
         qasm += 'x q[{}];\n'.format(target)
         qasm += QasmUtils.controlled_y_rotation(numpy.pi / 2, control, target)
-        statevector = QiskitSim.statevector_from_qasm(qasm).round(3)
+        statevector = QiskitSim.get_statevector_from_qasm(qasm).round(3)
 
         expected_statevector = numpy.array([0, -1, 0, 1]) / numpy.sqrt(2)
         expected_statevector = expected_statevector.round(3)
@@ -56,7 +56,7 @@ class QasmUtilsTest(unittest.TestCase):
         for angle in angles:
 
             statevector_1 = QiskitSim.\
-                statevector_from_qasm(qasm_1 + QasmUtils.partial_exchange(angle, qubit_1, qubit_2)).round(3)
+                get_statevector_from_qasm(qasm_1 + QasmUtils.partial_exchange(angle, qubit_1, qubit_2)).round(3)
 
             expected_statevector_1 = numpy.array([0, numpy.cos(angle), -numpy.sin(angle), 0])
             expected_statevector_1 = expected_statevector_1.round(3)
@@ -65,7 +65,7 @@ class QasmUtilsTest(unittest.TestCase):
                 self.assertEqual(statevector_1[i], expected_statevector_1[i])
 
             statevector_2 = QiskitSim.\
-                statevector_from_qasm(qasm_2 + QasmUtils.partial_exchange(angle, qubit_1, qubit_2)).round(3)
+                get_statevector_from_qasm(qasm_2 + QasmUtils.partial_exchange(angle, qubit_1, qubit_2)).round(3)
 
             expected_statevector_2 = numpy.array([0, numpy.sin(angle), numpy.cos(angle), 0])
             expected_statevector_2 = expected_statevector_2.round(3)

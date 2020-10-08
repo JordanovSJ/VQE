@@ -1,15 +1,12 @@
-from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
+from openfermion.transforms import get_sparse_operator
 from openfermion import QubitOperator
-from openfermion.utils import jw_hartree_fock_state
-import time
 
+import sys
 import qiskit
 import scipy
 import numpy
 import logging
 import datetime
-
-from src import config
 
 
 class QasmUtils:
@@ -253,32 +250,37 @@ class MatrixUtils:
 class LogUtils:
 
     @staticmethod
-    def log_cofig():
+    def log_config():
         time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
         logging_filename = '{}'.format(time_stamp)
+        stdout_handler = logging.StreamHandler(sys.stdout)
+
         try:
-            logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+            logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
                                 format='%(levelname)s %(asctime)s %(message)s')
         except FileNotFoundError:
             try:
-                logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
                                     format='%(levelname)s %(asctime)s %(message)s')
             except FileNotFoundError:
-                logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
                                     format='%(levelname)s %(asctime)s %(message)s')
+
+        # make logger print to console (it will not if multithreaded)
+        logging.getLogger().addHandler(stdout_handler)
 
         # disable logging from qiskit
         logging.getLogger('qiskit').setLevel(logging.WARNING)
 
     @staticmethod
-    def vqe_info(molecule, ansatz_elements=None, basis=None, molecule_geometry_params=None, backend=None):
+    def vqe_info(molecule, ansatz=None, basis=None, molecule_geometry_params=None, backend=None):
         logging.info('Initialize VQE for {}; n_electrons={}, n_orbitals={}; geometry: {}'
                      .format(molecule.name, molecule.n_electrons, molecule.n_orbitals, molecule_geometry_params))
         if basis is not None:
             logging.info('Basis: {}'.format(basis))
         if backend is not None:
             logging.info('Backend: {}'.format(backend))
-        if ansatz_elements is not None:
-            n_var_params = sum([el.n_var_parameters for el in ansatz_elements])
-            logging.info('Number of Ansatz elements: {}'.format(len(ansatz_elements)))
+        if ansatz is not None:
+            n_var_params = sum([el.n_var_parameters for el in ansatz])
+            logging.info('Number of Ansatz elements: {}'.format(len(ansatz)))
             logging.info('Number of variational parameters: {}'.format(n_var_params))

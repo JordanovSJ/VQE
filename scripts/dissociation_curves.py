@@ -25,7 +25,7 @@ if __name__ == "__main__":
     df_data = pandas.DataFrame(columns=['r', 'E', 'fci_E', 'error', 'n_iters'])
 
     # logging
-    LogUtils.log_cofig()
+    LogUtils.log_config()
 
     df = pandas.read_csv('../results/adapt_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
     #

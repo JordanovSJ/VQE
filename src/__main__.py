@@ -19,14 +19,15 @@ if __name__ == "__main__":
     q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
 
     # logging
-    LogUtils.log_cofig()
+    LogUtils.log_config()
 
     uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
     ansatz = uccsd.get_ansatz_elements()
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend=QiskitSim, print_var_parameters=False, use_ansatz_gradient=False, optimizer=optimizer, optimizer_options=optimizer_options)
+    vqe_runner = VQERunner(q_system, backend_type=QiskitSim, print_var_parameters=False, use_ansatz_gradient=False,
+                           optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()
     result = vqe_runner.vqe_run(ansatz=ansatz)#, initial_var_parameters=var_parameters)
