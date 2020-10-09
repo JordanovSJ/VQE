@@ -29,7 +29,7 @@ if __name__ == "__main__":
     multithread = True
     use_grad = True  # for optimizer
     precompute_commutators = True
-    size_patch_commutators = 500
+    # size_patch_commutators = 500  # not used
 
     do_precompute_statevector = True  # for ansatz elements grad computation
 
@@ -64,33 +64,6 @@ if __name__ == "__main__":
                                                                          ansatz_elements=ansatz_element_pool,
                                                                          n_system_qubits=molecule.n_orbitals,
                                                                          multithread=multithread)
-        # print('Calculating commutators')
-        # for i in range(int(len(ansatz_element_pool) / size_patch_commutators)):
-        #     patch_ansatz_elements = ansatz_element_pool[i * size_patch_commutators:(i + 1) * size_patch_commutators]
-        #     patch_dynamic_commutators = GradAdaptUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
-        #                                                                      ansatz_elements=patch_ansatz_elements,
-        #                                                                      n_system_qubits=molecule.n_orbitals,
-        #                                                                      multithread=multithread)
-        #     print(i)
-        #     dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
-        #     mem_size = 0
-        #     for x in dynamic_commutators:
-        #         mem_size += dynamic_commutators[x].data.nbytes
-        #
-        #     print('Commutators size ', mem_size)
-        #     del patch_dynamic_commutators
-        #     del patch_ansatz_elements
-        #
-        # patch_ansatz_elements = ansatz_element_pool[
-        #                         int(len(ansatz_element_pool) / size_patch_commutators) * size_patch_commutators:]
-        # patch_dynamic_commutators = GradAdaptUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
-        #                                                                  ansatz_elements=patch_ansatz_elements,
-        #                                                                  n_system_qubits=molecule.n_orbitals,
-        #                                                                  multithread=multithread)
-        # dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
-        # del patch_dynamic_commutators
-        # del patch_ansatz_elements
-        # print('Finished calculating commutators')
     else:
         dynamic_commutators = None
 
@@ -196,8 +169,7 @@ if __name__ == "__main__":
         print('Added element ', ansatz[-1].element)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend_type=backend_type)
-    final_result = vqe_runner_final.vqe_run(ansatz=ansatz)
+    final_result = vqe_runner.vqe_run(ansatz=ansatz)
     t = time.time()
 
     print(final_result)
