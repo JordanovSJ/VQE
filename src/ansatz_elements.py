@@ -64,12 +64,12 @@ class PauliStringExc(AnsatzElement):
         assert list(pauli_word_excitation.terms.values())[0].real == 0  # it should be skew-Hermitian
 
         super(PauliStringExc, self).__init__(element=str(pauli_word_excitation),
-                                             order=self.pauli_word_order(pauli_word_excitation),
+                                             order=self.pauli_string_order(pauli_word_excitation),
                                              n_var_parameters=1, excitation_generator=pauli_word_excitation,
                                              system_n_qubits=system_n_qubits)
 
     @staticmethod
-    def pauli_word_order(excitation):
+    def pauli_string_order(excitation):
 
         pauli_ops = list(excitation.terms.keys())[0]
         order = 0
