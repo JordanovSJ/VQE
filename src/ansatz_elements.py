@@ -164,92 +164,11 @@ class DQExc(AnsatzElement):
         return DQExc(self.spin_complement_orbitals(self.qubits[0]), self.spin_complement_orbitals(self.qubits[1]),
                      system_n_qubits=self.system_n_qubits)
 
-    @staticmethod
-    def d_q_exc_qasm(angle, qubit_pair_1_ref, qubit_pair_2_ref):
-        # This is not required since the qubits are not ordered as for the fermi excitation
-        qubit_pair_1 = qubit_pair_1_ref.copy()
-        qubit_pair_2 = qubit_pair_2_ref.copy()
-
-        angle = angle * 2  # for consistency with the conventional fermi excitation
-        theta = angle / 8
-
-        qasm = ['']
-
-        # determine the parity of the two pairs
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
-        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
-        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
-
-        # apply a partial swap of qubits 0 and 2, controlled by 1 and 3 ##
-
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
-        # # partial ccc_y operation
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))  # 0 2
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
-
-        # ############################## partial ccc_y operation  ############ to here
-
-        qasm.append(QasmUtils.controlled_xz(qubit_pair_1[0], qubit_pair_2[0], reverse=True))
-
-        # correct for parity determination
-        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
-        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
-
-        return ''.join(qasm)
-
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
         parameter = var_parameters[0]
 
-        return self.d_q_exc_qasm(parameter, self.qubits[0], self.qubits[1])
+        return QasmUtils.d_q_exc_qasm(parameter, self.qubits[0], self.qubits[1])
 
 
 class EffSFExc(AnsatzElement):
@@ -267,48 +186,9 @@ class EffSFExc(AnsatzElement):
         return EffSFExc(self.spin_complement_orbital(self.qubits[0][0]), self.spin_complement_orbital(self.qubits[1][0]),
                         system_n_qubits=self.system_n_qubits)
 
-    @staticmethod
-    def eff_s_f_exc_qasm(angle, qubit_1, qubit_2):
-        theta = numpy.pi / 2 + angle
-        qasm = ['']
-        if qubit_2 < qubit_1:
-            x = qubit_1
-            qubit_1 = qubit_2
-            qubit_2 = x
-
-        parity_qubits = list(range(qubit_1 + 1, qubit_2))
-
-        parity_cnot_ladder = ['']
-        if len(parity_qubits) > 0:
-            for i in range(len(parity_qubits) - 1):
-                parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
-
-            qasm += parity_cnot_ladder
-            # parity dependence
-            qasm.append('h q[{}];\n'.format(qubit_1))
-            qasm.append('cx q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_1))
-            qasm.append('h q[{}];\n'.format(qubit_1))
-
-        qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
-
-        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
-        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
-
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
-
-        if len(parity_qubits) > 0:
-            qasm.append('h q[{}];\n'.format(qubit_1))
-            qasm.append('cx q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_1))
-            qasm.append('h q[{}];\n'.format(qubit_1))
-
-            qasm += parity_cnot_ladder[::-1]
-
-        return ''.join(qasm)
-
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return self.eff_s_f_exc_qasm(var_parameters[0], self.qubits[0][0], self.qubits[1][0])
+        return QasmUtils.eff_s_f_exc_qasm(var_parameters[0], self.qubits[0][0], self.qubits[1][0])
 
 
 class EffDFExc(AnsatzElement):
@@ -330,127 +210,11 @@ class EffDFExc(AnsatzElement):
         return EffDFExc(self.spin_complement_orbitals(self.qubits[0]), self.spin_complement_orbitals(self.qubits[1]),
                         system_n_qubits=self.system_n_qubits)
 
-    @staticmethod
-    def eff_d_f_exc_qasm(angle, qubit_pair_1_ref, qubit_pair_2_ref):
-
-        qubit_pair_1 = qubit_pair_1_ref.copy()
-        qubit_pair_2 = qubit_pair_2_ref.copy()
-
-        # !!!!!!!!! accounts for the missing functionality in the eff_d_f_exc circuit !!!!!
-        if qubit_pair_1[0] > qubit_pair_1[1]:
-            angle *= -1
-        if qubit_pair_2[0] > qubit_pair_2[1]:
-            angle *= -1
-
-        angle = - angle * 2  # the factor of -2 is for consistency with the conventional fermi excitation
-        theta = angle / 8
-
-        qasm = ['']
-
-        qubit_pair_1.sort()
-        qubit_pair_2.sort()
-
-        all_qubits = qubit_pair_1 + qubit_pair_2
-        all_qubits.sort()
-
-        # do not include the first qubits of qubit_pair_1 and qubit_pair_2
-        parity_qubits = list(range(all_qubits[0]+1, all_qubits[1])) + list(range(all_qubits[2]+1, all_qubits[3]))
-
-        # ladder of CNOT used to determine the parity
-        parity_cnot_ladder = ['']
-        if len(parity_qubits) > 0:
-            for i in range(len(parity_qubits) - 1):
-                parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
-            # parity_cnot_ladder.append('x q[{}];\n'.format(parity_qubits[-1]))
-
-        # determine the parity of the two pairs
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
-        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
-        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
-
-        # apply a partial swap of qubits 0 and 2, controlled by 1 and 3 ##
-
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
-
-        # apply parity sign correction 1
-        if len(parity_qubits) > 0:
-            qasm += parity_cnot_ladder
-            qasm.append('h q[{}];\n'.format(parity_qubits[-1]))
-            qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], parity_qubits[-1]))
-
-        # # partial ccc_y operation
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))  # 0 2
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
-        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
-
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
-        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
-
-        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
-
-        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
-
-        # ############################## partial ccc_y operation  ############ to here
-
-        # apply parity sign correction 2
-        if len(parity_qubits) > 0:
-            qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], parity_qubits[-1]))
-            qasm.append('h q[{}];\n'.format(parity_qubits[-1]))
-            qasm += parity_cnot_ladder[::-1]
-
-        qasm.append(QasmUtils.controlled_xz(qubit_pair_1[0], qubit_pair_2[0], reverse=True))
-
-        # correct for parity determination
-        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
-        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
-
-        return ''.join(qasm)
-
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
         parameter = var_parameters[0]
 
-        return self.eff_d_f_exc_qasm(parameter, self.qubits[0], self.qubits[1])
+        return QasmUtils.eff_d_f_exc_qasm(parameter, self.qubits[0], self.qubits[1])
 
 
 class SpinCompSFExc(AnsatzElement):
@@ -474,12 +238,12 @@ class SpinCompSFExc(AnsatzElement):
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
 
-        qasm = EffSFExc.eff_s_f_exc_qasm(var_parameters[0], self.qubits[0][0], self.qubits[1][0])
+        qasm = QasmUtils.eff_s_f_exc_qasm(var_parameters[0], self.qubits[0][0], self.qubits[1][0])
 
         if {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[0], *self.complement_qubits[1]} and \
            {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[1], *self.complement_qubits[0]}:
 
-            qasm += EffSFExc.eff_s_f_exc_qasm(var_parameters[0], self.complement_qubits[0][0], self.complement_qubits[1][0])
+            qasm += QasmUtils.eff_s_f_exc_qasm(var_parameters[0], self.complement_qubits[0][0], self.complement_qubits[1][0])
 
         return qasm
 
@@ -510,13 +274,13 @@ class SpinCompDFExc(AnsatzElement):
         assert len(var_parameters) == 1
         parameter_1 = var_parameters[0]
 
-        qasm = EffDFExc.eff_d_f_exc_qasm(parameter_1, self.qubits[0], self.qubits[1])
+        qasm = QasmUtils.eff_d_f_exc_qasm(parameter_1, self.qubits[0], self.qubits[1])
 
         # if the spin complement is different, add a qasm for it
         if [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[0]), set(self.complement_qubits[1])] and \
            [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[1]), set(self.complement_qubits[0])]:
 
-           qasm += EffDFExc.eff_d_f_exc_qasm(parameter_1, self.complement_qubits[0], self.complement_qubits[1])
+           qasm += QasmUtils.eff_d_f_exc_qasm(parameter_1, self.complement_qubits[0], self.complement_qubits[1])
 
         return qasm
 
@@ -578,12 +342,12 @@ class SpinCompDQExc(AnsatzElement):
         assert len(var_parameters) == 1
         parameter_1 = var_parameters[0]
 
-        qasm = DQExc.d_q_exc_qasm(parameter_1, self.qubits[0], self.qubits[1])
+        qasm = QasmUtils.d_q_exc_qasm(parameter_1, self.qubits[0], self.qubits[1])
 
         if [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[0]), set(self.complement_qubits[1])] and \
            [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[1]), set(self.complement_qubits[0])]:
 
-            qasm += DQExc.d_q_exc_qasm(self.sign*parameter_1, self.complement_qubits[0], self.complement_qubits[1])
+            qasm += QasmUtils.d_q_exc_qasm(self.sign*parameter_1, self.complement_qubits[0], self.complement_qubits[1])
 
         return qasm
 

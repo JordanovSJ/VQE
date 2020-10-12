@@ -8,6 +8,18 @@ import ray
 import ast
 
 
+class IterVQEQasmUtils:
+    @staticmethod
+    def gate_count_from_ansatz(ansatz, n_qubits, var_parameters=None):
+        n_var_parameters = sum([x.n_var_parameters for x in ansatz])
+        if var_parameters is None:
+            var_parameters = numpy.zeros(n_var_parameters)
+        else:
+            assert n_var_parameters == len(var_parameters)
+        qasm = backends.QiskitSim.qasm_from_ansatz(ansatz, var_parameters)
+        return QasmUtils.gate_count_from_qasm(qasm, n_qubits)
+
+
 class IterVQEEnergyUtils:
     # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
@@ -110,9 +122,9 @@ class IterVQEGradientUtils:
     def get_excitation_gradient_multithread(excitation_element, ansatz, var_parameters, backend,
                                             commutator_sparse_matrix=None):
         t0 = time.time()
-        gradient = backend.get_excitation_gradient(excitation_element, ansatz, var_parameters,
-                                                   commutator_sparse_matrix=commutator_sparse_matrix,
-                                                   update_statevector=False)  # experiment with true
+        gradient = backend.excitation_gradient(excitation_element, ansatz, var_parameters,
+                                               commutator_sparse_matrix=commutator_sparse_matrix,
+                                               update_statevector=False)  # experiment with true
 
         message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation_element.element, gradient,
                                                                       time.time() - t0)
@@ -132,7 +144,7 @@ class IterVQEGradientUtils:
 
         backend = backend_type(q_system)
         # initialize the statevector once, and use it to calculate all gradients
-        backend.get_updated_statevector(ansatz, var_parameters)
+        backend.update_statevector(ansatz, var_parameters)
 
         # use this function to supply precomputed commutators to the gradient evaluation function
         def get_commutator_matrix(element):
@@ -164,8 +176,8 @@ class IterVQEGradientUtils:
         else:
             elements_results = [
                 [
-                    element, backend.get_excitation_gradient(element, ansatz, var_parameters,
-                                                             commutator_sparse_matrix=get_commutator_matrix(element))]
+                    element, backend.excitation_gradient(element, ansatz, var_parameters,
+                                                         commutator_sparse_matrix=get_commutator_matrix(element))]
                 for element in ansatz_elements
             ]
         return elements_results

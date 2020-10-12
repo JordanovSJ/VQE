@@ -17,7 +17,7 @@ if __name__ == "__main__":
     r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H4() #(frozen_els=frozen_els)
+    molecule = H2() #(frozen_els=frozen_els)
 
     backend_type = QiskitSim
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         ansatz_element_type=ansatz_element_type).get_ansatz_elements()
+                                         ansatz_element_type=ansatz_element_type).get_excitations()
     print('Pool len: ', len(ansatz_element_pool))
 
     if precompute_commutators:
@@ -141,7 +141,7 @@ if __name__ == "__main__":
                 # save iteration data
                 element_qubits = new_ansatz_element.qubits
 
-                gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz, molecule.n_orbitals)
+                gate_count = IterVQEQasmUtils.gate_count_from_ansatz(ansatz, molecule.n_orbitals)
                 results_data_frame.loc[df_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e,
                                          'error': current_energy - fci_energy,
                                          'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],

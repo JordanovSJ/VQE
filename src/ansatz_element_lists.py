@@ -26,8 +26,8 @@ class SDExcitations:
                     single_excitations.append(EffSFExc(i, j, system_n_qubits=self.n_orbitals))
                 elif self.element_type == 'pauli_str_exc':
                     qubit_excitation = SQExc(i, j).excitation_generator
-                    single_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals) for term in
-                                           qubit_excitation.terms]
+                    single_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals)
+                                           for term in qubit_excitation.terms]
                 else:
                     raise Exception('Invalid single excitation type.')
 
@@ -56,7 +56,7 @@ class SDExcitations:
 
         return double_excitations
 
-    def get_ansatz_elements(self):
+    def get_excitations(self):
         return self.get_single_excitations() + self.get_double_excitations()
 
 
@@ -118,14 +118,13 @@ class GSDExcitations:
 
         return double_excitations
 
-    def get_ansatz_elements(self):
+    def get_excitations(self):
         return self.get_single_excitations() + self.get_double_excitations()
 
 
-# Only for fermionic and qubit excitations
-class SpinComplementGSDExcitations:
+# Only for fermionic and qubit excitations, use for spin zero systems only
+class SpinCompGSDExcitations:
     def __init__(self, n_orbitals, n_electrons, element_type='eff_f_exc'):
-        # works for spin zero systems only
         assert n_orbitals % 2 == 0
         assert n_electrons % 2 == 0
 
@@ -206,7 +205,7 @@ class SpinComplementGSDExcitations:
 
         return double_excitations
 
-    def get_ansatz_elements(self):
+    def get_excitations(self):
         return self.get_single_excitations() + self.get_double_excitations()
 
 
@@ -233,5 +232,5 @@ class UCCSD:
                             double_excitations.append(EffDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
         return double_excitations
 
-    def get_ansatz_elements(self):
+    def get_excitations(self):
         return self.get_single_excitations() + self.get_double_excitations()

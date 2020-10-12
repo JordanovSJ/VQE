@@ -21,10 +21,10 @@ from src.iter_vqe_utils import *
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.546
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH() #(frozen_els=frozen_els)
+    molecule = H2() #(frozen_els=frozen_els)
 
     ansatz_element_type = 'eff_f_exc'
     spin_complement = True
@@ -72,11 +72,11 @@ if __name__ == "__main__":
 
     # get the pool of ansatz elements
     if spin_complement:
-        ansatz_element_pool = SpinComplementGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                           element_type=ansatz_element_type).get_ansatz_elements()
+        ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                                     element_type=ansatz_element_type).get_excitations()
     else:
         ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                             ansatz_element_type=ansatz_element_type).get_ansatz_elements()
+                                             ansatz_element_type=ansatz_element_type).get_excitations()
 
     print('Pool len: ', len(ansatz_element_pool))
 
@@ -129,7 +129,7 @@ if __name__ == "__main__":
             # save iteration data
             element_qubits = element_to_add.qubits
 
-            gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
+            gate_count = IterVQEQasmUtils.gate_count_from_ansatz(ansatz_elements, molecule.n_orbitals)
             results_data_frame.loc[iter_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e,
                                                   'error': current_energy - fci_energy, 'n_iters': result['n_iters'],
                                                   'cnot_count': gate_count['cnot_count'], 'u1_count': gate_count['u1_count'],
@@ -140,7 +140,7 @@ if __name__ == "__main__":
             # df_data['var_parameters'] = var_parameters
             # save data
             IterVQEDataUtils.save_data(results_data_frame, molecule, time_stamp, frozen_els=frozen_els,
-                                       ansatz_element_type=ansatz_element_type, iter_vqe_type='iqeb')
+                                       ansatz_element_type=ansatz_element_type, iter_vqe_type='adapt')
 
             message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, Grad{}, var. parameters: {}' \
                 .format(element_to_add.element, current_energy, delta_e, grad, var_parameters)

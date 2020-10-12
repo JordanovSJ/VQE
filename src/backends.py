@@ -12,6 +12,7 @@ import numpy
 
 
 class QiskitSim:
+    # TODO: instead of storing the statevector here, better use a cache module and make QiskitSim entirely static
     def __init__(self, q_system):
         self.n_qubits = q_system.n_orbitals
         self.n_electrons = q_system.n_electrons
@@ -21,9 +22,24 @@ class QiskitSim:
         self.statevector = None
         self.var_parameters = None
 
+    # get the qasm for an ansatz, defined by a list of ansatz elements (ansatz) and corresponding variational pars.
+    @staticmethod
+    def qasm_from_ansatz(ansatz, var_parameters):
+        qasm = ['']
+        # perform ansatz operations
+        n_used_var_pars = 0
+        for element in ansatz:
+            # take unused var. parameters for the ansatz element
+            element_var_pars = var_parameters[n_used_var_pars:(n_used_var_pars + element.n_var_parameters)]
+            n_used_var_pars += len(element_var_pars)
+            qasm_element = element.get_qasm(element_var_pars)
+            qasm.append(qasm_element)
+
+        return ''.join(qasm)
+
     # return a statevector in the form of an array from a qasm circuit
     @staticmethod
-    def get_statevector_from_qasm(qasm_circuit):
+    def statevector_from_qasm(qasm_circuit):
         n_threads = config.qiskit_n_threads
         backend_options = {"method": "statevector", "zero_threshold": config.qiskit_zero_threshold,
                            "max_parallel_threads": n_threads, "max_parallel_experiments": n_threads,
@@ -37,7 +53,7 @@ class QiskitSim:
 
     # return a statevector in the form of an array from a list of ansatz elements
     @staticmethod
-    def get_statevector_from_ansatz(ansatz, var_parameters, n_qubits, n_electrons, init_state_qasm=None):
+    def statevector_from_ansatz(ansatz, var_parameters, n_qubits, n_electrons, init_state_qasm=None):
         assert n_electrons < n_qubits
         qasm = ['']
         qasm.append(QasmUtils.qasm_header(n_qubits))
@@ -48,7 +64,7 @@ class QiskitSim:
         else:
             qasm.append(init_state_qasm)
 
-        ansatz_qasm = QasmUtils.ansatz_qasm(ansatz, var_parameters)
+        ansatz_qasm = QiskitSim.qasm_from_ansatz(ansatz, var_parameters)
         qasm += ansatz_qasm
 
         # Get a circuit of SWAP gates to reverse the order of qubits. This is required in order the statevector to
@@ -56,23 +72,23 @@ class QiskitSim:
         qasm.append(QasmUtils.reverse_qubits_qasm(n_qubits))
 
         qasm = ''.join(qasm)
-        statevector = QiskitSim.get_statevector_from_qasm(qasm)
+        statevector = QiskitSim.statevector_from_qasm(qasm)
         return statevector
 
-    def get_updated_statevector(self, ansatz, var_parameters, init_state_qasm=None):
+    def update_statevector(self, ansatz, var_parameters, init_state_qasm=None):
         if self.var_parameters is not None and var_parameters == self.var_parameters:  # this condition is not neccesserily sufficinet
             assert self.statevector is not None
         else:
             self.var_parameters = var_parameters
-            self.statevector = QiskitSim.get_statevector_from_ansatz(ansatz, var_parameters, self.n_qubits, self.n_electrons,
-                                                                     init_state_qasm=init_state_qasm)
+            self.statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, self.n_qubits, self.n_electrons,
+                                                                 init_state_qasm=init_state_qasm)
 
         return self.statevector
 
     # return the expectation value of a qubit_operator. By default return the expectation value of H
-    def get_expectation_value(self, ansatz, var_parameters, qubit_operator=None, init_state_qasm=None):
+    def expectation_value(self, ansatz, var_parameters, qubit_operator=None, init_state_qasm=None):
 
-        statevector = self.get_updated_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
+        statevector = self.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
         sparse_statevector = scipy.sparse.csr_matrix(statevector)
 
         # get the operator in the form of a sparse matrix
@@ -87,8 +103,8 @@ class QiskitSim:
 
         return expectation_value.real  #, statevector
 
-    def get_excitation_gradient(self, excitation, ansatz, var_parameters, commutator_sparse_matrix=None,
-                                init_state_qasm=None, update_statevector=True):
+    def excitation_gradient(self, excitation, ansatz, var_parameters, commutator_sparse_matrix=None,
+                            init_state_qasm=None, update_statevector=True):
         if commutator_sparse_matrix is None:
             excitation_generator = excitation.excitation_generator
             assert type(excitation) == QubitOperator
@@ -96,20 +112,19 @@ class QiskitSim:
                 get_sparse_operator(self.jw_qubit_H * excitation_generator - excitation_generator * self.jw_qubit_H,
                                     n_qubits=self.n_qubits)
         if update_statevector:
-            statevector = self.get_updated_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
+            statevector = self.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
             sparse_statevector = scipy.sparse.csr_matrix(statevector)
         else:
             sparse_statevector = scipy.sparse.csr_matrix(self.statevector)
         return sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
 
-    # NOT properly tested
-    def get_ansatz_gradient(self, var_parameters, ansatz, init_state_qasm=None):
+    def ansatz_gradient(self, var_parameters, ansatz, init_state_qasm=None):
         """
             dE_i/dt_i = 2 Re{<psi_i| phi_i>}
         """
 
         assert len(ansatz) == len(var_parameters)
-        ansatz_statevector = self.get_updated_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
+        ansatz_statevector = self.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
         phi = scipy.sparse.csr_matrix(ansatz_statevector).transpose().conj()
         psi = self.H_sparse_matrix.dot(phi)
 
@@ -134,6 +149,7 @@ class QiskitSim:
         return numpy.array(ansatz_grad)
 
 
+# NOT USED
 class MatrixCalculation:
 
     @staticmethod
@@ -157,6 +173,7 @@ class MatrixCalculation:
 
         return sparse_statevector
 
+    # Hamiltonian expected value
     @staticmethod
     def get_energy(qubit_hamiltonian, ansatz_elements, var_parameters, n_qubits, n_electrons, initial_statevector=None):
 

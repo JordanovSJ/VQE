@@ -19,7 +19,7 @@ class QiskitSimulationTest(unittest.TestCase):
         qubit_operator = openfermion.QubitOperator('X0 Y1')
         qasm_circuit = QasmUtils.qasm_header(2)
         qasm_circuit += QasmUtils.pauli_word_qasm(qubit_operator)
-        statevector = QiskitSim.get_statevector_from_qasm(qasm_circuit)
+        statevector = QiskitSim.statevector_from_qasm(qasm_circuit)
 
         expected_statevector = numpy.array([0, 0, 0, 1j])
 
@@ -34,7 +34,7 @@ class QiskitSimulationTest(unittest.TestCase):
         exp_operator = ((0, 'X'), (1, 'Z'), (2, 'Z'))
         qasm = QasmUtils.qasm_header(3)
         qasm += QasmUtils.exponent_qasm(exp_operator, -numpy.pi / 2)
-        statevector = QiskitSim.get_statevector_from_qasm(qasm)
+        statevector = QiskitSim.statevector_from_qasm(qasm)
 
         expected_statevector = numpy.zeros(8)
         expected_statevector[1] = 1
@@ -65,7 +65,7 @@ class QiskitSimulationTest(unittest.TestCase):
                 # <<< create a statevector using QiskitSimulation.get_exponent_qasm >>>
                 qasm = QasmUtils.qasm_header(n_qubits)
                 qasm += QasmUtils.exponent_qasm(qubit_operator_tuple, angle)
-                qiskit_statevector = QiskitSim.get_statevector_from_qasm(qasm)
+                qiskit_statevector = QiskitSim.statevector_from_qasm(qasm)
                 qiskit_statevector = qiskit_statevector * numpy.exp(1j * angle)  # correct for a global phase
                 qiskit_statevector = qiskit_statevector.round(2)  # round for the purpose of testing
 
@@ -97,11 +97,11 @@ class QiskitSimulationTest(unittest.TestCase):
         fermion_ham = openfermion.transforms.get_fermion_operator(molecule_ham)
         h = openfermion.transforms.jordan_wigner(fermion_ham)
 
-        ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+        ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_excitations()
         var_parameters = numpy.zeros(len(ansatz_elements))
         var_parameters[-1] = 0.11
-        energy_qiskit_sim = QiskitSim.get_expectation_value(h, ansatz_elements, var_parameters, molecule.n_orbitals,
-                                                            molecule.n_electrons)[0].real
+        energy_qiskit_sim = QiskitSim.expectation_value(h, ansatz_elements, var_parameters, molecule.n_orbitals,
+                                                        molecule.n_electrons)[0].real
         energy_matrix_mult = MatrixCalculation.get_energy(h, ansatz_elements, var_parameters, molecule.n_orbitals,
                                                           molecule.n_electrons)[0].real
 
@@ -115,7 +115,7 @@ class QiskitSimulationTest(unittest.TestCase):
         qasm = QasmUtils.qasm_header(n_qubits)
         qasm += QasmUtils.hf_state(n_electrons)
         qasm += QasmUtils.reverse_qubits_qasm(n_qubits)
-        qiskit_statevector = QiskitSim.get_statevector_from_qasm(qasm)
+        qiskit_statevector = QiskitSim.statevector_from_qasm(qasm)
 
         sparse_statevector = scipy.sparse.csr_matrix(openfermion.utils.jw_hartree_fock_state(n_electrons, n_qubits))
         array_statevector = numpy.array(sparse_statevector.todense())[0]

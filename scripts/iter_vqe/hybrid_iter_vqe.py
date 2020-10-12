@@ -99,7 +99,7 @@ if __name__ == "__main__":
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         ansatz_element_type=ansatz_element_type).get_ansatz_elements()
+                                         ansatz_element_type=ansatz_element_type).get_excitations()
     print('Pool len: ', len(ansatz_element_pool))
 
     if precompute_commutators:
@@ -201,7 +201,7 @@ if __name__ == "__main__":
                 # this case corresponds to Pauli word excitation
                 element_qubits = element_to_add.excitation_generator
 
-            gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
+            gate_count = QasmUtils.gate_count_from_ansatz(ansatz_elements, molecule.n_orbitals)
             df_data.loc[iter_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
                                        'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
                                        'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],

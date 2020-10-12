@@ -22,7 +22,7 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
-    ansatz = uccsd.get_ansatz_elements()
+    ansatz = uccsd.get_excitations()
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}

@@ -129,7 +129,7 @@ if __name__ == "__main__":
             else:
                 element_qubits = []
 
-            gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
+            gate_count = QasmUtils.gate_count_from_ansatz(ansatz_elements, molecule.n_orbitals)
             df_data.loc[count] = {'n': count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
                                   'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
                                   'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],

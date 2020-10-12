@@ -44,8 +44,8 @@ class VQERunner:
             iteration_duration = time.time() - self.time_previous_iter
             self.time_previous_iter = time.time()
 
-        energy = backend.get_expectation_value(var_parameters=var_parameters, ansatz=ansatz,
-                                               init_state_qasm=init_state_qasm)
+        energy = backend.expectation_value(var_parameters=var_parameters, ansatz=ansatz,
+                                           init_state_qasm=init_state_qasm)
 
         # TODO: all this below should go into a proper call_back function supplied to the optimizer
         if multithread:
@@ -70,7 +70,7 @@ class VQERunner:
         return energy
 
     def get_ansatz_gradient(self, var_parameters, ansatz, backend, init_state_qasm=None):
-        return backend.get_ansatz_gradient(var_parameters, ansatz=ansatz, init_state_qasm=init_state_qasm)
+        return backend.ansatz_gradient(var_parameters, ansatz=ansatz, init_state_qasm=init_state_qasm)
 
     def vqe_run(self, ansatz, initial_var_parameters=None, init_state_qasm=None):
 

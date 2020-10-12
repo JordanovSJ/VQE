@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     t0 = time.time()
 
-    ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+    ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_excitations()
 
     vqe_runner = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params={'distance': r})
 

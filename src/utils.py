@@ -9,21 +9,67 @@ import logging
 import datetime
 
 
-class QasmUtils:
+class MatrixUtils:
+    # NOT USED
+    @staticmethod
+    def get_statevector_module(sparse_statevector):
+        return numpy.sqrt(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item())
+
+    # NOT USED
+    @staticmethod
+    def renormalize_statevector(sparse_statevector):
+        statevector_module = numpy.sqrt(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item())
+        assert statevector_module.imag == 0
+        return sparse_statevector / statevector_module
+
+    # returns the compressed sparse row matrix for the exponent of a qubit operator
+    @staticmethod
+    def get_excitation_matrix(excitation_operator, n_qubits, parameter=1):
+        assert parameter.imag == 0  # ?
+        qubit_operator_matrix = get_sparse_operator(excitation_operator, n_qubits)
+        return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
+
+
+class LogUtils:
 
     @staticmethod
-    def ansatz_qasm(ansatz_elements, var_parameters):
-        qasm = ['']
-        # perform ansatz operations
-        n_used_var_pars = 0
-        for element in ansatz_elements:
-            # take unused var. parameters for the ansatz element
-            element_var_pars = var_parameters[n_used_var_pars:(n_used_var_pars + element.n_var_parameters)]
-            n_used_var_pars += len(element_var_pars)
-            qasm_element = element.get_qasm(element_var_pars)
-            qasm.append(qasm_element)
+    def log_config():
+        time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+        logging_filename = '{}'.format(time_stamp)
+        stdout_handler = logging.StreamHandler(sys.stdout)
 
-        return ''.join(qasm)
+        try:
+            logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
+                                format='%(levelname)s %(asctime)s %(message)s')
+        except FileNotFoundError:
+            try:
+                logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
+                                    format='%(levelname)s %(asctime)s %(message)s')
+            except FileNotFoundError:
+                logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
+                                    format='%(levelname)s %(asctime)s %(message)s')
+
+        # make logger print to console (it will not if multithreaded)
+        logging.getLogger().addHandler(stdout_handler)
+
+        # disable logging from qiskit
+        logging.getLogger('qiskit').setLevel(logging.WARNING)
+
+    @staticmethod
+    def vqe_info(molecule, ansatz=None, basis=None, molecule_geometry_params=None, backend=None):
+        logging.info('Initialize VQE for {}; n_electrons={}, n_orbitals={}; geometry: {}'
+                     .format(molecule.name, molecule.n_electrons, molecule.n_orbitals, molecule_geometry_params))
+        if basis is not None:
+            logging.info('Basis: {}'.format(basis))
+        if backend is not None:
+            logging.info('Backend: {}'.format(backend))
+        if ansatz is not None:
+            n_var_params = sum([el.n_var_parameters for el in ansatz])
+            logging.info('Number of Ansatz elements: {}'.format(len(ansatz)))
+            logging.info('Number of variational parameters: {}'.format(n_var_params))
+
+
+class QasmUtils:
 
     @staticmethod
     def gate_count_from_qasm(qasm, n_qubits):
@@ -51,17 +97,7 @@ class QasmUtils:
                 'cnot_count': total_cnot_count/2, 'u1_count': total_u1_count}
 
     @staticmethod
-    def gate_count_from_ansatz_elements(ansatz_elements, n_qubits, var_parameters=None):
-        n_var_parameters = sum([x.n_var_parameters for x in ansatz_elements])
-        if var_parameters is None:
-            var_parameters = numpy.zeros(n_var_parameters)
-        else:
-            assert n_var_parameters == len(var_parameters)
-        qasm = QasmUtils.ansatz_qasm(ansatz_elements, var_parameters)
-        return QasmUtils.gate_count_from_qasm(qasm, n_qubits)
-
-    @staticmethod
-    def get_circuit_matrix(qasm):
+    def unitary_matrix_from_qasm(qasm):
         backend = qiskit.Aer.get_backend('unitary_simulator')
         qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm)
         result = qiskit.execute(qiskit_circuit, backend).result()
@@ -175,14 +211,15 @@ class QasmUtils:
 
     # returns a qasm circuit for an exponent of pauli operators
     @staticmethod
-    def exponent_qasm(exponent_term, exponent_angle):
+    def exponent_qasm(exponent_term, exponent_parameter):
         assert type(exponent_term) == tuple  # TODO remove?
-        assert exponent_angle.imag == 0
+        assert exponent_parameter.imag == 0
 
         # gates for X and Y basis correction (Z by default)
         x_basis_correction = ['']
         y_basis_correction_front = ['']
         y_basis_correction_back = ['']
+
         # CNOT ladder
         cnots = ['']
 
@@ -209,7 +246,7 @@ class QasmUtils:
         # TODO make this more readable
         # add a Z-rotation between the two CNOT ladders at the last qubit
         last_qubit = exponent_term[-1][0]
-        z_rotation = 'rz({}) q[{}];\n'.format(-2*exponent_angle, last_qubit)  # exp(i*theta*Z) ~ Rz(-2*theta)
+        z_rotation = 'rz({}) q[{}];\n'.format(-2 * exponent_parameter, last_qubit)  # exp(i*theta*Z) ~ Rz(-2*theta)
 
         # create the cnot module simulating a single Trotter step
         cnots_module = cnots + [z_rotation] + cnots[::-1]
@@ -225,62 +262,243 @@ class QasmUtils:
 
         return ''.join(qasm)
 
-
-class MatrixUtils:
-    # NOT USED
+    # qasm for a double qubit excitation circuit
     @staticmethod
-    def get_statevector_module(sparse_statevector):
-        return numpy.sqrt(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item())
+    def d_q_exc_qasm(parameter, qubit_pair_1_ref, qubit_pair_2_ref):
+        # This is not required since the qubits are not ordered as for the fermi excitation
+        qubit_pair_1 = qubit_pair_1_ref.copy()
+        qubit_pair_2 = qubit_pair_2_ref.copy()
 
-    # NOT USED
+        parameter = parameter * 2  # for consistency with the conventional fermi excitation
+        theta = parameter / 8
+
+        qasm = ['']
+
+        # determine the parity of the two pairs
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+        # apply a partial swap of qubits 0 and 2, controlled by 1 and 3 ##
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
+        # # partial ccc_y operation
+        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))  # 0 2
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
+
+        # ############################## partial ccc_y operation  ############ to here
+
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_1[0], qubit_pair_2[0], reverse=True))
+
+        # correct for parity determination
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        return ''.join(qasm)
+
+    # qasm for efficient single fermionic excitation circuit
     @staticmethod
-    def renormalize_statevector(sparse_statevector):
-        statevector_module = numpy.sqrt(sparse_statevector.conj().dot(sparse_statevector.transpose()).todense().item())
-        assert statevector_module.imag == 0
-        return sparse_statevector / statevector_module
+    def eff_s_f_exc_qasm(parameter, qubit_1, qubit_2):
+        theta = numpy.pi / 2 + parameter
+        qasm = ['']
+        if qubit_2 < qubit_1:
+            x = qubit_1
+            qubit_1 = qubit_2
+            qubit_2 = x
 
-    # returns the compressed sparse row matrix for the exponent of a qubit operator
+        parity_qubits = list(range(qubit_1 + 1, qubit_2))
+
+        parity_cnot_ladder = ['']
+        if len(parity_qubits) > 0:
+            for i in range(len(parity_qubits) - 1):
+                parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
+
+            qasm += parity_cnot_ladder
+            # parity dependence
+            qasm.append('h q[{}];\n'.format(qubit_1))
+            qasm.append('cx q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_1))
+            qasm.append('h q[{}];\n'.format(qubit_1))
+
+        qasm.append(QasmUtils.controlled_xz(qubit_2, qubit_1))
+
+        qasm.append('ry({}) q[{}];\n'.format(theta, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('ry({}) q[{}];\n'.format(-theta, qubit_2))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_2, qubit_1))
+
+        if len(parity_qubits) > 0:
+            qasm.append('h q[{}];\n'.format(qubit_1))
+            qasm.append('cx q[{}], q[{}];\n'.format(parity_qubits[-1], qubit_1))
+            qasm.append('h q[{}];\n'.format(qubit_1))
+
+            qasm += parity_cnot_ladder[::-1]
+
+        return ''.join(qasm)
+
+    # qasm for efficient double fermionic excitation circuit
     @staticmethod
-    def get_excitation_matrix(excitation_operator, n_qubits, parameter=1):
-        assert parameter.imag == 0  # TODO remove?
-        qubit_operator_matrix = get_sparse_operator(excitation_operator, n_qubits)
-        return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
+    def eff_d_f_exc_qasm(parameter, qubit_pair_1_ref, qubit_pair_2_ref):
 
+        # TODO: use proper get set functions
+        # use copies of the qubit pairs, in order to change the original pairs
+        qubit_pair_1 = qubit_pair_1_ref.copy()
+        qubit_pair_2 = qubit_pair_2_ref.copy()
 
-class LogUtils:
+        # !!!!!!!!! accounts for the missing functionality in the eff_d_f_exc circuit !!!!!
+        if qubit_pair_1[0] > qubit_pair_1[1]:
+            parameter *= -1
+        if qubit_pair_2[0] > qubit_pair_2[1]:
+            parameter *= -1
 
-    @staticmethod
-    def log_config():
-        time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
-        logging_filename = '{}'.format(time_stamp)
-        stdout_handler = logging.StreamHandler(sys.stdout)
+        parameter = - parameter * 2  # the factor of -2 is for consistency with the conventional fermi excitation
+        theta = parameter / 8
 
-        try:
-            logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
-                                format='%(levelname)s %(asctime)s %(message)s')
-        except FileNotFoundError:
-            try:
-                logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
-                                    format='%(levelname)s %(asctime)s %(message)s')
-            except FileNotFoundError:
-                logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
-                                    format='%(levelname)s %(asctime)s %(message)s')
+        qasm = ['']
 
-        # make logger print to console (it will not if multithreaded)
-        logging.getLogger().addHandler(stdout_handler)
+        qubit_pair_1.sort()
+        qubit_pair_2.sort()
 
-        # disable logging from qiskit
-        logging.getLogger('qiskit').setLevel(logging.WARNING)
+        all_qubits = qubit_pair_1 + qubit_pair_2
+        all_qubits.sort()
 
-    @staticmethod
-    def vqe_info(molecule, ansatz=None, basis=None, molecule_geometry_params=None, backend=None):
-        logging.info('Initialize VQE for {}; n_electrons={}, n_orbitals={}; geometry: {}'
-                     .format(molecule.name, molecule.n_electrons, molecule.n_orbitals, molecule_geometry_params))
-        if basis is not None:
-            logging.info('Basis: {}'.format(basis))
-        if backend is not None:
-            logging.info('Backend: {}'.format(backend))
-        if ansatz is not None:
-            n_var_params = sum([el.n_var_parameters for el in ansatz])
-            logging.info('Number of Ansatz elements: {}'.format(len(ansatz)))
-            logging.info('Number of variational parameters: {}'.format(n_var_params))
+        # do not include the first qubits of qubit_pair_1 and qubit_pair_2
+        parity_qubits = list(range(all_qubits[0]+1, all_qubits[1])) + list(range(all_qubits[2]+1, all_qubits[3]))
+
+        # ladder of CNOT used to determine the parity
+        parity_cnot_ladder = ['']
+        if len(parity_qubits) > 0:
+            for i in range(len(parity_qubits) - 1):
+                parity_cnot_ladder.append('cx q[{}], q[{}];\n'.format(parity_qubits[i], parity_qubits[i + 1]))
+            # parity_cnot_ladder.append('x q[{}];\n'.format(parity_qubits[-1]))
+
+        # determine the parity of the two pairs
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+        # apply a partial swap of qubits 0 and 2, controlled by 1 and 3 ##
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
+
+        # apply parity sign correction 1
+        if len(parity_qubits) > 0:
+            qasm += parity_cnot_ladder
+            qasm.append('h q[{}];\n'.format(parity_qubits[-1]))
+            qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], parity_qubits[-1]))
+
+        # # partial ccc_y operation
+        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))  # 0 2
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[0]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[1]))  # 0 3
+        qasm.append('h q[{}];\n'.format(qubit_pair_2[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(theta, qubit_pair_1[0]))  # +
+
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_1[1]))  # 0 1
+        qasm.append('h q[{}];\n'.format(qubit_pair_1[1]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-theta, qubit_pair_1[0]))  # -
+
+        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
+
+        # ############################## partial ccc_y operation  ############ until here
+
+        # apply parity sign correction 2
+        if len(parity_qubits) > 0:
+            qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], parity_qubits[-1]))
+            qasm.append('h q[{}];\n'.format(parity_qubits[-1]))
+            qasm += parity_cnot_ladder[::-1]
+
+        qasm.append(QasmUtils.controlled_xz(qubit_pair_1[0], qubit_pair_2[0], reverse=True))
+
+        # correct for parity determination
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        return ''.join(qasm)
