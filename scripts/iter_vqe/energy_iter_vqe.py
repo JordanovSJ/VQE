@@ -35,7 +35,7 @@ if __name__ == "__main__":
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
     r = 1.316
     # theta = 0.538*numpy.pi # for H20
-    molecule = LiH()
+    molecule = H2()
 
     # ansatz_element_type = 'efficient_fermi_excitation'
     ansatz_element_type = 'qubit_excitation'
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     max_ansatz_elements = 40
 
     multithread = True
-    use_grad = True
+    use_grad = False
     compute_exc_mtrx = use_grad
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -61,12 +61,12 @@ if __name__ == "__main__":
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    LogUtils.log_cofig()
+    LogUtils.log_config()
     logging.info('{}, r={} ,{}'.format(molecule.name, r, ansatz_element_type))
 
     # create a pool of ansatz elements
     initial_ansatz_elements_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                  element_type=ansatz_element_type,
+                                                  ansatz_element_type=ansatz_element_type,
                                                   compute_exc_mtrx=compute_exc_mtrx).get_double_excitations()
 
     # New pool
@@ -105,11 +105,11 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, result = EnergyAdaptUtils.get_most_significant_ansatz_element(vqe_runner,
-                                                                                      new_ansatz_element_pool,
-                                                                                      initial_var_parameters=var_parameters,
-                                                                                      ansatz=ansatz_elements,
-                                                                                      multithread=multithread)
+        element_to_add, result = EnergyAdaptUtils.get_largest_energy_reduction_ansatz_element(vqe_runner,
+                                                                                              new_ansatz_element_pool,
+                                                                                              initial_var_parameters=var_parameters,
+                                                                                              ansatz=ansatz_elements,
+                                                                                              multithread=multithread)
         current_energy = result.fun
 
         # TODO works only if all elements have single var par
@@ -156,8 +156,8 @@ if __name__ == "__main__":
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz_elements=ansatz_elements)
-    final_result = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz=ansatz_elements)
+    final_result = vqe_runner_final.vqe_run(ansatz=ansatz_elements)
     t = time.time()
 
     print(final_result)

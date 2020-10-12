@@ -10,10 +10,11 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_h_qe = pandas.read_csv('../../results/adapt_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
-    db_g_pwe = pandas.read_csv('../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdpwe_restricted_combinations_25-Aug-2020.csv')
-    db_g_efe = pandas.read_csv('../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdefe_corrected_09-Sep-2020.csv')
-    db_g_qe = pandas.read_csv('../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdqe_27-Aug-2020.csv')
+    db_h_qe = pandas.read_csv('../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
+    db_g_pwe = pandas.read_csv(
+        '../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_restricted_combinations_25-Aug-2020.csv')
+    db_g_efe = pandas.read_csv('../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdefe_corrected_09-Sep-2020.csv')
+    db_g_qe = pandas.read_csv('../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdqe_27-Aug-2020.csv')
 
     fig, ax = plt.subplots()
 

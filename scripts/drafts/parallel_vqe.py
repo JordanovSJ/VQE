@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     ray.init(num_cpus=4)
 
-    result_ids = [[i, vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=[ansatz_element])]
+    result_ids = [[i, vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=[ansatz_element])]
                   for i, ansatz_element in enumerate(ansatz_elements_pool)]
 
     results = [[result_id[0], ray.get(result_id[1])] for result_id in result_ids]

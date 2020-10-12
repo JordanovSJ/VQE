@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
     multithread = True
     use_grad = True  # for optimizer
-    precompute_commutators = True
+    do_precompute_commutators = True
     size_patch_commutators = 5
 
     do_precompute_statevector = True  # for ansatz elements grad computation
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     init_db = None #pandas.read_csv("../../results/adapt_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-    LogUtils.log_cofig()
+    LogUtils.log_config()
     logging.info('{}, r={} ,{}'.format(molecule.name, r, ansatz_element_type))
 
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
@@ -127,18 +127,18 @@ if __name__ == "__main__":
                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         element_type=ansatz_element_type).get_ansatz_elements()
+                                         ansatz_element_type=ansatz_element_type).get_ansatz_elements()
     print('Pool len: ', len(ansatz_element_pool))
 
-    if precompute_commutators:
+    if do_precompute_commutators:
         dynamic_commutators = {}
         print('Calculating commutators')
         for i in range(int(len(ansatz_element_pool) / size_patch_commutators)):
             patch_ansatz_elements = ansatz_element_pool[i * size_patch_commutators:(i + 1) * size_patch_commutators]
-            patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
-                                                                           ansatz_elements=patch_ansatz_elements,
-                                                                           n_system_qubits=molecule.n_orbitals,
-                                                                           multithread=multithread)
+            patch_dynamic_commutators = GradAdaptUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
+                                                                             ansatz_elements=patch_ansatz_elements,
+                                                                             n_system_qubits=molecule.n_orbitals,
+                                                                             multithread=multithread)
             print(i)
             dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
             mem_size = 0
@@ -150,10 +150,10 @@ if __name__ == "__main__":
 
         patch_ansatz_elements = ansatz_element_pool[
                                 int(len(ansatz_element_pool) / size_patch_commutators) * size_patch_commutators:]
-        patch_dynamic_commutators = GradAdaptUtils.compute_commutators(qubit_ham=molecule.jw_qubit_ham,
-                                                                       ansatz_elements=patch_ansatz_elements,
-                                                                       n_system_qubits=molecule.n_orbitals,
-                                                                       multithread=multithread)
+        patch_dynamic_commutators = GradAdaptUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
+                                                                         ansatz_elements=patch_ansatz_elements,
+                                                                         n_system_qubits=molecule.n_orbitals,
+                                                                         multithread=multithread)
         dynamic_commutators = {**dynamic_commutators, **patch_dynamic_commutators}
         del patch_dynamic_commutators
         del patch_ansatz_elements
@@ -192,10 +192,10 @@ if __name__ == "__main__":
 
         # get the n elements with largest gradients
         elements_grads = GradAdaptUtils.\
-            most_significant_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend, n=n_largest_grads,
-                                             var_parameters=var_parameters, ansatz=ansatz_elements,
-                                             multithread=multithread, do_precompute_statevector=do_precompute_statevector,
-                                             dynamic_commutators=dynamic_commutators)
+            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend, n=n_largest_grads,
+                                                 var_parameters=var_parameters, ansatz=ansatz_elements,
+                                                 multithread=multithread, do_precompute_statevector=do_precompute_statevector,
+                                                 dynamic_commutators=dynamic_commutators)
 
         elements = [e_g[0] for e_g in elements_grads]
         grads = [e_g[1] for e_g in elements_grads]
@@ -205,9 +205,9 @@ if __name__ == "__main__":
         print(message)
 
         element_to_add, result =\
-            EnergyAdaptUtils.get_most_significant_ansatz_element(vqe_runner, elements,
-                                                                 initial_var_parameters=var_parameters,
-                                                                 ansatz=ansatz_elements, multithread=multithread)
+            EnergyAdaptUtils.get_largest_energy_reduction_ansatz_element(vqe_runner, elements,
+                                                                         initial_var_parameters=var_parameters,
+                                                                         ansatz=ansatz_elements, multithread=multithread)
 
         compl_element_to_add = None
         if element_to_add.order == 1:
@@ -238,10 +238,10 @@ if __name__ == "__main__":
             raise Exception('Wrong element order ..')
 
         if compl_element_to_add is None:
-            result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements+[element_to_add],
+            result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add],
                                         initial_var_parameters=var_parameters + [0])
         else:
-            result = vqe_runner.vqe_run(ansatz_elements=ansatz_elements + [element_to_add, compl_element_to_add],
+            result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add, compl_element_to_add],
                                         initial_var_parameters=var_parameters + [0, 0])
 
         current_energy = result.fun
@@ -268,7 +268,7 @@ if __name__ == "__main__":
                         element_qubits = []
                 except AttributeError:
                     # this case corresponds to Pauli word excitation
-                    element_qubits = elementt.excitation
+                    element_qubits = elementt.excitation_generator
 
                 gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
                 df_data.loc[df_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e,
@@ -299,8 +299,8 @@ if __name__ == "__main__":
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz_elements=ansatz_elements)
-    final_result = vqe_runner_final.vqe_run(ansatz_elements=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz=ansatz_elements)
+    final_result = vqe_runner_final.vqe_run(ansatz=ansatz_elements)
     t = time.time()
 
     print(final_result)

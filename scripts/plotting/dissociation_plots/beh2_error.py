@@ -7,7 +7,7 @@ from src.q_systems import *
 
 if __name__ == "__main__":
 
-    db_data_lih_hf = pandas.read_csv('../../../results/dissociation_curves/BeH2_hf_16-Sep-2020.csv')
+    db_data_lih_hf = pandas.read_csv('../../../results/dissociation_curves/BeH2_hf_06-Oct-2020.csv')
     db_data_lih_06 = pandas.read_csv('../../../results/dissociation_curves/BeH2_h_adapt_gsdqe_e-06_03-Sep-2020.csv')
     db_data_lih_08 = pandas.read_csv('../../../results/dissociation_curves/BeH2_h_adapt_gsdqe_e-08_15-Sep-2020.csv')
     db_data_lih_uccsd = pandas.read_csv('../../../results/dissociation_curves/BeH2_uccsd_08-Sep-2020.csv')
@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     plt.xlabel(r'Be-H bond distance, $\AA$')
     plt.ylabel(r'$E-E_{FCI}$, Hartree')
-    plt.ylim(1e-7, 1)
+    plt.ylim(1e-8, 1)
     plt.xlim(0.5, 3.5)
     plt.yscale('log')
     plt.grid(b=True, which='major', color='grey', linestyle='--', linewidth=0.5)
