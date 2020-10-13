@@ -13,12 +13,15 @@ import logging
 
 
 class QiskitSimCache:
-    def __init__(self, q_system):
+    def __init__(self, q_system, qubit_operator=None):
         self.n_qubits = q_system.n_orbitals
         self.n_electrons = q_system.n_electrons
         self.jw_qubit_H = q_system.jw_qubit_ham
         # TODO check if storing this in multithreading leads to memory leak
-        self.H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+        if qubit_operator is None:
+            self.operator_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+        else:
+            self.operator_sparse_matrix = get_sparse_operator(qubit_operator)
         self.statevector = None
         self.var_parameters = None
 
@@ -179,7 +182,7 @@ class QiskitSim:
             H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
         else:
             ansatz_statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
-            H_sparse_matrix = cache.H_sparse_matrix
+            H_sparse_matrix = cache.operator_sparse_matrix
 
         phi = scipy.sparse.csr_matrix(ansatz_statevector).transpose().conj()
         psi = H_sparse_matrix.dot(phi)

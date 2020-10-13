@@ -112,10 +112,10 @@ class VQERunner:
                 element.calculate_excitation_generator_matrix()  # the excitation matrices are now computed and stored in each element
 
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=self.backend, init_state_qasm=init_state_qasm,
-                             excited_state=excited_state, cache=None)
+                             excited_state=excited_state, cache=cache)
 
         get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
-                               init_state_qasm=init_state_qasm)
+                               init_state_qasm=init_state_qasm, cache=cache)
 
         if self.use_ansatz_gradient:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,
