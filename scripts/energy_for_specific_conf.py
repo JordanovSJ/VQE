@@ -39,7 +39,7 @@ if __name__ == "__main__":
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-8}
 
-    vqe_runner = VQERunner(molecule, backend_type=QiskitSim, optimizer=optimizer, optimizer_options=None,
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
                            print_var_parameters=False, use_ansatz_gradient=True)
 
     energy = vqe_runner.vqe_run(ansatz=ansatz, initial_var_parameters=var_parameters,

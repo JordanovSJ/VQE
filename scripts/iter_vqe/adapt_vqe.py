@@ -61,7 +61,7 @@ if __name__ == "__main__":
     # create a vqe runner object
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-08}
-    vqe_runner = VQERunner(molecule, backend_type=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
                            use_ansatz_gradient=use_grad)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
@@ -109,7 +109,7 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         element_to_add, grad = IterVQEGradientUtils.\
-            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend_type=vqe_runner.backend_type,
+            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend_type=vqe_runner.backend,
                                                  var_parameters=var_parameters, ansatz=ansatz_elements,
                                                  multithread=multithread, dynamic_commutators=dynamic_commutators)[0]
         print(element_to_add.element)

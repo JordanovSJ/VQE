@@ -18,16 +18,18 @@ from src.ansatz_element_lists import UCCSD
 import ray
 
 
+# TODO make this class entirely static?
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, q_system, backend_type=backends.QiskitSim, optimizer=config.optimizer,
+    def __init__(self, q_system, backend=backends.QiskitSim, optimizer=config.optimizer, use_cache=True,
                  optimizer_options=config.optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
 
-        self.backend_type = backend_type
+        self.backend = backend
         self.optimizer = optimizer
         self.optimizer_options = optimizer_options
         self.use_ansatz_gradient = use_ansatz_gradient
         self.print_var_parameters = print_var_parameters
+        self.use_cache = use_cache
 
         self.q_system = q_system
 
@@ -37,17 +39,17 @@ class VQERunner:
         self.iteration = 0
         self.time_previous_iter = 0
 
+    # TODO split this into a proper callback function!!!!!!
     def get_energy(self, var_parameters, ansatz, backend, multithread=False, multithread_iteration=None,
-                   init_state_qasm=None):
+                   init_state_qasm=None, cache=None, excited_state=0):
 
         if multithread is False:
             iteration_duration = time.time() - self.time_previous_iter
             self.time_previous_iter = time.time()
 
-        energy = backend.energy_expectation_value(var_parameters=var_parameters, ansatz=ansatz,
-                                                  init_state_qasm=init_state_qasm)
+        energy = backend.expectation_value(self.q_system.jw_qubit_ham, ansatz, var_parameters, self.q_system,
+                                           cache=cache, init_state_qasm=init_state_qasm, excited_state=excited_state)
 
-        # TODO: all this below should go into a proper call_back function supplied to the optimizer
         if multithread:
             if multithread_iteration is not None:
                 try:
@@ -69,10 +71,10 @@ class VQERunner:
 
         return energy
 
-    def get_ansatz_gradient(self, var_parameters, ansatz, backend, init_state_qasm=None):
-        return backend.ansatz_gradient(var_parameters, ansatz=ansatz, init_state_qasm=init_state_qasm)
+    # def get_ansatz_gradient(self, var_parameters, ansatz, backend, init_state_qasm=None):
+    #     return backend.ansatz_gradient(var_parameters, ansatz=ansatz, init_state_qasm=init_state_qasm)
 
-    def vqe_run(self, ansatz, initial_var_parameters=None, init_state_qasm=None):
+    def vqe_run(self, ansatz, initial_var_parameters=None, init_state_qasm=None, excited_state=0):
 
         assert len(ansatz) > 0
         if initial_var_parameters is None:
@@ -81,8 +83,6 @@ class VQERunner:
             assert len(initial_var_parameters) == sum([element.n_var_parameters for element in ansatz])
             var_parameters = initial_var_parameters
 
-        backend = self.backend_type(self.q_system)
-
         message = ''
         message += '-----Running VQE for: {}-----\n'.format(self.q_system.name)
         message += '-----Number of electrons: {}-----\n'.format(self.q_system.n_electrons)
@@ -90,24 +90,34 @@ class VQERunner:
         message += '-----Numeber of ansatz elements: {}-----\n'.format(len(ansatz))
         if len(ansatz) == 1:
             message += '-----Ansatz type {}------\n'.format(ansatz[0].element)
-        message += '-----Statevector and energy calculated using {}------\n'.format(backend)
+        message += '-----Statevector and energy calculated using {}------\n'.format(self.backend)
         message += '-----Optimizer {}------\n'.format(self.optimizer)
         logging.info(message)
 
         self.iteration = 1
         self.time_previous_iter = time.time()
 
+        # initialize the cache if running on Qiskit simulator
+        cache = None
+        if self.use_cache and self.backend == backends.QiskitSim:
+            cache = backends.QiskitSimCache(self.q_system)
+            if excited_state > 0:
+                # calculate the lower energetic statevectors
+                cache.calculate_lower_statevectors([term[1] for term in self.q_system.H_lower_state_terms])
+
+        # TODO move to the cache class
         # precompute frequently used quantities
         if self.use_ansatz_gradient:
             for element in ansatz:
                 element.calculate_excitation_generator_matrix()  # the excitation matrices are now computed and stored in each element
 
-        get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm)
+        get_energy = partial(self.get_energy, ansatz=ansatz, backend=self.backend, init_state_qasm=init_state_qasm,
+                             excited_state=excited_state, cache=None)
 
-        get_gradient = partial(self.get_ansatz_gradient, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm)
+        get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
+                               init_state_qasm=init_state_qasm)
 
         if self.use_ansatz_gradient:
-
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,
                                                  options=self.optimizer_options, tol=config.optimizer_tol,
                                                  bounds=config.optimizer_bounds)
@@ -140,7 +150,7 @@ class VQERunner:
         # create it as a list so we can pass it by reference
         local_thread_iteration = [0]
 
-        backend = self.backend_type(self.q_system)
+        backend = self.backend(self.q_system)
 
         # precomputed excitation matrices.
         if self.use_ansatz_gradient:
@@ -150,8 +160,7 @@ class VQERunner:
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm,
                              multithread=True, multithread_iteration=local_thread_iteration)
 
-        get_gradient = partial(self.get_ansatz_gradient, ansatz=ansatz, backend=backend,
-                               init_state_qasm=init_state_qasm)
+        get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, init_state_qasm=init_state_qasm)
 
         if self.use_ansatz_gradient:
             opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer, jac=get_gradient,

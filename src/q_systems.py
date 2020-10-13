@@ -8,10 +8,18 @@ import abc
 import time
 
 
+# basically a recipe to initialize some state
+class State:
+    def __init__(self, ansatz, var_parameters, init_state_qasm=None):
+        self.ansatz = ansatz
+        self.var_parameters = var_parameters
+        self.init_state_qasm = init_state_qasm
+
+
 class QSystem:
 
     def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None,
-                 ham_matrix=True):
+                 H_lower_state_terms=None):
         self.name = name
         self.multiplicity = multiplicity
         self.charge = charge
@@ -42,7 +50,8 @@ class QSystem:
                                                unoccupied=frozen_els['unoccupied'], prune=True)
         self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
 
-        self.commutators = {}
+        # this is used only for calculating excited states. list of [term_index, term_state]
+        self.H_lower_state_terms = H_lower_state_terms
 
     # calculate the k smallest energy eigenvalues. For BeH2/H20 keep k<10 (too much memory)
     def calculate_energy_eigenvalues(self, k):
@@ -54,9 +63,9 @@ class QSystem:
 
 class H2(QSystem):
 
-    def __init__(self, r=0.735, basis='sto-3g', frozen_els=None, ham_matrix=False):
+    def __init__(self, r=0.735, basis='sto-3g', frozen_els=None):
         super(H2, self).__init__(name='H2', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=4,
-                                 n_electrons=2, basis=basis, frozen_els=frozen_els, ham_matrix=ham_matrix)
+                                 n_electrons=2, basis=basis, frozen_els=frozen_els)
 
     @staticmethod
     def get_geometry(r=0.735):
@@ -68,7 +77,7 @@ class H4(QSystem):
 
     def __init__(self, r=0.735, basis='sto-3g', frozen_els=None, ham_matrix=False):
         super(H4, self).__init__(name='H4', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=8,
-                                 n_electrons=4, basis=basis, frozen_els=frozen_els, ham_matrix=ham_matrix)
+                                 n_electrons=4, basis=basis, frozen_els=frozen_els)
 
     @staticmethod
     def get_geometry(distance=0.735):
@@ -82,9 +91,9 @@ class H4(QSystem):
 
 class LiH(QSystem):
     # frozen_els = {'occupied': [0,1], 'unoccupied': []}
-    def __init__(self, r=1.546, basis='sto-3g', frozen_els=None, ham_matrix=False):
+    def __init__(self, r=1.546, basis='sto-3g', frozen_els=None):
         super(LiH, self).__init__(name='LiH', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
-                                  n_electrons=4, basis=basis, frozen_els=frozen_els, ham_matrix=ham_matrix)
+                                  n_electrons=4, basis=basis, frozen_els=frozen_els)
 
     @staticmethod
     def get_geometry(r=1.546):
@@ -94,9 +103,9 @@ class LiH(QSystem):
 
 class HF(QSystem):
 
-    def __init__(self, r=0.995, basis='sto-3g', frozen_els=None, ham_matrix=False):
+    def __init__(self, r=0.995, basis='sto-3g', frozen_els=None,):
         super(HF, self).__init__(name='HF', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
-                                 n_electrons=10, basis=basis, frozen_els=frozen_els, ham_matrix=ham_matrix)
+                                 n_electrons=10, basis=basis, frozen_els=frozen_els,)
 
     @staticmethod
     def get_geometry(r=0.995):
@@ -106,9 +115,9 @@ class HF(QSystem):
 
 class BeH2(QSystem):
     # frozen_els = {'occupied': [0,1], 'unoccupied': [6,7]}
-    def __init__(self, r=1.316, basis='sto-3g', frozen_els=None, ham_matrix=False):
+    def __init__(self, r=1.316, basis='sto-3g', frozen_els=None,):
         super(BeH2, self).__init__(name='BeH2', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=14,
-                                   n_electrons=6, basis=basis, frozen_els=frozen_els, ham_matrix=ham_matrix)
+                                   n_electrons=6, basis=basis, frozen_els=frozen_els,)
 
     @staticmethod
     def get_geometry(r=1.316):
@@ -119,9 +128,9 @@ class BeH2(QSystem):
 
 class H2O(QSystem):
 
-    def __init__(self, r=1.0285, theta=0.538*numpy.pi, basis='sto-3g', frozen_els=None, ham_matrix=False):
+    def __init__(self, r=1.0285, theta=0.538*numpy.pi, basis='sto-3g', frozen_els=None):
         super(H2O, self).__init__(name='H20', geometry=self.get_geometry(r, theta), multiplicity=1, charge=0, n_orbitals=14,
-                                  n_electrons=10, basis=basis, frozen_els=frozen_els, ham_matrix=ham_matrix)
+                                  n_electrons=10, basis=basis, frozen_els=frozen_els,)
 
     @staticmethod
     def get_geometry(r=1.0285, theta=0.538 * numpy.pi):

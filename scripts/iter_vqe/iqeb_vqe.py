@@ -46,7 +46,7 @@ if __name__ == "__main__":
     # create a vqe runner object
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-08}
-    vqe_runner = VQERunner(molecule, backend_type=backend_type, optimizer=optimizer, optimizer_options=optimizer_options,
+    vqe_runner = VQERunner(molecule, backend=backend_type, optimizer=optimizer, optimizer_options=optimizer_options,
                            use_ansatz_gradient=use_grad)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
