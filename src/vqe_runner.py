@@ -103,7 +103,8 @@ class VQERunner:
             cache = backends.QiskitSimCache(self.q_system)
             if excited_state > 0:
                 # calculate the lower energetic statevectors
-                cache.calculate_lower_statevectors([term[1] for term in self.q_system.H_lower_state_terms])
+                cache.calculate_hamiltonian_for_excited_state(self.q_system.H_lower_state_terms,
+                                                              excited_state=excited_state)
 
         # TODO move to the cache class
         # precompute frequently used quantities

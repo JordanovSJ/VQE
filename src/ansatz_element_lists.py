@@ -61,7 +61,7 @@ class SDExcitations:
 
 
 class GSDExcitations:
-    def __init__(self, n_orbitals, n_electrons, ansatz_element_type='fermi_excitation'):
+    def __init__(self, n_orbitals, n_electrons, ansatz_element_type='f_exc'):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
         self.ansatz_element_type = ansatz_element_type
@@ -73,7 +73,7 @@ class GSDExcitations:
                 single_excitations.append(SFExc(i, j, system_n_qubits=self.n_orbitals))
             elif self.ansatz_element_type == 'q_exc':
                 single_excitations.append(SQExc(i, j, system_n_qubits=self.n_orbitals))
-            elif self.ansatz_element_type == 'eff_q_exc':
+            elif self.ansatz_element_type == 'eff_f_exc':
                 single_excitations.append(EffSFExc(i, j, system_n_qubits=self.n_orbitals))
             elif self.ansatz_element_type == 'pauli_str_exc':
                 qubit_excitation = SQExc(i, j).excitation_generator

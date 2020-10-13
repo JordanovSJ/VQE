@@ -7,7 +7,6 @@ from src.ansatz_elements import *
 from src.vqe_runner import *
 from src.q_systems import *
 from src.backends import  *
-from src.adapt_utils import GradAdaptUtils
 import numpy, math
 
 import pandas
@@ -41,35 +40,27 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
-    molecule = BeH2()
-    df = pandas.read_csv("../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv")
-    n_cnot_counts = []
+    molecule = H2()
+    ansatz = GSDExcitations(4, 2, ansatz_element_type='eff_f_exc').get_excitations()
 
-    for i in range(len(df)):
-        print(i)
-        element = df.loc[i]['element']
-        element_qubits = ast.literal_eval(df.loc[i]['element_qubits'])
+    LogUtils.log_config()
 
-        if element[0] == 's':
-            assert len(element_qubits) == 2
-            n_cnots = 3 + 2*(element_qubits[1] - element_qubits[0])
-            if i == 0:
-                n_cnot_counts = [n_cnots]
-            else:
-                n_cnot_counts.append(n_cnot_counts[-1] + n_cnots)
-        elif element[0] == 'd':
-            assert len(element_qubits) == 2
-            n_cnots = 13 + 2*(element_qubits[1][1] - element_qubits[1][0] + element_qubits[0][1] - element_qubits[0][0]-2)
+    # var_pars = [ 1.73588403e-32,  3.85808261e-16, -2.40495012e-16,  1.44296833e-16,
+    #              1.92369605e-16, -3.37073840e-32,  1.38756291e-06,  1.69449961e-32]
 
-            if i == 0:
-                n_cnot_counts = [n_cnots]
-            else:
-                n_cnot_counts.append(n_cnot_counts[-1] + n_cnots)
+    H_lower_state_terms = [[1.137, State([EffDFExc([0, 1], [2, 3])], [0.11176849919227788], 4, 2)]]
+    molecule.H_lower_state_terms = H_lower_state_terms
 
-        else:
-            print(element, element_qubits)
-            raise Exception('Unrecognized ansatz element.')
-    df['cnot_count'] = n_cnot_counts
-    df.to_csv("../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdefe_corrected_09-Sep-2020.csv")
+    optimizer = 'Nelder-Mead'
+    optimizer_options = {'gtol': 1e-8}
+
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
+                           print_var_parameters=False, use_ansatz_gradient=True)
+
+    result = vqe_runner.vqe_run(ansatz=ansatz, excited_state=1)
+
+    # result =vqe_runner.get_energy([0.11176849919227788], [EffDFExc([0, 1], [2, 3], 4)], QiskitSim)
+
+    print(result)
 
     print('spagetti')

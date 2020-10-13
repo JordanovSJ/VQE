@@ -10,7 +10,9 @@ import time
 
 # basically a recipe to initialize some state
 class State:
-    def __init__(self, ansatz, var_parameters, init_state_qasm=None):
+    def __init__(self, ansatz, var_parameters, n_qubits, n_electrons, init_state_qasm=None):
+        self.n_qubits = n_qubits
+        self.n_electrons = n_electrons
         self.ansatz = ansatz
         self.var_parameters = var_parameters
         self.init_state_qasm = init_state_qasm

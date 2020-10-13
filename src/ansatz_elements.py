@@ -176,7 +176,7 @@ class EffSFExc(AnsatzElement):
     def __init__(self, qubit_1, qubit_2, system_n_qubits=None):
         self.qubits = [[qubit_1], [qubit_2]]
 
-        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.qubits[1], self.qubits[0]))
+        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.qubits[1][0], self.qubits[0][0]))
         excitation_generator = jordan_wigner(fermi_operator)
 
         super(EffSFExc, self).\

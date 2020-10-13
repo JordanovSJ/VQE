@@ -1,12 +1,10 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
--class ansatz: combine ansatz_elements and var_paramaters + recompute element_grads every time the ansatz state is change
+-remove the option not to use cache (remove the option not to precompute state vectors...)
+
 
 -READABILITY AND SCALABILITY
 * spin-compliment excitations: fix printing, fix orders, fix readability
-* precomputed commutators: readability
-* precomputed statevectors: readability
-* use ansatz instead of ansatz elements
 
 *********************************************
 
