@@ -132,7 +132,7 @@ class QiskitSim:
 
         for i in range(len(ansatz))[::-1]:
 
-            excitation_i_matrix = ansatz[i].excitation_matrix
+            excitation_i_matrix = ansatz[i].excitation_generator_matrix
             if excitation_i_matrix is None:
                 print('Compute excitation matrix')  # TEST
                 excitation_i_matrix = get_sparse_operator(ansatz[i].excitation_generator, n_qubits=self.n_qubits)

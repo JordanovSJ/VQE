@@ -3,8 +3,10 @@ from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner, ge
 from openfermionpsi4 import run_psi4
 
 import numpy
+import scipy
 import abc
 import time
+
 
 class QSystem:
 
@@ -25,6 +27,7 @@ class QSystem:
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
         self.hf_energy = self.molecule_psi4.hf_energy.item()
         self.fci_energy = self.molecule_psi4.fci_energy.item()
+        self.energy_eigenvalues = None  # use this only if calculating excited states
 
         if frozen_els is None:
             self.n_electrons = n_electrons
@@ -38,31 +41,15 @@ class QSystem:
             self.fermion_ham = freeze_orbitals(get_fermion_operator(self.molecule_ham), occupied=frozen_els['occupied'],
                                                unoccupied=frozen_els['unoccupied'], prune=True)
         self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
-        # if ham_matrix:
-        #     print('hmmm')
-        #     self.sparse_matrix_jw_ham = get_sparse_operator(self.jw_qubit_ham)
-        #     self.dense_matrix_jw_ham = self.sparse_matrix_jw_ham.todense()
-        # else:
-        #     self.sparse_matrix_jw_ham = None
-        #     self.dense_matrix_jw_ham = None
 
         self.commutators = {}
 
-    # def generate_commutator_matrices(self, ansatz_elements):
-    #
-    #     for i, ansatz_element in enumerate(ansatz_elements):
-    #         if i % 10 == 0:
-    #             print(i)
-    #         element_excitation = ansatz_element.excitation
-    #         key = str(element_excitation)
-    #         commutator = self.jw_qubit_ham * element_excitation - element_excitation * self.jw_qubit_ham
-    #         commutator_matrix = get_sparse_operator(commutator)
-    #         self.commutators[key] = commutator_matrix
-    #
-    # def get_commutator_matrix(self, ansatz_element):
-    #     element_excitation = ansatz_element.excitation
-    #     key = str(element_excitation)
-    #     return self.commutators[key]
+    # calculate the k smallest energy eigenvalues. For BeH2/H20 keep k<10 (too much memory)
+    def calculate_energy_eigenvalues(self, k):
+        H_sparse_matrix = get_sparse_operator(self.jw_qubit_ham)
+        eigenvalues = scipy.sparse.linalg.eigsh(H_sparse_matrix.todense(), k)
+        self.energy_eigenvalues = eigenvalues
+        return eigenvalues
 
 
 class H2(QSystem):

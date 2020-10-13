@@ -100,7 +100,7 @@ class VQERunner:
         # precompute frequently used quantities
         if self.use_ansatz_gradient:
             for element in ansatz:
-                element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
+                element.calculate_excitation_generator_matrix()  # the excitation matrices are now computed and stored in each element
 
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm)
 
@@ -119,7 +119,7 @@ class VQERunner:
 
         # Prevents memory overflow with ray
         for element in ansatz:
-            element.delete_excitation_mtrx()
+            element.delete_excitation_generator_matrix()
 
         logging.info(opt_energy)
 
@@ -145,7 +145,7 @@ class VQERunner:
         # precomputed excitation matrices.
         if self.use_ansatz_gradient:
             for element in ansatz:
-                element.compute_excitation_mtrx()
+                element.calculate_excitation_generator_matrix()
 
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm,
                              multithread=True, multithread_iteration=local_thread_iteration)
@@ -174,7 +174,7 @@ class VQERunner:
 
         # Prevents memory overflow with ray
         for element in ansatz:
-            element.delete_excitation_mtrx()
+            element.delete_excitation_generator_matrix()
 
         opt_energy['n_iters'] = local_thread_iteration[0]  # cheating
         return opt_energy
