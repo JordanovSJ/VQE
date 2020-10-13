@@ -86,17 +86,13 @@ class QiskitSim:
         return self.statevector
 
     # return the expectation value of a qubit_operator. By default return the expectation value of H
-    def expectation_value(self, ansatz, var_parameters, qubit_operator=None, init_state_qasm=None):
+    def energy_expectation_value(self, ansatz, var_parameters, init_state_qasm=None):
 
         statevector = self.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
         sparse_statevector = scipy.sparse.csr_matrix(statevector)
 
         # get the operator in the form of a sparse matrix
-        if qubit_operator is None:
-            operator_sparse_matrix = self.H_sparse_matrix
-        else:
-            assert type(qubit_operator) == QubitOperator
-            operator_sparse_matrix = sparse_statevector(qubit_operator)
+        operator_sparse_matrix = self.H_sparse_matrix
 
         expectation_value = \
             sparse_statevector.dot(operator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0, 0]

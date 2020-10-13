@@ -44,8 +44,8 @@ class VQERunner:
             iteration_duration = time.time() - self.time_previous_iter
             self.time_previous_iter = time.time()
 
-        energy = backend.expectation_value(var_parameters=var_parameters, ansatz=ansatz,
-                                           init_state_qasm=init_state_qasm)
+        energy = backend.energy_expectation_value(var_parameters=var_parameters, ansatz=ansatz,
+                                                  init_state_qasm=init_state_qasm)
 
         # TODO: all this below should go into a proper call_back function supplied to the optimizer
         if multithread:
