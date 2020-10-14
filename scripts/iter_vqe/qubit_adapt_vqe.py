@@ -189,7 +189,7 @@ if __name__ == "__main__":
                                                  var_parameters=var_parameters, ansatz=ansatz_elements,
                                                  multithread=multithread,
                                                  do_precompute_statevector=do_precompute_statevector,
-                                                 dynamic_commutators=dynamic_commutators)[0]
+                                                 commutators_cache=dynamic_commutators)[0]
         print(element_to_add.element)
 
         result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add], initial_var_parameters=var_parameters + [0])

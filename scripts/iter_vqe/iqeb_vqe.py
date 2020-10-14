@@ -17,9 +17,9 @@ if __name__ == "__main__":
     r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2() #(frozen_els=frozen_els)
+    molecule = H4() #(frozen_els=frozen_els)
 
-    backend_type = QiskitSim
+    backend = QiskitSim
 
     ansatz_element_type = 'q_exc'
 
@@ -28,10 +28,11 @@ if __name__ == "__main__":
 
     multithread = True
     use_grad = True  # for optimizer
-    precompute_commutators = True
+    use_commutators_cache = True
+    use_backend_cache = True
     # size_patch_commutators = 500  # not used
 
-    do_precompute_statevector = True  # for ansatz elements grad computation
+    # do_precompute_statevector = True  # for ansatz elements grad computation
 
     n_largest_grads = 20
 
@@ -46,8 +47,8 @@ if __name__ == "__main__":
     # create a vqe runner object
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-08}
-    vqe_runner = VQERunner(molecule, backend=backend_type, optimizer=optimizer, optimizer_options=optimizer_options,
-                           use_ansatz_gradient=use_grad)
+    vqe_runner = VQERunner(molecule, backend=backend, optimizer=optimizer, optimizer_options=optimizer_options,
+                           use_ansatz_gradient=use_grad, use_cache=use_backend_cache)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
 
@@ -59,7 +60,7 @@ if __name__ == "__main__":
                                          ansatz_element_type=ansatz_element_type).get_excitations()
     print('Pool len: ', len(ansatz_element_pool))
 
-    if precompute_commutators:
+    if use_commutators_cache:
         dynamic_commutators = IterVQEGradientUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
                                                                          ansatz_elements=ansatz_element_pool,
                                                                          n_system_qubits=molecule.n_orbitals,
@@ -92,9 +93,10 @@ if __name__ == "__main__":
 
         # get the n elements with largest gradients
         elements_grads = IterVQEGradientUtils.\
-            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend_type=backend_type, n=n_largest_grads,
+            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend=backend, n=n_largest_grads,
                                                  var_parameters=var_parameters, ansatz=ansatz,
-                                                 multithread=multithread, dynamic_commutators=dynamic_commutators)
+                                                 use_backend_cache=use_backend_cache,
+                                                 multithread=multithread, commutators_cache=dynamic_commutators)
 
         elements = [e_g[0] for e_g in elements_grads]
         grads = [e_g[1] for e_g in elements_grads]

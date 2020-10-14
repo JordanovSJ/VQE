@@ -55,7 +55,7 @@ if __name__ == "__main__":
     optimizer_options = {'gtol': 1e-8}
 
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
-                           print_var_parameters=False, use_ansatz_gradient=True)
+                           print_var_parameters=False, use_ansatz_gradient=False)
 
     result = vqe_runner.vqe_run(ansatz=ansatz, excited_state=1)
 

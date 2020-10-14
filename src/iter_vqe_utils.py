@@ -2,10 +2,13 @@ from openfermion import get_sparse_operator, QubitOperator
 from src import config
 from src import backends
 from src.ansatz_elements import *
+from src.utils import QasmUtils
+
 
 import time
 import ray
 import ast
+import numpy
 
 
 class IterVQEQasmUtils:
@@ -24,7 +27,8 @@ class IterVQEEnergyUtils:
     # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
     def get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                              initial_ansatz=None, multithread=False):
+                                              initial_ansatz=None, multithread=False, excited_state=0):
+
         if initial_ansatz is None:
             initial_ansatz = []
         if multithread:
@@ -32,7 +36,8 @@ class IterVQEEnergyUtils:
             elements_ray_ids = [
                 [element,
                  vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=initial_ansatz + [element],
-                                                       initial_var_parameters=initial_var_parameters + [0])]
+                                                       initial_var_parameters=initial_var_parameters + [0],
+                                                       excited_state=excited_state)]
                 # TODO this will work only if the ansatz element has 1 var. par.
                 for element in ansatz_elements
             ]
@@ -40,7 +45,7 @@ class IterVQEEnergyUtils:
             ray.shutdown()
         else:
             elements_results = [
-                [element, vqe_runner.vqe_run(ansatz=initial_ansatz + [element],
+                [element, vqe_runner.vqe_run(ansatz=initial_ansatz + [element], excited_state=excited_state,
                                              initial_var_parameters=initial_var_parameters+[0])]
                 for element in ansatz_elements
             ]
@@ -50,27 +55,30 @@ class IterVQEEnergyUtils:
     # returns the ansatz element that achieves lowest energy (together with the energy value)
     @staticmethod
     def get_largest_energy_reduction_ansatz_element(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                                    ansatz=None, multithread=False):
+                                                    ansatz=None, multithread=False, excited_state=0):
         elements_results = IterVQEEnergyUtils.get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements,
                                                                                     initial_var_parameters=initial_var_parameters,
                                                                                     initial_ansatz=ansatz,
-                                                                                    multithread=multithread)
+                                                                                    multithread=multithread,
+                                                                                    excited_state=excited_state)
         return min(elements_results, key=lambda x: x[1].fun)
 
     # NOT used
-    # get ansatz elements that contribute to energy decrease below(above) some threshold value
+    # get ansatz elements that contribute to energy reduction below(above) some threshold value
     @staticmethod
     def get_ansatz_elements_below_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=[],
-                                            initial_ansatz=[], multithread=False):
+                                            initial_ansatz=[], multithread=False, excited_state=0):
         elements_results = IterVQEEnergyUtils.get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements,
                                                                                     initial_var_parameters=initial_var_parameters,
                                                                                     initial_ansatz=initial_ansatz,
-                                                                                    multithread=multithread)
+                                                                                    multithread=multithread,
+                                                                                    excited_state=excited_state)
         return [element_result for element_result in elements_results if element_result[1].fun <= threshold]
 
 
 class IterVQEGradientUtils:
 
+    # TODO move this to a separate cache class?
     # calculate commutators the commutators of H, with the excitation generators of the ansatz_elements
     @staticmethod
     def calculate_commutators(H_qubit_operator, ansatz_elements, n_system_qubits, multithread=False):
@@ -79,10 +87,10 @@ class IterVQEGradientUtils:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [
+                    # H_qubit_operator and excitation_generator are passed by values, and deleted in
+                    # get_commutator_matrix_multithread.Otherwise ray.threads keep local copies that fill the RAM
                     element, IterVQEGradientUtils.get_commutator_matrix_multithread.
                     remote(QubitOperator(str(element.excitation_generator)),
-                           # H_qubit_operator and excitation_generator are passed by values, and deleted in
-                           # get_commutator_matrix_multithread.Otherwise ray.threads keep local copies that fill the RAM
                            H_qubit_operator=QubitOperator(str(H_qubit_operator)), n_qubits=n_system_qubits)
                 ]
                 for element in ansatz_elements
@@ -119,45 +127,49 @@ class IterVQEGradientUtils:
 
     @staticmethod
     @ray.remote
-    def get_excitation_gradient_multithread(excitation_element, ansatz, var_parameters, backend,
+    def get_excitation_gradient_multithread(excitation, ansatz, var_parameters, q_system, backend, backend_cache=None,
                                             commutator_sparse_matrix=None):
         t0 = time.time()
-        gradient = backend.excitation_gradient(excitation_element, ansatz, var_parameters,
-                                               commutator_sparse_matrix=commutator_sparse_matrix,
-                                               update_statevector=False)  # experiment with true
+        gradient = backend.excitation_gradient(excitation, ansatz, var_parameters, q_system, cache=backend_cache,
+                                               commutator_sparse_matrix=commutator_sparse_matrix)
 
-        message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation_element.element, gradient,
+        message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation.element, gradient,
                                                                       time.time() - t0)
         # TODO check if required
         del commutator_sparse_matrix
         print(message)  # keep this since logging does not work well in multithreading
         return gradient
 
-    # finds energy gradient of <H> w.r.t. to the ansatz_elements variationa parameters
+    # finds energy gradient of <H> w.r.t. to the ansatz_elements variational parameters
     @staticmethod
     def get_ansatz_elements_gradients(ansatz_elements, q_system, var_parameters=None, ansatz=None, multithread=False,
-                                      dynamic_commutator_matrices=None, backend_type=backends.QiskitSim):
+                                      commutators_cache=None, backend=backends.QiskitSim,
+                                      use_backend_cache=True, excited_state=0):
 
         if ansatz is None:
             ansatz = []
             var_parameters = []
 
-        backend = backend_type(q_system)
-        # initialize the statevector once, and use it to calculate all gradients
-        backend.update_statevector(ansatz, var_parameters)
+        backend_cache = None
+        if use_backend_cache and backend == backends.QiskitSim:
+            backend_cache = backends.QiskitSimCache(q_system)
+            backend_cache.update_statevector(ansatz, var_parameters)
+            if excited_state > 0:
+                # calculate the lower energetic statevectors
+                backend_cache.calculate_hamiltonian_for_excited_state(q_system.H_lower_state_terms, excited_state=excited_state)
 
         # use this function to supply precomputed commutators to the gradient evaluation function
         def get_commutator_matrix(element):
-            if dynamic_commutator_matrices is None:
+            if commutators_cache is None:
                 return None
             else:
                 try:
-                    return dynamic_commutator_matrices[str(element.excitation_generator)].copy()
+                    return commutators_cache[str(element.excitation_generator)].copy()
                 except KeyError:
                     t0 = time.time()
                     commutator = q_system.jw_qubit_ham * element.excitation_generator - element.excitation_generator * q_system.jw_qubit_ham
                     commutator_matrix = get_sparse_operator(commutator)
-                    dynamic_commutator_matrices[str(element.excitation_generator)] = commutator_matrix
+                    commutators_cache[str(element.excitation_generator)] = commutator_matrix
                     print('Calculating commutator for ', element.excitation_generator, 'time ', time.time() - t0)
                     return commutator_matrix.copy()
 
@@ -166,7 +178,8 @@ class IterVQEGradientUtils:
             elements_ray_ids = [
                 [
                     element, IterVQEGradientUtils.get_excitation_gradient_multithread.
-                    remote(element, ansatz, var_parameters, backend, commutator_sparse_matrix=get_commutator_matrix(element))
+                    remote(element, ansatz, var_parameters, q_system, backend, backend_cache=backend_cache,
+                           commutator_sparse_matrix=get_commutator_matrix(element))
                  ]
                 for element in ansatz_elements
             ]
@@ -176,7 +189,7 @@ class IterVQEGradientUtils:
         else:
             elements_results = [
                 [
-                    element, backend.excitation_gradient(element, ansatz, var_parameters,
+                    element, backend.excitation_gradient(element, ansatz, var_parameters, q_system, cache=backend_cache,
                                                          commutator_sparse_matrix=get_commutator_matrix(element))]
                 for element in ansatz_elements
             ]
@@ -184,15 +197,15 @@ class IterVQEGradientUtils:
 
     # returns the n ansatz elements that with largest energy gradients
     @staticmethod
-    def get_largest_gradient_ansatz_elements(ansatz_elements, q_system, backend_type=backends.QiskitSim, var_parameters=None
-                                             , ansatz=None, n=1, multithread=False, dynamic_commutators=None):
+    def get_largest_gradient_ansatz_elements(ansatz_elements, q_system, backend=backends.QiskitSim, var_parameters=None
+                                             , ansatz=None, n=1, multithread=False, commutators_cache=None,
+                                             use_backend_cache=True):
 
         elements_results = IterVQEGradientUtils.get_ansatz_elements_gradients(ansatz_elements, q_system,
                                                                               var_parameters=var_parameters,
-                                                                              ansatz=ansatz,
-                                                                              multithread=multithread,
-                                                                              dynamic_commutator_matrices=dynamic_commutators,
-                                                                              backend_type=backend_type)
+                                                                              ansatz=ansatz, multithread=multithread,
+                                                                              commutators_cache=commutators_cache,
+                                                                              backend=backend, use_backend_cache=use_backend_cache)
         elements_results.sort(key=lambda x: abs(x[1]))
         return elements_results[-n:]
 

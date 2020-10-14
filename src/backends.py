@@ -152,24 +152,43 @@ class QiskitSim:
 
         return expectation_value.real
 
-    # # TODO this can be replace with expectation value
-    # @staticmethod
-    # def excitation_gradient(excitation, ansatz, var_parameters, commutator_sparse_matrix=None,
-    #                         init_state_qasm=None, update_statevector=True):
-    #     if commutator_sparse_matrix is None:
-    #         excitation_generator = excitation.excitation_generator
-    #         assert type(excitation) == QubitOperator
-    #         commutator_sparse_matrix =\
-    #             get_sparse_operator(self.jw_qubit_H * excitation_generator - excitation_generator * self.jw_qubit_H,
-    #                                 n_qubits=self.n_qubits)
-    #     if update_statevector:
-    #         statevector = self.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
-    #         sparse_statevector = scipy.sparse.csr_matrix(statevector)
-    #     else:
-    #         sparse_statevector = scipy.sparse.csr_matrix(self.statevector)
-    #     return sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
+    # TODO check for excited states
+    @staticmethod
+    def excitation_gradient(excitation, ansatz, var_parameters, q_system, commutator_sparse_matrix=None,
+                            init_state_qasm=None, cache=None, excited_state=0):
 
-    # TODO update for excited states
+        if commutator_sparse_matrix is None:
+            excitation_generator = excitation.excitation_generator
+            assert type(excitation_generator) == QubitOperator
+
+            exc_gen_sprs_m = get_sparse_operator(excitation_generator, n_qubits=q_system.n_qubits)
+
+            if cache is None:
+                if excited_state > 0:
+                    H_sparse_matrix = QiskitSim.ham_sparse_matrix_for_exc_state(get_sparse_operator(q_system.jw_qubit_ham),
+                                                                                q_system.H_lower_state_terms[:excited_state])
+                else:
+                    H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+            else:
+                if excited_state > 0:
+                    H_sparse_matrix = cache.H_sparse_matrix_for_excited_state
+                else:
+                    H_sparse_matrix = cache.operator_sparse_matrix
+
+            commutator_sparse_matrix = H_sparse_matrix*exc_gen_sprs_m - exc_gen_sprs_m*H_sparse_matrix
+
+        if cache is None:
+            statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_qubits,
+                                                            q_system.n_electrons, init_state_qasm=init_state_qasm)
+            sparse_statevector = scipy.sparse.csr_matrix(statevector)
+
+        else:
+            statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
+            sparse_statevector = scipy.sparse.csr_matrix(statevector)
+
+        return sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
+
+    # TODO check for excited states
     @staticmethod
     def ansatz_gradient(var_parameters, ansatz, q_system, init_state_qasm=None, cache=None, excited_state=0):
         """
