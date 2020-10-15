@@ -23,11 +23,11 @@ class IterVQEQasmUtils:
         return QasmUtils.gate_count_from_qasm(qasm, n_qubits)
 
 
-class IterVQEEnergyUtils:
+class EnergyUtils:
     # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
     @staticmethod
-    def get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                              initial_ansatz=None, multithread=False, excited_state=0):
+    def elements_vqe_energy_reductions(vqe_runner, ansatz_elements, initial_var_parameters=None,
+                                       initial_ansatz=None, multithread=False, excited_state=0):
 
         if initial_ansatz is None:
             initial_ansatz = []
@@ -54,29 +54,29 @@ class IterVQEEnergyUtils:
 
     # returns the ansatz element that achieves lowest energy (together with the energy value)
     @staticmethod
-    def get_largest_energy_reduction_ansatz_element(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                                    ansatz=None, multithread=False, excited_state=0):
-        elements_results = IterVQEEnergyUtils.get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements,
-                                                                                    initial_var_parameters=initial_var_parameters,
-                                                                                    initial_ansatz=ansatz,
-                                                                                    multithread=multithread,
-                                                                                    excited_state=excited_state)
+    def largest_vqe_energy_reduction_element(vqe_runner, ansatz_elements, initial_var_parameters=None,
+                                             ansatz=None, multithread=False, excited_state=0):
+        elements_results = EnergyUtils.elements_vqe_energy_reductions(vqe_runner, ansatz_elements,
+                                                                      initial_var_parameters=initial_var_parameters,
+                                                                      initial_ansatz=ansatz,
+                                                                      multithread=multithread,
+                                                                      excited_state=excited_state)
         return min(elements_results, key=lambda x: x[1].fun)
 
     # NOT used
     # get ansatz elements that contribute to energy reduction below(above) some threshold value
     @staticmethod
-    def get_ansatz_elements_below_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=[],
-                                            initial_ansatz=[], multithread=False, excited_state=0):
-        elements_results = IterVQEEnergyUtils.get_ansatz_elements_energy_reductions(vqe_runner, ansatz_elements,
-                                                                                    initial_var_parameters=initial_var_parameters,
-                                                                                    initial_ansatz=initial_ansatz,
-                                                                                    multithread=multithread,
-                                                                                    excited_state=excited_state)
+    def elements_below_vqe_energy_reduction_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=[],
+                                                      initial_ansatz=[], multithread=False, excited_state=0):
+        elements_results = EnergyUtils.elements_vqe_energy_reductions(vqe_runner, ansatz_elements,
+                                                                      initial_var_parameters=initial_var_parameters,
+                                                                      initial_ansatz=initial_ansatz,
+                                                                      multithread=multithread,
+                                                                      excited_state=excited_state)
         return [element_result for element_result in elements_results if element_result[1].fun <= threshold]
 
 
-class IterVQEGradientUtils:
+class GradUtils:
 
     # TODO move this to a separate cache class?
     # calculate the commutators of H, with the excitation generators of the ansatz_elements
@@ -88,13 +88,14 @@ class IterVQEGradientUtils:
         else:
             H_sparse_matrix = backends.QiskitSim.ham_sparse_matrix_for_exc_state(get_sparse_operator(q_system.jw_qubit_ham),
                                                                                  q_system.H_lower_state_terms[:excited_state])
+        # print('Multithtread')
         commutators = {}
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [
                     # TODO maybe pass a copy of the H_sparse_matrix and delete it
-                    element, IterVQEGradientUtils.get_commutator_matrix_multithread.
+                    element, GradUtils.get_commutator_matrix_multithread.
                     remote(element.excitation_generator, H_sparse_matrix.copy(), n_qubits=q_system.n_qubits)
                 ]
                 for element in ansatz_elements
@@ -129,10 +130,10 @@ class IterVQEGradientUtils:
     @staticmethod
     @ray.remote
     def get_excitation_gradient_multithread(excitation, ansatz, var_parameters, q_system, backend, backend_cache=None,
-                                            commutator_sparse_matrix=None):
+                                            commutator_sparse_matrix=None, excited_state=0):
         t0 = time.time()
         gradient = backend.excitation_gradient(excitation, ansatz, var_parameters, q_system, cache=backend_cache,
-                                               commutator_sparse_matrix=commutator_sparse_matrix)
+                                               commutator_sparse_matrix=commutator_sparse_matrix, excited_state=excited_state)
 
         message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation.element, gradient,
                                                                       time.time() - t0)
@@ -178,20 +179,20 @@ class IterVQEGradientUtils:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [
-                    element, IterVQEGradientUtils.get_excitation_gradient_multithread.
+                    element, GradUtils.get_excitation_gradient_multithread.
                     remote(element, ansatz, var_parameters, q_system, backend, backend_cache=backend_cache,
-                           commutator_sparse_matrix=get_commutator_matrix(element))
+                           commutator_sparse_matrix=get_commutator_matrix(element), excited_state=excited_state)
                  ]
                 for element in ansatz_elements
             ]
-            elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
-                                elements_ray_ids]
+            elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in elements_ray_ids]
             ray.shutdown()
         else:
             elements_results = [
                 [
                     element, backend.excitation_gradient(element, ansatz, var_parameters, q_system, cache=backend_cache,
-                                                         commutator_sparse_matrix=get_commutator_matrix(element))]
+                                                         commutator_sparse_matrix=get_commutator_matrix(element),
+                                                         excited_state=excited_state)]
                 for element in ansatz_elements
             ]
         return elements_results
@@ -202,17 +203,17 @@ class IterVQEGradientUtils:
                                              , ansatz=None, n=1, multithread=False, commutators_cache=None,
                                              use_backend_cache=True, excited_state=0):
 
-        elements_results = IterVQEGradientUtils.get_ansatz_elements_gradients(ansatz_elements, q_system,
-                                                                              var_parameters=var_parameters,
-                                                                              ansatz=ansatz, multithread=multithread,
-                                                                              commutators_cache=commutators_cache,
-                                                                              backend=backend, use_backend_cache=use_backend_cache,
-                                                                              excited_state=excited_state)
+        elements_results = GradUtils.get_ansatz_elements_gradients(ansatz_elements, q_system,
+                                                                   var_parameters=var_parameters,
+                                                                   ansatz=ansatz, multithread=multithread,
+                                                                   commutators_cache=commutators_cache,
+                                                                   backend=backend, use_backend_cache=use_backend_cache,
+                                                                   excited_state=excited_state)
         elements_results.sort(key=lambda x: abs(x[1]))
         return elements_results[-n:]
 
 
-class IterVQEDataUtils:
+class DataUtils:
     @staticmethod
     def save_data(data_frame, molecule, time_stamp, ansatz_element_type=None, frozen_els=None, iter_vqe_type='iqeb'):
         filename = '{}_{}_{}_{}_{}.csv'.format(molecule.name, iter_vqe_type, ansatz_element_type, frozen_els, time_stamp)

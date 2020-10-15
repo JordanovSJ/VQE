@@ -125,32 +125,42 @@ class QiskitSim:
 
     # return the expectation value of a qubit_operator
     @staticmethod
-    def expectation_value(qubit_operator, ansatz, var_parameters, q_system, excited_state=0, init_state_qasm=None, cache=None):
+    def expectation_value(qubit_operator, ansatz, var_parameters, q_system, init_state_qasm=None, cache=None):
 
         if cache is None:
             statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_qubits,
                                                             q_system.n_electrons, init_state_qasm=init_state_qasm)
             sparse_statevector = scipy.sparse.csr_matrix(statevector)
-
-            if excited_state > 0:
-                operator_sparse_matrix = QiskitSim.ham_sparse_matrix_for_exc_state(get_sparse_operator(qubit_operator),
-                                                                                   q_system.H_lower_state_terms[:excited_state])
-            else:
-                operator_sparse_matrix = get_sparse_operator(qubit_operator)
+            operator_sparse_matrix = get_sparse_operator(qubit_operator)
         else:
             statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
             sparse_statevector = scipy.sparse.csr_matrix(statevector)
-
-            if excited_state > 0:
-                assert excited_state == cache.excite_state
-                operator_sparse_matrix = cache.H_sparse_matrix_for_excited_state
-            else:
-                operator_sparse_matrix = cache.operator_sparse_matrix
+            operator_sparse_matrix = cache.operator_sparse_matrix
 
         expectation_value = \
             sparse_statevector.dot(operator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
 
         return expectation_value.real
+
+    @staticmethod
+    def ham_expectation_value_exc_state(H_qubit_operator, ansatz, var_parameters, q_system, excited_state=1, cache=None,
+                                        init_state_qasm=None):
+        if cache is None:
+            statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_qubits,
+                                                            q_system.n_electrons, init_state_qasm=init_state_qasm)
+            sparse_statevector = scipy.sparse.csr_matrix(statevector)
+            operator_sparse_matrix = QiskitSim.ham_sparse_matrix_for_exc_state(get_sparse_operator(H_qubit_operator),
+                                                                               q_system.H_lower_state_terms[:excited_state])
+        else:
+            statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
+            sparse_statevector = scipy.sparse.csr_matrix(statevector)
+            assert excited_state == cache.excite_state
+            operator_sparse_matrix = cache.H_sparse_matrix_for_excited_state
+
+        expectation_value =\
+            sparse_statevector.dot(operator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
+
+        return expectation_value
 
     # TODO check for excited states
     @staticmethod
@@ -186,7 +196,8 @@ class QiskitSim:
             statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
             sparse_statevector = scipy.sparse.csr_matrix(statevector)
 
-        return sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
+        grad = sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
+        return grad
 
     # TODO check for excited states
     @staticmethod

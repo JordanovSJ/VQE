@@ -39,8 +39,13 @@ class VQERunner:
             iteration_duration = time.time() - self.time_previous_iter
             self.time_previous_iter = time.time()
 
-        energy = backend.expectation_value(self.q_system.jw_qubit_ham, ansatz, var_parameters, self.q_system,
-                                           cache=cache, init_state_qasm=init_state_qasm, excited_state=excited_state)
+        if excited_state > 0:
+            energy = backend.ham_expectation_value_exc_state(self.q_system.jw_qubit_ham, ansatz, var_parameters,
+                                                             self.q_system, cache=cache, init_state_qasm=init_state_qasm,
+                                                             excited_state=excited_state)
+        else:
+            energy = backend.expectation_value(self.q_system.jw_qubit_ham, ansatz, var_parameters, self.q_system,
+                                               cache=cache, init_state_qasm=init_state_qasm)
 
         if multithread:
             if multithread_iteration is not None:
@@ -99,7 +104,7 @@ class VQERunner:
                              excited_state=excited_state, cache=cache)
 
         get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
-                               init_state_qasm=init_state_qasm, cache=cache)
+                               init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)
 
         if self.use_ansatz_gradient:
             result = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,

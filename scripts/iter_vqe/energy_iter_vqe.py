@@ -72,10 +72,10 @@ if __name__ == "__main__":
     # New pool
     # get a new ansatz element pool, from elements that decrease <H> by at least dE = threshold
     new_ansatz_element_pool = []
-    elements_results = EnergyAdaptUtils.get_ansatz_elements_below_threshold(vqe_runner,
-                                                                            initial_ansatz_elements_pool,
-                                                                            hf_energy - threshold,
-                                                                            multithread=multithread)
+    elements_results = EnergyAdaptUtils.elements_below_vqe_energy_reduction_threshold(vqe_runner,
+                                                                                      initial_ansatz_elements_pool,
+                                                                                      hf_energy - threshold,
+                                                                                      multithread=multithread)
     for element, result in elements_results:
         new_ansatz_element_pool.append(element)
         message = 'New ansatz element added to updated pool, {}. Delta E = {}'\
@@ -105,11 +105,11 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, result = EnergyAdaptUtils.get_largest_energy_reduction_ansatz_element(vqe_runner,
-                                                                                              new_ansatz_element_pool,
-                                                                                              initial_var_parameters=var_parameters,
-                                                                                              ansatz=ansatz_elements,
-                                                                                              multithread=multithread)
+        element_to_add, result = EnergyAdaptUtils.largest_vqe_energy_reduction_element(vqe_runner,
+                                                                                       new_ansatz_element_pool,
+                                                                                       initial_var_parameters=var_parameters,
+                                                                                       ansatz=ansatz_elements,
+                                                                                       multithread=multithread)
         current_energy = result.fun
 
         # TODO works only if all elements have single var par

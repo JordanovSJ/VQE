@@ -61,10 +61,10 @@ if __name__ == "__main__":
     print('Pool len: ', len(ansatz_element_pool))
 
     if use_commutators_cache:
-        dynamic_commutators = IterVQEGradientUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
-                                                                         ansatz_elements=ansatz_element_pool,
-                                                                         n_system_qubits=molecule.n_orbitals,
-                                                                         multithread=multithread)
+        dynamic_commutators = GradUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
+                                                              ansatz_elements=ansatz_element_pool,
+                                                              n_system_qubits=molecule.n_orbitals,
+                                                              multithread=multithread)
     else:
         dynamic_commutators = None
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
         ansatz = []
         var_parameters = []
     else:
-        ansatz, var_parameters = IterVQEDataUtils.get_ansatz_from_data_frame(init_ansatz_df, molecule)
+        ansatz, var_parameters = DataUtils.get_ansatz_from_data_frame(init_ansatz_df, molecule)
         # var_parameters = list(vqe_runner.vqe_run(ansatz_elements, var_parameters).x)
 
     iter_count = 0
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         # get the n elements with largest gradients
-        elements_grads = IterVQEGradientUtils.\
+        elements_grads = GradUtils.\
             get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend=backend, n=n_largest_grads,
                                                  var_parameters=var_parameters, ansatz=ansatz,
                                                  use_backend_cache=use_backend_cache,
@@ -106,9 +106,9 @@ if __name__ == "__main__":
         print(message)
 
         element_to_add, result =\
-            IterVQEEnergyUtils.get_largest_energy_reduction_ansatz_element(vqe_runner, elements,
-                                                                           initial_var_parameters=var_parameters,
-                                                                           ansatz=ansatz, multithread=multithread)
+            EnergyUtils.largest_vqe_energy_reduction_element(vqe_runner, elements,
+                                                             initial_var_parameters=var_parameters,
+                                                             ansatz=ansatz, multithread=multithread)
 
         compl_element_to_add = element_to_add.get_spin_comp_exc()
 
@@ -155,8 +155,8 @@ if __name__ == "__main__":
                 # df_data['var_parameters'] = var_parameters
 
                 # save data
-                IterVQEDataUtils.save_data(results_data_frame, molecule, time_stamp, ansatz_element_type=ansatz_element_type,
-                                           frozen_els=frozen_els, iter_vqe_type='iqeb')
+                DataUtils.save_data(results_data_frame, molecule, time_stamp, ansatz_element_type=ansatz_element_type,
+                                    frozen_els=frozen_els, iter_vqe_type='iqeb')
 
                 message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, var. parameters: {}' \
                     .format(element_to_add.element, current_energy, delta_e, var_parameters)
