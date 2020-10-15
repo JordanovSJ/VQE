@@ -1,6 +1,8 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
 -remove the option not to use cache (remove the option not to precompute state vectors...)
+-try to create global cahce to use in multithreading
+-put all simulation parameters (multithread, excited_state... eetc) in config
 
 
 -READABILITY AND SCALABILITY

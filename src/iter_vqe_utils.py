@@ -79,19 +79,23 @@ class IterVQEEnergyUtils:
 class IterVQEGradientUtils:
 
     # TODO move this to a separate cache class?
-    # calculate commutators the commutators of H, with the excitation generators of the ansatz_elements
+    # calculate the commutators of H, with the excitation generators of the ansatz_elements
     @staticmethod
-    def calculate_commutators(H_qubit_operator, ansatz_elements, n_system_qubits, multithread=False):
+    def calculate_commutators(ansatz_elements, q_system, multithread=False, excited_state=0):
+
+        if excited_state > 0:
+            H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+        else:
+            H_sparse_matrix = backends.QiskitSim.ham_sparse_matrix_for_exc_state(get_sparse_operator(q_system.jw_qubit_ham),
+                                                                                 q_system.H_lower_state_terms[:excited_state])
         commutators = {}
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [
-                    # H_qubit_operator and excitation_generator are passed by values, and deleted in
-                    # get_commutator_matrix_multithread.Otherwise ray.threads keep local copies that fill the RAM
+                    # TODO maybe pass a copy of the H_sparse_matrix and delete it
                     element, IterVQEGradientUtils.get_commutator_matrix_multithread.
-                    remote(QubitOperator(str(element.excitation_generator)),
-                           H_qubit_operator=QubitOperator(str(H_qubit_operator)), n_qubits=n_system_qubits)
+                    remote(element.excitation_generator, H_sparse_matrix.copy(), n_qubits=q_system.n_qubits)
                 ]
                 for element in ansatz_elements
             ]
@@ -106,23 +110,20 @@ class IterVQEGradientUtils:
                 excitation_generator = element.excitation_generator
                 key = str(excitation_generator)
                 print('Calculated commutator ', key)
-                commutator = H_qubit_operator * excitation_generator - excitation_generator * H_qubit_operator
-                commutator_sparse_matrix = get_sparse_operator(commutator, n_qubits=n_system_qubits)
+                exc_gen_sparse_matrix = get_sparse_operator(excitation_generator, n_qubits=q_system.n_qubits)
+                commutator_sparse_matrix = H_sparse_matrix * exc_gen_sparse_matrix - exc_gen_sparse_matrix * H_sparse_matrix
                 commutators[key] = commutator_sparse_matrix
 
         return commutators
 
     @staticmethod
     @ray.remote
-    def get_commutator_matrix_multithread(excitation_generator, H_qubit_operator, n_qubits):
+    def get_commutator_matrix_multithread(excitation_generator, H_sparse_matrix, n_qubits):
         t0 = time.time()
-        commutator_qubit_operator = H_qubit_operator * excitation_generator - excitation_generator * H_qubit_operator
-        commutator_sparse_matrix = get_sparse_operator(commutator_qubit_operator,  n_qubits=n_qubits)
+        exc_gen_sparse_matrix = get_sparse_operator(excitation_generator,  n_qubits=n_qubits)
+        commutator_sparse_matrix = H_sparse_matrix*exc_gen_sparse_matrix - exc_gen_sparse_matrix*H_sparse_matrix
         print('Calculated commutator ', str(excitation_generator), 'time ', time.time() - t0)
-        del commutator_qubit_operator
-        del t0
-        del excitation_generator
-        del H_qubit_operator
+        del H_sparse_matrix
         return commutator_sparse_matrix
 
     @staticmethod
@@ -199,13 +200,14 @@ class IterVQEGradientUtils:
     @staticmethod
     def get_largest_gradient_ansatz_elements(ansatz_elements, q_system, backend=backends.QiskitSim, var_parameters=None
                                              , ansatz=None, n=1, multithread=False, commutators_cache=None,
-                                             use_backend_cache=True):
+                                             use_backend_cache=True, excited_state=0):
 
         elements_results = IterVQEGradientUtils.get_ansatz_elements_gradients(ansatz_elements, q_system,
                                                                               var_parameters=var_parameters,
                                                                               ansatz=ansatz, multithread=multithread,
                                                                               commutators_cache=commutators_cache,
-                                                                              backend=backend, use_backend_cache=use_backend_cache)
+                                                                              backend=backend, use_backend_cache=use_backend_cache,
+                                                                              excited_state=excited_state)
         elements_results.sort(key=lambda x: abs(x[1]))
         return elements_results[-n:]
 

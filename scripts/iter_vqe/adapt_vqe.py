@@ -24,18 +24,23 @@ if __name__ == "__main__":
     r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H4() #(frozen_els=frozen_els)
+    molecule = H2() #(frozen_els=frozen_els)
+
+    # TODO make this more general
+    H_lower_state_terms = [[1.137, State([EffDFExc([0, 1], [2, 3])], [0.11176849919227788], 4, 2)]]
+    molecule.H_lower_state_terms = H_lower_state_terms
 
     ansatz_element_type = 'eff_f_exc'
     spin_complement = True
+    excited_state = 1
 
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_elements = 250
 
     multithread = True
     use_grad = True  # for optimizer
-    use_commutators_cache = False
-    use_backend_cache = False
+    use_commutators_cache = True
+    use_backend_cache = True
     # size_patch_commutators = 500  # not used
 
     init_db = None  # pandas.read_csv("../../results/adapt_vqe_results/LiH_g_adapt_spin_gsdefe_26-Aug-2020.csv")
@@ -80,11 +85,11 @@ if __name__ == "__main__":
 
     print('Pool len: ', len(ansatz_element_pool))
 
+    # TODO excited state commutators
     if use_commutators_cache:
-        commutators_cache = IterVQEGradientUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
-                                                                       ansatz_elements=ansatz_element_pool,
-                                                                       n_system_qubits=molecule.n_orbitals,
-                                                                       multithread=multithread)
+        commutators_cache = IterVQEGradientUtils.calculate_commutators(ansatz_elements=ansatz_element_pool,
+                                                                       q_system=molecule, multithread=multithread,
+                                                                       excited_state=excited_state)
     else:
         commutators_cache = None
 
@@ -112,10 +117,11 @@ if __name__ == "__main__":
             get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend=vqe_runner.backend,
                                                  var_parameters=var_parameters, ansatz=ansatz_elements,
                                                  multithread=multithread, commutators_cache=commutators_cache,
-                                                 use_backend_cache=use_backend_cache)[0]
+                                                 use_backend_cache=use_backend_cache, excited_state=excited_state)[0]
         print(element_to_add.element)
 
-        result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add], initial_var_parameters=var_parameters + [0])
+        result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add],
+                                    initial_var_parameters=var_parameters + [0], excited_state=excited_state)
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
