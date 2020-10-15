@@ -160,7 +160,8 @@ class QiskitSim:
         expectation_value =\
             sparse_statevector.dot(operator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
 
-        return expectation_value
+        assert expectation_value.imag < 1e-15
+        return expectation_value.real
 
     # TODO check for excited states
     @staticmethod
@@ -197,7 +198,8 @@ class QiskitSim:
             sparse_statevector = scipy.sparse.csr_matrix(statevector)
 
         grad = sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
-        return grad
+        assert grad.imag < 1e-15
+        return grad.real
 
     # TODO check for excited states
     @staticmethod

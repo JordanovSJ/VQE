@@ -4,18 +4,7 @@ from openfermionpsi4 import run_psi4
 
 import numpy
 import scipy
-import abc
-import time
-
-
-# basically a recipe to initialize some state
-class State:
-    def __init__(self, ansatz, var_parameters, n_qubits, n_electrons, init_state_qasm=None):
-        self.n_qubits = n_qubits
-        self.n_electrons = n_electrons
-        self.ansatz = ansatz
-        self.var_parameters = var_parameters
-        self.init_state_qasm = init_state_qasm
+import pandas
 
 
 class QSystem:
@@ -58,9 +47,17 @@ class QSystem:
     # calculate the k smallest energy eigenvalues. For BeH2/H20 keep k<10 (too much memory)
     def calculate_energy_eigenvalues(self, k):
         H_sparse_matrix = get_sparse_operator(self.jw_qubit_ham)
-        eigenvalues = scipy.sparse.linalg.eigsh(H_sparse_matrix.todense(), k)
+        # use sigma to ensure we get the smallest eigenvalues
+        eigenvalues = list(scipy.sparse.linalg.eigsh(H_sparse_matrix.todense(), k, sigma=2*self.hf_energy)[0])
+        eigenvalues.sort()
         self.energy_eigenvalues = eigenvalues
         return eigenvalues
+
+    def set_h_lower_state_terms(self, states, factors=None):
+        if factors is None:
+            factors = list(numpy.zeros(len(states)) + abs(self.hf_energy)*2)  # default guess value
+
+        self.H_lower_state_terms = [[factor, state] for factor, state in zip(factors, states)]
 
 
 class H2(QSystem):
@@ -77,7 +74,7 @@ class H2(QSystem):
 
 class H4(QSystem):
 
-    def __init__(self, r=0.735, basis='sto-3g', frozen_els=None, ham_matrix=False):
+    def __init__(self, r=0.735, basis='sto-3g', frozen_els=None):
         super(H4, self).__init__(name='H4', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=8,
                                  n_electrons=4, basis=basis, frozen_els=frozen_els)
 

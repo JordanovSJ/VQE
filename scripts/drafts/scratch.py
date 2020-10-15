@@ -1,4 +1,4 @@
-from src.ansatz_element_lists import *
+from src.ansatze import *
 from src.backends import QiskitSim
 import qiskit
 import time
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     #              1.92369605e-16, -3.37073840e-32,  1.38756291e-06,  1.69449961e-32]
 
     excitation = EffDFExc([0, 1], [2, 3], system_n_qubits=4)
-    H_lower_state_terms = [[1.137, State([excitation], [0.11176849919227788], 4, 2)]]
+    H_lower_state_terms = [[1.137, Ansatz([excitation], [0.11176849919227788], 4, 2)]]
     molecule.H_lower_state_terms = H_lower_state_terms
 
     # optimizer = 'Nelder-Mead'

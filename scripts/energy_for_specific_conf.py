@@ -30,7 +30,7 @@ if __name__ == "__main__":
     df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_comp_exc_19-Sep-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
-    ansatz, var_parameters = DataUtils.get_ansatz_from_data_frame(df, molecule)
+    ansatz, var_parameters = DataUtils.ansatz_from_data_frame(df, molecule)
 
     ansatz = ansatz[:15]
     # var_parameters = list(df['var_parameters'])[:49]

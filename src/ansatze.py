@@ -8,6 +8,17 @@ import itertools
 import numpy
 
 
+# basically a recipe to initialize some state
+class Ansatz:
+    def __init__(self, ansatz, var_parameters, n_qubits, n_electrons, init_state_qasm=None):
+        self.n_qubits = n_qubits
+        self.n_electrons = n_electrons
+        self.ansatz = ansatz
+        self.var_parameters = var_parameters
+        self.init_state_qasm = init_state_qasm
+
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Lists of ansatz elements>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class SDExcitations:
     def __init__(self, n_orbitals, n_electrons, element_type='f_exc'):
         self.n_orbitals = n_orbitals
@@ -69,6 +80,8 @@ class GSDExcitations:
     def get_single_excitations(self):
         single_excitations = []
         for i, j in itertools.combinations(range(self.n_orbitals), 2):
+            # # test
+            # if i % 2 == j % 2:
             if self.ansatz_element_type == 'f_exc':
                 single_excitations.append(SFExc(i, j, system_n_qubits=self.n_orbitals))
             elif self.ansatz_element_type == 'q_exc':

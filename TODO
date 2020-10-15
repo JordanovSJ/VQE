@@ -1,5 +1,9 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
+-make excitation_gradient to work for non zero points
+
+-use class Ansatz
+
 -include default ground state ansatz in q_systems
 
 -remove the option not to use cache (remove the option not to precompute state vectors...)

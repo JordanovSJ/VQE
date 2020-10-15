@@ -176,9 +176,9 @@ if __name__ == "__main__":
         print(message)
 
         element_to_add, result =\
-            EnergyAdaptUtils.largest_vqe_energy_reduction_element(vqe_runner, elements,
-                                                                  initial_var_parameters=var_parameters,
-                                                                  ansatz=ansatz_elements, multithread=multithread)
+            EnergyAdaptUtils.largest_individual_vqe_energy_reduction_element(vqe_runner, elements,
+                                                                             var_parameters=var_parameters,
+                                                                             ansatz=ansatz_elements, multithread=multithread)
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy

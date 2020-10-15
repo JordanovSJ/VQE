@@ -5,7 +5,7 @@ sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
 from src.q_systems import *
-from src.ansatz_element_lists import *
+from src.ansatze import *
 from src.backends import QiskitSim
 from src.utils import *
 from src.iter_vqe_utils import *
@@ -75,7 +75,7 @@ if __name__ == "__main__":
         ansatz = []
         var_parameters = []
     else:
-        ansatz, var_parameters = DataUtils.get_ansatz_from_data_frame(init_ansatz_df, molecule)
+        ansatz, var_parameters = DataUtils.ansatz_from_data_frame(init_ansatz_df, molecule)
         # var_parameters = list(vqe_runner.vqe_run(ansatz_elements, var_parameters).x)
 
     iter_count = 0
@@ -106,9 +106,9 @@ if __name__ == "__main__":
         print(message)
 
         element_to_add, result =\
-            EnergyUtils.largest_vqe_energy_reduction_element(vqe_runner, elements,
-                                                             initial_var_parameters=var_parameters,
-                                                             ansatz=ansatz, multithread=multithread)
+            EnergyUtils.largest_individual_vqe_energy_reduction_element(vqe_runner, elements,
+                                                                        var_parameters=var_parameters,
+                                                                        ansatz=ansatz, multithread=multithread)
 
         compl_element_to_add = element_to_add.get_spin_comp_exc()
 

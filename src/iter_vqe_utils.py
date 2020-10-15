@@ -3,7 +3,7 @@ from src import config
 from src import backends
 from src.ansatz_elements import *
 from src.utils import QasmUtils
-
+# from src.ansatze import Ansatz
 
 import time
 import ray
@@ -24,19 +24,19 @@ class IterVQEQasmUtils:
 
 
 class EnergyUtils:
-    # finds the VQE energy contribution of a single ansatz element added to (optionally) an initial ansatz
+    # calculate the full (optimizing all parameters) VQE energy reductions for a set of ansatz elements
     @staticmethod
-    def elements_vqe_energy_reductions(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                       initial_ansatz=None, multithread=False, excited_state=0):
+    def elements_full_vqe_energy_reductions(vqe_runner, ansatz_elements, var_parameters=None,
+                                            ansatz=None, multithread=False, excited_state=0):
 
-        if initial_ansatz is None:
-            initial_ansatz = []
+        if ansatz is None:
+            ansatz = []
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
             elements_ray_ids = [
                 [element,
-                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=initial_ansatz + [element],
-                                                       initial_var_parameters=initial_var_parameters + [0],
+                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=ansatz + [element],
+                                                       initial_var_parameters=var_parameters + [0],
                                                        excited_state=excited_state)]
                 # TODO this will work only if the ansatz element has 1 var. par.
                 for element in ansatz_elements
@@ -45,35 +45,78 @@ class EnergyUtils:
             ray.shutdown()
         else:
             elements_results = [
-                [element, vqe_runner.vqe_run(ansatz=initial_ansatz + [element], excited_state=excited_state,
-                                             initial_var_parameters=initial_var_parameters+[0])]
+                [element, vqe_runner.vqe_run(ansatz=ansatz + [element], excited_state=excited_state,
+                                             initial_var_parameters=var_parameters + [0])]
                 for element in ansatz_elements
             ]
 
         return elements_results
 
-    # returns the ansatz element that achieves lowest energy (together with the energy value)
+    # returns the ansatz element that achieves the largest full (optimizing all parameters) VQE energy reduction
     @staticmethod
-    def largest_vqe_energy_reduction_element(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                             ansatz=None, multithread=False, excited_state=0):
-        elements_results = EnergyUtils.elements_vqe_energy_reductions(vqe_runner, ansatz_elements,
-                                                                      initial_var_parameters=initial_var_parameters,
-                                                                      initial_ansatz=ansatz,
-                                                                      multithread=multithread,
-                                                                      excited_state=excited_state)
+    def largest_full_vqe_energy_reduction_element(vqe_runner, ansatz_elements, ansatz=None, var_parameters=None,
+                                                  multithread=False, excited_state=0):
+        elements_results = EnergyUtils.elements_full_vqe_energy_reductions(vqe_runner, ansatz_elements,
+                                                                           var_parameters=var_parameters,
+                                                                           ansatz=ansatz, multithread=multithread,
+                                                                           excited_state=excited_state)
         return min(elements_results, key=lambda x: x[1].fun)
 
-    # NOT used
-    # get ansatz elements that contribute to energy reduction below(above) some threshold value
+    # # NOT used
+    # # get ansatz elements that contribute to energy reduction below(above) some threshold value
+    # @staticmethod
+    # def elements_below_full_vqe_energy_reduction_threshold(vqe_runner, ansatz_elements, threshold, ansatz=[],
+    #                                                        var_parameters=[], multithread=False, excited_state=0):
+    #     elements_results = EnergyUtils.elements_full_vqe_energy_reductions(vqe_runner, ansatz_elements,
+    #                                                                        var_parameters=var_parameters,
+    #                                                                        ansatz=ansatz, multithread=multithread,
+    #                                                                        excited_state=excited_state)
+    #     return [element_result for element_result in elements_results if element_result[1].fun <= threshold]
+
+    # calculate the full (optimizing all parameters) VQE energy reductions for a set of ansatz elements
     @staticmethod
-    def elements_below_vqe_energy_reduction_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=[],
-                                                      initial_ansatz=[], multithread=False, excited_state=0):
-        elements_results = EnergyUtils.elements_vqe_energy_reductions(vqe_runner, ansatz_elements,
-                                                                      initial_var_parameters=initial_var_parameters,
-                                                                      initial_ansatz=initial_ansatz,
-                                                                      multithread=multithread,
-                                                                      excited_state=excited_state)
-        return [element_result for element_result in elements_results if element_result[1].fun <= threshold]
+    def elements_individual_vqe_energy_reductions(vqe_runner, ansatz_elements, ansatz=None, var_parameters=None,
+                                                  multithread=False, excited_state=0):
+
+        if ansatz is None:
+            ansatz = []
+            var_parameters = []
+
+        ansatz_qasm = QasmUtils.hf_state(vqe_runner.q_system.n_electrons)
+        ansatz_qasm += vqe_runner.backend.qasm_from_ansatz(ansatz, var_parameters)
+
+        if multithread:
+            ray.init(num_cpus=config.multithread['n_cpus'])
+            elements_ray_ids = [
+                [element,
+                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=[element], init_state_qasm=ansatz_qasm,
+                                                       initial_var_parameters=[0], excited_state=excited_state)
+                 ]
+                # TODO this will work only if the ansatz element has 1 var. par.
+                for element in ansatz_elements
+            ]
+            elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
+                                elements_ray_ids]
+            ray.shutdown()
+        else:
+            elements_results = [
+                [element, vqe_runner.vqe_run(ansatz=[element], initial_var_parameters=[0], excited_state=excited_state,
+                                             init_state_qasm=ansatz_qasm)
+                 ]
+                for element in ansatz_elements
+            ]
+
+        return elements_results
+
+    # returns the ansatz element that achieves the largest full (optimizing all parameters) VQE energy reduction
+    @staticmethod
+    def largest_individual_vqe_energy_reduction_element(ansatz_elements, vqe_runner, ansatz=None, var_parameters=None,
+                                                        multithread=False, excited_state=0):
+        elements_results = EnergyUtils.elements_individual_vqe_energy_reductions(vqe_runner, ansatz_elements,
+                                                                                 ansatz=ansatz, var_parameters=var_parameters,
+                                                                                 multithread=multithread,
+                                                                                 excited_state=excited_state)
+        return min(elements_results, key=lambda x: x[1].fun)
 
 
 class GradUtils:
@@ -84,10 +127,11 @@ class GradUtils:
     def calculate_commutators(ansatz_elements, q_system, multithread=False, excited_state=0):
 
         if excited_state > 0:
-            H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
-        else:
             H_sparse_matrix = backends.QiskitSim.ham_sparse_matrix_for_exc_state(get_sparse_operator(q_system.jw_qubit_ham),
                                                                                  q_system.H_lower_state_terms[:excited_state])
+        else:
+
+            H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
         # print('Multithtread')
         commutators = {}
         if multithread:
@@ -227,33 +271,34 @@ class DataUtils:
 
     # TODO: make this less ugly and more general
     @staticmethod
-    def get_ansatz_from_data_frame(data_frame, q_system):
-        ansatz = []
+    def ansatz_from_data_frame(data_frame, q_system):
+        ansatz_elements = []
         for i in range(len(data_frame)):
             element = data_frame.loc[i]['element']
             element_qubits = data_frame.loc[i]['element_qubits']
             if element[0] == 'e' and element[4] == 's':
-                ansatz.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[0] == 'e' and element[4] == 'd':
-                ansatz.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[0] == 's' and element[2] == 'q':
-                ansatz.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[0] == 'd' and element[2] == 'q':
-                ansatz.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[:2] == '1j':
-                ansatz.append(PauliStringExc(QubitOperator(element), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(PauliStringExc(QubitOperator(element), system_n_qubits=q_system.n_qubits))
             elif element[:8] == 'spin_s_f':
-                ansatz.append(SpinCompSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(SpinCompSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[:8] == 'spin_d_f':
-                ansatz.append(SpinCompDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(SpinCompDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[:8] == 'spin_s_q':
-                ansatz.append(SpinCompSQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(SpinCompSQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[:8] == 'spin_d_q':
-                ansatz.append(SpinCompDQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(SpinCompDQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             else:
                 print(element, element_qubits)
                 raise Exception('Unrecognized ansatz element.')
 
         var_pars = list(data_frame['var_parameters'])
 
-        return ansatz, var_pars
+        return Ansatz(ansatz_elements, var_pars, q_system.n_qubits, q_system.n_electrons)
+
