@@ -29,6 +29,20 @@ class MatrixUtils:
         qubit_operator_matrix = get_sparse_operator(excitation_operator, n_qubits)
         return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
 
+    # return the hamming weight of a statevector if all its non zero terms have the same H.w. Otherwise return False
+    @staticmethod
+    def statevector_hamming_weight(statevector):
+        hw = None
+        for i, term in enumerate(statevector):
+            if term != 0:
+                hw_i = bin(i).count('1')
+                if hw is None:
+                    hw = hw_i
+                elif hw != hw_i:
+                    return False
+
+        return hw
+
 
 class LogUtils:
 

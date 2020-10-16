@@ -3,9 +3,7 @@ import time
 import numpy
 import pandas
 import ray
-import pandas
 import datetime
-
 import sys
 import ast
 sys.path.append('../../')
@@ -26,14 +24,16 @@ if __name__ == "__main__":
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = H2()  # (frozen_els=frozen_els)
 
-    # ansatz_element_type = 'efficient_fermi_excitation'
+    # ansatz_element_type = 'eff_f_exc'
     ansatz_element_type = 'q_exc'
-    # ansatz_element_type = 'pauli_word_excitation'
+    # ansatz_element_type = 'pauli_str_exc'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
-    excited_state = 1
-    ground_state = Ansatz([EffDFExc([0, 1], [2, 3])], [0.11176849919227788], 4, 2)
-    molecule.set_h_lower_state_terms([ground_state], [1.137])
+    excited_state = 3
+    ground_state = Ansatz([DQExc([0, 1], [2, 3])], [0.11176849919227788], 4, 2)
+    second_state = Ansatz([SQExc(0, 3)], [1.570796325683595], 4, 2)
+    second_state_2 = Ansatz([SQExc(1, 2)], [1.570796325683595], 4, 2)
+    molecule.set_h_lower_state_terms([ground_state, second_state, second_state_2], [2.2, 1.55, 1.55])
 
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_elements = 250
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     current_energy = vqe_runner.backend.ham_expectation_value_exc_state(molecule.jw_qubit_ham, [], [], molecule,
                                                                         excited_state=excited_state)
     print(current_energy)
-    previous_energy = current_energy + delta_e_threshold
+    previous_energy = current_energy + max(delta_e_threshold,1e-5)
     init_ansatz_length = len(ansatz)
 
     while previous_energy - current_energy >= delta_e_threshold and iter_count <= max_ansatz_elements:
@@ -110,7 +110,7 @@ if __name__ == "__main__":
         element_energy_reduction = element_result.fun
         print(element_to_add.element)
 
-        result = vqe_runner_2.vqe_run(ansatz=ansatz + [element_to_add],
+        result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add],
                                       initial_var_parameters=var_parameters + list(element_result.x), excited_state=excited_state)
 
         current_energy = result.fun

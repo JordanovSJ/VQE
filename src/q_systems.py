@@ -5,7 +5,9 @@ from openfermionpsi4 import run_psi4
 import numpy
 import scipy
 import pandas
+import logging
 
+from src.utils import MatrixUtils
 
 class QSystem:
 
@@ -47,11 +49,38 @@ class QSystem:
     # calculate the k smallest energy eigenvalues. For BeH2/H20 keep k<10 (too much memory)
     def calculate_energy_eigenvalues(self, k):
         H_sparse_matrix = get_sparse_operator(self.jw_qubit_ham)
+
+        # do not calculate all eigenvectors of H, since this is very slow
+        calculate_first_n = k + 1
         # use sigma to ensure we get the smallest eigenvalues
-        eigenvalues = list(scipy.sparse.linalg.eigsh(H_sparse_matrix.todense(), k, sigma=2*self.hf_energy)[0])
-        eigenvalues.sort()
-        self.energy_eigenvalues = eigenvalues
-        return eigenvalues
+        eigvv = scipy.sparse.linalg.eigsh(H_sparse_matrix.todense(), k=calculate_first_n, which='SR')
+        eigenvalues = list(eigvv[0])
+        eigenvectors = list(eigvv[1].T)
+        eigenvalues, eigenvectors = [*zip(*sorted([*zip(eigenvalues, eigenvectors)], key=lambda x:x[0]))]  # sort w.r.t. eigenvalues
+
+        self.energy_eigenvalues = []
+
+        i = 0
+        while len(self.energy_eigenvalues) < k:
+
+            if i >= len(eigenvalues):
+                print(i)
+                calculate_first_n += k
+                eigvv = scipy.sparse.linalg.eigs(H_sparse_matrix.todense(), k=calculate_first_n, which='SR')
+                eigenvalues = list(eigvv[0])
+                eigenvectors = list(eigvv[1].T)
+                eigenvalues, eigenvectors = [*zip(*sorted([*zip(eigenvalues, eigenvectors)], key=lambda x: x[0]))]
+
+            if MatrixUtils.statevector_hamming_weight(eigenvectors[i].round(10)) == self.n_electrons:  # rounding set at random
+                self.energy_eigenvalues.append(eigenvalues[i].real)
+
+            i += 1
+            if i == self.n_qubits**2:
+                logging.warning('WARNING: Only {} eigenvalues found corresponding to the n_electrons'
+                                .format(len(self.energy_eigenvalues)))
+                break
+
+        return self.energy_eigenvalues
 
     def set_h_lower_state_terms(self, states, factors=None):
         if factors is None:

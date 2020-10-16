@@ -50,9 +50,9 @@ if __name__ == "__main__":
     # var_pars = [ 1.73588403e-32,  3.85808261e-16, -2.40495012e-16,  1.44296833e-16,
     #              1.92369605e-16, -3.37073840e-32,  1.38756291e-06,  1.69449961e-32]
 
-    excitation = EffDFExc([0, 1], [2, 3], system_n_qubits=4)
-    H_lower_state_terms = [[1.137, Ansatz([excitation], [0.11176849919227788], 4, 2)]]
-    molecule.H_lower_state_terms = H_lower_state_terms
+    # excitation = EffDFExc([0, 1], [2, 3], system_n_qubits=4)
+    # H_lower_state_terms = [[1.137, Ansatz([excitation], [0.11176849919227788], 4, 2)]]
+    # molecule.H_lower_state_terms = H_lower_state_terms
 
     # optimizer = 'Nelder-Mead'
     # optimizer_options = {'gtol': 1e-8}
@@ -66,11 +66,11 @@ if __name__ == "__main__":
 
     # print(result)
 
-    var_pars = list(numpy.zeros(len(ansatz)))
-    var_pars[1] += 0.0
-    grad = backends.QiskitSim.ansatz_gradient(var_pars, ansatz, q_system=molecule, excited_state=1)
-    print([element.element for element in ansatz])
-    print(grad)
+    # var_pars = list(numpy.zeros(len(ansatz)))
+    # var_pars[1] += 0.0
+    # grad = backends.QiskitSim.ansatz_gradient(var_pars, ansatz, q_system=molecule, excited_state=1)
+    # print([element.element for element in ansatz])
+    # print(grad)
 
     # pars = (numpy.arange(50) - 25)*numpy.pi/50
     # energies = []
@@ -83,4 +83,12 @@ if __name__ == "__main__":
     # plt.plot(pars, energies)
     # plt.show()
 
+    # eigvv = molecule.calculate_energy_eigenvalues(9)
+    # print(eigvv)
+
+    statevector = QiskitSim.statevector_from_ansatz([DQExc([0, 1], [2, 3]), SQExc(1, 3)], [-numpy.pi/4, numpy.pi/2], 4, 2)
+    sparse_statevector = scipy.sparse.csr_matrix(statevector)
+    E = sparse_statevector.dot(get_sparse_operator(molecule.jw_qubit_ham)).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
+    print(statevector.round(10))
+    print(E)
     print('spagetti')
