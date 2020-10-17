@@ -22,6 +22,7 @@ class QiskitSimCache:
             self.operator_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
         else:
             self.operator_sparse_matrix = get_sparse_operator(qubit_operator)
+
         self.statevector = None
         self.var_parameters = None
 
@@ -44,6 +45,7 @@ class QiskitSimCache:
         self.excite_state = excited_state
         if self.H_sparse_matrix_for_excited_state is not None:
             logging.warning('Calculating already existing variable in QiskitSimCache')
+            # return
 
         self.H_sparse_matrix_for_excited_state = self.operator_sparse_matrix
 

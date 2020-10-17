@@ -8,11 +8,15 @@ import pandas
 import logging
 
 from src.utils import MatrixUtils
+from src.ansatze import Ansatz
+from src.ansatz_elements import SQExc, DQExc
+from src.iter_vqe_utils import DataUtils
+from src.backends import QiskitSim
+
 
 class QSystem:
 
-    def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None,
-                 H_lower_state_terms=None):
+    def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None):
         self.name = name
         self.multiplicity = multiplicity
         self.charge = charge
@@ -44,7 +48,16 @@ class QSystem:
         self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
 
         # this is used only for calculating excited states. list of [term_index, term_state]
-        self.H_lower_state_terms = H_lower_state_terms
+        self.H_lower_state_terms = None
+
+    #     self.H_sparse_matrix = None
+    #     self.H_sparse_matrix_for_excited_state = None
+    #
+    # def calculate_ham_sparse_matrix(self, excited_state=1):
+    #     self.H_sparse_matrix = get_sparse_operator(self.jw_qubit_ham)
+    #     if self.H_lower_state_terms is not None:
+    #         self.H_sparse_matrix_for_excited_state = QiskitSim.\
+    #             ham_sparse_matrix_for_exc_state(self.H_sparse_matrix, self.H_lower_state_terms[:excited_state])
 
     # calculate the k smallest energy eigenvalues. For BeH2/H20 keep k<10 (too much memory)
     def calculate_energy_eigenvalues(self, k):
@@ -95,6 +108,17 @@ class H2(QSystem):
         super(H2, self).__init__(name='H2', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=4,
                                  n_electrons=2, basis=basis, frozen_els=frozen_els)
 
+    # the ground and the first three degenerate excited states for H2 in equilibrium configuration
+    # this is used for excited state simulations only
+    def default_states(self):
+        ground = Ansatz([DQExc([0, 1], [2, 3])], [0.11176849919227788], 4, 2)
+        first_exc_1 = Ansatz([SQExc(0, 3)], [1.570796325683595], 4, 2)
+        first_exc_2 = Ansatz([SQExc(1, 2)], [1.570796325683595], 4, 2)
+        first_exc_3 = Ansatz([DQExc([0, 1], [2, 3]), SQExc(1, 3)], [-numpy.pi/4, numpy.pi/2], 4, 2)
+        self.H_lower_state_terms = [[factor, state] for factor, state in
+                                    zip([2.2, 1.55, 1.55, 1.55], [ground, first_exc_1, first_exc_2, first_exc_3])]
+        return self.H_lower_state_terms
+
     @staticmethod
     def get_geometry(r=0.735):
         return [['H', [0, 0, 0]],
@@ -122,6 +146,13 @@ class LiH(QSystem):
     def __init__(self, r=1.546, basis='sto-3g', frozen_els=None):
         super(LiH, self).__init__(name='LiH', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
                                   n_electrons=4, basis=basis, frozen_els=frozen_els)
+
+    def default_states(self):
+        df = pandas.read_csv('../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+        ground = DataUtils.ansatz_from_data_frame(df, self)
+        del df
+        self.H_lower_state_terms = [[abs(self.hf_energy)*2, ground]]
+        return self.H_lower_state_terms
 
     @staticmethod
     def get_geometry(r=1.546):

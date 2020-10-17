@@ -3,12 +3,14 @@ from src import config
 from src import backends
 from src.ansatz_elements import *
 from src.utils import QasmUtils
-# from src.ansatze import Ansatz
+from src.ansatze import Ansatz
+from src.backends import QiskitSim
 
 import time
 import ray
 import ast
 import numpy
+import scipy
 
 
 class IterVQEQasmUtils:
@@ -76,7 +78,22 @@ class EnergyUtils:
     # calculate the full (optimizing all parameters) VQE energy reductions for a set of ansatz elements
     @staticmethod
     def elements_individual_vqe_energy_reductions(vqe_runner, ansatz_elements, ansatz=None, var_parameters=None,
-                                                  multithread=False, excited_state=0):
+                                                  multithread=False, excited_state=0, commutators_cache=None):
+
+        if vqe_runner.backend == QiskitSim:
+            init_statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, vqe_runner.q_system.n_qubits,
+                                                                 vqe_runner.q_system.n_electrons)
+            init_sparse_statevector = scipy.sparse.csr_matrix(init_statevector).transpose().conj()
+            H_sparse_matrix = get_sparse_operator(vqe_runner.q_system.jw_qubit_ham)
+            if excited_state == 0:
+                operator_sparse_matrix = H_sparse_matrix
+            else:
+                operator_sparse_matrix = QiskitSim.\
+                    ham_sparse_matrix_for_exc_state(H_sparse_matrix, vqe_runner.q_system.H_lower_state_terms[:excited_state])
+
+        def thread_cache(ansatz_element):
+            return [operator_sparse_matrix.copy(), init_sparse_statevector.copy(),
+                    commutators_cache[str(ansatz_element.excitation_generator)].copy()]
 
         if ansatz is None:
             ansatz = []
@@ -87,14 +104,24 @@ class EnergyUtils:
 
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
-            elements_ray_ids = [
-                [element,
-                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=[element], init_state_qasm=ansatz_qasm,
-                                                       initial_var_parameters=[0], excited_state=excited_state)
-                 ]
-                # TODO this will work only if the ansatz element has 1 var. par.
-                for element in ansatz_elements
-            ]
+            if vqe_runner.backend == QiskitSim:
+                elements_ray_ids = [
+                    [element,
+                     vqe_runner.vqe_run_single_parameter_multithread.remote(self=vqe_runner, ansatz_element=element,
+                                                                            thread_cache=thread_cache(element))
+                     ]
+                    # TODO this will work only if the ansatz element has 1 var. par.
+                    for element in ansatz_elements
+                ]
+            else:
+                elements_ray_ids = [
+                    [element,
+                     vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=[element], init_state_qasm=ansatz_qasm,
+                                                           initial_var_parameters=[0], excited_state=excited_state)
+                     ]
+                    # TODO this will work only if the ansatz element has 1 var. par.
+                    for element in ansatz_elements
+                ]
             elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
                                 elements_ray_ids]
             ray.shutdown()
@@ -111,11 +138,12 @@ class EnergyUtils:
     # returns the ansatz element that achieves the largest full (optimizing all parameters) VQE energy reduction
     @staticmethod
     def largest_individual_vqe_energy_reduction_element(ansatz_elements, vqe_runner, ansatz=None, var_parameters=None,
-                                                        multithread=False, excited_state=0):
+                                                        multithread=False, commutators_cache=None, excited_state=0):
         elements_results = EnergyUtils.elements_individual_vqe_energy_reductions(vqe_runner, ansatz_elements,
                                                                                  ansatz=ansatz, var_parameters=var_parameters,
                                                                                  multithread=multithread,
-                                                                                 excited_state=excited_state)
+                                                                                 excited_state=excited_state,
+                                                                                 commutators_cache=commutators_cache)
         return min(elements_results, key=lambda x: x[1].fun)
 
 

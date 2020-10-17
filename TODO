@@ -1,10 +1,10 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
+!!!! - create separate vqe_runner for QIskitSim
+
 -make excitation_gradient to work for non zero points
 
 -use class Ansatz
-
--include default ground state ansatz in q_systems
 
 -remove the option not to use cache (remove the option not to precompute state vectors...)
 -try to create global cahce to use in multithreading

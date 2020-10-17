@@ -2,6 +2,8 @@ from src.backends import QiskitSimCache, QiskitSim
 from src.utils import LogUtils
 from src import config
 
+from openfermion import get_sparse_operator
+
 import scipy
 import numpy
 import time
@@ -186,9 +188,76 @@ class VQERunner:
 
         # Not sure if needed
         if cache is not None:
+            del cache.H_sparse_matrix_for_excited_state
+            del cache.operator_sparse_matrix
+            del cache.statevector
             del cache
 
         result['n_iters'] = local_thread_iteration[0]  # cheating
+
+        return result
+
+    # use this for QiskitSim only
+    # @staticmethod
+    @ray.remote
+    def vqe_run_single_parameter_multithread(self, ansatz_element, thread_cache):
+
+        # create it as a list so we can pass it by reference
+        local_thread_iteration = [0]
+
+        # excitation_generator_matrix = get_sparse_operator(ansatz_element.excitation_generator, n_qubits=self.q_system.n_qubits)
+        # commutator_matrix = operator_sparse_matrix * excitation_generator_matrix - excitation_generator_matrix * operator_sparse_matrix
+
+        operator_sparse_matrix = thread_cache[0]
+        init_sparse_statevector = thread_cache[1]
+        commutator_matrix = thread_cache[2]
+
+        excitation_generator_matrix = get_sparse_operator(ansatz_element.excitation_generator, n_qubits=self.q_system.n_qubits)
+
+        # previous_parameter = None
+        # sparse_statevector = init_sparse_statevector.copy()
+        #
+        # def update_statevector(parameter):
+        #     if parameter != previous_parameter:
+        #         previous_parameter = parameter
+        #         sparse_statevector = scipy.sparse.linalg.expm_multiply(-parameter * excitation_generator_matrix,
+        #                                                                init_sparse_statevector)
+
+        # work only for excitations
+        def get_energy(parameters):
+            assert len(parameters) == 1
+            parameter = parameters[0]
+            sparse_statevector = scipy.sparse.linalg.expm_multiply(-parameter * excitation_generator_matrix, init_sparse_statevector)
+            energy = sparse_statevector.transpose().conj().dot(operator_sparse_matrix).dot(sparse_statevector).todense()[0, 0]
+            del sparse_statevector
+            return energy.real
+
+        def get_gradient(parameters):
+            assert len(parameters) == 1
+            parameter = parameters[0]
+            sparse_statevector = scipy.sparse.linalg.expm_multiply(-parameter * excitation_generator_matrix, init_sparse_statevector)
+            grad = [sparse_statevector.transpose().conj().dot(commutator_matrix).dot(sparse_statevector).todense()[0, 0].real]
+            del sparse_statevector
+            return grad
+
+        var_parameter = [0]
+        if self.use_ansatz_gradient:
+            result = scipy.optimize.minimize(get_energy, var_parameter, method=self.optimizer, jac=get_gradient,
+                                             options=self.optimizer_options, tol=config.optimizer_tol,
+                                             bounds=config.optimizer_bounds)
+        else:
+            result = scipy.optimize.minimize(get_energy, var_parameter, method=self.optimizer,
+                                             options=self.optimizer_options, tol=config.optimizer_tol,
+                                             bounds=config.optimizer_bounds)
+
+        message = 'Ran VQE for element {}. Energy {}. Iterations {}'.format(ansatz_element.element, result.fun, local_thread_iteration[0])
+        print(message)
+
+        result['n_iters'] = local_thread_iteration[0]  # cheating
+
+        del operator_sparse_matrix
+        del init_sparse_statevector
+        del commutator_matrix
 
         return result
 

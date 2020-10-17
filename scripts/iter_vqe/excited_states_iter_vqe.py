@@ -19,28 +19,24 @@ from src.iter_vqe_utils import *
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 0.735
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2()  # (frozen_els=frozen_els)
+    molecule = LiH()  # (frozen_els=frozen_els)
+    excited_state = 1
+    molecule.default_states()
 
     # ansatz_element_type = 'eff_f_exc'
     ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'pauli_str_exc'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
-    excited_state = 3
-    ground_state = Ansatz([DQExc([0, 1], [2, 3])], [0.11176849919227788], 4, 2)
-    second_state = Ansatz([SQExc(0, 3)], [1.570796325683595], 4, 2)
-    second_state_2 = Ansatz([SQExc(1, 2)], [1.570796325683595], 4, 2)
-    molecule.set_h_lower_state_terms([ground_state, second_state, second_state_2], [2.2, 1.55, 1.55])
-
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_elements = 250
 
     multithread = True
     use_grad = True  # for optimizer
-    use_commutators_cache = False
+    use_commutators_cache = True
     use_backend_cache = True
     # size_patch_commutators = 500  # not used
 
@@ -56,8 +52,10 @@ if __name__ == "__main__":
                            use_ansatz_gradient=use_grad, use_cache=use_backend_cache)
 
     # create a vqe_runner for single element global optimization
-    vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='Nelder-Mead', use_cache=use_backend_cache,
-                             optimizer_options=None)
+    vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
+                           use_ansatz_gradient=use_grad, use_cache=use_backend_cache)
+    # vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='Nelder-Mead', use_cache=use_backend_cache,
+    #                          optimizer_options=None)
 
     # define the pool of ansatz elements
     if spin_complement:
@@ -106,12 +104,12 @@ if __name__ == "__main__":
         element_to_add, element_result = EnergyUtils.\
             largest_individual_vqe_energy_reduction_element(ansatz_element_pool, vqe_runner_2, ansatz=ansatz,
                                                             var_parameters=var_parameters, multithread=multithread,
-                                                            excited_state=excited_state)
+                                                            excited_state=excited_state, commutators_cache=commutators_cache)
         element_energy_reduction = element_result.fun
         print(element_to_add.element)
 
         result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add],
-                                      initial_var_parameters=var_parameters + list(element_result.x), excited_state=excited_state)
+                                    initial_var_parameters=var_parameters + list(element_result.x), excited_state=excited_state)
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
