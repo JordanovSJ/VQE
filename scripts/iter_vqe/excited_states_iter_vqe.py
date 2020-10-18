@@ -22,7 +22,7 @@ if __name__ == "__main__":
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH()  # (frozen_els=frozen_els)
+    molecule = LiH(r=r)  # (frozen_els=frozen_els)
     excited_state = 1
     molecule.default_states()
 
@@ -135,7 +135,7 @@ if __name__ == "__main__":
             # df_data['var_parameters'] = var_parameters
             # save data
             DataUtils.save_data(results_data_frame, molecule, time_stamp, frozen_els=frozen_els,
-                                ansatz_element_type=ansatz_element_type, iter_vqe_type='adapt')
+                                ansatz_element_type=ansatz_element_type, iter_vqe_type='exc_{}_iter_vqe'.format(excited_state))
 
             message = 'Add new element to final ansatz {}. Energy {}. dE {}, Individual dE{}, var. parameters: {}' \
                 .format(element_to_add.element, current_energy, delta_e, element_energy_reduction, var_parameters)

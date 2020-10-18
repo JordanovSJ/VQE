@@ -205,9 +205,6 @@ class VQERunner:
         # create it as a list so we can pass it by reference
         local_thread_iteration = [0]
 
-        # excitation_generator_matrix = get_sparse_operator(ansatz_element.excitation_generator, n_qubits=self.q_system.n_qubits)
-        # commutator_matrix = operator_sparse_matrix * excitation_generator_matrix - excitation_generator_matrix * operator_sparse_matrix
-
         operator_sparse_matrix = thread_cache[0]
         init_sparse_statevector = thread_cache[1]
         commutator_matrix = thread_cache[2]
@@ -227,18 +224,19 @@ class VQERunner:
         def get_energy(parameters):
             assert len(parameters) == 1
             parameter = parameters[0]
-            sparse_statevector = scipy.sparse.linalg.expm_multiply(-parameter * excitation_generator_matrix, init_sparse_statevector)
+            sparse_statevector = scipy.sparse.linalg.expm_multiply(parameter * excitation_generator_matrix, init_sparse_statevector)
             energy = sparse_statevector.transpose().conj().dot(operator_sparse_matrix).dot(sparse_statevector).todense()[0, 0]
             del sparse_statevector
+            local_thread_iteration[0] += 1
             return energy.real
 
         def get_gradient(parameters):
             assert len(parameters) == 1
             parameter = parameters[0]
-            sparse_statevector = scipy.sparse.linalg.expm_multiply(-parameter * excitation_generator_matrix, init_sparse_statevector)
-            grad = [sparse_statevector.transpose().conj().dot(commutator_matrix).dot(sparse_statevector).todense()[0, 0].real]
+            sparse_statevector = scipy.sparse.linalg.expm_multiply(parameter * excitation_generator_matrix, init_sparse_statevector)
+            grad = sparse_statevector.transpose().conj().dot(commutator_matrix).dot(sparse_statevector).todense()[0, 0].real
             del sparse_statevector
-            return grad
+            return numpy.array([grad])
 
         var_parameter = [0]
         if self.use_ansatz_gradient:

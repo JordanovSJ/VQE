@@ -80,6 +80,13 @@ class EnergyUtils:
     def elements_individual_vqe_energy_reductions(vqe_runner, ansatz_elements, ansatz=None, var_parameters=None,
                                                   multithread=False, excited_state=0, commutators_cache=None):
 
+        if ansatz is None:
+            ansatz = []
+            var_parameters = []
+
+        ansatz_qasm = QasmUtils.hf_state(vqe_runner.q_system.n_electrons)
+        ansatz_qasm += vqe_runner.backend.qasm_from_ansatz(ansatz, var_parameters)
+
         if vqe_runner.backend == QiskitSim:
             init_statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, vqe_runner.q_system.n_qubits,
                                                                  vqe_runner.q_system.n_electrons)
@@ -88,19 +95,16 @@ class EnergyUtils:
             if excited_state == 0:
                 operator_sparse_matrix = H_sparse_matrix
             else:
-                operator_sparse_matrix = QiskitSim.\
-                    ham_sparse_matrix_for_exc_state(H_sparse_matrix, vqe_runner.q_system.H_lower_state_terms[:excited_state])
+                operator_sparse_matrix = QiskitSim.ham_sparse_matrix_for_exc_state(H_sparse_matrix, vqe_runner.q_system
+                                                                                   .H_lower_state_terms[:excited_state])
 
-        def thread_cache(ansatz_element):
-            return [operator_sparse_matrix.copy(), init_sparse_statevector.copy(),
-                    commutators_cache[str(ansatz_element.excitation_generator)].copy()]
+            if operator_sparse_matrix.data.nbytes > config.matrix_size_threshold:
+                operator_sparse_matrix = scipy.sparse.csr_matrix(operator_sparse_matrix.todense()
+                                                                 .round(config.floating_point_accuracy_digits))
 
-        if ansatz is None:
-            ansatz = []
-            var_parameters = []
-
-        ansatz_qasm = QasmUtils.hf_state(vqe_runner.q_system.n_electrons)
-        ansatz_qasm += vqe_runner.backend.qasm_from_ansatz(ansatz, var_parameters)
+            def thread_cache(ansatz_element):
+                return [operator_sparse_matrix.copy(), init_sparse_statevector.copy(),
+                        commutators_cache[str(ansatz_element.excitation_generator)].copy()]
 
         if multithread:
             ray.init(num_cpus=config.multithread['n_cpus'])
@@ -158,8 +162,12 @@ class GradUtils:
             H_sparse_matrix = backends.QiskitSim.ham_sparse_matrix_for_exc_state(get_sparse_operator(q_system.jw_qubit_ham),
                                                                                  q_system.H_lower_state_terms[:excited_state])
         else:
-
             H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+
+        if H_sparse_matrix.data.nbytes > config.matrix_size_threshold:
+            # decrease the size of the matrix
+            H_sparse_matrix = scipy.sparse.csr_matrix(H_sparse_matrix.todense().round(config.floating_point_accuracy_digits))
+
         # print('Multithtread')
         commutators = {}
         if multithread:
@@ -195,8 +203,8 @@ class GradUtils:
         t0 = time.time()
         exc_gen_sparse_matrix = get_sparse_operator(excitation_generator,  n_qubits=n_qubits)
         commutator_sparse_matrix = H_sparse_matrix*exc_gen_sparse_matrix - exc_gen_sparse_matrix*H_sparse_matrix
-        print('Calculated commutator ', str(excitation_generator), 'time ', time.time() - t0)
         del H_sparse_matrix
+        print('Calculated commutator ', str(excitation_generator), 'time ', time.time() - t0)
         return commutator_sparse_matrix
 
     @staticmethod

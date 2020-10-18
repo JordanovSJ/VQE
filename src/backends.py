@@ -91,7 +91,7 @@ class QiskitSim:
     @staticmethod
     def statevector_from_qasm(qasm_circuit):
         n_threads = config.qiskit_n_threads
-        backend_options = {"method": "statevector", "zero_threshold": config.qiskit_zero_threshold,
+        backend_options = {"method": "statevector", "zero_threshold": config.floating_point_accuracy,
                            "max_parallel_threads": n_threads, "max_parallel_experiments": n_threads,
                            "max_parallel_shots": n_threads}
         backend = qiskit.Aer.get_backend('statevector_simulator')
