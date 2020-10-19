@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, result = EnergyAdaptUtils.largest_individual_vqe_energy_reduction_element(vqe_runner,
+        element_to_add, result = EnergyAdaptUtils.largest_individual_element_vqe_energy_reduction(vqe_runner,
                                                                                                   new_ansatz_element_pool,
                                                                                                   var_parameters=var_parameters,
                                                                                                   ansatz=ansatz_elements,

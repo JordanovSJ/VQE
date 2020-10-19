@@ -176,7 +176,7 @@ if __name__ == "__main__":
         print(message)
 
         element_to_add, result =\
-            EnergyAdaptUtils.largest_individual_vqe_energy_reduction_element(vqe_runner, elements,
+            EnergyAdaptUtils.largest_individual_element_vqe_energy_reduction(vqe_runner, elements,
                                                                              var_parameters=var_parameters,
                                                                              ansatz=ansatz_elements, multithread=multithread)
 

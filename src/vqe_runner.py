@@ -15,7 +15,7 @@ import ray
 # TODO make this class entirely static?
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, q_system, backend=QiskitSim, optimizer=config.optimizer, use_cache=True,
+    def __init__(self, q_system, backend=QiskitSim, optimizer=config.optimizer,
                  optimizer_options=config.optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
 
         self.backend = backend
@@ -23,7 +23,6 @@ class VQERunner:
         self.optimizer_options = optimizer_options
         self.use_ansatz_gradient = use_ansatz_gradient
         self.print_var_parameters = print_var_parameters
-        self.use_cache = use_cache
 
         self.q_system = q_system
 
@@ -41,13 +40,8 @@ class VQERunner:
             iteration_duration = time.time() - self.time_previous_iter
             self.time_previous_iter = time.time()
 
-        if excited_state > 0:
-            energy = backend.ham_expectation_value_exc_state(self.q_system.jw_qubit_ham, ansatz, var_parameters,
-                                                             self.q_system, cache=cache, init_state_qasm=init_state_qasm,
-                                                             excited_state=excited_state)
-        else:
-            energy = backend.expectation_value(self.q_system.jw_qubit_ham, ansatz, var_parameters, self.q_system,
-                                               cache=cache, init_state_qasm=init_state_qasm)
+        energy = backend.ham_expectation_value(self.q_system, ansatz, var_parameters, cache=cache,
+                                               init_state_qasm=init_state_qasm, excited_state=excited_state)
 
         if multithread:
             if multithread_iteration is not None:
@@ -73,7 +67,7 @@ class VQERunner:
     # def get_ansatz_gradient(self, var_parameters, ansatz, backend, init_state_qasm=None):
     #     return backend.ansatz_gradient(var_parameters, ansatz=ansatz, init_state_qasm=init_state_qasm)
 
-    def vqe_run(self, ansatz, initial_var_parameters=None, init_state_qasm=None, excited_state=0):
+    def vqe_run(self, ansatz, initial_var_parameters=None, init_state_qasm=None, excited_state=0, cache=None):
 
         assert len(ansatz) > 0
         if initial_var_parameters is None:
@@ -86,20 +80,6 @@ class VQERunner:
 
         self.iteration = 1
         self.time_previous_iter = time.time()
-
-        # precompute frequently used quantities if running on Qiskit simulator
-        cache = None
-        if self.use_cache and self.backend == QiskitSim:
-            cache = QiskitSimCache(self.q_system)
-            if excited_state > 0:
-                # calculate the lower energetic statevectors
-                cache.calculate_hamiltonian_for_excited_state(self.q_system.H_lower_state_terms,
-                                                              excited_state=excited_state)
-        # TODO move to the cache class
-        # precompute excitation generator matrices required for gradient evaluation
-        if self.use_ansatz_gradient and self.backend == QiskitSim:
-            for element in ansatz:
-                element.calculate_excitation_generator_matrix()
 
         # functions to be called by the optimizer
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=self.backend, init_state_qasm=init_state_qasm,
@@ -118,10 +98,6 @@ class VQERunner:
                                              options=self.optimizer_options, tol=config.optimizer_tol,
                                              bounds=config.optimizer_bounds)
 
-        # Prevents memory overflow with ray
-        for element in ansatz:
-            element.delete_excitation_generator_matrix()
-
         logging.info(result)
 
         result['n_iters'] = self.iteration  # cheating
@@ -129,7 +105,7 @@ class VQERunner:
         return result
 
     @ray.remote
-    def vqe_run_multithread(self, ansatz, initial_var_parameters=None, init_state_qasm=None, excited_state=0):
+    def vqe_run_multithread(self, ansatz, initial_var_parameters=None, init_state_qasm=None, excited_state=0, cache=None):
 
         assert len(ansatz) > 0
 
@@ -141,21 +117,6 @@ class VQERunner:
 
         # create it as a list so we can pass it by reference
         local_thread_iteration = [0]
-
-        # precompute frequently used quantities if running on Qiskit simulator
-        cache = None
-        from src.backends import QiskitSimCache, QiskitSim
-        if self.use_cache and self.backend == QiskitSim:
-            cache = QiskitSimCache(self.q_system)
-            if excited_state > 0:
-                # calculate the lower energetic statevectors
-                cache.calculate_hamiltonian_for_excited_state(self.q_system.H_lower_state_terms,
-                                                              excited_state=excited_state)
-
-        # precomputed excitation matrices.
-        if self.use_ansatz_gradient:
-            for element in ansatz:
-                element.calculate_excitation_generator_matrix()
 
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=self.backend, init_state_qasm=init_state_qasm,
                              multithread=True, multithread_iteration=local_thread_iteration, cache=cache,
@@ -182,16 +143,13 @@ class VQERunner:
             message = 'Ran VQE. Energy {}. Iterations {}'.format(result.fun, local_thread_iteration[0])
             print(message)
 
-        # Delete these if multithreading otherwise memory will fill
-        for element in ansatz:
-            element.delete_excitation_generator_matrix()
-
         # Not sure if needed
-        if cache is not None:
-            del cache.H_sparse_matrix_for_excited_state
-            del cache.operator_sparse_matrix
-            del cache.statevector
-            del cache
+        del cache
+        # if cache is not None:
+        #     del cache.H_sparse_matrix_for_excited_state
+        #     del cache.operator_sparse_matrix
+        #     del cache.statevector
+        #     del cache
 
         result['n_iters'] = local_thread_iteration[0]  # cheating
 
@@ -200,16 +158,15 @@ class VQERunner:
     # use this for QiskitSim only
     # @staticmethod
     @ray.remote
-    def vqe_run_single_parameter_multithread(self, ansatz_element, thread_cache):
+    def vqe_run_single_parameter_multithread(self, ansatz_element, cache):
 
         # create it as a list so we can pass it by reference
         local_thread_iteration = [0]
 
-        operator_sparse_matrix = thread_cache[0]
-        init_sparse_statevector = thread_cache[1]
-        commutator_matrix = thread_cache[2]
-
-        excitation_generator_matrix = get_sparse_operator(ansatz_element.excitation_generator, n_qubits=self.q_system.n_qubits)
+        operator_sparse_matrix = cache.H_sparse_matrix
+        init_sparse_statevector = cache.init_sparse_statevector
+        excitation_generator_matrix = cache.exc_gen_matrices[str(ansatz_element.excitation_generator)]
+        commutator_sparse_matrix = cache.commutator_sparse_matrix
 
         # previous_parameter = None
         # sparse_statevector = init_sparse_statevector.copy()
@@ -234,7 +191,7 @@ class VQERunner:
             assert len(parameters) == 1
             parameter = parameters[0]
             sparse_statevector = scipy.sparse.linalg.expm_multiply(parameter * excitation_generator_matrix, init_sparse_statevector)
-            grad = sparse_statevector.transpose().conj().dot(commutator_matrix).dot(sparse_statevector).todense()[0, 0].real
+            grad = sparse_statevector.transpose().conj().dot(commutator_sparse_matrix).dot(sparse_statevector).todense()[0, 0].real
             del sparse_statevector
             return numpy.array([grad])
 

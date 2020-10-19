@@ -20,13 +20,13 @@ class AnsatzElement:
         self.excitation_generator_matrix = None
         self.system_n_qubits = system_n_qubits
 
-    def calculate_excitation_generator_matrix(self):
-        if self.excitation_generator is not None and self.system_n_qubits is not None:
-            self.excitation_generator_matrix = openfermion.get_sparse_operator(self.excitation_generator,
-                                                                               n_qubits=self.system_n_qubits)
-
-    def delete_excitation_generator_matrix(self):
-        self.excitation_generator_matrix = None
+    # def calculate_excitation_generator_matrix(self):
+    #     if self.excitation_generator is not None and self.system_n_qubits is not None:
+    #         self.excitation_generator_matrix = openfermion.get_sparse_operator(self.excitation_generator,
+    #                                                                            n_qubits=self.system_n_qubits)
+    #
+    # def delete_excitation_generator_matrix(self):
+    #     self.excitation_generator_matrix = None
 
     @staticmethod
     def get_qubit_excitation_generator(qubits_1, qubits_2):

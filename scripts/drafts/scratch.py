@@ -42,53 +42,18 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
-    molecule = H2()
-    ansatz = GSDExcitations(4, 2, ansatz_element_type='eff_f_exc').get_excitations()
-
+    molecule = H4(r=0.735)
+    # ansatz = GSDExcitations(4, 2, ansatz_element_type='eff_f_exc').get_excitations()
+    ansatz = [DQExc([1,3], [5,7], 12)]
     LogUtils.log_config()
 
-    # var_pars = [ 1.73588403e-32,  3.85808261e-16, -2.40495012e-16,  1.44296833e-16,
-    #              1.92369605e-16, -3.37073840e-32,  1.38756291e-06,  1.69449961e-32]
+    optimizer = 'BFGS'
+    optimizer_options = {'gtol': 1e-07}
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
+                           use_ansatz_gradient=True, print_var_parameters=True)
 
-    # excitation = EffDFExc([0, 1], [2, 3], system_n_qubits=4)
-    # H_lower_state_terms = [[1.137, Ansatz([excitation], [0.11176849919227788], 4, 2)]]
-    # molecule.H_lower_state_terms = H_lower_state_terms
+    result = vqe_runner.vqe_run(ansatz)
 
-    # optimizer = 'Nelder-Mead'
-    # optimizer_options = {'gtol': 1e-8}
-    #
-    # vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
-    #                        print_var_parameters=False, use_ansatz_gradient=False)
-    #
-    # result = vqe_runner.vqe_run(ansatz=ansatz, excited_state=1)
-
-    # result =vqe_runner.get_energy([0.11176849919227788], [EffDFExc([0, 1], [2, 3], 4)], QiskitSim)
-
-    # print(result)
-
-    # var_pars = list(numpy.zeros(len(ansatz)))
-    # var_pars[1] += 0.0
-    # grad = backends.QiskitSim.ansatz_gradient(var_pars, ansatz, q_system=molecule, excited_state=1)
-    # print([element.element for element in ansatz])
-    # print(grad)
-
-    # pars = (numpy.arange(50) - 25)*numpy.pi/50
-    # energies = []
-    # for par in pars:
-    #     print(par)
-    #     energy = backends.QiskitSim.ham_expectation_value_exc_state(molecule.jw_qubit_ham, [EffSFExc(0, 2, system_n_qubits=4)], [par],
-    #                                                                 q_system=molecule, excited_state=1)
-    #     energies.append(energy)
-    #
-    # plt.plot(pars, energies)
-    # plt.show()
-
-    # eigvv = molecule.calculate_energy_eigenvalues(9)
-    # print(eigvv)
-
-    statevector = QiskitSim.statevector_from_ansatz([DQExc([0, 1], [2, 3]), SQExc(1, 3)], [-numpy.pi/4, numpy.pi/2], 4, 2)
-    sparse_statevector = scipy.sparse.csr_matrix(statevector)
-    E = sparse_statevector.dot(get_sparse_operator(molecule.jw_qubit_ham)).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
-    print(statevector.round(10))
-    print(E)
+    # grad = QiskitSim.excitation_gradient(ansatz[0],[],[], molecule)
+    print(result)
     print('spagetti')
