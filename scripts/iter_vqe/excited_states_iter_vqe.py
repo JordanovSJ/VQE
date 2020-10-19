@@ -23,8 +23,8 @@ if __name__ == "__main__":
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
-    excited_state = 1
-    molecule.default_states()
+    excited_state = 0
+    # molecule.default_states()
 
     # ansatz_element_type = 'eff_f_exc'
     ansatz_element_type = 'q_exc'
@@ -34,7 +34,6 @@ if __name__ == "__main__":
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_elements = 250
 
-    multithread = True
     use_grad = True  # for optimizer
     use_commutators_cache = True
     use_backend_cache = True
@@ -53,7 +52,7 @@ if __name__ == "__main__":
 
     # create a vqe_runner for single element global optimization
     vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
-                           use_ansatz_gradient=use_grad, use_cache=use_backend_cache)
+                             use_ansatz_gradient=use_grad, use_cache=use_backend_cache)
     # vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='Nelder-Mead', use_cache=use_backend_cache,
     #                          optimizer_options=None)
 
@@ -72,8 +71,7 @@ if __name__ == "__main__":
     # precompute commutator matrices, that are use in excitation gradient calculation
     if use_commutators_cache:
         commutators_cache = GradUtils.calculate_commutators(ansatz_elements=ansatz_element_pool,
-                                                            q_system=molecule, multithread=multithread,
-                                                            excited_state=excited_state)
+                                                            q_system=molecule, excited_state=excited_state)
     else:
         commutators_cache = None
 
@@ -88,10 +86,14 @@ if __name__ == "__main__":
     iter_count = 0
     exact_energy = molecule.calculate_energy_eigenvalues(excited_state+1)[excited_state]
     print(exact_energy)
-    current_energy = vqe_runner.backend.ham_expectation_value_exc_state(molecule.jw_qubit_ham, [], [], molecule,
-                                                                        excited_state=excited_state)
+    if excited_state > 0:
+        current_energy = vqe_runner.backend.ham_expectation_value_exc_state(molecule.jw_qubit_ham, [], [], molecule,
+                                                                            excited_state=excited_state)
+    else:
+        current_energy = vqe_runner.backend.expectation_value(molecule.jw_qubit_ham, [], [], molecule)
+
     print(current_energy)
-    previous_energy = current_energy + max(delta_e_threshold,1e-5)
+    previous_energy = current_energy + max(delta_e_threshold, 1e-5)
     init_ansatz_length = len(ansatz)
 
     while previous_energy - current_energy >= delta_e_threshold and iter_count <= max_ansatz_elements:
@@ -103,8 +105,8 @@ if __name__ == "__main__":
 
         element_to_add, element_result = EnergyUtils.\
             largest_individual_vqe_energy_reduction_element(ansatz_element_pool, vqe_runner_2, ansatz=ansatz,
-                                                            var_parameters=var_parameters, multithread=multithread,
-                                                            excited_state=excited_state, commutators_cache=commutators_cache)
+                                                            var_parameters=var_parameters, excited_state=excited_state,
+                                                            commutators_cache=commutators_cache)
         element_energy_reduction = element_result.fun
         print(element_to_add.element)
 

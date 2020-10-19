@@ -77,7 +77,6 @@ class QSystem:
         while len(self.energy_eigenvalues) < k:
 
             if i >= len(eigenvalues):
-                print(i)
                 calculate_first_n += k
                 eigvv = scipy.sparse.linalg.eigs(H_sparse_matrix.todense(), k=calculate_first_n, which='SR')
                 eigenvalues = list(eigvv[0])

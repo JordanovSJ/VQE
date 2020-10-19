@@ -2,12 +2,14 @@ import scipy
 from scipy import optimize
 import numpy
 
-multithread = {'n_cpus': 6, 'ray_threads': 10}
+# multithreading
+multithread = True
+ray_options = {'n_cpus': 6}
 qiskit_n_threads = 1
 
 
 floating_point_accuracy = 10e-15
-floating_point_accuracy_digits = 15
+floating_point_accuracy_digits = 10
 
 matrix_size_threshold = 1e7  # in bytes
 

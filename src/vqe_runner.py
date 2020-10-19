@@ -253,9 +253,9 @@ class VQERunner:
 
         result['n_iters'] = local_thread_iteration[0]  # cheating
 
-        del operator_sparse_matrix
-        del init_sparse_statevector
-        del commutator_matrix
+        # del operator_sparse_matrix
+        # del init_sparse_statevector
+        # del commutator_matrix
 
         return result
 
