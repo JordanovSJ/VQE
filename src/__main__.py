@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import *
-from src.ansatz_element_lists import *
+from src.ansatze import *
 from src.backends import QiskitSim
 from src.utils import LogUtils
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     logging.critical(result)
     print(result)
-    print('TIme for running: ', t - t0)
+    print('Time for running: ', t - t0)
 
     print('Pizza')
 

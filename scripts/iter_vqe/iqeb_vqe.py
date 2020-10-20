@@ -88,8 +88,8 @@ if __name__ == "__main__":
 
         # get the n elements with largest gradients
         elements_grads = GradUtils.\
-            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend=backend, n=n_largest_grads,
-                                                 var_parameters=var_parameters, ansatz=ansatz, global_cache=global_cache)
+            get_largest_gradient_elements(ansatz_element_pool, molecule, backend=backend, n=n_largest_grads,
+                                          ansatz_parameters=var_parameters, ansatz=ansatz, global_cache=global_cache)
 
         elements = [e_g[0] for e_g in elements_grads]
         grads = [e_g[1] for e_g in elements_grads]
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         logging.info(message)
 
         element_to_add, result =\
-            EnergyUtils.largest_full_vqe_energy_reduction_element(vqe_runner, elements, var_parameters=var_parameters,
+            EnergyUtils.largest_full_vqe_energy_reduction_element(vqe_runner, elements, ansatz_parameters=var_parameters,
                                                                   ansatz=ansatz, global_cache=global_cache)
 
         compl_element_to_add = element_to_add.get_spin_comp_exc()
@@ -109,7 +109,7 @@ if __name__ == "__main__":
         if [set(qubits[0]), set(qubits[1])] == [set(comp_qubits[0]), set(comp_qubits[1])] or \
            [set(qubits[0]), set(qubits[1])] == [set(comp_qubits[1]), set(comp_qubits[0])]:
             result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add],
-                                        initial_var_parameters=var_parameters + [0], cache=global_cache)
+                                        init_guess_parameters=var_parameters + [0], cache=global_cache)
             current_energy = result.fun
             delta_e = previous_energy - current_energy
             if delta_e > 0:
@@ -117,7 +117,7 @@ if __name__ == "__main__":
                 new_ansatz_elements = [element_to_add]
         else:
             result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add, compl_element_to_add],
-                                        initial_var_parameters=var_parameters + [0, 0], cache=global_cache)
+                                        init_guess_parameters=var_parameters + [0, 0], cache=global_cache)
             current_energy = result.fun
             delta_e = previous_energy - current_energy
             if delta_e > 0:

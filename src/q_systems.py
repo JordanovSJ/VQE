@@ -8,10 +8,23 @@ import pandas
 import logging
 
 from src.utils import MatrixUtils
-from src.ansatze import Ansatz
 from src.ansatz_elements import SQExc, DQExc
 from src.iter_vqe_utils import DataUtils
 from src.backends import QiskitSim
+
+
+# basically a recipe to initialize some state
+class State:
+    def __init__(self, elements, parameters, n_qubits, n_electrons, init_state_qasm=None):
+        self.n_qubits = n_qubits
+        self.n_electrons = n_electrons
+        self.elements = elements
+        self.parameters = parameters
+        self.init_state_qasm = init_state_qasm
+
+    def add_element(self, element, parameter):
+        self.elements.append(element)
+        self.parameters.apppend(parameter)
 
 
 class QSystem:
@@ -110,10 +123,10 @@ class H2(QSystem):
     # the ground and the first three degenerate excited states for H2 in equilibrium configuration
     # this is used for excited state simulations only
     def default_states(self):
-        ground = Ansatz([DQExc([0, 1], [2, 3])], [0.11176849919227788], 4, 2)
-        first_exc_1 = Ansatz([SQExc(0, 3)], [1.570796325683595], 4, 2)
-        first_exc_2 = Ansatz([SQExc(1, 2)], [1.570796325683595], 4, 2)
-        first_exc_3 = Ansatz([DQExc([0, 1], [2, 3]), SQExc(1, 3)], [-numpy.pi/4, numpy.pi/2], 4, 2)
+        ground = State([DQExc([0, 1], [2, 3])], [0.11176849919227788], 4, 2)
+        first_exc_1 = State([SQExc(0, 3)], [1.570796325683595], 4, 2)
+        first_exc_2 = State([SQExc(1, 2)], [1.570796325683595], 4, 2)
+        first_exc_3 = State([DQExc([0, 1], [2, 3]), SQExc(1, 3)], [-numpy.pi / 4, numpy.pi / 2], 4, 2)
         self.H_lower_state_terms = [[factor, state] for factor, state in
                                     zip([2.2, 1.55, 1.55, 1.55], [ground, first_exc_1, first_exc_2, first_exc_3])]
         return self.H_lower_state_terms

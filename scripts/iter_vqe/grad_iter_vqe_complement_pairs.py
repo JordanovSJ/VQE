@@ -214,11 +214,11 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         element_to_add, grad = GradAdaptUtils.\
-            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend,
-                                                 var_parameters=var_parameters, ansatz=ansatz_elements,
-                                                 multithread=multithread,
-                                                 do_precompute_statevector=do_precompute_statevector,
-                                                 commutators_cache=dynamic_commutators)[0]
+            get_largest_gradient_elements(ansatz_element_pool, molecule, vqe_runner.backend,
+                                          ansatz_parameters=var_parameters, ansatz=ansatz_elements,
+                                          multithread=multithread,
+                                          do_precompute_statevector=do_precompute_statevector,
+                                          commutators_cache=dynamic_commutators)[0]
         print(element_to_add.element)
 
         compl_element_to_add = None
@@ -251,10 +251,10 @@ if __name__ == "__main__":
 
         if compl_element_to_add is None:
             result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add],
-                                        initial_var_parameters=var_parameters + [0])
+                                        init_guess_parameters=var_parameters + [0])
         else:
             result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add, compl_element_to_add],
-                                        initial_var_parameters=var_parameters + [0, 0])
+                                        init_guess_parameters=var_parameters + [0, 0])
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy

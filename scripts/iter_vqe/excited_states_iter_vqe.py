@@ -18,43 +18,47 @@ from src.cache import *
 
 
 if __name__ == "__main__":
-    # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
-    # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
+    # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
+
+    # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
     r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H4(r=r)  # (frozen_els=frozen_els)
-    excited_state = 0
-    # molecule.default_states()
+    molecule = H2(r=r)  # (frozen_els=frozen_els)
+    excited_state = 3
+    molecule.default_states()
 
+    # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
     ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'pauli_str_exc'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
+    # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_elements = 250
 
-    use_grad = True  # for optimizer
-    # size_patch_commutators = 500  # not used
-
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-    LogUtils.log_config()
-    logging.info('{}, r={} ,{}'.format(molecule.name, r, ansatz_element_type))
-
-    time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+    # <<<<<<<<<< DEFINE OPTIMIZER >>>>>>>>>>>>>>>>>
+    use_energy_vector_gradient = True  # for optimizer
 
     # create a vqe_runner object
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
-                           use_ansatz_gradient=use_grad)
+                           use_ansatz_gradient=use_energy_vector_gradient)
 
-    # create a vqe_runner for single element global optimization
+    # create a vqe_runner for excited states, where the minimum may be away from the zero, which will make gradient
+    # descent optimizers useless
+
     # vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
     #                          use_ansatz_gradient=use_grad)
     vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='Nelder-Mead', optimizer_options=None)
 
-    # define the pool of ansatz elements
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    LogUtils.log_config()
+    logging.info('{}, r={} ,{}'.format(molecule.name, r, ansatz_element_type))
+    time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+
+    # create the pool of ansatz elements
     if spin_complement:
         ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                                      element_type=ansatz_element_type).get_excitations()
@@ -64,8 +68,8 @@ if __name__ == "__main__":
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
-    print(message)
 
+    # create simulation cache
     if config.use_cache:
         # precompute commutator matrices, that are use in excitation gradient calculation
         global_cache = GlobalCache(molecule, excited_state=excited_state)
@@ -77,14 +81,15 @@ if __name__ == "__main__":
     # initialize a dataFrame to collect the simulation data
     results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count',
                                           'cnot_depth', 'u1_depth', 'element', 'element_qubits', 'var_parameters'])
-    # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    # <<<<<<<<<<<<<< INITIALIZE ITERATIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     ansatz = []
     var_parameters = []
 
     iter_count = 0
     exact_energy = molecule.calculate_energy_eigenvalues(excited_state+1)[excited_state]
-    print(exact_energy)
+    print('Exact energy ', exact_energy)
     current_energy = vqe_runner.backend.ham_expectation_value(molecule, [], [], excited_state=excited_state)
 
     print(current_energy)
@@ -99,24 +104,21 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         element_to_add, element_result = EnergyUtils.\
-            largest_individual_element_vqe_energy_reduction(ansatz_element_pool, vqe_runner_2, ansatz=ansatz,
-                                                            var_parameters=var_parameters, excited_state=excited_state,
-                                                            global_cache=global_cache)
+            largest_individual_vqe_energy_reduction_elements(vqe_runner_2, ansatz_element_pool, ansatz=ansatz,
+                                                             ansatz_parameters=var_parameters, excited_state=excited_state,
+                                                             global_cache=global_cache)
         element_energy_reduction = element_result.fun
         print(element_to_add.element)
 
         result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add],
-                                    initial_var_parameters=var_parameters + list(element_result.x),
+                                    init_guess_parameters=var_parameters + list(element_result.x),
                                     excited_state=excited_state, cache=global_cache)
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
-
-        # get initial guess for the var. params. for the next iteration
         var_parameters = list(result.x)
 
         if delta_e > 0:
-
             ansatz.append(element_to_add)
 
             # save iteration data
@@ -129,26 +131,20 @@ if __name__ == "__main__":
                                                   'cnot_depth': gate_count['cnot_depth'], 'u1_depth': gate_count['u1_depth'],
                                                   'element': element_to_add.element, 'element_qubits': element_qubits,
                                                   'var_parameters': 0}
-            results_data_frame['var_parameters'] = list(result.x)[init_ansatz_length:]
-            # df_data['var_parameters'] = var_parameters
-            # save data
+            results_data_frame['var_parameters'] = var_parameters
             DataUtils.save_data(results_data_frame, molecule, time_stamp, frozen_els=frozen_els,
                                 ansatz_element_type=ansatz_element_type, iter_vqe_type='exc_{}_iter_vqe'.format(excited_state))
 
-            message = 'Add new element to final ansatz {}. Energy {}. dE {}, Individual dE{}, var. parameters: {}' \
+            message = 'Add new element to the ansatz {}. Energy {}. dE {}, Individual dE{}, var. parameters: {}' \
                 .format(element_to_add.element, current_energy, delta_e, element_energy_reduction, var_parameters)
             logging.info(message)
-            print(message)
         else:
             message = 'No contribution to energy decrease. Stop adding elements to the final ansatz'
             logging.info(message)
-            print(message)
             break
 
-        print('Added element ', ansatz[-1].element)
-
     # calculate the VQE for the final ansatz
-    final_result = vqe_runner.vqe_run(ansatz=ansatz, excited_state=excited_state)
+    final_result = vqe_runner_2.vqe_run(ansatz=ansatz, excited_state=excited_state)
     t = time.time()
 
     print(final_result)

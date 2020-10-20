@@ -42,7 +42,7 @@ if __name__ == "__main__":
     vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
                            print_var_parameters=False, use_ansatz_gradient=True)
 
-    energy = vqe_runner.vqe_run(ansatz=ansatz, initial_var_parameters=var_parameters,
+    energy = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_parameters,
                                 init_state_qasm=None)
 
     print(energy)

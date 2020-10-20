@@ -124,7 +124,7 @@ class QiskitSim:
             for i in range(excited_state):
                 term = H_lower_state_terms[i]
                 state = term[1]
-                statevector = QiskitSim.statevector_from_ansatz(state.ansatz, state.var_parameters, state.n_qubits,
+                statevector = QiskitSim.statevector_from_ansatz(state.elements, state.parameters, state.n_qubits,
                                                                 state.n_electrons, init_state_qasm=state.init_state_qasm)
                 # add the outer product of the lower lying state to the Hamiltonian
                 H_sparse_matrix += scipy.sparse.csr_matrix(term[0] * numpy.outer(statevector, statevector))
@@ -141,8 +141,7 @@ class QiskitSim:
             sparse_statevector = scipy.sparse.csr_matrix(statevector)
             H_sparse_matrix = QiskitSim.ham_sparse_matrix(q_system, excited_state=excited_state)
         else:
-            statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
-            sparse_statevector = scipy.sparse.csr_matrix(statevector)
+            sparse_statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
             H_sparse_matrix = cache.H_sparse_matrix
 
         expectation_value = \
@@ -185,10 +184,8 @@ class QiskitSim:
                                                             q_system.n_electrons, init_state_qasm=init_state_qasm)
             sparse_statevector = scipy.sparse.csr_matrix(statevector)
         else:
-            statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
-            sparse_statevector = scipy.sparse.csr_matrix(statevector)
-            commutator_sparse_matrix = cache.commutator_sparse_matrix
-            # sparse_statevector = cache.init_sparse_statevector
+            sparse_statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
+            commutator_sparse_matrix = cache.commutator_sparse_matrices[str(excitation.excitation_generator)]
 
         grad = sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
         assert grad.imag < config.floating_point_accuracy
@@ -205,12 +202,13 @@ class QiskitSim:
         if cache is None:
             ansatz_statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_orbitals,
                                                                    q_system.n_electrons, init_state_qasm=init_state_qasm)
+            ansatz_sparse_statevector = scipy.sparse.csr_matrix(ansatz_statevector)
             H_sparse_matrix = QiskitSim.ham_sparse_matrix(q_system, excited_state=excited_state)
         else:
-            ansatz_statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
+            ansatz_sparse_statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
             H_sparse_matrix = cache.H_sparse_matrix
 
-        phi = scipy.sparse.csr_matrix(ansatz_statevector).transpose().conj()
+        phi = ansatz_sparse_statevector.transpose().conj()
         psi = H_sparse_matrix.dot(phi)
 
         ansatz_grad = []
@@ -221,7 +219,7 @@ class QiskitSim:
                 # logging.warning('Try to supply a precomputed excitation_generator matrix, for faster execution')
                 excitation_i_matrix = get_sparse_operator(ansatz[i].excitation_generator, n_qubits=q_system.n_qubits)
             else:
-                excitation_i_matrix = cache.exc_gen_matrices[str(ansatz[i].excitation_generator)]
+                excitation_i_matrix = cache.exc_gen_sparse_matrices[str(ansatz[i].excitation_generator)]
 
             grad_i = 2 * (psi.transpose().conj().dot(excitation_i_matrix).dot(phi)).todense()[0, 0]
 
