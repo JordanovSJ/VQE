@@ -96,7 +96,6 @@ if __name__ == "__main__":
 
         message = 'Elements with largest grads {}. Grads {}'.format([el.element for el in elements], grads)
         logging.info(message)
-        print(message)
 
         element_to_add, result =\
             EnergyUtils.largest_full_vqe_energy_reduction_element(vqe_runner, elements, var_parameters=var_parameters,
@@ -153,11 +152,9 @@ if __name__ == "__main__":
                 message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, var. parameters: {}' \
                     .format(element_to_add.element, current_energy, delta_e, var_parameters)
                 logging.info(message)
-                print(message)
         else:
             message = 'No contribution to energy decrease. Stop adding elements to the final ansatz'
             logging.info(message)
-            print(message)
             break
 
         print('Added element ', ansatz[-1].element)

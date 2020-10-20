@@ -92,7 +92,7 @@ class GlobalCache(Cache):
             for i, element in enumerate(ansatz_elements):
                 excitation_generator = element.excitation_generator
                 key = str(excitation_generator)
-                logging.info('Calculated commutator ', key)
+                logging.info('Calculated excitation generator matrix {}'.format(key))
                 exc_gen_sparse_matrix = get_sparse_operator(excitation_generator, n_qubits=self.q_system.n_qubits)
                 exc_generators[key] = exc_gen_sparse_matrix
 
@@ -125,7 +125,7 @@ class GlobalCache(Cache):
             for i, element in enumerate(ansatz_elements):
                 excitation_generator = element.excitation_generator
                 key = str(excitation_generator)
-                logging.info('Calculated commutator ', key)
+                logging.info('Calculated commutator {}'.format(key))
                 exc_gen_sparse_matrix = self.exc_gen_matrices[key]
                 commutator_sparse_matrix = self.H_sparse_matrix * exc_gen_sparse_matrix - exc_gen_sparse_matrix * self.H_sparse_matrix
                 commutators[key] = commutator_sparse_matrix

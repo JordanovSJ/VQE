@@ -135,13 +135,9 @@ class VQERunner:
                                              bounds=config.optimizer_bounds)
 
         # Logging does not work properly with ray multithreading. So use this printings. TODO: fix this. ..
-        if len(ansatz) == 1:
-            message = 'Ran VQE for element {}. Energy {}. Iterations {}'.format(ansatz[0].element,
-                                                                                result.fun, local_thread_iteration[0])
-            print(message)
-        else:
-            message = 'Ran VQE. Energy {}. Iterations {}'.format(result.fun, local_thread_iteration[0])
-            print(message)
+
+        print('Ran VQE for last element {}. Energy {}. Iterations {}'.
+              format(ansatz[-1].element, result.fun, local_thread_iteration[0]))
 
         # Not sure if needed
         del cache
