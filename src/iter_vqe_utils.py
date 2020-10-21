@@ -3,7 +3,7 @@ from src import config
 from src import backends
 from src.ansatz_elements import *
 from src.utils import QasmUtils
-from src.backends import QiskitSim
+from src.state import State
 
 import time
 import ray
