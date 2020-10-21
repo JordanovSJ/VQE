@@ -6,6 +6,7 @@ import numpy
 import scipy
 import pandas
 import logging
+import time
 
 from src.utils import MatrixUtils
 from src.ansatz_elements import SQExc, DQExc
@@ -49,17 +50,10 @@ class QSystem:
         # this is used only for calculating excited states. list of [term_index, term_state]
         self.H_lower_state_terms = None
 
-    #     self.H_sparse_matrix = None
-    #     self.H_sparse_matrix_for_excited_state = None
-    #
-    # def calculate_ham_sparse_matrix(self, excited_state=1):
-    #     self.H_sparse_matrix = get_sparse_operator(self.jw_qubit_ham)
-    #     if self.H_lower_state_terms is not None:
-    #         self.H_sparse_matrix_for_excited_state = QiskitSim.\
-    #             ham_sparse_matrix_for_exc_state(self.H_sparse_matrix, self.H_lower_state_terms[:excited_state])
-
     # calculate the k smallest energy eigenvalues. For BeH2/H20 keep k<10 (too much memory)
     def calculate_energy_eigenvalues(self, k):
+        logging.info('Calculating excited states exact eigenvalues.')
+        t0 = time.time()
         H_sparse_matrix = get_sparse_operator(self.jw_qubit_ham)
 
         # do not calculate all eigenvectors of H, since this is very slow
@@ -90,7 +84,7 @@ class QSystem:
                 logging.warning('WARNING: Only {} eigenvalues found corresponding to the n_electrons'
                                 .format(len(self.energy_eigenvalues)))
                 break
-
+        logging.info('Time: {}'.format(time.time() - t0))
         return self.energy_eigenvalues
 
     def set_h_lower_state_terms(self, states, factors=None):
@@ -175,6 +169,12 @@ class BeH2(QSystem):
     def __init__(self, r=1.316, basis='sto-3g', frozen_els=None,):
         super(BeH2, self).__init__(name='BeH2', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=14,
                                    n_electrons=6, basis=basis, frozen_els=frozen_els,)
+
+    def default_states(self):
+        df = pandas.read_csv('../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+        ground = DataUtils.ansatz_from_data_frame(df, self)
+        del df
+        self.H_lower_state_terms = [[abs(self.hf_energy)*2, ground]]
 
     @staticmethod
     def get_geometry(r=1.316):

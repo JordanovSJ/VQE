@@ -59,20 +59,20 @@ class AnsatzElement:
 
 
 class PauliStringExc(AnsatzElement):
-    def __init__(self, pauli_word_excitation, system_n_qubits=None):
-        assert type(pauli_word_excitation) == QubitOperator
-        assert len(pauli_word_excitation.terms) == 1
-        assert list(pauli_word_excitation.terms.values())[0].real == 0  # it should be skew-Hermitian
+    def __init__(self, pauli_string_excitation_generator, system_n_qubits=None):
+        assert type(pauli_string_excitation_generator) == QubitOperator
+        assert len(pauli_string_excitation_generator.terms) == 1
+        assert list(pauli_string_excitation_generator.terms.values())[0].real == 0  # it should be skew-Hermitian
 
-        super(PauliStringExc, self).__init__(element=str(pauli_word_excitation),
-                                             order=self.pauli_string_order(pauli_word_excitation),
-                                             n_var_parameters=1, excitation_generator=pauli_word_excitation,
+        super(PauliStringExc, self).__init__(element=str(pauli_string_excitation_generator),
+                                             order=self.pauli_string_order(pauli_string_excitation_generator),
+                                             n_var_parameters=1, excitation_generator=pauli_string_excitation_generator,
                                              system_n_qubits=system_n_qubits)
 
     @staticmethod
-    def pauli_string_order(excitation):
+    def pauli_string_order(excitation_generator):
 
-        pauli_ops = list(excitation.terms.keys())[0]
+        pauli_ops = list(excitation_generator.terms.keys())[0]
         order = 0
 
         for pauli_op in pauli_ops:

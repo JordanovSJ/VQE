@@ -122,9 +122,13 @@ if __name__ == "__main__":
             ansatz.append(element_to_add)
 
             # save iteration data
-            element_qubits = element_to_add.qubits
+            try:
+                element_qubits = element_to_add.qubits
+            except AttributeError:
+                element_qubits = []
 
             gate_count = IterVQEQasmUtils.gate_count_from_ansatz(ansatz, molecule.n_orbitals)
+
             results_data_frame.loc[iter_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e,
                                                   'error': current_energy - exact_energy, 'n_iters': result['n_iters'],
                                                   'cnot_count': gate_count['cnot_count'], 'u1_count': gate_count['u1_count'],

@@ -10,7 +10,7 @@ sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
 from src.q_systems import *
-from src.ansatze import *
+from src.ansatz_element_sets import *
 from src.backends import QiskitSim
 from src.utils import LogUtils
 from src.iter_vqe_utils import *
@@ -24,8 +24,8 @@ if __name__ == "__main__":
     r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2(r=r)  # (frozen_els=frozen_els)
-    excited_state = 3
+    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
+    excited_state = 1
     molecule.default_states()
 
     n_largest_grads = 10
