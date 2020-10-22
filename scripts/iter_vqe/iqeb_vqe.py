@@ -5,10 +5,11 @@ sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
 from src.q_systems import *
-from src.ansatz_element_lists import *
+from src.ansatze import *
 from src.backends import QiskitSim
 from src.utils import *
 from src.iter_vqe_utils import *
+from src.cache import *
 
 
 if __name__ == "__main__":
@@ -17,21 +18,17 @@ if __name__ == "__main__":
     r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2() #(frozen_els=frozen_els)
+    molecule = H4() #(frozen_els=frozen_els)
 
-    backend_type = QiskitSim
+    backend = QiskitSim
 
     ansatz_element_type = 'q_exc'
 
     delta_e_threshold = 1e-12
     max_ansatz_size = 90
 
-    multithread = True
     use_grad = True  # for optimizer
-    precompute_commutators = True
     # size_patch_commutators = 500  # not used
-
-    do_precompute_statevector = True  # for ansatz elements grad computation
 
     n_largest_grads = 20
 
@@ -46,37 +43,36 @@ if __name__ == "__main__":
     # create a vqe runner object
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-08}
-    vqe_runner = VQERunner(molecule, backend_type=backend_type, optimizer=optimizer, optimizer_options=optimizer_options,
+    vqe_runner = VQERunner(molecule, backend=backend, optimizer=optimizer, optimizer_options=optimizer_options,
                            use_ansatz_gradient=use_grad)
-    hf_energy = molecule.hf_energy
-    fci_energy = molecule.fci_energy
 
     # dataFrame to collect the simulation data
     results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count', 'cnot_depth',
-                                        'u1_depth', 'element', 'element_qubits', 'var_parameters'])
+                                         'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                          ansatz_element_type=ansatz_element_type).get_excitations()
     print('Pool len: ', len(ansatz_element_pool))
 
-    if precompute_commutators:
-        dynamic_commutators = IterVQEGradientUtils.calculate_commutators(H_qubit_operator=molecule.jw_qubit_ham,
-                                                                         ansatz_elements=ansatz_element_pool,
-                                                                         n_system_qubits=molecule.n_orbitals,
-                                                                         multithread=multithread)
-    else:
-        dynamic_commutators = None
-
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    if config.use_cache:
+        # precompute commutator matrices, that are use in excitation gradient calculation
+        global_cache = GlobalCache(molecule)  # excited_state=excited_state)
+        global_cache.calculate_exc_gen_matrices(ansatz_element_pool)
+        global_cache.calculate_commutators_matrices(ansatz_element_pool)
+    else:
+        global_cache = None
 
     # load an old simulation ansatz
     if init_ansatz_df is None:
         ansatz = []
         var_parameters = []
     else:
-        ansatz, var_parameters = IterVQEDataUtils.get_ansatz_from_data_frame(init_ansatz_df, molecule)
+        ansatz, var_parameters = DataUtils.ansatz_from_data_frame(init_ansatz_df, molecule)
         # var_parameters = list(vqe_runner.vqe_run(ansatz_elements, var_parameters).x)
 
+    hf_energy = molecule.hf_energy
+    fci_energy = molecule.fci_energy
     iter_count = 0
     df_count = 0
     current_energy = hf_energy
@@ -91,22 +87,19 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         # get the n elements with largest gradients
-        elements_grads = IterVQEGradientUtils.\
-            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, backend_type=backend_type, n=n_largest_grads,
-                                                 var_parameters=var_parameters, ansatz=ansatz,
-                                                 multithread=multithread, dynamic_commutators=dynamic_commutators)
+        elements_grads = GradUtils.\
+            get_largest_gradient_elements(ansatz_element_pool, molecule, backend=backend, n=n_largest_grads,
+                                          ansatz_parameters=var_parameters, ansatz=ansatz, global_cache=global_cache)
 
         elements = [e_g[0] for e_g in elements_grads]
         grads = [e_g[1] for e_g in elements_grads]
 
         message = 'Elements with largest grads {}. Grads {}'.format([el.element for el in elements], grads)
         logging.info(message)
-        print(message)
 
         element_to_add, result =\
-            IterVQEEnergyUtils.get_largest_energy_reduction_ansatz_element(vqe_runner, elements,
-                                                                           initial_var_parameters=var_parameters,
-                                                                           ansatz=ansatz, multithread=multithread)
+            EnergyUtils.largest_full_vqe_energy_reduction_element(vqe_runner, elements, ansatz_parameters=var_parameters,
+                                                                  ansatz=ansatz, global_cache=global_cache)
 
         compl_element_to_add = element_to_add.get_spin_comp_exc()
 
@@ -116,7 +109,7 @@ if __name__ == "__main__":
         if [set(qubits[0]), set(qubits[1])] == [set(comp_qubits[0]), set(comp_qubits[1])] or \
            [set(qubits[0]), set(qubits[1])] == [set(comp_qubits[1]), set(comp_qubits[0])]:
             result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add],
-                                        initial_var_parameters=var_parameters + [0])
+                                        init_guess_parameters=var_parameters + [0], cache=global_cache)
             current_energy = result.fun
             delta_e = previous_energy - current_energy
             if delta_e > 0:
@@ -124,7 +117,7 @@ if __name__ == "__main__":
                 new_ansatz_elements = [element_to_add]
         else:
             result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add, compl_element_to_add],
-                                        initial_var_parameters=var_parameters + [0, 0])
+                                        init_guess_parameters=var_parameters + [0, 0], cache=global_cache)
             current_energy = result.fun
             delta_e = previous_energy - current_energy
             if delta_e > 0:
@@ -153,17 +146,15 @@ if __name__ == "__main__":
                 # df_data['var_parameters'] = var_parameters
 
                 # save data
-                IterVQEDataUtils.save_data(results_data_frame, molecule, time_stamp, ansatz_element_type=ansatz_element_type,
-                                           frozen_els=frozen_els, iter_vqe_type='iqeb')
+                DataUtils.save_data(results_data_frame, molecule, time_stamp, ansatz_element_type=ansatz_element_type,
+                                    frozen_els=frozen_els, iter_vqe_type='iqeb')
 
                 message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, var. parameters: {}' \
                     .format(element_to_add.element, current_energy, delta_e, var_parameters)
                 logging.info(message)
-                print(message)
         else:
             message = 'No contribution to energy decrease. Stop adding elements to the final ansatz'
             logging.info(message)
-            print(message)
             break
 
         print('Added element ', ansatz[-1].element)

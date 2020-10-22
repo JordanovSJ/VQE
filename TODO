@@ -1,12 +1,16 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
--class ansatz: combine ansatz_elements and var_paramaters + recompute element_grads every time the ansatz state is change
+- matrix statevector generator using precomuputed values for excitation generator matrices
+
+-make excitation_gradient to work for non zero points
+
+-use class Ansatz
+
+-put all simulation parameters (multithread, excited_state... eetc) in config
+
 
 -READABILITY AND SCALABILITY
 * spin-compliment excitations: fix printing, fix orders, fix readability
-* precomputed commutators: readability
-* precomputed statevectors: readability
-* use ansatz instead of ansatz elements
 
 *********************************************
 

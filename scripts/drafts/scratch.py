@@ -1,13 +1,14 @@
-from src.ansatz_element_lists import *
+from src.ansatze import *
 from src.backends import QiskitSim
 import qiskit
 import time
+import matplotlib.pyplot as plt
 
+from src.iter_vqe_utils import *
 from src.ansatz_elements import *
 from src.vqe_runner import *
 from src.q_systems import *
 from src.backends import  *
-from src.adapt_utils import GradAdaptUtils
 import numpy, math
 
 import pandas
@@ -41,35 +42,18 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
-    molecule = BeH2()
-    df = pandas.read_csv("../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv")
-    n_cnot_counts = []
+    molecule = H4(r=0.735)
+    # ansatz = GSDExcitations(4, 2, ansatz_element_type='eff_f_exc').get_excitations()
+    ansatz = [DQExc([1,3], [5,7], 12)]
+    LogUtils.log_config()
 
-    for i in range(len(df)):
-        print(i)
-        element = df.loc[i]['element']
-        element_qubits = ast.literal_eval(df.loc[i]['element_qubits'])
+    optimizer = 'BFGS'
+    optimizer_options = {'gtol': 1e-07}
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
+                           use_ansatz_gradient=True, print_var_parameters=True)
 
-        if element[0] == 's':
-            assert len(element_qubits) == 2
-            n_cnots = 3 + 2*(element_qubits[1] - element_qubits[0])
-            if i == 0:
-                n_cnot_counts = [n_cnots]
-            else:
-                n_cnot_counts.append(n_cnot_counts[-1] + n_cnots)
-        elif element[0] == 'd':
-            assert len(element_qubits) == 2
-            n_cnots = 13 + 2*(element_qubits[1][1] - element_qubits[1][0] + element_qubits[0][1] - element_qubits[0][0]-2)
+    result = vqe_runner.vqe_run(ansatz)
 
-            if i == 0:
-                n_cnot_counts = [n_cnots]
-            else:
-                n_cnot_counts.append(n_cnot_counts[-1] + n_cnots)
-
-        else:
-            print(element, element_qubits)
-            raise Exception('Unrecognized ansatz element.')
-    df['cnot_count'] = n_cnot_counts
-    df.to_csv("../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdefe_corrected_09-Sep-2020.csv")
-
+    # grad = QiskitSim.excitation_gradient(ansatz[0],[],[], molecule)
+    print(result)
     print('spagetti')

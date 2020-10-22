@@ -192,10 +192,10 @@ if __name__ == "__main__":
 
         # get the n elements with largest gradients
         elements_grads = GradAdaptUtils.\
-            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend, n=n_largest_grads,
-                                                 var_parameters=var_parameters, ansatz=ansatz_elements,
-                                                 multithread=multithread, do_precompute_statevector=do_precompute_statevector,
-                                                 dynamic_commutators=dynamic_commutators)
+            get_largest_gradient_elements(ansatz_element_pool, molecule, vqe_runner.backend, n=n_largest_grads,
+                                          ansatz_parameters=var_parameters, ansatz=ansatz_elements,
+                                          multithread=multithread, do_precompute_statevector=do_precompute_statevector,
+                                          commutators_cache=dynamic_commutators)
 
         elements = [e_g[0] for e_g in elements_grads]
         grads = [e_g[1] for e_g in elements_grads]
@@ -205,9 +205,9 @@ if __name__ == "__main__":
         print(message)
 
         element_to_add, result =\
-            EnergyAdaptUtils.get_largest_energy_reduction_ansatz_element(vqe_runner, elements,
-                                                                         initial_var_parameters=var_parameters,
-                                                                         ansatz=ansatz_elements, multithread=multithread)
+            EnergyAdaptUtils.largest_individual_vqe_energy_reduction_elements(vqe_runner, elements,
+                                                                              ansatz_parameters=var_parameters,
+                                                                              ansatz=ansatz_elements, multithread=multithread)
 
         compl_element_to_add = None
         if element_to_add.order == 1:
@@ -239,10 +239,10 @@ if __name__ == "__main__":
 
         if compl_element_to_add is None:
             result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add],
-                                        initial_var_parameters=var_parameters + [0])
+                                        init_guess_parameters=var_parameters + [0])
         else:
             result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add, compl_element_to_add],
-                                        initial_var_parameters=var_parameters + [0, 0])
+                                        init_guess_parameters=var_parameters + [0, 0])
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy

@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import *
-from src.ansatz_element_lists import *
+from src.ansatze import *
 from src.backends import QiskitSim
 from src.utils import LogUtils
 
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend_type=QiskitSim, print_var_parameters=False, use_ansatz_gradient=False,
+    vqe_runner = VQERunner(q_system, backend=QiskitSim, print_var_parameters=False, use_ansatz_gradient=False,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     logging.critical(result)
     print(result)
-    print('TIme for running: ', t - t0)
+    print('Time for running: ', t - t0)
 
     print('Pizza')
 

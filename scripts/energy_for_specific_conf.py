@@ -30,7 +30,7 @@ if __name__ == "__main__":
     df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_comp_exc_19-Sep-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
-    ansatz, var_parameters = IterVQEDataUtils.get_ansatz_from_data_frame(df, molecule)
+    ansatz, var_parameters = DataUtils.ansatz_from_data_frame(df, molecule)
 
     ansatz = ansatz[:15]
     # var_parameters = list(df['var_parameters'])[:49]
@@ -39,10 +39,10 @@ if __name__ == "__main__":
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-8}
 
-    vqe_runner = VQERunner(molecule, backend_type=QiskitSim, optimizer=optimizer, optimizer_options=None,
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
                            print_var_parameters=False, use_ansatz_gradient=True)
 
-    energy = vqe_runner.vqe_run(ansatz=ansatz, initial_var_parameters=var_parameters,
+    energy = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_parameters,
                                 init_state_qasm=None)
 
     print(energy)

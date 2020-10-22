@@ -1,29 +1,24 @@
-from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
-from openfermionpsi4 import run_psi4
-from openfermion.hamiltonians import MolecularData
-from openfermion.utils import freeze_orbitals
-
-import src.backends as backends
-from src.utils import QasmUtils, LogUtils
+from src.backends import QiskitSimCache, QiskitSim
+from src.utils import LogUtils
 from src import config
+
+from openfermion import get_sparse_operator
 
 import scipy
 import numpy
 import time
 from functools import partial
-
 import logging
-
-from src.ansatz_element_lists import UCCSD
 import ray
 
 
+# TODO make this class entirely static?
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, q_system, backend_type=backends.QiskitSim, optimizer=config.optimizer,
+    def __init__(self, q_system, backend=QiskitSim, optimizer=config.optimizer,
                  optimizer_options=config.optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
 
-        self.backend_type = backend_type
+        self.backend = backend
         self.optimizer = optimizer
         self.optimizer_options = optimizer_options
         self.use_ansatz_gradient = use_ansatz_gradient
@@ -37,17 +32,17 @@ class VQERunner:
         self.iteration = 0
         self.time_previous_iter = 0
 
+    # TODO split this into a proper callback function!!!!!!
     def get_energy(self, var_parameters, ansatz, backend, multithread=False, multithread_iteration=None,
-                   init_state_qasm=None):
+                   init_state_qasm=None, cache=None, excited_state=0):
 
         if multithread is False:
             iteration_duration = time.time() - self.time_previous_iter
             self.time_previous_iter = time.time()
 
-        energy = backend.expectation_value(var_parameters=var_parameters, ansatz=ansatz,
-                                           init_state_qasm=init_state_qasm)
+        energy = backend.ham_expectation_value(self.q_system, ansatz, var_parameters, cache=cache,
+                                               init_state_qasm=init_state_qasm, excited_state=excited_state)
 
-        # TODO: all this below should go into a proper call_back function supplied to the optimizer
         if multithread:
             if multithread_iteration is not None:
                 try:
@@ -69,112 +64,86 @@ class VQERunner:
 
         return energy
 
-    def get_ansatz_gradient(self, var_parameters, ansatz, backend, init_state_qasm=None):
-        return backend.ansatz_gradient(var_parameters, ansatz=ansatz, init_state_qasm=init_state_qasm)
-
-    def vqe_run(self, ansatz, initial_var_parameters=None, init_state_qasm=None):
+    def vqe_run(self, ansatz, init_guess_parameters=None, init_state_qasm=None, excited_state=0, cache=None):
 
         assert len(ansatz) > 0
-        if initial_var_parameters is None:
+        if init_guess_parameters is None:
             var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz]))
         else:
-            assert len(initial_var_parameters) == sum([element.n_var_parameters for element in ansatz])
-            var_parameters = initial_var_parameters
+            assert len(init_guess_parameters) == sum([element.n_var_parameters for element in ansatz])
+            var_parameters = init_guess_parameters
 
-        backend = self.backend_type(self.q_system)
-
-        message = ''
-        message += '-----Running VQE for: {}-----\n'.format(self.q_system.name)
-        message += '-----Number of electrons: {}-----\n'.format(self.q_system.n_electrons)
-        message += '-----Number of orbitals: {}-----\n'.format(self.q_system.n_orbitals)
-        message += '-----Numeber of ansatz elements: {}-----\n'.format(len(ansatz))
-        if len(ansatz) == 1:
-            message += '-----Ansatz type {}------\n'.format(ansatz[0].element)
-        message += '-----Statevector and energy calculated using {}------\n'.format(backend)
-        message += '-----Optimizer {}------\n'.format(self.optimizer)
-        logging.info(message)
+        LogUtils.vqe_info(self.q_system, self.backend, self.optimizer, ansatz)
 
         self.iteration = 1
         self.time_previous_iter = time.time()
 
-        # precompute frequently used quantities
-        if self.use_ansatz_gradient:
-            for element in ansatz:
-                element.compute_excitation_mtrx()  # the excitation matrices are now computed and stored in each element
+        # functions to be called by the optimizer
+        get_energy = partial(self.get_energy, ansatz=ansatz, backend=self.backend, init_state_qasm=init_state_qasm,
+                             excited_state=excited_state, cache=cache)
 
-        get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm)
-
-        get_gradient = partial(self.get_ansatz_gradient, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm)
+        get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
+                               init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)
 
         if self.use_ansatz_gradient:
-
-            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=config.optimizer_tol,
-                                                 bounds=config.optimizer_bounds)
+            result = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,
+                                             options=self.optimizer_options, tol=config.optimizer_tol,
+                                             bounds=config.optimizer_bounds)
         else:
 
-            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=config.optimizer_tol,
-                                                 bounds=config.optimizer_bounds)
+            result = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
+                                             options=self.optimizer_options, tol=config.optimizer_tol,
+                                             bounds=config.optimizer_bounds)
 
-        # Prevents memory overflow with ray
-        for element in ansatz:
-            element.delete_excitation_mtrx()
+        logging.info(result)
 
-        logging.info(opt_energy)
+        result['n_iters'] = self.iteration  # cheating
 
-        opt_energy['n_iters'] = self.iteration  # cheating
-        return opt_energy
+        return result
 
     @ray.remote
-    def vqe_run_multithread(self, ansatz, initial_var_parameters=None, init_state_qasm=None):
+    def vqe_run_multithread(self, ansatz, init_guess_parameters=None, init_state_qasm=None, excited_state=0, cache=None):
 
         assert len(ansatz) > 0
 
-        if initial_var_parameters is None or initial_var_parameters == []:
+        if init_guess_parameters is None or init_guess_parameters == []:
             var_parameters = numpy.zeros(sum([element.n_var_parameters for element in ansatz]))
         else:
-            assert len(initial_var_parameters) == sum([element.n_var_parameters for element in ansatz])
-            var_parameters = initial_var_parameters
+            assert len(init_guess_parameters) == sum([element.n_var_parameters for element in ansatz])
+            var_parameters = init_guess_parameters
 
         # create it as a list so we can pass it by reference
         local_thread_iteration = [0]
 
-        backend = self.backend_type(self.q_system)
+        get_energy = partial(self.get_energy, ansatz=ansatz, backend=self.backend, init_state_qasm=init_state_qasm,
+                             multithread=True, multithread_iteration=local_thread_iteration, cache=cache,
+                             excited_state=excited_state)
 
-        # precomputed excitation matrices.
-        if self.use_ansatz_gradient:
-            for element in ansatz:
-                element.compute_excitation_mtrx()
-
-        get_energy = partial(self.get_energy, ansatz=ansatz, backend=backend, init_state_qasm=init_state_qasm,
-                             multithread=True, multithread_iteration=local_thread_iteration)
-
-        get_gradient = partial(self.get_ansatz_gradient, ansatz=ansatz, backend=backend,
-                               init_state_qasm=init_state_qasm)
+        get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, init_state_qasm=init_state_qasm,
+                               excited_state=excited_state, cache=cache, q_system=self.q_system)
 
         if self.use_ansatz_gradient:
-            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer, jac=get_gradient,
-                                                 options=self.optimizer_options, tol=config.optimizer_tol,
-                                                 bounds=config.optimizer_bounds)
+            result = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer, jac=get_gradient,
+                                             options=self.optimizer_options, tol=config.optimizer_tol,
+                                             bounds=config.optimizer_bounds)
         else:
-            opt_energy = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
-                                                 options=self.optimizer_options, tol=config.optimizer_tol,
-                                                 bounds=config.optimizer_bounds)
+            result = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
+                                             options=self.optimizer_options, tol=config.optimizer_tol,
+                                             bounds=config.optimizer_bounds)
 
-        if len(ansatz) == 1:
-            message = 'Ran VQE for element {}. Energy {}. Iterations {}'.format(ansatz[0].element,
-                                                                                opt_energy.fun, local_thread_iteration[0])
-            # logging.info(message)
-            print(message)
-        else:
-            message = 'Ran VQE. Energy {}. Iterations {}'.format(opt_energy.fun, local_thread_iteration[0])
-            # logging.info(message)
-            print(message)
+        # Logging does not work properly with ray multithreading. So use this printings. TODO: fix this. ..
+        print('Ran VQE for last element {}. Energy {}. Iterations {}'.
+              format(ansatz[-1].element, result.fun, local_thread_iteration[0]))
 
-        # Prevents memory overflow with ray
-        for element in ansatz:
-            element.delete_excitation_mtrx()
+        # Not sure if needed
+        del cache
+        # if cache is not None:
+        #     del cache.H_sparse_matrix_for_excited_state
+        #     del cache.operator_sparse_matrix
+        #     del cache.statevector
+        #     del cache
 
-        opt_energy['n_iters'] = local_thread_iteration[0]  # cheating
-        return opt_energy
+        result['n_iters'] = local_thread_iteration[0]  # cheating
+
+        return result
+

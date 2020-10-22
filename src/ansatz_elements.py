@@ -17,15 +17,16 @@ class AnsatzElement:
         self.n_var_parameters = n_var_parameters
         self.element = element
         self.excitation_generator = excitation_generator
-        self.excitation_matrix = None
+        self.excitation_generator_matrix = None
         self.system_n_qubits = system_n_qubits
 
-    def compute_excitation_mtrx(self):
-        if self.excitation_generator is not None and self.system_n_qubits is not None:
-            self.excitation_matrix = openfermion.get_sparse_operator(self.excitation_generator, n_qubits=self.system_n_qubits)
-
-    def delete_excitation_mtrx(self):
-        self.excitation_matrix = None
+    # def calculate_excitation_generator_matrix(self):
+    #     if self.excitation_generator is not None and self.system_n_qubits is not None:
+    #         self.excitation_generator_matrix = openfermion.get_sparse_operator(self.excitation_generator,
+    #                                                                            n_qubits=self.system_n_qubits)
+    #
+    # def delete_excitation_generator_matrix(self):
+    #     self.excitation_generator_matrix = None
 
     @staticmethod
     def get_qubit_excitation_generator(qubits_1, qubits_2):
@@ -58,20 +59,20 @@ class AnsatzElement:
 
 
 class PauliStringExc(AnsatzElement):
-    def __init__(self, pauli_word_excitation, system_n_qubits=None):
-        assert type(pauli_word_excitation) == QubitOperator
-        assert len(pauli_word_excitation.terms) == 1
-        assert list(pauli_word_excitation.terms.values())[0].real == 0  # it should be skew-Hermitian
+    def __init__(self, pauli_string_excitation_generator, system_n_qubits=None):
+        assert type(pauli_string_excitation_generator) == QubitOperator
+        assert len(pauli_string_excitation_generator.terms) == 1
+        assert list(pauli_string_excitation_generator.terms.values())[0].real == 0  # it should be skew-Hermitian
 
-        super(PauliStringExc, self).__init__(element=str(pauli_word_excitation),
-                                             order=self.pauli_string_order(pauli_word_excitation),
-                                             n_var_parameters=1, excitation_generator=pauli_word_excitation,
+        super(PauliStringExc, self).__init__(element=str(pauli_string_excitation_generator),
+                                             order=self.pauli_string_order(pauli_string_excitation_generator),
+                                             n_var_parameters=1, excitation_generator=pauli_string_excitation_generator,
                                              system_n_qubits=system_n_qubits)
 
     @staticmethod
-    def pauli_string_order(excitation):
+    def pauli_string_order(excitation_generator):
 
-        pauli_ops = list(excitation.terms.keys())[0]
+        pauli_ops = list(excitation_generator.terms.keys())[0]
         order = 0
 
         for pauli_op in pauli_ops:
@@ -175,7 +176,7 @@ class EffSFExc(AnsatzElement):
     def __init__(self, qubit_1, qubit_2, system_n_qubits=None):
         self.qubits = [[qubit_1], [qubit_2]]
 
-        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.qubits[1], self.qubits[0]))
+        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.qubits[1][0], self.qubits[0][0]))
         excitation_generator = jordan_wigner(fermi_operator)
 
         super(EffSFExc, self).\

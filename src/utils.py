@@ -29,6 +29,20 @@ class MatrixUtils:
         qubit_operator_matrix = get_sparse_operator(excitation_operator, n_qubits)
         return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
 
+    # return the hamming weight of a statevector if all its non zero terms have the same H.w. Otherwise return False
+    @staticmethod
+    def statevector_hamming_weight(statevector):
+        hw = None
+        for i, term in enumerate(statevector):
+            if term != 0:
+                hw_i = bin(i).count('1')
+                if hw is None:
+                    hw = hw_i
+                elif hw != hw_i:
+                    return False
+
+        return hw
+
 
 class LogUtils:
 
@@ -56,17 +70,18 @@ class LogUtils:
         logging.getLogger('qiskit').setLevel(logging.WARNING)
 
     @staticmethod
-    def vqe_info(molecule, ansatz=None, basis=None, molecule_geometry_params=None, backend=None):
-        logging.info('Initialize VQE for {}; n_electrons={}, n_orbitals={}; geometry: {}'
-                     .format(molecule.name, molecule.n_electrons, molecule.n_orbitals, molecule_geometry_params))
-        if basis is not None:
-            logging.info('Basis: {}'.format(basis))
-        if backend is not None:
-            logging.info('Backend: {}'.format(backend))
-        if ansatz is not None:
-            n_var_params = sum([el.n_var_parameters for el in ansatz])
-            logging.info('Number of Ansatz elements: {}'.format(len(ansatz)))
-            logging.info('Number of variational parameters: {}'.format(n_var_params))
+    def vqe_info(q_system, backend, optimizer, ansatz):
+        message = ''
+        message += '-----Running VQE for: {}-----\n'.format(q_system.name)
+        message += '-----Number of electrons: {}-----\n'.format(q_system.n_electrons)
+        message += '-----Number of orbitals: {}-----\n'.format(q_system.n_orbitals)
+        message += '-----Numeber of ansatz elements: {}-----\n'.format(len(ansatz))
+        if len(ansatz) == 1:
+            message += '-----Ansatz type {}------\n'.format(ansatz[0].element)
+        message += '-----Statevector and energy calculated using {}------\n'.format(backend)
+        message += '-----Optimizer {}------\n'.format(optimizer)
+
+        logging.info(message)
 
 
 class QasmUtils:
