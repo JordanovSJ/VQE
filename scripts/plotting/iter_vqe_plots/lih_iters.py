@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots()
 
-    df_col = 'cnot_count'
+    df_col = 'n'
     linewidth = 0.4
     marker = '_'
     #
@@ -44,10 +44,10 @@ if __name__ == "__main__":
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chem. accuracy')
 
-    ax.set_xlabel('Number of CNOTs')
+    ax.set_xlabel('Number of iterations')
     ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
     ax.set_ylim(1e-9, 1e-1)
-    ax.set_xlim(0, 1200)
+    ax.set_xlim(0, 200)
     ax.set_yscale('log')
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
     # ax.grid(b=True, which='minor', color='black', linestyle='-.', linewidth=0.3)
@@ -55,9 +55,9 @@ if __name__ == "__main__":
     # ax.xaxis.set_major_locator(MultipleLocator(250))
 
     #  Zoomed
-    zoom = 1.5
+    zoom = 1.75
     zoom_position = 1
-    x1, x2, y1, y2 = 0, 200 , 1e-4, 1e-1
+    x1, x2, y1, y2 = 0, 25 , 1e-4, 1e-1
 
     axins = zoomed_inset_axes(ax, zoom, loc=zoom_position)
     axins.plot(db_iqeb[df_col], db_iqeb['error'],  marker=marker, linewidth=1.5*linewidth,color='blue')
@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
     mark_inset(ax, axins, loc1=2, loc2=3, fc="none", ec="0", linewidth=.75)
 
-    ax.legend(loc=3)#, bbox_to_anchor=(1,0.4))
+    # ax.legend(loc=3)#, bbox_to_anchor=(1,0.4))
 
     plt.show()
 

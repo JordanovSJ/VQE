@@ -12,25 +12,28 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+    db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+    db_iqeb_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_r=1_24-Sep-2020.csv')
+    db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
+
+    db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_16-Sep-2020.csv')
+    db_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=1_25-Sep-2020.csv')
+    db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=3_25-Sep-2020.csv')
+
+    db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_15-Sep-2020.csv')
+    db_q_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_r=1_21-Sep-2020.csv')
+    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_r=3_24-Sep-2020.csv')
+
     indices_iqeb = numpy.arange(len(db_iqeb))
-    db_iqeb_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=1_25-Sep-2020.csv')
     indices_iqeb_1 = numpy.arange(len(db_iqeb_1))
-    db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
     indices_iqeb_3 = numpy.arange(len(db_iqeb_3))
 
-    db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_23-Sep-2020.csv')
     indices_adapt = numpy.arange(len(db_adapt))
-    db_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=1_05-Oct-2020.csv')
     indices_adapt_1 = numpy.arange(len(db_adapt_1))
-    db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=3_19-Oct-2020.csv')
     indices_adapt_3 = numpy.arange(len(db_adapt_3))
 
-    db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_01-Sep-2020.csv')
     indices_q_adapt = numpy.arange(len(db_q_adapt))
-    db_q_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_r=1_05-Oct-2020.csv')
     indices_q_adapt_1 = numpy.arange(len(db_q_adapt_1))
-    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_r=3_06-Oct-2020.csv')
     indices_q_adapt_3 = numpy.arange(len(db_q_adapt_3))
 
     fig, ax = plt.subplots()
@@ -54,15 +57,18 @@ if __name__ == "__main__":
 
     ax.set_xlabel('Number of parameters')
     ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
-    ax.set_ylim(1e-8, 1)
-    ax.set_xlim(0, 350)
+    ax.set_ylim(1e-9, 1e-1)
+    ax.set_xlim(0, 200)
     ax.set_yscale('log')
-    ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
+    ax.grid(b=True, which='major', color='grey', linestyle='--', linewidth=0.5)
+    # ax.grid(b=True, which='minor', color='black', linestyle='-.', linewidth=0.3)
+    # ax.xaxis.set_minor_locator(MultipleLocator(125))
+    # ax.xaxis.set_major_locator(MultipleLocator(250))
 
     #  Zoomed
-    zoom = 1.5
+    zoom = 1.75
     zoom_position = 1
-    x1, x2, y1, y2 = 0, 50 , 1e-4, 0.2
+    x1, x2, y1, y2 = 0, 25, 1e-4, 1e-1
 
     axins = zoomed_inset_axes(ax, zoom, loc=zoom_position)
     axins.plot(indices_iqeb, db_iqeb['error'],  marker=marker, linewidth=1.5*linewidth,color='blue')

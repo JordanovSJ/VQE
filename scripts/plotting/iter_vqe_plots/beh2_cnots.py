@@ -27,7 +27,7 @@ if __name__ == "__main__":
     fig, ax = plt.subplots()
 
     df_col = 'cnot_count'
-    linewidth = 0.4
+    linewidth = 0.5
     marker = '_'
     #
     ax.plot(db_iqeb[df_col], db_iqeb['error'], label='IQEB, r=1.546', marker=marker, linewidth=linewidth, color='blue')
@@ -55,9 +55,9 @@ if __name__ == "__main__":
     # ax.xaxis.set_major_locator(MultipleLocator(250))
 
     #  Zoomed
-    zoom = 1.8
+    zoom = 1.5
     zoom_position = 1
-    x1, x2, y1, y2 = 0, 250 , 1e-4, 1
+    x1, x2, y1, y2 = 0, 300 , 1e-4, 0.2
 
     axins = zoomed_inset_axes(ax, zoom, loc=zoom_position)
     axins.plot(db_iqeb[df_col], db_iqeb['error'],  marker=marker, linewidth=1.5*linewidth,color='blue')
@@ -77,7 +77,9 @@ if __name__ == "__main__":
     axins.grid(b=True, which='minor', color='black', linestyle='-.', linewidth=0.2)
 
     axins.set_xlim(x1, x2)
+    axins.xaxis.tick_top()
     axins.set_ylim(y1, y2)
+    axins.yaxis.tick_right()
     axins.set_yscale('log')
     # axins.xaxis.set_minor_locator(MultipleLocator(125))
     # axins.xaxis.set_major_locator(MultipleLocator(250))
