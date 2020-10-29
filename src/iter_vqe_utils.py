@@ -242,9 +242,9 @@ class DataUtils:
             elif element[:2] == '1j':
                 ansatz_elements.append(PauliStringExc(QubitOperator(element), system_n_qubits=q_system.n_qubits))
             elif element[:8] == 'spin_s_f':
-                ansatz_elements.append(SpinCompSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(SpinCompEffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[:8] == 'spin_d_f':
-                ansatz_elements.append(SpinCompDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(SpinCompEffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[:8] == 'spin_s_q':
                 ansatz_elements.append(SpinCompSQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[:8] == 'spin_d_q':

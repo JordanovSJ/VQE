@@ -5,7 +5,7 @@ sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
 from src.q_systems import *
-from src.ansatze import *
+from src.ansatz_element_sets import *
 from src.backends import QiskitSim
 from src.utils import *
 from src.iter_vqe_utils import *

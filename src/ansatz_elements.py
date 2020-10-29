@@ -239,13 +239,7 @@ class SpinCompSFExc(AnsatzElement):
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
 
-        qasm = QasmUtils.eff_s_f_exc_qasm(var_parameters[0], self.qubits[0][0], self.qubits[1][0])
-
-        if {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[0], *self.complement_qubits[1]} and \
-           {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[1], *self.complement_qubits[0]}:
-
-            qasm += QasmUtils.eff_s_f_exc_qasm(var_parameters[0], self.complement_qubits[0][0], self.complement_qubits[1][0])
-
+        qasm = QasmUtils.fermi_excitation(self.excitation_generator, var_parameters[0])
         return qasm
 
 
@@ -273,16 +267,8 @@ class SpinCompDFExc(AnsatzElement):
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        parameter_1 = var_parameters[0]
 
-        qasm = QasmUtils.eff_d_f_exc_qasm(parameter_1, self.qubits[0], self.qubits[1])
-
-        # if the spin complement is different, add a qasm for it
-        if [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[0]), set(self.complement_qubits[1])] and \
-           [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[1]), set(self.complement_qubits[0])]:
-
-           qasm += QasmUtils.eff_d_f_exc_qasm(parameter_1, self.complement_qubits[0], self.complement_qubits[1])
-
+        qasm = QasmUtils.fermi_excitation(self.excitation_generator, var_parameters[0])
         return qasm
 
 
@@ -352,3 +338,70 @@ class SpinCompDQExc(AnsatzElement):
 
         return qasm
 
+
+class SpinCompEffSFExc(AnsatzElement):
+    def __init__(self, qubit_1, qubit_2, system_n_qubits=None):
+        self.qubits = [[qubit_1], [qubit_2]]
+        self.complement_qubits = [self.spin_complement_orbitals([qubit_1]), self.spin_complement_orbitals([qubit_2])]
+
+        fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(qubit_2, qubit_1))
+        if {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[0], *self.complement_qubits[1]} and \
+           {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[1], *self.complement_qubits[0]}:
+
+            fermi_operator += FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.complement_qubits[1][0],
+                                                                               self.complement_qubits[0][0]))
+
+        excitation_generator = jordan_wigner(fermi_operator)
+
+        super(SpinCompEffSFExc, self).\
+            __init__(element='spin_s_f_exc_{}_{}'.format(qubit_2, qubit_1), order=1, n_var_parameters=1,
+                     excitation_generator=excitation_generator, system_n_qubits=system_n_qubits)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+
+        qasm = QasmUtils.eff_s_f_exc_qasm(var_parameters[0], self.qubits[0][0], self.qubits[1][0])
+
+        if {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[0], *self.complement_qubits[1]} and \
+           {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[1], *self.complement_qubits[0]}:
+
+            qasm += QasmUtils.eff_s_f_exc_qasm(var_parameters[0], self.complement_qubits[0][0], self.complement_qubits[1][0])
+
+        return qasm
+
+
+class SpinCompEffDFExc(AnsatzElement):
+    def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
+
+        assert len(qubit_pair_1) == 2
+        assert len(qubit_pair_2) == 2
+        self.qubits = [qubit_pair_1, qubit_pair_2]
+        self.complement_qubits = [self.spin_complement_orbitals(qubit_pair_1), self.spin_complement_orbitals(qubit_pair_2)]
+
+        fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(*self.qubits[0], *self.qubits[1]))
+
+        if [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[0]), set(self.complement_qubits[1])] and \
+           [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[1]), set(self.complement_qubits[0])]:
+
+            fermi_operator += FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
+                                              .format(*self.complement_qubits[0], *self.complement_qubits[1]))
+
+        excitation_generator = jordan_wigner(fermi_operator)
+
+        super(SpinCompEffDFExc, self).\
+            __init__(element='spin_d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), order=2, n_var_parameters=1,
+                     system_n_qubits=system_n_qubits, excitation_generator=excitation_generator)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        parameter_1 = var_parameters[0]
+
+        qasm = QasmUtils.eff_d_f_exc_qasm(parameter_1, self.qubits[0], self.qubits[1])
+
+        # if the spin complement is different, add a qasm for it
+        if [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[0]), set(self.complement_qubits[1])] and \
+           [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[1]), set(self.complement_qubits[0])]:
+
+           qasm += QasmUtils.eff_d_f_exc_qasm(parameter_1, self.complement_qubits[0], self.complement_qubits[1])
+
+        return qasm

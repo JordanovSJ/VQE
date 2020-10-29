@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
-from src.ansatz_element_lists import *
+from src.ansatz_element_sets import *
 from src.backends import QiskitSim
 from src.utils import LogUtils
 from src.iter_vqe_utils import *
@@ -30,8 +30,9 @@ if __name__ == "__main__":
     df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_comp_exc_19-Sep-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
-    ansatz, var_parameters = DataUtils.ansatz_from_data_frame(df, molecule)
-
+    state = DataUtils.ansatz_from_data_frame(df, molecule)
+    ansatz = state.elements
+    var_parameters = state.parameters
     ansatz = ansatz[:15]
     # var_parameters = list(df['var_parameters'])[:49]
     var_parameters = var_parameters[:15]
