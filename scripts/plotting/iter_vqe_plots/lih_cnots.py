@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_16-Sep-2020.csv')
     # db_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=1_25-Sep-2020.csv')
-    db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=3_25-Sep-2020.csv')
+    db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=3_30-Oct-2020.csv')
 
     db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_15-Sep-2020.csv')
     # db_q_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_r=1_21-Sep-2020.csv')
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # ax.xaxis.set_major_locator(MultipleLocator(250))
 
     #  Zoomed
-    zoom = 1.5
+    zoom = 1.75
     zoom_position = 1
     x1, x2, y1, y2 = 0, 200 , 1e-4, 1e-1
 
