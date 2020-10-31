@@ -1,4 +1,4 @@
-from src.ansatze import *
+# from src.ansatze import *
 from src.backends import QiskitSim
 import qiskit
 import time
@@ -42,18 +42,37 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
-    molecule = H4(r=0.735)
-    # ansatz = GSDExcitations(4, 2, ansatz_element_type='eff_f_exc').get_excitations()
-    ansatz = [DQExc([1,3], [5,7], 12)]
-    LogUtils.log_config()
+    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_g_adapt_gsdfe_not_eff_comp_exc_29-Oct-2020.csv')
+    cnots = []
+    qubitss = df['element_qubits'].values
+    for qubits in qubitss:
 
-    optimizer = 'BFGS'
-    optimizer_options = {'gtol': 1e-07}
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
-                           use_ansatz_gradient=True, print_var_parameters=True)
+        if cnots == []:
+            previos = 0
+        else:
+            previos = cnots[-1]
 
-    result = vqe_runner.vqe_run(ansatz)
+        qubits = ast.literal_eval(qubits)
+        spin_comp_qubits = [AnsatzElement.spin_complement_orbitals(qubits[0]),AnsatzElement.spin_complement_orbitals(qubits[1])]
+        if len(qubits[0]) == 1:
+            cnot_count = 2*abs(qubits[0][0] - qubits[1][0])+1 + previos
+            if {qubits[0][0], qubits[1][0]} != {spin_comp_qubits[0][0], spin_comp_qubits[1][0]}:
+                cnot_count += 2*abs(spin_comp_qubits[0][0] - spin_comp_qubits[1][0])+1
+        else:
+            set_qubits = [*qubits[0], *qubits[1]]
+            set_qubits.sort()
+            cnot_count = 2*(set_qubits[3]-set_qubits[2] + set_qubits[1]-set_qubits[0])+9 + previos
+
+            if [set(qubits[0]), set(qubits[1])] != [set(spin_comp_qubits[0]), set(spin_comp_qubits[1])] and \
+               [set(qubits[0]), set(qubits[1])] != [set(spin_comp_qubits[1]), set(spin_comp_qubits[0])]:
+                set_qubits = [*spin_comp_qubits[0], *spin_comp_qubits[1]]
+                set_qubits.sort()
+                cnot_count += 2 * (set_qubits[3] - set_qubits[2] + set_qubits[1] - set_qubits[0]) + 9
+        cnots.append(cnot_count)
+
+    df['cnot_count'] = cnots
+    df.to_csv('../../results/iter_vqe_results/BeH2_g_adapt_gsdfe_not_eff_comp_exc_29-Oct-2020_corrected.csv')
 
     # grad = QiskitSim.excitation_gradient(ansatz[0],[],[], molecule)
-    print(result)
+    # print(result)
     print('spagetti')

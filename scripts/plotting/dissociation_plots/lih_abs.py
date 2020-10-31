@@ -31,7 +31,7 @@ if __name__ == "__main__":
     plt.ylabel('Energy, Hartree')
     plt.ylim(-7.90, -7.65)
     plt.xlim(0.75, 3.75)
-    plt.legend(loc=9)
+    plt.legend(loc=2, fontsize=8)
     plt.grid(b=True, which='major', color='grey', linestyle='--', linewidth=0.5)
 
     plt.show()

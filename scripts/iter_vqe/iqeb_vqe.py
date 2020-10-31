@@ -87,7 +87,7 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         # get the n elements with largest gradients
-        elements_grads = GradUtils.\
+        elements_grads = GradientUtils.\
             get_largest_gradient_elements(ansatz_element_pool, molecule, backend=backend, n=n_largest_grads,
                                           ansatz_parameters=var_parameters, ansatz=ansatz, global_cache=global_cache)
 

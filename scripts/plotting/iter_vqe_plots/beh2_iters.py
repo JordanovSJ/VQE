@@ -16,9 +16,9 @@ if __name__ == "__main__":
     db_iqeb_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=1_25-Sep-2020.csv')
     db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
 
-    db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_23-Sep-2020.csv')
+    db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_not_eff_comp_exc_29-Oct-2020_corrected.csv')
     db_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=1_05-Oct-2020.csv')
-    db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=3_19-Oct-2020.csv')
+    db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=3-30-Oct-2020.csv')
 
     db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_01-Sep-2020.csv')
     db_q_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_r=1_05-Oct-2020.csv')
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     #  Zoomed
     zoom = 1.5
     zoom_position = 1
-    x1, x2, y1, y2 = 0, 50 , 1e-4, 0.2
+    x1, x2, y1, y2 = 0, 60 , 1e-4, 0.2
 
     axins = zoomed_inset_axes(ax, zoom, loc=zoom_position)
     axins.plot(db_iqeb[df_col], db_iqeb['error'],  marker=marker, linewidth=1.5*linewidth,color='blue')

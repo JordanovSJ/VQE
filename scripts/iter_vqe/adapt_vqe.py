@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, grad = GradUtils.\
+        element_to_add, grad = GradientUtils.\
             get_largest_gradient_elements(ansatz_element_pool, molecule, backend=vqe_runner.backend,
                                           ansatz_parameters=ansatz_parameters, ansatz=ansatz_elements,
                                           global_cache=global_cache)[0]

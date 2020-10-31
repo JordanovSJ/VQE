@@ -145,7 +145,7 @@ class EnergyUtils:
             return elements_results[:n]
 
 
-class GradUtils:
+class GradientUtils:
 
     @staticmethod
     @ray.remote
@@ -182,7 +182,7 @@ class GradUtils:
             ray.init(num_cpus=config.ray_options['n_cpus'])
             elements_ray_ids = [
                 [
-                    element, GradUtils.get_excitation_gradient_multithread.
+                    element, GradientUtils.get_excitation_gradient_multithread.
                     remote(element, ansatz, ansatz_parameters, q_system, backend, thread_cache=get_thread_cache(element),
                            excited_state=excited_state)
                  ]
@@ -204,10 +204,10 @@ class GradUtils:
     def get_largest_gradient_elements(elements, q_system, backend=backends.QiskitSim, ansatz_parameters=None,
                                       ansatz=None, n=1, global_cache=None, excited_state=0):
 
-        elements_results = GradUtils.get_ansatz_elements_gradients(elements, q_system,
-                                                                   ansatz_parameters=ansatz_parameters,
-                                                                   ansatz=ansatz, global_cache=global_cache,
-                                                                   backend=backend, excited_state=excited_state)
+        elements_results = GradientUtils.get_ansatz_elements_gradients(elements, q_system,
+                                                                       ansatz_parameters=ansatz_parameters,
+                                                                       ansatz=ansatz, global_cache=global_cache,
+                                                                       backend=backend, excited_state=excited_state)
         elements_results.sort(key=lambda x: abs(x[1]))
         return elements_results[-n:]
 

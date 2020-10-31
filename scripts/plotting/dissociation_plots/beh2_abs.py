@@ -7,7 +7,7 @@ from src.q_systems import *
 
 if __name__ == "__main__":
 
-    db_data_lih_hf = pandas.read_csv('../../../results/dissociation_curves/BeH2_hf_16-Sep-2020.csv')
+    db_data_lih_hf = pandas.read_csv('../../../results/dissociation_curves/BeH2_hf_06-Oct-2020.csv')
     db_data_lih_06 = pandas.read_csv('../../../results/dissociation_curves/BeH2_h_adapt_gsdqe_e-06_03-Sep-2020.csv')
     db_data_lih_08 = pandas.read_csv('../../../results/dissociation_curves/BeH2_h_adapt_gsdqe_e-08_15-Sep-2020.csv')
     db_data_lih_uccsd = pandas.read_csv('../../../results/dissociation_curves/BeH2_uccsd_08-Sep-2020.csv')
