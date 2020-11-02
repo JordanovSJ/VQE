@@ -11,17 +11,19 @@ import time
 
 class Cache:
     def __init__(self, H_sparse_matrix, n_qubits, n_electrons, exc_gen_sparse_matrices=None,
-                 commutator_sparse_matrices=None, sparse_statevector=None, init_sparse_statevector=None):
+                 commutator_sparse_matrices=None, sparse_statevector=None, init_sparse_statevector=None,
+                 sqr_exc_gen_sparse_matrices=None):
         self.n_qubits = n_qubits
         self.n_electrons = n_electrons
         self.sparse_statevector = sparse_statevector  # used in: normal vqe run/ excitation gradient calculations
         self.var_parameters = None  # used in: normal vqe run/ single var. parameter vqe
         self.H_sparse_matrix = H_sparse_matrix  # used in: normal vqe run/ single var. parameter vqe
         self.exc_gen_sparse_matrices = exc_gen_sparse_matrices  # used in:  single var. parameter vqe
+        self.sqr_exc_gen_sparse_matrices = sqr_exc_gen_sparse_matrices
         self.commutator_sparse_matrices = commutator_sparse_matrices  # used in: single var. parameter vqe/ excitation gradient calculations
         self.init_sparse_statevector = init_sparse_statevector  # used in: single var. parameter vqe
 
-    def update_statevector(self, ansatz, var_parameters, init_state_qasm=None):
+    def update_statevector(self, ansatz, var_parameters, init_state_qasm=None, backend=QiskitSim):
         # TODO add single parameter functionnality with init_statevector
         assert len(var_parameters) == len(ansatz)
         if self.var_parameters is not None and var_parameters == self.var_parameters:  # this condition is not neccessarily sufficient
@@ -36,19 +38,19 @@ class Cache:
                                                       self.init_sparse_statevector.transpose().conj()).transpose().conj()
             else:
                 self.var_parameters = var_parameters
-                statevector = QiskitSim.statevector_from_ansatz(ansatz, var_parameters, self.n_qubits, self.n_electrons,
-                                                                init_state_qasm=init_state_qasm)
+                statevector = backend.statevector_from_ansatz(ansatz, var_parameters, self.n_qubits, self.n_electrons,
+                                                              init_state_qasm=init_state_qasm)
                 self.sparse_statevector = scipy.sparse.csr_matrix(statevector)
         return self.sparse_statevector
 
 
 class GlobalCache(Cache):
-    def __init__(self, q_system, excited_state=0):
+    def __init__(self, q_system, excited_state=0, backend=QiskitSim):
         self.q_system = q_system
 
         H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
         if excited_state > 0:
-            H_sparse_matrix = QiskitSim. ham_sparse_matrix(q_system, excited_state=excited_state)
+            H_sparse_matrix = backend. ham_sparse_matrix(q_system, excited_state=excited_state)
             if H_sparse_matrix.data.nbytes > config.matrix_size_threshold:
                 # decrease the size of the matrix. Typically it will have a lot of insignificant very small (~1e-19)
                 # elements that do not contribute to the accuracy but inflate the size of the matrix (~200 MB for Lih)
@@ -70,6 +72,8 @@ class GlobalCache(Cache):
         # TODO check if copy is necessary
         thread_cache = ThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
                                    exc_gen_matrices=self.get_exc_gen_matrices_copy(),
+                                   # TODO
+                                   # sqr_exc_gen_matrices=self.get_sqr_exc_gen_matrices_copy(),
                                    n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons)
         return thread_cache
 
@@ -77,12 +81,18 @@ class GlobalCache(Cache):
         # TODO check if copy is necessary
         key = str(ansatz_element.excitation_generator)
         exc_gen_matrix = self.exc_gen_sparse_matrices[key].copy()
+        # TODO
+        # sqr_exc_gen_matrix = self.sqr_exc_gen_sparse_matrices[key].copy()
+
         commutator_matrix = self.commutator_sparse_matrices[key].copy()
         thread_cache = ThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
                                    commutator_sparse_matrices={key: commutator_matrix},
                                    init_sparse_statevector=init_sparse_statevector.copy(),
                                    n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons,
-                                   exc_gen_matrices={key: exc_gen_matrix})
+                                   exc_gen_matrices={key: exc_gen_matrix},
+                                   # TODO
+                                   # sqr_exc_gen_matrices={key: sqr_exc_gen_matrix}
+                                   )
         return thread_cache
 
     def get_exc_gen_matrices_copy(self):
@@ -91,9 +101,16 @@ class GlobalCache(Cache):
             exc_gen_matrices_copy[str(exc_gen)] = self.exc_gen_sparse_matrices[str(exc_gen)].copy()
         return exc_gen_matrices_copy
 
+    def get_sqr_exc_gen_matrices_copy(self):
+        sqr_exc_gen_matrices_copy = {}
+        for exc_gen in self.sqr_exc_gen_sparse_matrices.keys():
+            sqr_exc_gen_matrices_copy[str(exc_gen)] = self.sqr_exc_gen_sparse_matrices[str(exc_gen)].copy()
+        return sqr_exc_gen_matrices_copy
+
     def calculate_exc_gen_matrices(self, ansatz_elements):
         logging.info('Calculating excitation generators')
         exc_generators = {}
+        sqr_exc_generators = {}
         if config.multithread:
             ray.init(num_cpus=config.ray_options['n_cpus'])
             elements_ray_ids = [
@@ -104,7 +121,8 @@ class GlobalCache(Cache):
             ]
             for element_ray_id in elements_ray_ids:
                 key = str(element_ray_id[0].excitation_generator)
-                exc_generators[key] = ray.get(element_ray_id[1])
+                exc_generators[key] = ray.get(element_ray_id[1])[0]
+                sqr_exc_generators[key] = ray.get(element_ray_id[1])[1]
 
             del elements_ray_ids
             ray.shutdown()
@@ -114,9 +132,12 @@ class GlobalCache(Cache):
                 key = str(excitation_generator)
                 logging.info('Calculated excitation generator matrix {}'.format(key))
                 exc_gen_sparse_matrix = get_sparse_operator(excitation_generator, n_qubits=self.q_system.n_qubits)
+                sqr_exc_gen_sparse_matrix = exc_gen_sparse_matrix*exc_gen_sparse_matrix
                 exc_generators[key] = exc_gen_sparse_matrix
+                sqr_exc_generators[key] = sqr_exc_gen_sparse_matrix
 
         self.exc_gen_sparse_matrices = exc_generators
+        self.sqr_exc_gen_sparse_matrices = sqr_exc_generators
         return exc_generators
 
     def calculate_commutators_matrices(self, ansatz_elements):
@@ -168,8 +189,9 @@ class GlobalCache(Cache):
     def get_exc_generator_matrix_multithread(excitation, n_qubits):
         t0 = time.time()
         exc_gen_matrix = get_sparse_operator(excitation.excitation_generator, n_qubits=n_qubits)
+        sqr_exc_gen_matrix = exc_gen_matrix*exc_gen_matrix
         print('Calculated excitation matrix time ', time.time() - t0)
-        return exc_gen_matrix
+        return exc_gen_matrix, sqr_exc_gen_matrix
 
 
 # TODO make a subclass of global cache?
