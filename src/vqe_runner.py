@@ -1,4 +1,4 @@
-from src.backends import QiskitSimCache, QiskitSim
+from src.backends import QiskitSim
 from src.utils import LogUtils
 from src import config
 

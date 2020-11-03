@@ -1,5 +1,5 @@
 from src import q_systems
-from src.backends import QiskitSim, MatrixCalculation
+from src.backends import QiskitSim, ExcStateSim
 from src.ansatz_element_lists import UCCSD
 
 import openfermionpsi4
@@ -102,8 +102,8 @@ class QiskitSimulationTest(unittest.TestCase):
         var_parameters[-1] = 0.11
         energy_qiskit_sim = QiskitSim.ham_expectation_value(h, ansatz_elements, var_parameters, molecule.n_orbitals,
                                                             molecule.n_electrons)[0].real
-        energy_matrix_mult = MatrixCalculation.get_energy(h, ansatz_elements, var_parameters, molecule.n_orbitals,
-                                                          molecule.n_electrons)[0].real
+        energy_matrix_mult = ExcStateSim.get_energy(h, ansatz_elements, var_parameters, molecule.n_orbitals,
+                                                    molecule.n_electrons)[0].real
 
         self.assertEqual(round(energy_qiskit_sim, 3), round(energy_matrix_mult, 3))
 

@@ -5,6 +5,7 @@ from openfermion import get_sparse_operator
 
 import scipy
 import ray
+import numpy
 import logging
 import time
 
@@ -23,25 +24,81 @@ class Cache:
         self.commutator_sparse_matrices = commutator_sparse_matrices  # used in: single var. parameter vqe/ excitation gradient calculations
         self.init_sparse_statevector = init_sparse_statevector  # used in: single var. parameter vqe
 
+    def hf_statevector(self):
+        statevector = numpy.zeros(2 ** self.n_qubits)
+        # MAGIC
+        hf_term = 0
+        for i in range(self.n_electrons):
+            hf_term += 2 ** (self.n_qubits - 1 - i)
+        statevector[hf_term] = 1
+        return statevector
+
+    # # return a statevector in the form of an array from a list of ansatz elements
+    # @staticmethod
+    # def statevector_from_ansatz(ansatz, var_parameters, n_qubits, n_electrons, cache, init_state_qasm=None):
+    #     assert cache is not None
+    #     statevector = ExcStateSim.hf_statevector(n_qubits, n_electrons)
+    #     sparse_statevector = scipy.sparse.csr_matrix(statevector).transpose()
+    #     identity = scipy.sparse.identity(2 ** n_qubits)
+    #
+    #     for i, excitation in enumerate(ansatz):
+    #         parameter = var_parameters[i]
+    #         term1 = numpy.sin(parameter)*cache.get_exc_gen_sparse_matrix(excitation)
+    #         term2 = (1 - numpy.cos(parameter))*cache.get_sqr_exc_gen_sparse_matrix(excitation)
+    #         excitation_matrix = identity + term1 + term2
+    #         sparse_statevector = excitation_matrix.dot(sparse_statevector)
+    #     statevector = numpy.array(sparse_statevector.transpose().todense())[0]
+    #     return statevector
+
     def update_statevector(self, ansatz, var_parameters, init_state_qasm=None, backend=QiskitSim):
         # TODO add single parameter functionnality with init_statevector
         assert len(var_parameters) == len(ansatz)
         if self.var_parameters is not None and var_parameters == self.var_parameters:  # this condition is not neccessarily sufficient
             assert self.sparse_statevector is not None
         else:
-            # if just a single ansatz element is supplied, just add its matrix to the initial statevector
-            if self.init_sparse_statevector is not None and len(ansatz) == 1:
-                key = str(ansatz[0].excitation_generator)
-                exc_gen_matrix = self.exc_gen_sparse_matrices[key]
-                self.sparse_statevector =\
-                    scipy.sparse.linalg.expm_multiply(var_parameters[0] * exc_gen_matrix,
-                                                      self.init_sparse_statevector.transpose().conj()).transpose().conj()
-            else:
-                self.var_parameters = var_parameters
-                statevector = backend.statevector_from_ansatz(ansatz, var_parameters, self.n_qubits, self.n_electrons,
-                                                              init_state_qasm=init_state_qasm)
-                self.sparse_statevector = scipy.sparse.csr_matrix(statevector)
+
+            statevector = self.hf_statevector()
+            sparse_statevector = scipy.sparse.csr_matrix(statevector).transpose().conj()
+            identity = scipy.sparse.identity(2 ** self.n_qubits)
+
+            for i, excitation in enumerate(ansatz):
+                parameter = var_parameters[i]
+                term1 = numpy.sin(parameter) * self.get_exc_gen_sparse_matrix(excitation)
+                term2 = (1 - numpy.cos(parameter)) * self.get_sqr_exc_gen_sparse_matrix(excitation)
+                excitation_matrix = identity + term1 + term2
+                sparse_statevector = excitation_matrix.dot(sparse_statevector)
+            # statevector = numpy.array(sparse_statevector.transpose().todense())[0]
+            self.sparse_statevector = sparse_statevector.transpose().conj()
+
+        #     # if just a single ansatz element is supplied, just add its matrix to the initial statevector
+        #     if self.init_sparse_statevector is not None and len(ansatz) == 1:
+        #         key = str(ansatz[0].excitation_generator)
+        #         exc_gen_matrix = self.exc_gen_sparse_matrices[key]
+        #         self.sparse_statevector =\
+        #             scipy.sparse.linalg.expm_multiply(var_parameters[0] * exc_gen_matrix,
+        #                                               self.init_sparse_statevector.transpose().conj()).transpose().conj()
+        #     else:
+        #         self.var_parameters = var_parameters
+        #         statevector = backend.statevector_from_ansatz(ansatz, var_parameters, self.n_qubits, self.n_electrons,
+        #                                                       init_state_qasm=init_state_qasm)
+        #         self.sparse_statevector = scipy.sparse.csr_matrix(statevector)
+        # # print(self.sparse_statevector.todense())
+
+        print(self.sparse_statevector.dot(self.sparse_statevector.transpose().conj()).todense())
+
         return self.sparse_statevector
+
+    def get_exc_gen_sparse_matrix(self, excitation):
+        key = str(excitation.excitation_generator)
+        return self.exc_gen_sparse_matrices[key]
+
+    def get_sqr_exc_gen_sparse_matrix(self, excitation):
+        key = str(excitation.excitation_generator)
+        return self.sqr_exc_gen_sparse_matrices[key]
+
+    def get_commutator_sparse_matrix(self, excitation):
+        key = str(excitation.excitation_generator)
+        return self.commutator_sparse_matrices[key]
 
 
 class GlobalCache(Cache):
