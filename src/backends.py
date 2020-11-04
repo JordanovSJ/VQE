@@ -169,15 +169,15 @@ class QiskitSim:
             else:
                 assert len(excitation_i_gen_matrix_form) == 2
 
-                psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[0], psi)
-                phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[0], phi)
+                psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[1], psi)
+                phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[1], phi)
 
                 grad_i = 2 * (psi.transpose().conj().dot(sum(excitation_i_gen_matrix_form)).dot(phi)).todense()[0, 0]
 
                 ansatz_grad.append(grad_i.real)
 
-                psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[1], psi)
-                phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[1], phi)
+                psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[0], psi)
+                phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[0], phi)
 
         ansatz_grad = ansatz_grad[::-1]
         return numpy.array(ansatz_grad)
