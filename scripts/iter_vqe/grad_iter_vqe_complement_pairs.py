@@ -281,7 +281,7 @@ if __name__ == "__main__":
                         element_qubits = []
                 except AttributeError:
                     # this case corresponds to Pauli word excitation
-                    element_qubits = elementt.excitation_generator
+                    element_qubits = elementt.excitation_generators
 
                 gate_count = QasmUtils.gate_count_from_ansatz(ansatz_elements, molecule.n_orbitals)
                 df_data.loc[df_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,

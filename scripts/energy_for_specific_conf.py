@@ -29,7 +29,7 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     # df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=3_30-Oct-2020.csv")
-    df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_comp_exc_19-Sep-2020.csv")
+    df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_31-Jul-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     state = DataUtils.ansatz_from_data_frame(df, molecule)
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     var_parameters = var_parameters[:24]
 
     global_cache = GlobalCache(molecule)
-    global_cache.calculate_exc_gen_matrices(ansatz)
+    global_cache.calculate_exc_gen_sparse_matrices_list(ansatz)
     global_cache.calculate_commutators_matrices(ansatz)
 
     optimizer = 'BFGS'

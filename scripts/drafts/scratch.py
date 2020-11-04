@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     excitation = DFExc([0, 2], [3, 5], n_qubits)
     # excitation = SpinCompDFExc([0, 1], [2, 3], n_qubits)
-    excitation_gen_matrix = get_sparse_operator(excitation.excitation_generator, n_qubits)
+    excitation_gen_matrix = get_sparse_operator(excitation.excitation_generators, n_qubits)
     excitation_matrix_1 = scipy.sparse.linalg.expm(parameter*excitation_gen_matrix)
 
     term1 = numpy.sin(parameter)*excitation_gen_matrix
