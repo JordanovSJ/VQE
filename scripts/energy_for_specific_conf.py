@@ -48,9 +48,9 @@ if __name__ == "__main__":
     optimizer_options = {'gtol': 1e-8}
 
     vqe_runner = VQERunner(molecule, optimizer=optimizer, optimizer_options=None,
-                           print_var_parameters=False, use_ansatz_gradient=False)
+                           print_var_parameters=False, use_ansatz_gradient=True)
 
     energy = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_parameters,
-                                init_state_qasm=None, cache=GlobalCache)
+                                init_state_qasm=None, cache=global_cache)
 
     print(energy)
