@@ -120,7 +120,7 @@ class QiskitSim:
             sparse_statevector = scipy.sparse.csr_matrix(statevector)
         else:
             sparse_statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm)
-            commutator_sparse_matrix = cache.commutators_sparse_matrices_list[str(excitation.excitation_generators)]
+            commutator_sparse_matrix = cache.commutators_sparse_matrices_dict[str(excitation.excitation_generators)]
 
         grad = sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
         assert grad.imag < config.floating_point_accuracy
@@ -149,175 +149,94 @@ class QiskitSim:
         ansatz_grad = []
 
         for i in range(len(ansatz))[::-1]:
+            excitation_generators = ansatz[i].excitation_generators
 
             if cache is None:
-                excitation_generators = ansatz[i].excitation_generators
-                excitation_i_gen_matrix_form = []
+                excitation_i_gen_matrices = []
                 for term in excitation_generators:
-                    excitation_i_gen_matrix_form.append(get_sparse_operator(term, n_qubits=q_system.n_qubits))
+                    excitation_i_gen_matrices.append(get_sparse_operator(term, n_qubits=q_system.n_qubits))
+
+                if len(excitation_i_gen_matrices) == 1:
+                    grad_i = 2 * (psi.transpose().conj().dot(excitation_i_gen_matrices[0]).dot(phi)).todense()[0, 0]
+
+                    ansatz_grad.append(grad_i.real)
+
+                    psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i]*excitation_i_gen_matrices[0], psi)
+                    phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i]*excitation_i_gen_matrices[0], phi)
+
+                else:
+                    # TODO test properly
+                    assert len(excitation_i_gen_matrices) == 2
+
+                    psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrices[1], psi)
+                    phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrices[1], phi)
+
+                    grad_i = 2 * (psi.transpose().conj().dot(sum(excitation_i_gen_matrices)).dot(phi)).todense()[0, 0]
+
+                    ansatz_grad.append(grad_i.real)
+
+                    psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrices[0], psi)
+                    phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrices[0], phi)
+
             else:
-                excitation_i_gen_matrix_form = cache.exc_gen_sparse_matrices_list[str(ansatz[i].excitation_generators)]
+                excitation_i_gen_matrices = cache.exc_gen_sparse_matrices_dict[str(excitation_generators)]
+                excitation_i_matrices = cache.get_excitation_sparse_matrices(ansatz[i],- var_parameters[i])
 
-            if len(excitation_i_gen_matrix_form) == 1:
-                grad_i = 2 * (psi.transpose().conj().dot(excitation_i_gen_matrix_form[0]).dot(phi)).todense()[0, 0]
+                if len(excitation_i_gen_matrices) == 1:
+                    grad_i = 2 * (psi.transpose().conj().dot(excitation_i_gen_matrices[0]).dot(phi)).todense()[0, 0]
 
-                ansatz_grad.append(grad_i.real)
+                    ansatz_grad.append(grad_i.real)
 
-                psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i]*excitation_i_gen_matrix_form[0], psi)
-                phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i]*excitation_i_gen_matrix_form[0], phi)
+                    psi = excitation_i_matrices[0].dot(psi)
+                    phi = excitation_i_matrices[0].dot(phi)
 
-            else:
-                assert len(excitation_i_gen_matrix_form) == 2
+                else:
+                    # TODO test properly
+                    assert len(excitation_i_gen_matrices) == 2
 
-                psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[1], psi)
-                phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[1], phi)
+                    psi = excitation_i_matrices[1].dot(psi)
+                    phi = excitation_i_matrices[1].dot(phi)
 
-                grad_i = 2 * (psi.transpose().conj().dot(sum(excitation_i_gen_matrix_form)).dot(phi)).todense()[0, 0]
+                    grad_i = 2 * (psi.transpose().conj().dot(sum(excitation_i_gen_matrices)).dot(phi)).todense()[0, 0]
 
-                ansatz_grad.append(grad_i.real)
+                    ansatz_grad.append(grad_i.round(config.floating_point_accuracy_digits.real))
 
-                psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[0], psi)
-                phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_gen_matrix_form[0], phi)
+                    psi = excitation_i_matrices[0].dot(psi)
+                    phi = excitation_i_matrices[0].dot(phi)
 
         ansatz_grad = ansatz_grad[::-1]
         return numpy.array(ansatz_grad)
 
 
-# # Excitations statevector simulator: super efficient for states constructed by excitations only
-# class ExcStateSim:
+# if cache is None:
+#     excitation_generators = ansatz[i].excitation_generators
+#     excitation_i_gen_matrix_form = []
+#     excitation_i_matrices = []
+#     for term in excitation_generators:
+#         excitation_i_gen_matrix_form.append(get_sparse_operator(term, n_qubits=q_system.n_qubits))
+#         excitation_i_matrices.append(scipy.sparse.linalg.expm(var_parameters[i] * excitation_i_gen_matrix_form[-1]))
+# else:
+#     excitation_i_gen_matrix_form = cache.exc_gen_sparse_matrices_dict[str(ansatz[i].excitation_generators)]
+#     excitation_i_matrices = cache.get_excitation_sparse_matrices(ansatz[i], var_parameters[i])
 #
-#     @staticmethod
-#     def hf_statevector(n_qubits, n_electrons):
-#         statevector = numpy.zeros(2 ** n_qubits)
-#         # MAGIC
-#         hf_term = 0
-#         for i in range(n_electrons):
-#             hf_term += 2 ** (n_qubits - 1 - i)
-#         statevector[hf_term] = 1
-#         return statevector
+# if len(excitation_i_gen_matrix_form) == 1:
+#     grad_i = 2 * (psi.transpose().conj().dot(excitation_i_gen_matrix_form[0]).dot(phi)).todense()[0, 0]
 #
-#     # return a statevector in the form of an array from a list of ansatz elements
-#     @staticmethod
-#     def statevector_from_ansatz(ansatz, var_parameters, n_qubits, n_electrons, cache, init_state_qasm=None):
-#         assert cache is not None
-#         statevector = ExcStateSim.hf_statevector(n_qubits, n_electrons)
-#         sparse_statevector = scipy.sparse.csr_matrix(statevector).transpose()
-#         identity = scipy.sparse.identity(2 ** n_qubits)
+#     ansatz_grad.append(grad_i.real)
 #
-#         for i, excitation in enumerate(ansatz):
-#             parameter = var_parameters[i]
-#             term1 = numpy.sin(parameter)*cache.get_exc_gen_sparse_matrix(excitation)
-#             term2 = (1 - numpy.cos(parameter))*cache.get_sqr_exc_gen_sparse_matrix(excitation)
-#             excitation_matrix = identity + term1 + term2
-#             sparse_statevector = excitation_matrix.dot(sparse_statevector)
-#         statevector = numpy.array(sparse_statevector.transpose().todense())[0]
-#         return statevector
+#     psi = excitation_i_matrices[0].transpose().conj().dot(psi)
+#     phi = excitation_i_matrices[0].transpose().conj().dot(phi)
 #
-#     @staticmethod
-#     def ham_sparse_matrix(q_system, cache, excited_state=0):
-#         H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
-#         if excited_state > 0:
-#             H_lower_state_terms = q_system.H_lower_state_terms
-#             assert H_lower_state_terms is not None
-#             assert len(H_lower_state_terms) >= excited_state
-#             for i in range(excited_state):
-#                 term = H_lower_state_terms[i]
-#                 state = term[1]
-#                 statevector = ExcStateSim.statevector_from_ansatz(state.elements, state.parameters, state.n_qubits,
-#                                                                   state.n_electrons, cache,
-#                                                                   init_state_qasm=state.init_state_qasm)
-#                 # add the outer product of the lower lying state to the Hamiltonian
-#                 H_sparse_matrix += scipy.sparse.csr_matrix(term[0] * numpy.outer(statevector, statevector))
+# else:
+#     # TODO test properly
+#     assert len(excitation_i_gen_matrix_form) == 2
 #
-#         return H_sparse_matrix
+#     psi = excitation_i_matrices[1].transpose().conj().dot(psi)
+#     phi = excitation_i_matrices[1].transpose().conj().dot(phi)
 #
-#     # return the expectation value of a qubit_operator
-#     @staticmethod
-#     def ham_expectation_value(q_system, ansatz, var_parameters, init_state_qasm=None, cache=None, excited_state=0):
-#         print('koi')
-#         assert cache is not None
+#     grad_i = 2 * (psi.transpose().conj().dot(sum(excitation_i_gen_matrix_form)).dot(phi)).todense()[0, 0]
 #
-#         if cache is None:
-#             statevector = ExcStateSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_qubits,
-#                                                               q_system.n_electrons, cache,
-#                                                               init_state_qasm=init_state_qasm)
-#             sparse_statevector = scipy.sparse.csr_matrix(statevector)
-#             H_sparse_matrix = ExcStateSim.ham_sparse_matrix(q_system, cache, excited_state=excited_state)
-#         else:
-#             sparse_statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm,
-#                                                           backend=ExcStateSim)
-#             H_sparse_matrix = cache.H_sparse_matrix
+#     ansatz_grad.append(grad_i.real)
 #
-#         expectation_value = \
-#             sparse_statevector.dot(H_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0, 0]
-#
-#         return expectation_value.real
-#
-#     # TODO check for excited states
-#     @staticmethod
-#     def excitation_gradient(excitation, ansatz, var_parameters, q_system, init_state_qasm=None, cache=None,
-#                             excited_state=0):
-#
-#         if cache is None:
-#             excitation_generator = excitation.excitation_generator
-#             assert type(excitation_generator) == QubitOperator
-#             exc_gen_sparse_matrix = get_sparse_operator(excitation_generator, n_qubits=q_system.n_qubits)
-#             H_sparse_matrix = ExcStateSim.ham_sparse_matrix(q_system, cache,  excited_state=excited_state)
-#             commutator_sparse_matrix = H_sparse_matrix * exc_gen_sparse_matrix - exc_gen_sparse_matrix * H_sparse_matrix
-#
-#             statevector = ExcStateSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_qubits,
-#                                                               q_system.n_electrons, cache,
-#                                                               init_state_qasm=init_state_qasm)
-#             sparse_statevector = scipy.sparse.csr_matrix(statevector)
-#         else:
-#             sparse_statevector = cache.update_statevector(ansatz, list(var_parameters), init_state_qasm=init_state_qasm,
-#                                                           backend=ExcStateSim)
-#             commutator_sparse_matrix = cache.commutator_sparse_matrices[str(excitation.excitation_generator)]
-#
-#         grad = sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[
-#             0, 0]
-#         assert grad.imag < config.floating_point_accuracy
-#         return grad.real
-#
-#     # TODO check for excited states
-#     @staticmethod
-#     def ansatz_gradient(var_parameters, ansatz, q_system, init_state_qasm=None, cache=None, excited_state=0):
-#         """
-#             dE_i/dt_i = 2 Re{<psi_i| phi_i>}
-#         """
-#
-#         assert len(ansatz) == len(var_parameters)
-#         if cache is None:
-#             ansatz_statevector = ExcStateSim.statevector_from_ansatz(ansatz, var_parameters, q_system.n_orbitals,
-#                                                                      q_system.n_electrons, cache,
-#                                                                      init_state_qasm=init_state_qasm)
-#             ansatz_sparse_statevector = scipy.sparse.csr_matrix(ansatz_statevector)
-#             H_sparse_matrix = ExcStateSim.ham_sparse_matrix(q_system, cache,  excited_state=excited_state)
-#         else:
-#             ansatz_sparse_statevector = cache.update_statevector(ansatz, list(var_parameters),
-#                                                                  init_state_qasm=init_state_qasm, backend=ExcStateSim)
-#             H_sparse_matrix = cache.H_sparse_matrix
-#
-#         phi = ansatz_sparse_statevector.transpose().conj()
-#         psi = H_sparse_matrix.dot(phi)
-#
-#         ansatz_grad = []
-#
-#         for i in range(len(ansatz))[::-1]:
-#
-#             if cache is None:
-#                 # logging.warning('Try to supply a precomputed excitation_generator matrix, for faster execution')
-#                 excitation_i_matrix = get_sparse_operator(ansatz[i].excitation_generator, n_qubits=q_system.n_qubits)
-#             else:
-#                 excitation_i_matrix = cache.exc_gen_sparse_matrices[str(ansatz[i].excitation_generator)]
-#
-#             grad_i = 2 * (psi.transpose().conj().dot(excitation_i_matrix).dot(phi)).todense()[0, 0]
-#
-#             ansatz_grad.append(grad_i.real)
-#
-#             psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_matrix, psi)
-#             phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitation_i_matrix, phi)
-#
-#         ansatz_grad = ansatz_grad[::-1]
-#         return numpy.array(ansatz_grad)
-
+#     psi = excitation_i_matrices[0].transpose().conj().dot(psi)
+#     phi = excitation_i_matrices[0].transpose().conj().dot(phi)

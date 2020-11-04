@@ -29,7 +29,7 @@ def get_excitation_matrix_list(self, params):
 
         excitation_matrix_list = []
         for i, excitation in enumerate(self.excitation_list):
-            excitation_matrix_list.append(self.get_excitation_matrix(params[i] * excitation))
+            excitation_matrix_list.append(self.get_excitation_sparse_matrices(params[i] * excitation))
 
         return excitation_matrix_list
 
