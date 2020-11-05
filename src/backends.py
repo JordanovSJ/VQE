@@ -124,6 +124,7 @@ class QiskitSim:
             commutator_sparse_matrix = cache.get_commutator_matrix(ansatz_element)
 
         grad = sparse_statevector.dot(commutator_sparse_matrix).dot(sparse_statevector.conj().transpose()).todense()[0,0]
+
         assert grad.imag < config.floating_point_accuracy
         return grad.real
 
@@ -169,7 +170,7 @@ class QiskitSim:
                     psi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitations_generators_matrices[1], psi)
                     phi = scipy.sparse.linalg.expm_multiply(-var_parameters[i] * excitations_generators_matrices[1], phi)
 
-                    grad_i = 2 * (psi.transpose().conj().dot(sum(excitations_generators_matrices)).dot(phi)).todense()[0, 0]
+                    grad_i = 2 * (psi.transpose().conj().dot(excitations_generators_matrices[0]+excitations_generators_matrices[1]).dot(phi)).todense()[0, 0]
 
                     ansatz_grad.append(grad_i.real)
 
@@ -199,13 +200,14 @@ class QiskitSim:
                     psi = excitation_matrices[1].dot(psi)
                     phi = excitation_matrices[1].dot(phi)
 
-                    grad_i = 2 * (psi.transpose().conj().dot(sum(excitations_generators_matrices)).dot(phi)).todense()[0, 0]
+                    grad_i = 2 * (psi.transpose().conj().dot(excitations_generators_matrices[0]+excitations_generators_matrices[1]).dot(phi)).todense()[0, 0]
 
-                    ansatz_grad.append(grad_i.round(config.floating_point_accuracy_digits.real))
+                    ansatz_grad.append(grad_i.real)
 
                     psi = excitation_matrices[0].dot(psi)
                     phi = excitation_matrices[0].dot(phi)
 
         ansatz_grad = ansatz_grad[::-1]
+        # print(ansatz_grad)
         return numpy.array(ansatz_grad)
 

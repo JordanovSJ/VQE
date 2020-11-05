@@ -131,17 +131,17 @@ class GlobalCache(Cache):
         # TODO check if copy is necessary
         key = str(ansatz_element.excitations_generators)
         commutator_sparse_matrix = self.commutators_sparse_matrices_dict[key].copy()
-        thread_cache = ThreadCache(commutators_sparse_matrices_dict={key: commutator_sparse_matrix},
-                                   sparse_statevector=sparse_statevector.copy(), n_qubits=self.q_system.n_qubits,
-                                   n_electrons=self.q_system.n_electrons)
+        thread_cache = GradThreadCache(commutators_sparse_matrices_dict={key: commutator_sparse_matrix},
+                                       sparse_statevector=sparse_statevector.copy(), n_qubits=self.q_system.n_qubits,
+                                       n_electrons=self.q_system.n_electrons)
         return thread_cache
 
     def get_vqe_thread_cache(self):
         # TODO check if copy is necessary
-        thread_cache = ThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
-                                   exc_gen_sparse_matrices_dict=self.get_exc_gen_sparse_matrices_dict_copy(),
-                                   sqr_exc_gen_sparse_matrices_dict=self.get_sqr_exc_gen_sparse_matrices_dict_copy(),
-                                   n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons)
+        thread_cache = VQEThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
+                                      exc_gen_sparse_matrices_dict=self.get_exc_gen_sparse_matrices_dict_copy(),
+                                      sqr_exc_gen_sparse_matrices_dict=self.get_sqr_exc_gen_sparse_matrices_dict_copy(),
+                                      n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons)
         return thread_cache
 
     def single_par_vqe_thread_cache(self, ansatz_element, init_sparse_statevector):
@@ -154,13 +154,13 @@ class GlobalCache(Cache):
         sqr_excitations_generators_matrices_copy = self.get_sparse_matrices_list_copy(sqr_excitations_generators_matrices)
 
         commutator_matrix = self.commutators_sparse_matrices_dict[key].copy()
-        thread_cache = ThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
-                                   commutators_sparse_matrices_dict={key: commutator_matrix},
-                                   init_sparse_statevector=init_sparse_statevector.copy(),
-                                   n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons,
-                                   exc_gen_sparse_matrices_dict={key: excitations_generators_matrices_copy},
-                                   sqr_exc_gen_sparse_matrices_dict={key: sqr_excitations_generators_matrices_copy}
-                                   )
+        thread_cache = VQEThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
+                                      commutators_sparse_matrices_dict={key: commutator_matrix},
+                                      init_sparse_statevector=init_sparse_statevector.copy(),
+                                      n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons,
+                                      exc_gen_sparse_matrices_dict={key: excitations_generators_matrices_copy},
+                                      sqr_exc_gen_sparse_matrices_dict={key: sqr_excitations_generators_matrices_copy}
+                                      )
         return thread_cache
 
     def get_exc_gen_sparse_matrices_dict_copy(self):
@@ -285,17 +285,28 @@ class GlobalCache(Cache):
         return excitations_generators_matrices, sqr_excitations_generators_matrices_form
 
 
-# TODO make a subclass of global cache?
-class ThreadCache(Cache):
+class VQEThreadCache(Cache):
     def __init__(self, n_qubits, n_electrons, H_sparse_matrix=None, commutators_sparse_matrices_dict=None,
                  sparse_statevector=None, init_sparse_statevector=None, exc_gen_sparse_matrices_dict=None,
                  sqr_exc_gen_sparse_matrices_dict=None):
 
-        super(ThreadCache, self).__init__(H_sparse_matrix=H_sparse_matrix, n_qubits=n_qubits, n_electrons=n_electrons,
-                                          exc_gen_sparse_matrices_dict=exc_gen_sparse_matrices_dict,
-                                          sqr_exc_gen_sparse_matrices_dict=sqr_exc_gen_sparse_matrices_dict,
-                                          commutators_sparse_matrices_dict=commutators_sparse_matrices_dict,
-                                          sparse_statevector=sparse_statevector,
-                                          init_sparse_statevector=init_sparse_statevector)
+        super(VQEThreadCache, self).__init__(H_sparse_matrix=H_sparse_matrix, n_qubits=n_qubits, n_electrons=n_electrons,
+                                             exc_gen_sparse_matrices_dict=exc_gen_sparse_matrices_dict,
+                                             sqr_exc_gen_sparse_matrices_dict=sqr_exc_gen_sparse_matrices_dict,
+                                             commutators_sparse_matrices_dict=commutators_sparse_matrices_dict,
+                                             sparse_statevector=sparse_statevector,
+                                             init_sparse_statevector=init_sparse_statevector)
+
+
+class GradThreadCache(Cache):
+    def __init__(self, n_qubits, n_electrons, commutators_sparse_matrices_dict, sparse_statevector, H_sparse_matrix=None):
+
+        super(GradThreadCache, self).__init__(H_sparse_matrix=H_sparse_matrix, n_qubits=n_qubits, n_electrons=n_electrons,
+                                              commutators_sparse_matrices_dict=commutators_sparse_matrices_dict,
+                                              sparse_statevector=sparse_statevector)
+
+    def get_statevector(self, ansatz, var_parameters, init_state_qasm=None):
+        return self.sparse_statevector
+
 
 

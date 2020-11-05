@@ -172,8 +172,7 @@ class GradientUtils:
 
         def get_thread_cache(element):
             if global_cache is not None:
-                statevector = global_cache.get_statevector(ansatz, ansatz_parameters)
-                sparse_statevector = scipy.sparse.csr_matrix(statevector).transpose().conj()
+                sparse_statevector = global_cache.get_statevector(ansatz, ansatz_parameters)
                 return global_cache.get_grad_thread_cache(element, sparse_statevector)
             else:
                 return None
