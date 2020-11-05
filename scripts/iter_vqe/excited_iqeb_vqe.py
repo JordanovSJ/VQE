@@ -74,8 +74,8 @@ if __name__ == "__main__":
     if config.use_cache:
         # precompute commutator matrices, that are use in excitation gradient calculation
         global_cache = GlobalCache(molecule, excited_state=excited_state)
-        global_cache.calculate_exc_gen_sparse_matrices_list(ansatz_element_pool)
-        global_cache.calculate_commutators_matrices(ansatz_element_pool)
+        global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz_element_pool)
+        global_cache.calculate_commutators_sparse_matrices_dict(ansatz_element_pool)
     else:
         global_cache = None
 

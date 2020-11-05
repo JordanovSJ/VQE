@@ -22,27 +22,27 @@ import ast
 
 if __name__ == "__main__":
 
-    r = 1.546
+    r = 1
     molecule = LiH(r=r)  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
 
     # logging
     LogUtils.log_config()
 
     # df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=3_30-Oct-2020.csv")
-    df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_16-Sep-2020.csv")
-    # df = pandas.read_csv("../x_sdfsd.csv")
+    # df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_16-Sep-2020.csv")
+    df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_r=1_24-Sep-2020.csv")
 
     state = DataUtils.ansatz_from_data_frame(df, molecule)
     ansatz = state.elements
     var_parameters = state.parameters
-    ansatz = ansatz[:24]
+    ansatz = ansatz
 
     # var_parameters = list(df['var_parameters'])[:49]
-    var_parameters = var_parameters[:24]
+    var_parameters = var_parameters
 
     global_cache = GlobalCache(molecule)
-    global_cache.calculate_exc_gen_sparse_matrices_list(ansatz)
-    global_cache.calculate_commutators_matrices(ansatz)
+    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+    global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-8}

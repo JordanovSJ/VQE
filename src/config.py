@@ -9,7 +9,7 @@ qiskit_n_threads = 1
 
 # numerical accuracy
 floating_point_accuracy = 10e-20
-floating_point_accuracy_digits = 20
+# floating_point_accuracy_digits = 20
 
 matrix_size_threshold = 1e7  # in bytes
 

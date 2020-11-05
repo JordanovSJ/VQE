@@ -95,8 +95,6 @@ class VQERunner:
                                              options=self.optimizer_options, tol=config.optimizer_tol,
                                              bounds=config.optimizer_bounds)
 
-        logging.info(result)
-
         result['n_iters'] = self.iteration  # cheating
 
         return result

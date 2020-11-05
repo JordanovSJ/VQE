@@ -96,7 +96,7 @@ class EnergyUtils:
 
         def get_thread_cache(element):
             if global_cache is not None:
-                init_sparse_statevector = global_cache.update_statevector(ansatz, ansatz_parameters)
+                init_sparse_statevector = global_cache.get_statevector(ansatz, ansatz_parameters)
                 return global_cache.single_par_vqe_thread_cache(element, init_sparse_statevector)
             else:
                 return None
@@ -152,8 +152,8 @@ class GradientUtils:
     def get_excitation_gradient_multithread(excitation, ansatz, ansatz_parameters, q_system, backend, thread_cache=None,
                                             excited_state=0):
         t0 = time.time()
-        gradient = backend.excitation_gradient(excitation, ansatz, ansatz_parameters, q_system, cache=thread_cache,
-                                               excited_state=excited_state)
+        gradient = backend.ansatz_element_gradient(excitation, ansatz, ansatz_parameters, q_system, cache=thread_cache,
+                                                   excited_state=excited_state)
 
         message = 'Excitation {}. Excitation grad {}. Time {}'.format(excitation.element, gradient, time.time() - t0)
         # TODO check if required
@@ -172,7 +172,7 @@ class GradientUtils:
 
         def get_thread_cache(element):
             if global_cache is not None:
-                statevector = global_cache.update_statevector(ansatz, ansatz_parameters)
+                statevector = global_cache.get_statevector(ansatz, ansatz_parameters)
                 sparse_statevector = scipy.sparse.csr_matrix(statevector).transpose().conj()
                 return global_cache.get_grad_thread_cache(element, sparse_statevector)
             else:
@@ -193,8 +193,8 @@ class GradientUtils:
         else:
             elements_results = [
                 [
-                    element, backend.excitation_gradient(element, ansatz, ansatz_parameters, q_system,
-                                                         cache=global_cache, excited_state=excited_state)]
+                    element, backend.ansatz_element_gradient(element, ansatz, ansatz_parameters, q_system,
+                                                             cache=global_cache, excited_state=excited_state)]
                 for element in elements
             ]
         return elements_results
