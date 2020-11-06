@@ -29,11 +29,11 @@ if __name__ == "__main__":
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
-    # ansatz_element_type = 'eff_f_exc'
+    ansatz_element_type = 'eff_f_exc'
     # ansatz_element_type = 'q_exc'
-    ansatz_element_type = 'f_exc'
+    # ansatz_element_type = 'f_exc'
     # ansatz_element_type = 'pauli_str_exc'
-    spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
+    spin_complement = True  # only for fermionic and qubit excitations (not for PWEs)
 
     # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
