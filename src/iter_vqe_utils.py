@@ -234,6 +234,10 @@ class DataUtils:
                 ansatz_elements.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[0] == 'e' and element[4] == 'd':
                 ansatz_elements.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[0:3] == 's_f':
+                ansatz_elements.append(SFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[0:3] == 'd_f':
+                ansatz_elements.append(DFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[0] == 's' and element[2] == 'q':
                 ansatz_elements.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[0] == 'd' and element[2] == 'q':

@@ -8,8 +8,8 @@ ray_options = {'n_cpus': 6}
 qiskit_n_threads = 1
 
 # numerical accuracy
-floating_point_accuracy = 10e-20
-floating_point_accuracy_digits = 20
+floating_point_accuracy = 10e-15
+floating_point_accuracy_digits = 15
 
 matrix_size_threshold = 1e7  # in bytes
 

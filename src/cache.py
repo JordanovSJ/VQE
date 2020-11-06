@@ -79,7 +79,7 @@ class Cache:
             previous_parameter = dict_term['parameter']
             if previous_parameter == parameter:
                 # this can be a list of one or two matrices depending on if its a spin-complement pair
-                return self.excitations_sparse_matrices_dict[key]['matrix']
+                return self.excitations_sparse_matrices_dict[key]['matrices']
 
         # otherwise update the excitations_sparse_matrices_dict
         excitations_generators_matrices = self.exc_gen_sparse_matrices_dict[key]
@@ -91,7 +91,7 @@ class Cache:
             term2 = (1 - numpy.cos(parameter)) * sqr_excitations_generators_matrices[i]
             excitations_matrices.append(self.identity + term1 + term2)
 
-        dict_term = {'parameter': parameter, 'matrix': excitations_matrices}
+        dict_term = {'parameter': parameter, 'matrices': excitations_matrices}
         self.excitations_sparse_matrices_dict[key] = dict_term
         return excitations_matrices
 
