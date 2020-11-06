@@ -47,12 +47,14 @@ if __name__ == "__main__":
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-8}
 
-    # vqe_runner = VQERunner(molecule, optimizer=optimizer, optimizer_options=None,
-    #                        print_var_parameters=False, use_ansatz_gradient=True)
-    #
-    # energy = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_parameters,
-    #                             init_state_qasm=None, cache=global_cache)
+    vqe_runner = VQERunner(molecule, optimizer=optimizer, optimizer_options=None,
+                           print_var_parameters=False, use_ansatz_gradient=True)
 
-    ansatz_grad = QiskitSim.ansatz_gradient(var_parameters, ansatz, molecule, cache=global_cache)
+    energy = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_parameters,
+                                init_state_qasm=None, cache=global_cache)
 
-    print(ansatz_grad)
+    # ansatz_grad = QiskitSim.ansatz_gradient(var_parameters, ansatz, molecule, cache=global_cache)
+
+    # print(ansatz_grad)
+
+    print(energy)

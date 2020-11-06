@@ -77,7 +77,10 @@ class PauliStringExc(AnsatzElement):
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return QasmUtils.fermi_excitation(self.excitations_generators, var_parameters[0])
+        qasm = ''
+        for excitation_generator in self.excitations_generators:
+            qasm += QasmUtils.excitation_qasm(excitation_generator, var_parameters[0])
+        return qasm
 
 
 class SFExc(AnsatzElement):
@@ -99,7 +102,10 @@ class SFExc(AnsatzElement):
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
-        return QasmUtils.fermi_excitation(self.excitations_generators, var_parameters[0])
+        qasm = ''
+        for excitation_generator in self.excitations_generators:
+            qasm += QasmUtils.excitation_qasm(excitation_generator, var_parameters[0])
+        return qasm
 
 
 class DFExc(AnsatzElement):
@@ -126,7 +132,10 @@ class DFExc(AnsatzElement):
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
 
-        return QasmUtils.fermi_excitation(self.excitations_generators, var_parameters[0])
+        qasm = ''
+        for excitation_generator in self.excitations_generators:
+            qasm += QasmUtils.excitation_qasm(excitation_generator, var_parameters[0])
+        return qasm
 
 
 class SQExc(AnsatzElement):
@@ -246,7 +255,9 @@ class SpinCompSFExc(AnsatzElement):
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
 
-        qasm = QasmUtils.fermi_excitation(self.excitations_generators, var_parameters[0])
+        qasm = ''
+        for excitation_generator in self.excitations_generators:
+            qasm += QasmUtils.excitation_qasm(excitation_generator, var_parameters[0])
         return qasm
 
 
@@ -276,7 +287,9 @@ class SpinCompDFExc(AnsatzElement):
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == 1
 
-        qasm = QasmUtils.fermi_excitation(self.excitations_generators, var_parameters[0])
+        qasm = ''
+        for excitation_generator in self.excitations_generators:
+            qasm += QasmUtils.excitation_qasm(excitation_generator, var_parameters[0])
         return qasm
 
 

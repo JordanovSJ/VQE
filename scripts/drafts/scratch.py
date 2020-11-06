@@ -75,16 +75,20 @@ if __name__ == "__main__":
     hf_statevector[hf_term] = 1
     identity = scipy.sparse.identity(2 ** n_qubits)
 
-    excitation = DFExc([0, 2], [3, 5], n_qubits)
+    excitation = SpinCompDFExc([0, 2], [3, 5], n_qubits)
     # excitation = SpinCompDFExc([0, 1], [2, 3], n_qubits)
-    excitation_gen_matrix = get_sparse_operator(excitation.excitations_generators, n_qubits)
-    excitation_matrix_1 = scipy.sparse.linalg.expm(parameter*excitation_gen_matrix)
+    excitation_gen_matrices = [get_sparse_operator(excitation.excitations_generators[0], n_qubits),
+                               get_sparse_operator(excitation.excitations_generators[1], n_qubits)]
+    excitation_matrix_1 = scipy.sparse.linalg.expm(parameter * excitation_gen_matrices[1]) *\
+                          scipy.sparse.linalg.expm(parameter * excitation_gen_matrices[0])
 
-    term1 = numpy.sin(parameter)*excitation_gen_matrix
-    term2 = (1 - numpy.cos(parameter)) * excitation_gen_matrix*excitation_gen_matrix
-    excitation_matrix_2 = identity + term1 + term2
+    excitation_matrix_2 = identity
+    for exc_gen_mat in excitation_gen_matrices[::-1]:
+        term1 = numpy.sin(parameter)*exc_gen_mat
+        term2 = (1 - numpy.cos(parameter)) * exc_gen_mat*exc_gen_mat
+        excitation_matrix_2 *= identity + term1 + term2
 
-    excitation_matrix_0 = get_circuit_matrix(QasmUtils.qasm_header(n_qubits) + SpinCompDFExc([5, 3], [2, 0], n_qubits).get_qasm([parameter]))
+    # excitation_matrix_0 = get_circuit_matrix(QasmUtils.qasm_header(n_qubits) + SpinCompDFExc([5, 3], [2, 0], n_qubits).get_qasm([parameter]))
 
     statevector_0 = QiskitSim.statevector_from_ansatz([excitation], [parameter], n_qubits, n_electrons).round(10)
     statevector_1 = excitation_matrix_1.dot(scipy.sparse.csr_matrix(hf_statevector).transpose().conj()).\
@@ -93,9 +97,17 @@ if __name__ == "__main__":
     statevector_2 = excitation_matrix_2.dot(scipy.sparse.csr_matrix(hf_statevector).transpose().conj()).\
         transpose().conj().todense().round(10)
 
+    exc_gen_sparse_matrices_dict = {str(excitation.excitations_generators): excitation_gen_matrices}
+    sqr_exc_gen_sparse_matrices_dict = {str(excitation.excitations_generators): [x*x for x in excitation_gen_matrices]}
+    global_cache = Cache(None, 6, 3, exc_gen_sparse_matrices_dict=exc_gen_sparse_matrices_dict,
+                         sqr_exc_gen_sparse_matrices_dict=sqr_exc_gen_sparse_matrices_dict)
+
+    statevector_3 = numpy.array(global_cache.get_statevector([excitation], [parameter]).todense())
+
     print(statevector_0)
     print(statevector_1)
     print(statevector_2)
+    print(statevector_3)
 
     m1 = matrix_to_str(numpy.array(excitation_matrix_1.todense()))
     m2 = matrix_to_str(numpy.array(excitation_matrix_2.todense()))

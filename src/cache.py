@@ -57,8 +57,8 @@ class Cache:
                 parameter = var_parameters[i]
                 excitation_matrices = self.get_ansatz_element_excitations_matrices(excitation, parameter)
                 excitation_matrix = self.identity
-                for term in excitation_matrices:
-                    excitation_matrix *= term
+                for exc_matrix in excitation_matrices[::-1]:  # the first should be the right most (confusing)
+                    excitation_matrix *= exc_matrix
 
                 sparse_statevector = excitation_matrix.dot(sparse_statevector)
 
