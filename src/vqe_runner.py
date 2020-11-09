@@ -1,4 +1,4 @@
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src import config
 
@@ -15,7 +15,7 @@ import ray
 # TODO make this class entirely static?
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, q_system, backend=QiskitSim, optimizer=config.optimizer,
+    def __init__(self, q_system, backend=QiskitSimBackend, optimizer=config.optimizer,
                  optimizer_options=config.optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
 
         self.backend = backend
@@ -40,7 +40,7 @@ class VQERunner:
             iteration_duration = time.time() - self.time_previous_iter
             self.time_previous_iter = time.time()
 
-        energy = backend.ham_expectation_value(self.q_system, ansatz, var_parameters, cache=cache,
+        energy = backend.ham_expectation_value(var_parameters, ansatz, self.q_system, cache=cache,
                                                init_state_qasm=init_state_qasm, excited_state=excited_state)
 
         if multithread:

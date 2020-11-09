@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_element_sets import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.iter_vqe_utils import *
 from src.cache import *

@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_element_lists import UCCGSD, UCCSD, DoubleExchange, SQExc, DQExc
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.ansatz_element_lists import *
 
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-8}
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
+    vqe_runner = VQERunner(molecule, backend=QiskitSimBackend, optimizer=optimizer, optimizer_options=None,
                            print_var_parameters=True, use_ansatz_gradient=True)
 
     angles = (numpy.arange(40) - 20)*numpy.pi/200 - 0.1

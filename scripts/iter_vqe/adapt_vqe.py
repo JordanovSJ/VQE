@@ -13,7 +13,7 @@ sys.path.append('../../')
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_sets import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.iter_vqe_utils import *
 from src.cache import *
@@ -23,10 +23,10 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.546
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    molecule = H2(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     ansatz_element_type = 'eff_f_exc'
@@ -39,11 +39,14 @@ if __name__ == "__main__":
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_elements = 250
 
+    # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
+    backend = backends.QiskitSimBackend
+
     # <<<<<<<<<< DEFINE OPTIMIZER >>>>>>>>>>>>>>>>>
     use_energy_vector_gradient = True  # for optimizer
 
     # create a vqe_runner object
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
+    vqe_runner = VQERunner(molecule, backend=backend, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
                            use_ansatz_gradient=use_energy_vector_gradient)
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -60,17 +63,17 @@ if __name__ == "__main__":
         ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                              ansatz_element_type=ansatz_element_type).get_excitations()
 
-    message = 'Length of new pool', len(ansatz_element_pool)
-    logging.info(message)
-
     # create simulation cache
-    if config.use_cache:
+    if backend == backends.MatrixCacheBackend:
         # precompute commutator matrices, that are use in excitation gradient calculation
         global_cache = GlobalCache(molecule)
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz_element_pool)
         global_cache.calculate_commutators_sparse_matrices_dict(ansatz_element_pool)
     else:
         global_cache = None
+
+    message = 'Length of new pool', len(ansatz_element_pool)
+    logging.info(message)
 
     # initialize a dataFrame to collect the simulation data
     results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count',
@@ -86,7 +89,7 @@ if __name__ == "__main__":
     df_count = 0
     exact_energy = molecule.fci_energy
     print('Exact energy ', exact_energy)
-    current_energy = vqe_runner.backend.ham_expectation_value(molecule, [], [])
+    current_energy = vqe_runner.backend.ham_expectation_value([], [], molecule, global_cache)
 
     print(current_energy)
     previous_energy = current_energy + max(delta_e_threshold, 1e-5)
@@ -137,17 +140,15 @@ if __name__ == "__main__":
             message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, Grad{}, var. parameters: {}' \
                 .format(element_to_add.element, current_energy, delta_e, grad, ansatz_parameters)
             logging.info(message)
-            print(message)
         else:
             message = 'No contribution to energy decrease. Stop adding elements to the final ansatz'
             logging.info(message)
-            print(message)
             break
 
         print('Added element ', ansatz_elements[-1].element)
 
     # calculate the VQE for the final ansatz
-    final_result = vqe_runner.vqe_run(ansatz=ansatz_elements)
+    final_result = vqe_runner.vqe_run(ansatz=ansatz_elements, cache=global_cache)
     t = time.time()
 
     print(final_result)

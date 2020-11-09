@@ -1,4 +1,4 @@
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src import config
 
 from openfermion import get_sparse_operator
@@ -45,13 +45,17 @@ class Cache:
         return statevector
 
     def get_statevector(self, ansatz, var_parameters, init_state_qasm=None):
+        # print('yolo')
         # TODO add single parameter functionality with init_statevector
         assert len(var_parameters) == len(ansatz)
         if self.var_parameters is not None and var_parameters == self.var_parameters:  # this condition is not neccessarily sufficient
             assert self.sparse_statevector is not None
         else:
-            statevector = self.hf_statevector()
-            sparse_statevector = scipy.sparse.csr_matrix(statevector).transpose().conj()
+            if self.init_sparse_statevector is not None:
+                sparse_statevector = self.init_sparse_statevector.transpose().conj()
+            else:
+                statevector = self.hf_statevector()
+                sparse_statevector = scipy.sparse.csr_matrix(statevector).transpose().conj()
 
             for i, excitation in enumerate(ansatz):
                 parameter = var_parameters[i]
@@ -110,58 +114,6 @@ class Cache:
 
     def get_h_sparse_matrix(self):
         return self.H_sparse_matrix
-
-
-class GlobalCache(Cache):
-    def __init__(self, q_system, excited_state=0, backend=QiskitSim):
-        self.q_system = q_system
-
-        H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
-        if excited_state > 0:
-            H_sparse_matrix = backend. ham_sparse_matrix(q_system, excited_state=excited_state)
-            if H_sparse_matrix.data.nbytes > config.matrix_size_threshold:
-                # decrease the size of the matrix. Typically it will have a lot of insignificant very small (~1e-19)
-                # elements that do not contribute to the accuracy but inflate the size of the matrix (~200 MB for Lih)
-                H_sparse_matrix = scipy.sparse.csr_matrix(H_sparse_matrix.todense().round(config.floating_point_accuracy_digits))
-
-        super(GlobalCache, self).__init__(H_sparse_matrix=H_sparse_matrix, n_qubits=q_system.n_qubits,
-                                          n_electrons=q_system.n_electrons, commutators_sparse_matrices_dict=None)
-
-    def get_grad_thread_cache(self, ansatz_element, sparse_statevector):
-        # TODO check if copy is necessary
-        key = str(ansatz_element.excitations_generators)
-        commutator_sparse_matrix = self.commutators_sparse_matrices_dict[key].copy()
-        thread_cache = GradThreadCache(commutators_sparse_matrices_dict={key: commutator_sparse_matrix},
-                                       sparse_statevector=sparse_statevector.copy(), n_qubits=self.q_system.n_qubits,
-                                       n_electrons=self.q_system.n_electrons)
-        return thread_cache
-
-    def get_vqe_thread_cache(self):
-        # TODO check if copy is necessary
-        thread_cache = VQEThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
-                                      exc_gen_sparse_matrices_dict=self.get_exc_gen_sparse_matrices_dict_copy(),
-                                      sqr_exc_gen_sparse_matrices_dict=self.get_sqr_exc_gen_sparse_matrices_dict_copy(),
-                                      n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons)
-        return thread_cache
-
-    def single_par_vqe_thread_cache(self, ansatz_element, init_sparse_statevector):
-        # TODO check if copy is necessary
-        key = str(ansatz_element.excitations_generators)
-
-        excitations_generators_matrices = self.exc_gen_sparse_matrices_dict[key].copy()
-        excitations_generators_matrices_copy = self.get_sparse_matrices_list_copy(excitations_generators_matrices)
-        sqr_excitations_generators_matrices = self.sqr_exc_gen_sparse_matrices_dict[key].copy()
-        sqr_excitations_generators_matrices_copy = self.get_sparse_matrices_list_copy(sqr_excitations_generators_matrices)
-
-        commutator_matrix = self.commutators_sparse_matrices_dict[key].copy()
-        thread_cache = VQEThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
-                                      commutators_sparse_matrices_dict={key: commutator_matrix},
-                                      init_sparse_statevector=init_sparse_statevector.copy(),
-                                      n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons,
-                                      exc_gen_sparse_matrices_dict={key: excitations_generators_matrices_copy},
-                                      sqr_exc_gen_sparse_matrices_dict={key: sqr_excitations_generators_matrices_copy}
-                                      )
-        return thread_cache
 
     def get_exc_gen_sparse_matrices_dict_copy(self):
         exc_gen_matrices_list_copy = {}
@@ -283,6 +235,72 @@ class GlobalCache(Cache):
 
         print('Calculated excitation matrix time ', time.time() - t0)
         return excitations_generators_matrices, sqr_excitations_generators_matrices_form
+
+
+class GlobalCache(Cache):
+    def __init__(self, q_system, excited_state=0):
+        self.q_system = q_system
+
+        H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+        if excited_state > 0:
+            # H_sparse_matrix = backend. ham_sparse_matrix(q_system, excited_state=excited_state)
+            H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+            if excited_state > 0:
+                H_lower_state_terms = q_system.H_lower_state_terms
+                assert H_lower_state_terms is not None
+                assert len(H_lower_state_terms) >= excited_state
+                for i in range(excited_state):
+                    term = H_lower_state_terms[i]
+                    state = term[1]
+                    statevector = QiskitSimBackend.statevector_from_ansatz(state.elements, state.parameters, state.n_qubits,
+                                                                           state.n_electrons, init_state_qasm=state.init_state_qasm)
+                    # add the outer product of the lower lying state to the Hamiltonian
+                    H_sparse_matrix += scipy.sparse.csr_matrix(term[0] * numpy.outer(statevector, statevector))
+
+        if H_sparse_matrix.data.nbytes > config.matrix_size_threshold:
+            # decrease the size of the matrix. Typically it will have a lot of insignificant very small (~1e-19)
+            # elements that do not contribute to the accuracy but inflate the size of the matrix (~200 MB for Lih)
+            logging.warning('Hamiltonian sparse matrix accuracy decrease!!!')
+            H_sparse_matrix = scipy.sparse.csr_matrix(H_sparse_matrix.todense().round(config.floating_point_accuracy_digits))
+
+        super(GlobalCache, self).__init__(H_sparse_matrix=H_sparse_matrix, n_qubits=q_system.n_qubits,
+                                          n_electrons=q_system.n_electrons, commutators_sparse_matrices_dict=None)
+
+    def get_grad_thread_cache(self, ansatz_element, sparse_statevector):
+        # TODO check if copy is necessary
+        key = str(ansatz_element.excitations_generators)
+        commutator_sparse_matrix = self.commutators_sparse_matrices_dict[key].copy()
+        thread_cache = GradThreadCache(commutators_sparse_matrices_dict={key: commutator_sparse_matrix},
+                                       sparse_statevector=sparse_statevector.copy(), n_qubits=self.q_system.n_qubits,
+                                       n_electrons=self.q_system.n_electrons)
+        return thread_cache
+
+    def get_vqe_thread_cache(self):
+        # TODO check if copy is necessary
+        thread_cache = VQEThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
+                                      exc_gen_sparse_matrices_dict=self.get_exc_gen_sparse_matrices_dict_copy(),
+                                      sqr_exc_gen_sparse_matrices_dict=self.get_sqr_exc_gen_sparse_matrices_dict_copy(),
+                                      n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons)
+        return thread_cache
+
+    def single_par_vqe_thread_cache(self, ansatz_element, init_sparse_statevector):
+        # TODO check if copy is necessary
+        key = str(ansatz_element.excitations_generators)
+
+        excitations_generators_matrices = self.exc_gen_sparse_matrices_dict[key].copy()
+        excitations_generators_matrices_copy = self.get_sparse_matrices_list_copy(excitations_generators_matrices)
+        sqr_excitations_generators_matrices = self.sqr_exc_gen_sparse_matrices_dict[key].copy()
+        sqr_excitations_generators_matrices_copy = self.get_sparse_matrices_list_copy(sqr_excitations_generators_matrices)
+
+        commutator_matrix = self.commutators_sparse_matrices_dict[key].copy()
+        thread_cache = VQEThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
+                                      commutators_sparse_matrices_dict={key: commutator_matrix},
+                                      init_sparse_statevector=init_sparse_statevector.copy(),
+                                      n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons,
+                                      exc_gen_sparse_matrices_dict={key: excitations_generators_matrices_copy},
+                                      sqr_exc_gen_sparse_matrices_dict={key: sqr_excitations_generators_matrices_copy}
+                                      )
+        return thread_cache
 
 
 class VQEThreadCache(Cache):

@@ -1,6 +1,6 @@
 # from src.ansatze import *
 from src.cache import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 import qiskit
 import time
 import matplotlib.pyplot as plt
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     # excitation_matrix_0 = get_circuit_matrix(QasmUtils.qasm_header(n_qubits) + SpinCompDFExc([5, 3], [2, 0], n_qubits).get_qasm([parameter]))
 
-    statevector_0 = QiskitSim.statevector_from_ansatz([excitation], [parameter], n_qubits, n_electrons).round(10)
+    statevector_0 = QiskitSimBackend.statevector_from_ansatz([excitation], [parameter], n_qubits, n_electrons).round(10)
     statevector_1 = excitation_matrix_1.dot(scipy.sparse.csr_matrix(hf_statevector).transpose().conj()).\
         transpose().conj().todense().round(10)
 

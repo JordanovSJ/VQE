@@ -15,6 +15,7 @@ matrix_size_threshold = 1e7  # in bytes
 
 # use cache. Much faster, requiring much more ram (up to ~ 15GB for LiH, up to ~ 80GB for beH2)
 use_cache = True
+
 # <<<<<<<CLASSICAL OPTIMIZER>>>>>>>>>>>>
 optimizer = 'L-BFGS-B'
 optimizer_tol = 1e-9

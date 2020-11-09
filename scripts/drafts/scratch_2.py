@@ -1,6 +1,6 @@
 # from src.ansatze import *
 from src.cache import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 import qiskit
 import time
 import matplotlib.pyplot as plt
