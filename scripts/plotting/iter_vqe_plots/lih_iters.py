@@ -87,6 +87,7 @@ if __name__ == "__main__":
     mark_inset(ax, axins, loc1=2, loc2=3, fc="none", ec="0", linewidth=.75)
 
     # ax.legend(loc=3)#, bbox_to_anchor=(1,0.4))
+    ax.legend(loc=9, fontsize=10)#, bbox_to_anchor=(1,0.4))
 
     plt.show()
 
