@@ -79,9 +79,10 @@ class GSDExcitations:
             elif self.ansatz_element_type == 'eff_f_exc':
                 single_excitations.append(EffSFExc(i, j, system_n_qubits=self.n_orbitals))
             elif self.ansatz_element_type == 'pauli_str_exc':
-                qubit_excitation = SQExc(i, j).excitations_generators
-                single_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals)
-                                       for term in qubit_excitation.terms]
+                qubit_excitations = SQExc(i, j).excitations_generators
+                for qubit_excitation in qubit_excitations:
+                    single_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals)
+                                           for term in qubit_excitation.terms]
             else:
                 raise Exception('Invalid single excitation type.')
 
@@ -113,8 +114,9 @@ class GSDExcitations:
                     double_excitations.append(EffDFExc([i, l], [k, j], system_n_qubits=self.n_orbitals))
             elif self.ansatz_element_type == 'pauli_str_exc':
                 if (i + j) % 2 == (k + l) % 2:
-                    qubit_excitation = DQExc([i, j], [k, l]).excitations_generators
-                    double_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals)
+                    qubit_excitations = DQExc([i, j], [k, l]).excitations_generators
+                    for qubit_excitation in qubit_excitations:
+                        double_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals)
                                            for term in qubit_excitation.terms]
             else:
                 raise Exception('invalid double excitation type.')

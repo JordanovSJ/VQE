@@ -52,6 +52,7 @@ class AnsatzElement:
 class PauliStringExc(AnsatzElement):
     def __init__(self, excitation_generator, system_n_qubits=None):
         self.spin_complement = False
+        self.qubits = []  # / dummy
 
         assert type(excitation_generator) == QubitOperator
         assert len(excitation_generator.terms) == 1
