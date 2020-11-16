@@ -14,10 +14,10 @@ floating_point_accuracy_digits = 15
 matrix_size_threshold = 1e7  # in bytes
 
 # use cache. Much faster, requiring much more ram (up to ~ 15GB for LiH, up to ~ 80GB for beH2)
-use_cache = True
+# use_cache = True
 
 # <<<<<<<CLASSICAL OPTIMIZER>>>>>>>>>>>>
-optimizer = 'L-BFGS-B'
+optimizer = 'BFGS'
 optimizer_tol = 1e-9
 # optimizer_bounds_val = numpy.pi/10
 # optimizer_bounds = scipy.optimize.Bounds(-optimizer_bounds_val, optimizer_bounds_val)

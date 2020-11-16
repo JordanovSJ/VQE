@@ -23,16 +23,16 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 0.735
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2(r=r)  # (frozen_els=frozen_els)
+    molecule = LiH(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
-    # ansatz_element_type = 'eff_f_exc'
+    ansatz_element_type = 'eff_f_exc'
     # ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'f_exc'
-    ansatz_element_type = 'pauli_str_exc'
+    # ansatz_element_type = 'pauli_str_exc'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
     # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
@@ -40,13 +40,13 @@ if __name__ == "__main__":
     max_ansatz_elements = 250
 
     # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
-    backend = backends.QiskitSimBackend
+    backend = backends.MatrixCacheBackend
 
     # <<<<<<<<<< DEFINE OPTIMIZER >>>>>>>>>>>>>>>>>
     use_energy_vector_gradient = True  # for optimizer
 
     # create a vqe_runner object
-    vqe_runner = VQERunner(molecule, backend=backend, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
+    vqe_runner = VQERunner(molecule, backend=backend, optimizer='L-BFGS-B', optimizer_options={'gtol': 1e-08},
                            use_ansatz_gradient=use_energy_vector_gradient)
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
