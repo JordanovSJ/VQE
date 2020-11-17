@@ -12,7 +12,7 @@ sys.path.append('../')
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_lists import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.adapt_utils import EnergyAdaptUtils
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create a vqe runner object
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, use_ansatz_gradient=use_grad)
+    vqe_runner = VQERunner(molecule, backend=QiskitSimBackend, use_ansatz_gradient=use_grad)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
 
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSimBackend, ansatz=ansatz_elements)
     final_result = vqe_runner_final.vqe_run(ansatz=ansatz_elements)
     t = time.time()
 

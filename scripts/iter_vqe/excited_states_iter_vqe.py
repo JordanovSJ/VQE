@@ -11,7 +11,7 @@ sys.path.append('../../')
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_sets import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.iter_vqe_utils import *
 from src.cache import *
@@ -38,11 +38,14 @@ if __name__ == "__main__":
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_elements = 250
 
+    # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
+    backend = backends.MatrixCacheBackend
+
     # <<<<<<<<<< DEFINE OPTIMIZER >>>>>>>>>>>>>>>>>
     use_energy_vector_gradient = True  # for optimizer
 
     # create a vqe_runner object
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
+    vqe_runner = VQERunner(molecule, backend=backend, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
                            use_ansatz_gradient=use_energy_vector_gradient)
 
     # create a vqe_runner for excited states, where the minimum may be away from the zero, which will make gradient
@@ -50,7 +53,7 @@ if __name__ == "__main__":
 
     # vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
     #                          use_ansatz_gradient=use_grad)
-    vqe_runner_2 = VQERunner(molecule, backend=QiskitSim, optimizer='Nelder-Mead', optimizer_options=None)
+    vqe_runner_2 = VQERunner(molecule, backend=backend, optimizer='Nelder-Mead', optimizer_options=None)
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -70,11 +73,11 @@ if __name__ == "__main__":
     logging.info(message)
 
     # create simulation cache
-    if config.use_cache:
+    if backend == backends.MatrixCacheBackend:
         # precompute commutator matrices, that are use in excitation gradient calculation
         global_cache = GlobalCache(molecule, excited_state=excited_state)
-        global_cache.calculate_exc_gen_sparse_matrices_list(ansatz_element_pool)
-        global_cache.calculate_commutators_matrices(ansatz_element_pool)
+        global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz_element_pool)
+        global_cache.calculate_commutators_sparse_matrices_dict(ansatz_element_pool)
     else:
         global_cache = None
 
@@ -90,7 +93,7 @@ if __name__ == "__main__":
     iter_count = 0
     exact_energy = molecule.calculate_energy_eigenvalues(excited_state+1)[excited_state]
     print('Exact energy ', exact_energy)
-    current_energy = vqe_runner.backend.ham_expectation_value(molecule, [], [], excited_state=excited_state)
+    current_energy = vqe_runner.backend.ham_expectation_value([], [], molecule, cache=global_cache, excited_state=excited_state)
 
     print(current_energy)
     previous_energy = current_energy + max(delta_e_threshold, 1e-5)
@@ -148,7 +151,7 @@ if __name__ == "__main__":
             break
 
     # calculate the VQE for the final ansatz
-    final_result = vqe_runner_2.vqe_run(ansatz=ansatz, excited_state=excited_state)
+    final_result = vqe_runner_2.vqe_run(ansatz=ansatz, cache=global_cache, excited_state=excited_state)
     t = time.time()
 
     print(final_result)

@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_sets import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 
 import logging
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend=QiskitSim, print_var_parameters=False, use_ansatz_gradient=False,
+    vqe_runner = VQERunner(q_system, backend=QiskitSimBackend, print_var_parameters=False, use_ansatz_gradient=False,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()
