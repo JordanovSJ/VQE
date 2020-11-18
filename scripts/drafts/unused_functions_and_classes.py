@@ -29,7 +29,7 @@ def get_excitation_matrix_list(self, params):
 
         excitation_matrix_list = []
         for i, excitation in enumerate(self.excitation_list):
-            excitation_matrix_list.append(self.get_qubit_operator_exponent_matrix(params[i]*excitation))
+            excitation_matrix_list.append(self.get_excitation_matrix(params[i] * excitation))
 
         return excitation_matrix_list
 
@@ -84,7 +84,7 @@ class HeuristicAnsatz1:
 
         qasm = self.get_element_qasm(double_parameters)
         # return just a single ansatz element
-        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation_generator=qasm, element_type=self.ansatz_type,
                              n_var_parameters=(1+double_parameters)*self.n_orbitals)
 
 
@@ -121,7 +121,7 @@ class HeuristicAnsatz2:
 
         qasm = self.get_element_qasm(double_parameters)
         # return just a single ansatz element
-        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation_generator=qasm, element_type=self.ansatz_type,
                              n_var_parameters=1*(1+double_parameters)*self.n_orbitals+1)
 
 
@@ -176,7 +176,7 @@ class HeuristicAnsatz3:
 
         qasm = self.get_element_qasm(double_parameters, index)
         # return just a single ansatz element
-        return AnsatzElement(excitation=qasm, element_type=self.ansatz_type,
+        return AnsatzElement(excitation_generator=qasm, element_type=self.ansatz_type,
                              n_var_parameters=self.n_parameters)
 
 
@@ -188,7 +188,7 @@ class ExchangeAnsatz1(AnsatzElement):
 
         n_var_parameters = min(n_electrons, n_orbitals - n_electrons)*(1 + n_blocks)
         super(ExchangeAnsatz1, self).\
-            __init__(excitation=None, element_type=str(self), n_var_parameters=n_var_parameters)
+            __init__(excitation_generator=None, element_type=str(self), n_var_parameters=n_var_parameters)
 
     def get_qasm(self, var_parameters):
         assert len(var_parameters) == self.n_var_parameters
@@ -409,3 +409,109 @@ def optimized_d_bosonic_excitation(angle, qubit_pair_1, qubit_pair_2):
     qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[1]))  # S
 
     return ''.join(qasm)
+
+
+class ExpSingleQubitExcitation(AnsatzElement):
+    def __init__(self, qubit_1, qubit_2):
+        self.qubit_1 = qubit_1
+        self.qubit_2 = qubit_2
+        super(ExpSingleQubitExcitation, self).\
+            __init__(element='s_q_exc_{}_{}'.format(qubit_1, qubit_2),  order=1, n_var_parameters=1)
+
+    @staticmethod
+    def exp_single_qubit_excitations(angle, qubit_1, qubit_2):
+        qasm = ['']
+
+        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_1))
+
+        qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_1))
+        qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_2))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+        qasm.append('rx({}) q[{}];\n'.format(angle, qubit_1))
+        qasm.append('rz({}) q[{}];\n'.format(angle, qubit_2))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_1, qubit_2))
+
+        qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_1))
+        qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_2))
+
+        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_1))
+
+        return ''.join(qasm)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        return self.exp_single_qubit_excitations(var_parameters[0], self.qubit_1, self.qubit_2)
+
+
+class ExpDoubleQubitExcitation(AnsatzElement):
+    def __init__(self, qubit_pair_1, qubit_pair_2):
+        self.qubit_pair_1 = qubit_pair_1
+        self.qubit_pair_2 = qubit_pair_2
+        super(ExpDoubleQubitExcitation, self).\
+            __init__(element='d_q_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2),  order=2, n_var_parameters=1)
+
+    @staticmethod
+    def exp_double_qubit_excitation(angle, qubit_pair_1, qubit_pair_2):
+        qasm = ['']
+        angle = angle * 2  # for consistency with the conventional fermi excitation
+        theta = angle / 8
+
+        # determine the parity of the two pairs
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+
+        # apply a partial swap of qubits 0 and 2, controlled by 1 and 3 ##
+
+        # exp exchange interaction  >>>>>>>>>>>>>>>>>>>>>>
+        qasm.append('rz({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
+
+        qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_1[0]))
+        qasm.append('rx({}) q[{}];\n'.format(numpy.pi / 2, qubit_pair_2[0]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
+
+        # ccRX
+        qasm.append('rx({}) q[{}];\n'.format(angle/4, qubit_pair_1[0]))
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_1[0]))
+        qasm.append('rx({}) q[{}];\n'.format(-angle / 4, qubit_pair_1[0]))
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[0]))
+        qasm.append('rx({}) q[{}];\n'.format(angle / 4, qubit_pair_1[0]))
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_1[0]))
+        qasm.append('rx({}) q[{}];\n'.format(-angle / 4, qubit_pair_1[0]))
+        qasm.append('cz q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_1[0]))
+
+        # and ccRZ
+        qasm.append('rz({}) q[{}];\n'.format(angle/4, qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_2[0]))
+        qasm.append('rz({}) q[{}];\n'.format(-angle/4, qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[0]))
+        qasm.append('rz({}) q[{}];\n'.format(angle/4, qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_2[1], qubit_pair_2[0]))
+        qasm.append('rz({}) q[{}];\n'.format(-angle/4, qubit_pair_2[0]))
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[1], qubit_pair_2[0]))
+
+        qasm.append('cx q[{}], q[{}];\n'.format(qubit_pair_1[0], qubit_pair_2[0]))
+
+        qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
+        qasm.append('rx({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_2[0]))
+
+        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi / 2, qubit_pair_1[0]))
+        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        # correct for parity determination
+        qasm.append('x q[{}];\n'.format(qubit_pair_1[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_1))
+        qasm.append('x q[{}];\n'.format(qubit_pair_2[1]))
+        qasm.append('cx q[{}], q[{}];\n'.format(*qubit_pair_2))
+
+        return ''.join(qasm)
+
+    def get_qasm(self, var_parameters):
+        assert len(var_parameters) == 1
+        parameter = var_parameters[0]
+
+        return self.exp_double_qubit_excitation(parameter, self.qubit_pair_1, self.qubit_pair_2)
+

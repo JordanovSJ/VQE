@@ -1,11 +1,13 @@
 from src.vqe_runner import VQERunner
-from src.molecules import H2, LiH, HF, BeH2
+from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_element_lists import *
-from src.backends import QiskitSimulation
+from src.backends import QiskitSim
 from src.utils import LogUtils
+from src.iter_vqe_utils import *
 
 import matplotlib.pyplot as plt
 
+from openfermion import QubitOperator
 import logging
 import time
 import numpy
@@ -14,128 +16,33 @@ import datetime
 import scipy
 import qiskit
 from functools import partial
+import ast
 
 
 if __name__ == "__main__":
 
-    molecule = BeH2
-    r =  1.316
+    r = 1.546
+    molecule = LiH(r=r)  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
 
     # logging
-    LogUtils.log_cofig()
+    LogUtils.log_config()
 
-    # # uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    # ansatz_elements = []
-    # ansatz_element_1 = CustomDoubleExcitation([4, 5], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
-    # ansatz_elements.append(ansatz_element_1)
-    # ansatz_element_2 = CustomDoubleExcitation([2, 5], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
-    # ansatz_elements.append(ansatz_element_2)
-    # ansatz_element_3 = CustomDoubleExcitation([2, 3], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
-    # ansatz_elements.append(ansatz_element_3)
-    # ansatz_element_4 = CustomDoubleExcitation([3, 4], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
-    # ansatz_elements.append(ansatz_element_4)
-    # ansatz_element_5 = CustomDoubleExcitation([6, 7], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
-    # ansatz_elements.append(ansatz_element_5)
-    # ansatz_element_6 = CustomDoubleExcitation([8, 9], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
-    # ansatz_elements.append(ansatz_element_6)
-    # ansatz_element_7 = SingleExchange(4, 10)
-    # ansatz_elements.append(ansatz_element_7)
-    # ansatz_element_8 = SingleExchange(5, 11)
-    # ansatz_elements.append(ansatz_element_8)
-    # ansatz_element_9 = SingleExchange(3, 11)
-    # ansatz_elements.append(ansatz_element_9)
-    # ansatz_element_10 = SingleExchange(2, 10)
-    # ansatz_elements.append(ansatz_element_10)
-    # ansatz_element_11 = CustomDoubleExcitation([0, 1], [10, 11])#, rescaled_parameter=True, parity_dependence=True)
-    # ansatz_elements.append(ansatz_element_11)
+    df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_g_adapt_gsdqe_comp_exc_19-Sep-2020.csv")
+    # df = pandas.read_csv("../x_sdfsd.csv")
 
-    ansatz_elements = [
-        DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=False, parity_dependence=True),
-        DoubleExchange([2, 3], [10, 11], rescaled_parameter=True, d_exc_correction=False, parity_dependence=True),
-        DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=False, parity_dependence=True),
-        DoubleExchange([4, 5], [12, 13], rescaled_parameter=True, d_exc_correction=False, parity_dependence=True),
-        DoubleExchange([2, 3], [6, 7], rescaled_parameter=True, d_exc_correction=False, parity_dependence=True),
-        DoubleExchange([3, 4], [10, 13], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([2, 5], [11, 12], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([2, 5], [10, 13], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([2, 3], [8, 9], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([2, 3], [12, 13], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([3, 5], [11, 13], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([2, 4], [10, 12], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        SingleQubitExcitation(3, 12), SingleQubitExcitation(4, 11),
-        DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        SingleQubitExcitation(2, 13),
-        DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        DoubleExchange([3, 4], [10, 13], rescaled_parameter=True, d_exc_correction=False,
-                       parity_dependence=True),
-        SingleQubitExcitation(3, 13),
-        ]
+    ansatz, var_parameters = IterVQEDataUtils.get_ansatz_from_data_frame(df, molecule)
 
-    # ansatz_elements = [
-    #     DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
-    #     DoubleExchange([2, 3], [10, 11], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
-    #     DoubleExchange([2, 5], [10, 13], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
-    #     DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
-    #     DoubleExchange([4, 5], [12, 13], rescaled_parameter=True, d_exc_correction=True, parity_dependence=True),
-    #     DoubleExchange([2, 3], [8, 9], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([2, 3], [6, 7], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([2, 5], [11, 12], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([3, 4], [10, 13], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([2, 3], [12, 13], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([3, 4], [11, 12], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     SingleExchange(5, 10),
-    #     SingleExchange(2, 10),
-    #     SingleExchange(3, 11),
-    #     DoubleExchange([0, 3], [8, 9], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([0, 3], [6, 7], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([1, 2], [8, 9], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([1, 2], [6, 7], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([0, 1], [6, 7], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     DoubleExchange([0, 1], [8, 9], rescaled_parameter=True, d_exc_correction=True,
-    #                    parity_dependence=True),
-    #     SingleExchange(3, 12)
-    # ]
+    ansatz = ansatz[:15]
+    # var_parameters = list(df['var_parameters'])[:49]
+    var_parameters = var_parameters[:15]
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation,
-                           molecule_geometry_params={'distance': r})
+    optimizer = 'BFGS'
+    optimizer_options = {'gtol': 1e-8}
 
-    var_parameters = [0.028669163026094503, 0.022537232912906303, 0.017489866500661134, 0.01629385690836846,
-                      0.020851881457013468, -0.017647056790242338, -0.015327407983115066, 0.01789008153595026,
-                      0.020923010546973268, 0.009497179062575096, 0.0024758813833710277, 0.0031049292770414087,
-                      -0.0006, -0.0016353927583732481, -0.0072252648121858744,
-                      -0.03436254148045186, -0.0011640242426753896, -0.0011606935508930922, -0.0085,
-                      0.0024093251382888855, 0.00991045371533506]
+    vqe_runner = VQERunner(molecule, backend_type=QiskitSim, optimizer=optimizer, optimizer_options=None,
+                           print_var_parameters=False, use_ansatz_gradient=True)
 
-
-
-    energy = vqe_runner.get_energy(var_parameters, ansatz_elements)
+    energy = vqe_runner.vqe_run(ansatz=ansatz, initial_var_parameters=var_parameters,
+                                init_state_qasm=None)
 
     print(energy)

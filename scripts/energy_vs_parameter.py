@@ -1,9 +1,11 @@
 from src.vqe_runner import VQERunner
-from src.molecules import H2, LiH, HF, BeH2
-from src.ansatz_element_lists import UCCGSD, UCCSD, DoubleExchange, SingleQubitExcitation, DoubleQubitExcitation
-from src.backends import QiskitSimulation
+from src.q_systems import H2, LiH, HF, BeH2
+from src.ansatz_element_lists import UCCGSD, UCCSD, DoubleExchange, SQExc, DQExc
+from src.backends import QiskitSim
 from src.utils import LogUtils
+from src.ansatz_element_lists import *
 
+import ast
 import matplotlib.pyplot as plt
 
 import logging
@@ -18,25 +20,33 @@ from functools import partial
 
 if __name__ == "__main__":
 
-    molecule = HF
-    r = 0.995
+    molecule = LiH()
 
-    uccsd = UCCSD(molecule.n_orbitals, molecule.n_electrons)
-    # ansatz_element_0 = DoubleExchange([4, 5], [10, 11], rescaled_parameter=True, parity_dependence=False, d_exc_correction=False)
+    df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
 
-    ansatz_element_1 = DoubleQubitExcitation([4, 5], [10, 11])
-    # ansatz_element_2 = DoubleExchange([3, 4], [10, 11], rescaled=True)
-    # ansatz_element_3 = DoubleExchange([2, 3], [10, 11], rescaled=True)
-    # ansatz_element_4 = DoubleExchange([6, 7], [10, 11], rescaled=True)
-    # ansatz_element_5 = DoubleExchange([8, 9], [10, 11], rescaled=True)
-    # ansatz_element_6 = DoubleExchange([1, 2], [10, 11], rescaled=True)
-    # ansatz_element_7 = SingleExchange(5, 11)#, rescaled=True)
+    init_ansatz_elements = []
+    for i in range(len(df)):
+        element = df.loc[i]['element']
+        element_qubits = df.loc[i]['element_qubits']
+        if element[0] == 'e' and element[4] == 's':
+            init_ansatz_elements.append(EffSFExc(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'e' and element[4] == 'd':
+            init_ansatz_elements.append(EffDFExc(*ast.literal_eval(element_qubits)))
+        elif element[0] == 's' and element[2] == 'q':
+            init_ansatz_elements.append(SQExc(*ast.literal_eval(element_qubits)))
+        elif element[0] == 'd' and element[2] == 'q':
+            init_ansatz_elements.append(DQExc(*ast.literal_eval(element_qubits)))
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
 
-    # ansatz_element_1 = uccsd.get_double_excitation_list()[414]
-    ansatz_elements = [ansatz_element_1] #ansatz_element_1, ansatz_element_2, ansatz_element_3, ansatz_element_4, ansatz_element_5,ansatz_element_6]
+    ansatz_elements = init_ansatz_elements[:1]
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
-                           molecule_geometry_params={'distance': r}, optimizer='Nelder-Mead')
+    optimizer = 'BFGS'
+    optimizer_options = {'gtol': 1e-8}
+
+    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
+                           print_var_parameters=True, use_ansatz_gradient=True)
 
     angles = (numpy.arange(40) - 20)*numpy.pi/200 - 0.1
     energies = []

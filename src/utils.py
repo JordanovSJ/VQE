@@ -1,22 +1,18 @@
-from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
+from openfermion.transforms import get_sparse_operator
 from openfermion import QubitOperator
-from openfermion.utils import jw_hartree_fock_state
-import time
 
+import sys
 import qiskit
 import scipy
 import numpy
 import logging
 import datetime
-import ray
-
-from src import config
 
 
 class QasmUtils:
 
     @staticmethod
-    def qasm_from_ansatz_elements(ansatz_elements, var_parameters):
+    def ansatz_qasm(ansatz_elements, var_parameters):
         qasm = ['']
         # perform ansatz operations
         n_used_var_pars = 0
@@ -61,27 +57,32 @@ class QasmUtils:
             var_parameters = numpy.zeros(n_var_parameters)
         else:
             assert n_var_parameters == len(var_parameters)
-        qasm = QasmUtils.qasm_from_ansatz_elements(ansatz_elements, var_parameters)
+        qasm = QasmUtils.ansatz_qasm(ansatz_elements, var_parameters)
         return QasmUtils.gate_count_from_qasm(qasm, n_qubits)
+
+    @staticmethod
+    def get_circuit_matrix(qasm):
+        backend = qiskit.Aer.get_backend('unitary_simulator')
+        qiskit_circuit = qiskit.QuantumCircuit.from_qasm_str(qasm)
+        result = qiskit.execute(qiskit_circuit, backend).result()
+        matrix = result.get_unitary(qiskit_circuit, decimals=5)
+        return matrix
 
     @staticmethod
     def qasm_header(n_qubits):
         return 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[{0}];\ncreg c[{0}];\n'.format(n_qubits)
 
-    # NOT USED
     @staticmethod
-    def pauli_operator_qasm(qubit_operator):
-        assert type(qubit_operator) == QubitOperator
-        assert len(qubit_operator.terms) == 1
+    def pauli_word_qasm(operator):
+        assert type(operator) == QubitOperator
+        assert len(operator.terms) == 1
+        assert next(iter(operator.terms.values())) == 1
 
-        operator = next(iter(qubit_operator.terms.keys()))
-        coeff = next(iter(qubit_operator.terms.values()))
-        assert coeff == 1
+        pauli_word = next(iter(operator.terms.keys()))
 
-        # represent the qasm as a list of strings
         qasm = ['']
 
-        for gate in operator:
+        for gate in pauli_word:
             qubit = gate[0]
             if gate[1] == 'X':
                 qasm.append('x q[{0}];\n'.format(qubit))
@@ -90,7 +91,7 @@ class QasmUtils:
             elif gate[1] == 'Z':
                 qasm.append('z q[{0}];\n'.format(qubit))
             else:
-                raise ValueError('Invalid qubit operator. {} is not a Pauli operator'.format(gate[1]))
+                raise ValueError('Invalid Pauli-word operator. {} is not a Pauli operator'.format(gate[1]))
 
         return ''.join(qasm)
 
@@ -240,88 +241,46 @@ class MatrixUtils:
 
     # returns the compressed sparse row matrix for the exponent of a qubit operator
     @staticmethod
-    def get_qubit_operator_exponent_matrix(qubit_operator, n_qubits, parameter=1):
+    def get_excitation_matrix(excitation_operator, n_qubits, parameter=1):
         assert parameter.imag == 0  # TODO remove?
-        qubit_operator_matrix = get_sparse_operator(qubit_operator, n_qubits)
+        qubit_operator_matrix = get_sparse_operator(excitation_operator, n_qubits)
         return scipy.sparse.linalg.expm(parameter * qubit_operator_matrix)
-
-
-class AdaptAnsatzUtils:
-    # finds the VQE energy for a single ansatz element added to (optionally) an initial ansatz
-    @staticmethod
-    def get_ansatz_elements_vqe_results(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                        initial_ansatz=None, multithread=False):
-        if initial_ansatz is None:
-            initial_ansatz = []
-        if multithread:
-            ray.init(num_cpus=config.multithread['n_cpus'])
-            elements_ray_ids = [
-                [element,
-                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz_elements=initial_ansatz + [element],
-                                                       initial_var_parameters=initial_var_parameters)]
-                for element in ansatz_elements
-            ]
-            elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in elements_ray_ids]
-            ray.shutdown()
-        else:
-            elements_results = [
-                [element, vqe_runner.vqe_run(ansatz_elements=initial_ansatz + [element],
-                                             initial_var_parameters=initial_var_parameters)]
-                for element in ansatz_elements
-            ]
-
-        return elements_results
-
-    # returns the ansatz element that achieves lowest energy (together with the energy value)
-    @staticmethod
-    def get_most_significant_ansatz_element(vqe_runner, ansatz_elements, initial_var_parameters=None,
-                                            initial_ansatz=None, multithread=False):
-        elements_results = AdaptAnsatzUtils.get_ansatz_elements_vqe_results(vqe_runner, ansatz_elements,
-                                                                            initial_var_parameters=initial_var_parameters,
-                                                                            initial_ansatz=initial_ansatz,
-                                                                            multithread=multithread)
-        return min(elements_results, key=lambda x: x[1].fun)
-
-    # get ansatz elements that contribute to energy decrease below(above) some threshold value
-    @staticmethod
-    def get_ansatz_elements_above_threshold(vqe_runner, ansatz_elements, threshold, initial_var_parameters=None,
-                                            initial_ansatz=None, multithread=False):
-        elements_results = AdaptAnsatzUtils.get_ansatz_elements_vqe_results(vqe_runner, ansatz_elements,
-                                                                            initial_var_parameters=initial_var_parameters,
-                                                                            initial_ansatz=initial_ansatz,
-                                                                            multithread=multithread)
-        return [element_result for element_result in elements_results if element_result[1].fun <= threshold]
 
 
 class LogUtils:
 
     @staticmethod
-    def log_cofig():
+    def log_config():
         time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
         logging_filename = '{}'.format(time_stamp)
+        stdout_handler = logging.StreamHandler(sys.stdout)
+
         try:
-            logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+            logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
                                 format='%(levelname)s %(asctime)s %(message)s')
         except FileNotFoundError:
             try:
-                logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
                                     format='%(levelname)s %(asctime)s %(message)s')
             except FileNotFoundError:
-                logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.INFO,
+                logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
                                     format='%(levelname)s %(asctime)s %(message)s')
+
+        # make logger print to console (it will not if multithreaded)
+        logging.getLogger().addHandler(stdout_handler)
 
         # disable logging from qiskit
         logging.getLogger('qiskit').setLevel(logging.WARNING)
 
     @staticmethod
-    def vqe_info(molecule, ansatz_elements=None, basis=None, molecule_geometry_params=None, backend=None):
+    def vqe_info(molecule, ansatz=None, basis=None, molecule_geometry_params=None, backend=None):
         logging.info('Initialize VQE for {}; n_electrons={}, n_orbitals={}; geometry: {}'
                      .format(molecule.name, molecule.n_electrons, molecule.n_orbitals, molecule_geometry_params))
         if basis is not None:
             logging.info('Basis: {}'.format(basis))
         if backend is not None:
             logging.info('Backend: {}'.format(backend))
-        if ansatz_elements is not None:
-            n_var_params = sum([el.n_var_parameters for el in ansatz_elements])
-            logging.info('Number of Ansatz elements: {}'.format(len(ansatz_elements)))
+        if ansatz is not None:
+            n_var_params = sum([el.n_var_parameters for el in ansatz])
+            logging.info('Number of Ansatz elements: {}'.format(len(ansatz)))
             logging.info('Number of variational parameters: {}'.format(n_var_params))

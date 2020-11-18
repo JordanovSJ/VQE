@@ -1,7 +1,7 @@
 from src.vqe import VQERunner
-from src.molecules import H2, LiH, HF
+from src.q_systems import H2, LiH, HF
 from src.ansatz_elements import UCCGSD, UCCSD, FixedAnsatz1
-from src.backends import QiskitSimulation
+from src.backends import QiskitSim
 import logging
 import time
 import numpy
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     for i in range(5):
         r = 1.64 + i*0.04
         print('index ', i, 'R = ', r)
-        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements, molecule_geometry_params={'distance': r})
+        vqe_runner = VQERunner(molecule, backend=QiskitSim, ansatz_elements=ansatz_elements, molecule_geometry_params={'distance': r})
         # t0 = time.time()
         result = vqe_runner.vqe_run(max_n_iterations)
         values.append({'index': i, 'r': r, 'E': result.fun, 'n_it': result.nit})
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     for i in range(10):
         r = 1.4 + i * 0.04
         print('index ', i, 'R = ', r)
-        vqe_runner = VQERunner(molecule, backend=QiskitSimulation, ansatz_elements=ansatz_elements,
+        vqe_runner = VQERunner(molecule, backend=QiskitSim, ansatz_elements=ansatz_elements,
                                molecule_geometry_params={'distance': r})
 
         result = vqe_runner.vqe_run(max_n_iterations)

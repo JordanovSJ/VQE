@@ -1,26 +1,17 @@
-from openfermion.hamiltonians import MolecularData
-from openfermionpsi4 import run_psi4
-from openfermion import QubitOperator
-from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
-from scipy.linalg import eigh
-from openfermion.utils import jw_hartree_fock_state
-import scipy
 from src.ansatz_element_lists import *
-from src.test_ansatz_elements import EfficientDoubleExchange, EfficientDoubleExcitation2
-import numpy
-from src.backends import QiskitSimulation, MatrixCalculation
-from src.vqe_runner import VQERunner
-from src.molecules import H2, HF
-import openfermion
+from src.backends import QiskitSim
 import qiskit
 import time
 
-from scripts.drafts.unused_functions_and_classes import *
+from src.ansatz_elements import *
+from src.vqe_runner import *
+from src.q_systems import *
+from src.backends import  *
+from src.adapt_utils import GradAdaptUtils
+import numpy, math
 
-import matplotlib.pyplot as plt
-
-from src.utils import QasmUtils
-from src import backends
+import pandas
+import ast
 
 
 def get_circuit_matrix(qasm):
@@ -50,42 +41,35 @@ def matrix_to_str(matrix):
 
 
 if __name__ == "__main__":
+    molecule = BeH2()
+    df = pandas.read_csv("../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv")
+    n_cnot_counts = []
 
-    angle = 0.1
-    n = 4
-    qasm_init = ['']
-    qasm_init.append(QasmUtils.qasm_header(n))
-    # qasm_init.append('x q[0];\n')
-    # qasm_init.append('x q[3];\n')
-    # qasm_init.append('h q[1];\n')
-    # qasm_init.append('h q[2];\n')
-    # qasm_init.append('h q[4];\n')
+    for i in range(len(df)):
+        print(i)
+        element = df.loc[i]['element']
+        element_qubits = ast.literal_eval(df.loc[i]['element_qubits'])
 
-    # qasm_1 = ['']
-    # qasm_1 += qasm_init
-    #
-    # # qasm_1.append(DoubleExchange([0, 1], [2, 3], d_exc_correction=False, parity_dependence=False,
-    # #                              rescaled_parameter=False).get_qasm([angle]))
-    # qasm_1.append(SingleFermiExcitation(0, 3).get_qasm([angle]))
-    # statevector_1 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_1)).round(10)
-    #
-    # print(statevector_1)
+        if element[0] == 's':
+            assert len(element_qubits) == 2
+            n_cnots = 3 + 2*(element_qubits[1] - element_qubits[0])
+            if i == 0:
+                n_cnot_counts = [n_cnots]
+            else:
+                n_cnot_counts.append(n_cnot_counts[-1] + n_cnots)
+        elif element[0] == 'd':
+            assert len(element_qubits) == 2
+            n_cnots = 13 + 2*(element_qubits[1][1] - element_qubits[1][0] + element_qubits[0][1] - element_qubits[0][0]-2)
 
-    qasm_2 = ['']
-    qasm_2 += qasm_init
+            if i == 0:
+                n_cnot_counts = [n_cnots]
+            else:
+                n_cnot_counts.append(n_cnot_counts[-1] + n_cnots)
 
-    # qasm_2.append(DoubleBosExcitation([0, 1], [2, 3]).get_qasm([angle]))
-    # qasm_2.append(EfficientSingleFermiExcitation(0, 3).get_qasm([angle]))
-    #
-
-    qasm_2.append(ExpDoubleQubitExcitation.exp_double_qubit_excitation(angle, [0, 1], [2, 3]))
-
-    statevector_2 = QiskitSimulation.get_statevector_from_qasm(''.join(qasm_2)).round(10)
-
-    print(statevector_2)
-
-    # print(matrix_to_str(get_circuit_matrix(''.join(qasm_1))))
-    print(matrix_to_str(get_circuit_matrix(''.join(qasm_2))))
-
+        else:
+            print(element, element_qubits)
+            raise Exception('Unrecognized ansatz element.')
+    df['cnot_count'] = n_cnot_counts
+    df.to_csv("../../results/adapt_vqe_results/vip/BeH2_g_adapt_gsdefe_corrected_09-Sep-2020.csv")
 
     print('spagetti')

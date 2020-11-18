@@ -1,8 +1,12 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
--scripts to generate data for dissociation curve plots
+-class ansatz: combine ansatz_elements and var_paramaters + recompute element_grads every time the ansatz state is change
 
--gradient based adapt VQE
+-READABILITY AND SCALABILITY
+* spin-compliment excitations: fix printing, fix orders, fix readability
+* precomputed commutators: readability
+* precomputed statevectors: readability
+* use ansatz instead of ansatz elements
 
 *********************************************
 
@@ -18,31 +22,10 @@
 
 8.Excited states functionality
 
-11.Custom optimizer?
-
-12. Decrease qubits/orbitals considered whenever possible??
-
-13. A method to calculate parameter gradients, to feed to a non-gradient free optimizer
-
-14.(create a custom optimizer!!!)
-
-
-DONE:
-
-0. Try using only double excitations
-
-4.Search for best classical optimizer
-
-10. Logging
-
-9. Multi-threading
-
-13. New criteria when to add ansatz element
 
 
 IDEAS for algorithms and papers:
--ADAPT based on energy contribution (DONE)
-    - iterate through elements until find a significant contribution, not maximum
+
 -computing excited states
 -other VQE applications
 -different classical optimizers for different ansatz elements: gradient descent for excitations; direct search otherwise

@@ -1,5 +1,5 @@
-from src import molecules
-from src.backends import QiskitSimulation, MatrixCalculation
+from src import q_systems
+from src.backends import QiskitSim, MatrixCalculation
 from src.ansatz_element_lists import UCCSD
 
 import openfermionpsi4
@@ -18,8 +18,8 @@ class QiskitSimulationTest(unittest.TestCase):
 
         qubit_operator = openfermion.QubitOperator('X0 Y1')
         qasm_circuit = QasmUtils.qasm_header(2)
-        qasm_circuit += QasmUtils.pauli_operator_qasm(qubit_operator)
-        statevector = QiskitSimulation.get_statevector_from_qasm(qasm_circuit)
+        qasm_circuit += QasmUtils.pauli_word_qasm(qubit_operator)
+        statevector = QiskitSim.get_statevector_from_qasm(qasm_circuit)
 
         expected_statevector = numpy.array([0, 0, 0, 1j])
 
@@ -34,7 +34,7 @@ class QiskitSimulationTest(unittest.TestCase):
         exp_operator = ((0, 'X'), (1, 'Z'), (2, 'Z'))
         qasm = QasmUtils.qasm_header(3)
         qasm += QasmUtils.exponent_qasm(exp_operator, -numpy.pi / 2)
-        statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
+        statevector = QiskitSim.get_statevector_from_qasm(qasm)
 
         expected_statevector = numpy.zeros(8)
         expected_statevector[1] = 1
@@ -65,12 +65,12 @@ class QiskitSimulationTest(unittest.TestCase):
                 # <<< create a statevector using QiskitSimulation.get_exponent_qasm >>>
                 qasm = QasmUtils.qasm_header(n_qubits)
                 qasm += QasmUtils.exponent_qasm(qubit_operator_tuple, angle)
-                qiskit_statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
+                qiskit_statevector = QiskitSim.get_statevector_from_qasm(qasm)
                 qiskit_statevector = qiskit_statevector * numpy.exp(1j * angle)  # correct for a global phase
                 qiskit_statevector = qiskit_statevector.round(2)  # round for the purpose of testing
 
                 # <<< create a statevector using MatrixCalculation.get_qubit_operator_exponent_matrix >>>
-                exp_matrix = MatrixUtils.get_qubit_operator_exponent_matrix(1j*qubit_operator, n_qubits, angle).todense()
+                exp_matrix = MatrixUtils.get_excitation_matrix(1j * qubit_operator, n_qubits, angle).todense()
                 # prepare initial statevector corresponding to state |0>
                 array_statevector = numpy.zeros(2**n_qubits)
                 array_statevector[0] = 1
@@ -85,8 +85,8 @@ class QiskitSimulationTest(unittest.TestCase):
 
     # test that the qiskit and the matrix backends produce same value for <H> for the same given excitation parameters
     def test_energies(self):
-        molecule = molecules.H2
-        molecule_data = openfermion.hamiltonians.MolecularData(geometry=molecule.geometry({'distance': 0.735}),
+        molecule = q_systems.H2()
+        molecule_data = openfermion.hamiltonians.MolecularData(geometry=molecule.get_geometry({'distance': 0.735}),
                                                                basis='sto-3g', multiplicity=molecule.multiplicity,
                                                                charge=molecule.charge)
 
@@ -100,8 +100,8 @@ class QiskitSimulationTest(unittest.TestCase):
         ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
         var_parameters = numpy.zeros(len(ansatz_elements))
         var_parameters[-1] = 0.11
-        energy_qiskit_sim = QiskitSimulation.get_energy(h, ansatz_elements, var_parameters, molecule.n_orbitals,
-                                                        molecule.n_electrons)[0].real
+        energy_qiskit_sim = QiskitSim.get_expectation_value(h, ansatz_elements, var_parameters, molecule.n_orbitals,
+                                                            molecule.n_electrons)[0].real
         energy_matrix_mult = MatrixCalculation.get_energy(h, ansatz_elements, var_parameters, molecule.n_orbitals,
                                                           molecule.n_electrons)[0].real
 
@@ -115,7 +115,7 @@ class QiskitSimulationTest(unittest.TestCase):
         qasm = QasmUtils.qasm_header(n_qubits)
         qasm += QasmUtils.hf_state(n_electrons)
         qasm += QasmUtils.reverse_qubits_qasm(n_qubits)
-        qiskit_statevector = QiskitSimulation.get_statevector_from_qasm(qasm)
+        qiskit_statevector = QiskitSim.get_statevector_from_qasm(qasm)
 
         sparse_statevector = scipy.sparse.csr_matrix(openfermion.utils.jw_hartree_fock_state(n_electrons, n_qubits))
         array_statevector = numpy.array(sparse_statevector.todense())[0]
