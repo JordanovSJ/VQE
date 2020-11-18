@@ -1,16 +1,9 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
-- matrix statevector generator using precomuputed values for excitation generator matrices
+-separate the use of cache in a separate MatrixBackend?
 
 -make excitation_gradient to work for non zero points
 
--use class Ansatz
-
--put all simulation parameters (multithread, excited_state... eetc) in config
-
-
--READABILITY AND SCALABILITY
-* spin-compliment excitations: fix printing, fix orders, fix readability
 
 *********************************************
 
@@ -22,9 +15,6 @@
      - others?
 
 3. Add functionality to choose encoding method
-
-
-8.Excited states functionality
 
 
 

@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_element_sets import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.iter_vqe_utils import *
 from src.cache import *
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     state = DataUtils.ansatz_from_data_frame(df, molecule)
-    ansatz = state.elements
+    ansatz = state.ansatz_elements
     var_parameters = state.parameters
     ansatz = ansatz
 
@@ -40,8 +40,8 @@ if __name__ == "__main__":
     var_parameters = var_parameters
 
     global_cache = GlobalCache(molecule)
-    global_cache.calculate_exc_gen_matrices(ansatz)
-    global_cache.calculate_commutators_matrices(ansatz)
+    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+    global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-8}
@@ -52,6 +52,7 @@ if __name__ == "__main__":
     # energy = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_parameters,
     #                             init_state_qasm=None, cache=global_cache)
 
-    ansatz_grad = QiskitSim.ansatz_gradient(var_parameters, ansatz, molecule, cache=global_cache)
+    ansatz_grad = QiskitSimBackend.ansatz_gradient(var_parameters, ansatz, molecule, cache=global_cache)
 
     print(ansatz_grad)
+

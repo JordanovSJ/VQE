@@ -214,10 +214,17 @@ class QasmUtils:
 
     # get the qasm circuit of an excitation
     @staticmethod
-    def fermi_excitation(excitation, var_parameter):
+    def excitation_qasm(excitation_generator, var_parameter):
         qasm = ['']
-        for exponent_term in excitation.terms:
-            exponent_angle = var_parameter * excitation.terms[exponent_term]
+        # # if type(excitations_generators) == list:
+        # excitation_generator = 0*QubitOperator('')
+        # for generator in excitations_generators:
+        #     excitation_generator += generator
+        # # else:
+        # #     excitation_generator = excitations_generators
+
+        for exponent_term in excitation_generator.terms:
+            exponent_angle = var_parameter * excitation_generator.terms[exponent_term]
             assert exponent_angle.real == 0
             exponent_angle = exponent_angle.imag
             qasm.append(QasmUtils.exponent_qasm(exponent_term, exponent_angle))
