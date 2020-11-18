@@ -56,7 +56,7 @@ if __name__ == "__main__":
     df = pandas.read_csv("../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv")
 
     state = DataUtils.ansatz_from_data_frame(df, molecule)
-    ansatz = state.elements
+    ansatz = state.ansatz_elements
     var_parameters = state.parameters
     ansatz = ansatz
 

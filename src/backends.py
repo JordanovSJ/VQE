@@ -79,7 +79,7 @@ class QiskitSimBackend:
             for i in range(excited_state):
                 term = H_lower_state_terms[i]
                 state = term[1]
-                statevector = QiskitSimBackend.statevector_from_ansatz(state.elements, state.parameters, state.n_qubits,
+                statevector = QiskitSimBackend.statevector_from_ansatz(state.ansatz_elements, state.parameters, state.n_qubits,
                                                                        state.n_electrons, init_state_qasm=state.init_state_qasm)
                 # add the outer product of the lower lying state to the Hamiltonian
                 H_sparse_matrix += scipy.sparse.csr_matrix(term[0] * numpy.outer(statevector, statevector))

@@ -23,21 +23,21 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.546
+    r = 1.316
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
-    ansatz_element_type = 'eff_f_exc'
+    # ansatz_element_type = 'eff_f_exc'
     # ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'f_exc'
-    # ansatz_element_type = 'pauli_str_exc'
+    ansatz_element_type = 'pauli_str_exc'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
     # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
-    max_ansatz_elements = 250
+    max_ansatz_elements = 350
 
     # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
     backend = backends.MatrixCacheBackend
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     use_energy_vector_gradient = True  # for optimizer
 
     # create a vqe_runner object
-    vqe_runner = VQERunner(molecule, backend=backend, optimizer='L-BFGS-B', optimizer_options={'gtol': 1e-08},
+    vqe_runner = VQERunner(molecule, backend=backend, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
                            use_ansatz_gradient=use_energy_vector_gradient)
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -79,11 +79,21 @@ if __name__ == "__main__":
     results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count',
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
                                                    'var_parameters'])
+    # <<<<<<<<<<<< LOAD PAUSED SIMULATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    init_db = pandas.read_csv("/results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_17_Nov-2020.csv")
+
+    if init_db is None:
+        ansatz_elements = []
+        ansatz_parameters = []
+    else:
+        state = DataUtils.ansatz_from_data_frame(init_db, molecule)
+        ansatz_elements = state.ansatz_elements
+        ansatz_parameters = state.parameters
 
     # <<<<<<<<<<<<<< INITIALIZE ITERATIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    ansatz_elements = []
-    ansatz_parameters = []
+    # ansatz_elements = []
+    # ansatz_parameters = []
 
     iter_count = 0
     df_count = 0
