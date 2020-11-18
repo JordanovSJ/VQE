@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF, BeH2
 from src.ansatz_element_lists import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 
 import matplotlib.pyplot as plt
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     for r in rs:
         molecule = BeH2(r=r)
 
-        vqe_runner = VQERunner(molecule, backend=QiskitSim, use_ansatz_gradient=True, optimizer=optimizer,
+        vqe_runner = VQERunner(molecule, backend=QiskitSimBackend, use_ansatz_gradient=True, optimizer=optimizer,
                                optimizer_options=optimizer_options)
 
         result = vqe_runner.vqe_run(ansatz, var_parameters)

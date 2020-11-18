@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import H2, LiH, HF
 from src.ansatz_elements import UCCGSD, UCCSD
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 import logging
 import time
 import numpy
@@ -18,9 +18,9 @@ if __name__ == "__main__":
 
     t0 = time.time()
 
-    ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_ansatz_elements()
+    ansatz_elements_pool = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_excitations()
 
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, molecule_geometry_params={'distance': r})
+    vqe_runner = VQERunner(molecule, backend=QiskitSimBackend, molecule_geometry_params={'distance': r})
 
     ray.init(num_cpus=4)
 

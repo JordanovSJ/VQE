@@ -12,52 +12,49 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
-    # db_iqeb_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pairs_r=1_24-Sep-2020.csv')
-    db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
+    db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+    db_iqeb_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=1_25-Sep-2020.csv')
+    db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
 
-    db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_16-Sep-2020.csv')
-    # db_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=1_25-Sep-2020.csv')
-    db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdfe_comp_exc_r=3_30-Oct-2020.csv')
+    db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_06-Nov-2020.csv')
+    db_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=1_05-Oct-2020.csv')
+    db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=3_06-Nov-2020.csv')
 
-    db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_15-Sep-2020.csv')
-    # db_q_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_r=1_21-Sep-2020.csv')
-    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_g_adapt_gsdpwe_r=3_24-Sep-2020.csv')
+    db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_01-Sep-2020.csv')
+    db_q_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_r=1_05-Oct-2020.csv')
+    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_r=3_06-Oct-2020.csv')
 
     fig, ax = plt.subplots()
 
-    df_col = 'cnot_count'
+    df_col = 'n'
     linewidth = 0.4
     marker = '_'
     #
-    ax.plot(db_iqeb[df_col], db_iqeb['error'], label=r'IQEB, $1.546\AA$', marker=marker, linewidth=linewidth, color='blue')
+    ax.plot(db_iqeb[df_col], db_iqeb['error'], label='IQEB, r=1.546', marker=marker, linewidth=linewidth, color='blue')
     # ax.plot(db_iqeb_1[df_col], db_iqeb_1['error'], label='IQEB, r=1', marker=marker, linewidth=linewidth, color='dodgerblue')
-    ax.plot(db_iqeb_3[df_col], db_iqeb_3['error'], label=r'IQEB, $3\AA$', marker=marker, linewidth=linewidth, color='midnightblue')
+    ax.plot(db_iqeb_3[df_col], db_iqeb_3['error'], label='IQEB, r=3', marker=marker, linewidth=linewidth, color='midnightblue')
 
-    ax.plot(db_q_adapt[df_col], db_q_adapt['error'], label=r'q-ADAPT, $1.546\AA$', marker=marker, linewidth=linewidth, color='green')
+    ax.plot(db_q_adapt[df_col], db_q_adapt['error'], label='q-ADAPT, r=1.546', marker=marker, linewidth=linewidth, color='green')
     # ax.plot(db_q_adapt_1[df_col], db_q_adapt_1['error'], label='q-ADAPT, r=1', marker=marker, linewidth=linewidth, color='limegreen')
-    ax.plot(db_q_adapt_3[df_col], db_q_adapt_3['error'], label=r'q-ADAPT, $3\AA$', marker=marker, linewidth=linewidth, color='darkolivegreen')
+    ax.plot(db_q_adapt_3[df_col], db_q_adapt_3['error'], label='q-ADAPT, r=3', marker=marker, linewidth=linewidth, color='darkolivegreen')
 
-    ax.plot(db_adapt[df_col], db_adapt['error'], label=r'ADAPT, $1.546\AA$', marker=marker, linewidth=linewidth, color='red')
+    ax.plot(db_adapt[df_col], db_adapt['error'], label='ADAPT, r=1.546', marker=marker, linewidth=linewidth, color='red')
     # ax.plot(db_adapt_1[df_col], db_adapt_1['error'], label='ADAPT, r=1', marker=marker, linewidth=linewidth, color='orangered')
-    ax.plot(db_adapt_3[df_col], db_adapt_3['error'], label=r'ADAPT, $r=3\AA$', marker=marker, linewidth=linewidth, color='darkred')
+    ax.plot(db_adapt_3[df_col], db_adapt_3['error'], label='ADAPT, r=3', marker=marker, linewidth=linewidth, color='darkred')
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chem. accuracy')
 
-    ax.set_xlabel('Number of CNOTs')
+    ax.set_xlabel('Number of iterations')
     ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
-    ax.set_ylim(1e-9, 1e-1)
-    ax.set_xlim(0, 1400)
+    ax.set_ylim(1e-8, 1)
+    ax.set_xlim(0, 350)
     ax.set_yscale('log')
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
-    # ax.grid(b=True, which='minor', color='black', linestyle='-.', linewidth=0.3)
-    # ax.xaxis.set_minor_locator(MultipleLocator(125))
-    # ax.xaxis.set_major_locator(MultipleLocator(250))
 
     #  Zoomed
-    zoom = 1.75
+    zoom = 1.5
     zoom_position = 1
-    x1, x2, y1, y2 = 0, 200 , 1e-4, 1e-1
+    x1, x2, y1, y2 = 0, 60 , 1e-4, 0.2
 
     axins = zoomed_inset_axes(ax, zoom, loc=zoom_position)
     axins.plot(db_iqeb[df_col], db_iqeb['error'],  marker=marker, linewidth=1.5*linewidth,color='blue')
@@ -85,8 +82,6 @@ if __name__ == "__main__":
     # axins.xaxis.set_major_locator(MultipleLocator(250))
 
     mark_inset(ax, axins, loc1=2, loc2=3, fc="none", ec="0", linewidth=.75)
-
-    # ax.legend(loc=3, fontsize=9)#, bbox_to_anchor=(1,0.4))
 
     plt.show()
 

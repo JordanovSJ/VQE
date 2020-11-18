@@ -13,7 +13,7 @@ sys.path.append('../')
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_lists import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.adapt_utils import GradAdaptUtils
 
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     # create a vqe runner object
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-08}
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=optimizer_options,
+    vqe_runner = VQERunner(molecule, backend=QiskitSimBackend, optimizer=optimizer, optimizer_options=optimizer_options,
                            use_ansatz_gradient=use_grad)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
@@ -128,11 +128,11 @@ if __name__ == "__main__":
 
     # get the pool of ansatz elements
     if spin_complement:
-        ansatz_element_pool = SpinComplementGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                           element_type=ansatz_element_type).get_ansatz_elements()
+        ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                                     element_type=ansatz_element_type).get_excitations()
     else:
         ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                             ansatz_element_type=ansatz_element_type).get_ansatz_elements()
+                                             ansatz_element_type=ansatz_element_type).get_excitations()
 
     print('Pool len: ', len(ansatz_element_pool))
 
@@ -188,14 +188,14 @@ if __name__ == "__main__":
         previous_energy = current_energy
 
         element_to_add, grad = GradAdaptUtils.\
-            get_largest_gradient_ansatz_elements(ansatz_element_pool, molecule, vqe_runner.backend,
-                                                 var_parameters=var_parameters, ansatz=ansatz_elements,
-                                                 multithread=multithread,
-                                                 do_precompute_statevector=do_precompute_statevector,
-                                                 dynamic_commutators=dynamic_commutators)[0]
+            get_largest_gradient_elements(ansatz_element_pool, molecule, vqe_runner.backend,
+                                          ansatz_parameters=var_parameters, ansatz=ansatz_elements,
+                                          multithread=multithread,
+                                          do_precompute_statevector=do_precompute_statevector,
+                                          commutators_cache=dynamic_commutators)[0]
         print(element_to_add.element)
 
-        result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add], initial_var_parameters=var_parameters + [0])
+        result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add], init_guess_parameters=var_parameters + [0])
 
         current_energy = result.fun
         delta_e = previous_energy - current_energy
@@ -217,9 +217,9 @@ if __name__ == "__main__":
                     element_qubits = []
             except AttributeError:
                 # this case corresponds to Pauli word excitation
-                element_qubits = element_to_add.excitation_generator
+                element_qubits = element_to_add.excitations_generators
 
-            gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
+            gate_count = QasmUtils.gate_count_from_ansatz(ansatz_elements, molecule.n_orbitals)
             df_data.loc[iter_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
                                        'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
                                        'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
@@ -246,7 +246,7 @@ if __name__ == "__main__":
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSimBackend, ansatz=ansatz_elements)
     final_result = vqe_runner_final.vqe_run(ansatz=ansatz_elements)
     t = time.time()
 

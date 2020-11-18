@@ -1,12 +1,9 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
--class ansatz: combine ansatz_elements and var_paramaters + recompute element_grads every time the ansatz state is change
+-separate the use of cache in a separate MatrixBackend?
 
--READABILITY AND SCALABILITY
-* spin-compliment excitations: fix printing, fix orders, fix readability
-* precomputed commutators: readability
-* precomputed statevectors: readability
-* use ansatz instead of ansatz elements
+-make excitation_gradient to work for non zero points
+
 
 *********************************************
 
@@ -18,9 +15,6 @@
      - others?
 
 3. Add functionality to choose encoding method
-
-
-8.Excited states functionality
 
 
 

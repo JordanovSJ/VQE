@@ -12,7 +12,7 @@ sys.path.append('../')
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_lists import *
-from src.backends import QiskitSim
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.adapt_utils import EnergyAdaptUtils
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create a vqe runner object
-    vqe_runner = VQERunner(molecule, backend=QiskitSim, use_ansatz_gradient=use_grad)
+    vqe_runner = VQERunner(molecule, backend=QiskitSimBackend, use_ansatz_gradient=use_grad)
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy
 
@@ -72,10 +72,10 @@ if __name__ == "__main__":
     # New pool
     # get a new ansatz element pool, from elements that decrease <H> by at least dE = threshold
     new_ansatz_element_pool = []
-    elements_results = EnergyAdaptUtils.get_ansatz_elements_below_threshold(vqe_runner,
-                                                                            initial_ansatz_elements_pool,
-                                                                            hf_energy - threshold,
-                                                                            multithread=multithread)
+    elements_results = EnergyAdaptUtils.elements_below_full_vqe_energy_reduction_threshold(vqe_runner,
+                                                                                           initial_ansatz_elements_pool,
+                                                                                           hf_energy - threshold,
+                                                                                           multithread=multithread)
     for element, result in elements_results:
         new_ansatz_element_pool.append(element)
         message = 'New ansatz element added to updated pool, {}. Delta E = {}'\
@@ -105,11 +105,11 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        element_to_add, result = EnergyAdaptUtils.get_largest_energy_reduction_ansatz_element(vqe_runner,
-                                                                                              new_ansatz_element_pool,
-                                                                                              initial_var_parameters=var_parameters,
-                                                                                              ansatz=ansatz_elements,
-                                                                                              multithread=multithread)
+        element_to_add, result = EnergyAdaptUtils.largest_individual_vqe_energy_reduction_elements(vqe_runner,
+                                                                                                   new_ansatz_element_pool,
+                                                                                                   ansatz_parameters=var_parameters,
+                                                                                                   ansatz=ansatz_elements,
+                                                                                                   multithread=multithread)
         current_energy = result.fun
 
         # TODO works only if all elements have single var par
@@ -129,7 +129,7 @@ if __name__ == "__main__":
             else:
                 element_qubits = []
 
-            gate_count = QasmUtils.gate_count_from_ansatz_elements(ansatz_elements, molecule.n_orbitals)
+            gate_count = QasmUtils.gate_count_from_ansatz(ansatz_elements, molecule.n_orbitals)
             df_data.loc[count] = {'n': count, 'E': current_energy, 'dE': delta_e, 'error': current_energy-fci_energy,
                                   'n_iters': result['n_iters'], 'cnot_count': gate_count['cnot_count'],
                                   'u1_count': gate_count['u1_count'], 'cnot_depth': gate_count['cnot_depth'],
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     save_data(df_data, molecule, time_stamp, ansatz_element_type=ansatz_element_type)
 
     # calculate the VQE for the final ansatz
-    vqe_runner_final = VQERunner(molecule, backend=QiskitSim, ansatz=ansatz_elements)
+    vqe_runner_final = VQERunner(molecule, backend=QiskitSimBackend, ansatz=ansatz_elements)
     final_result = vqe_runner_final.vqe_run(ansatz=ansatz_elements)
     t = time.time()
 

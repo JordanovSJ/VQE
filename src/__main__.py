@@ -1,7 +1,7 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import *
-from src.ansatz_element_lists import *
-from src.backends import QiskitSim
+from src.ansatz_element_sets import *
+from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 
 import logging
@@ -22,11 +22,11 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
-    ansatz = uccsd.get_ansatz_elements()
+    ansatz = uccsd.get_excitations()
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend_type=QiskitSim, print_var_parameters=False, use_ansatz_gradient=False,
+    vqe_runner = VQERunner(q_system, backend=QiskitSimBackend, print_var_parameters=False, use_ansatz_gradient=False,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     logging.critical(result)
     print(result)
-    print('TIme for running: ', t - t0)
+    print('Time for running: ', t - t0)
 
     print('Pizza')
 
