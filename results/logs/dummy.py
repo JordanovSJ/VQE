@@ -1,1 +1,0 @@
-# I am a dummy file that exist to make sure that adapt_vqe_results/logs is create
