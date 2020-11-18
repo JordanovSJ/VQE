@@ -80,7 +80,7 @@ if __name__ == "__main__":
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
                                                    'var_parameters'])
     # <<<<<<<<<<<< LOAD PAUSED SIMULATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    init_db = pandas.read_csv("/results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_17_Nov-2020.csv")
+    init_db = pandas.read_csv("../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_17_Nov-2020.csv")
 
     if init_db is None:
         ansatz_elements = []
