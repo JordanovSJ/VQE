@@ -26,7 +26,7 @@ if __name__ == "__main__":
     r = 1.316
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
+    molecule = H2(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
@@ -80,7 +80,7 @@ if __name__ == "__main__":
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
                                                    'var_parameters'])
     # <<<<<<<<<<<< LOAD PAUSED SIMULATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    init_db = pandas.read_csv("../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_17_Nov-2020.csv")
+    init_db = None #pandas.read_csv("../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_17_Nov-2020.csv")
 
     if init_db is None:
         ansatz_elements = []
