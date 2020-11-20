@@ -30,19 +30,19 @@ if __name__ == "__main__":
     linewidth = 0.4
     marker = '_'
     #
-    ax.plot(db_iqeb[df_col], db_iqeb['error'], label='IQEB, r=1.546', marker=marker, linewidth=linewidth, color='blue')
+    ax.plot(db_iqeb[df_col], db_iqeb['error'], label=r'IQEB, $1.546\AA$', marker=marker, linewidth=linewidth, color='blue')
     # ax.plot(db_iqeb_1[df_col], db_iqeb_1['error'], label='IQEB, r=1', marker=marker, linewidth=linewidth, color='dodgerblue')
-    ax.plot(db_iqeb_3[df_col], db_iqeb_3['error'], label='IQEB, r=3', marker=marker, linewidth=linewidth, color='midnightblue')
+    ax.plot(db_iqeb_3[df_col], db_iqeb_3['error'], label=r'IQEB, $3\AA$', marker=marker, linewidth=linewidth, color='midnightblue')
 
-    ax.plot(db_q_adapt[df_col], db_q_adapt['error'], label='q-ADAPT, r=1.546', marker=marker, linewidth=linewidth, color='green')
+    ax.plot(db_q_adapt[df_col], db_q_adapt['error'], label=r'q-ADAPT, $1.546\AA$', marker=marker, linewidth=linewidth, color='green')
     # ax.plot(db_q_adapt_1[df_col], db_q_adapt_1['error'], label='q-ADAPT, r=1', marker=marker, linewidth=linewidth, color='limegreen')
-    ax.plot(db_q_adapt_3[df_col], db_q_adapt_3['error'], label='q-ADAPT, r=3', marker=marker, linewidth=linewidth, color='darkolivegreen')
+    ax.plot(db_q_adapt_3[df_col], db_q_adapt_3['error'], label=r'q-ADAPT, $3\AA$', marker=marker, linewidth=linewidth, color='darkolivegreen')
 
-    ax.plot(db_adapt[df_col], db_adapt['error'], label='ADAPT, r=1.546', marker=marker, linewidth=linewidth, color='red')
+    ax.plot(db_adapt[df_col], db_adapt['error'], label=r'ADAPT, $1.546\AA$', marker=marker, linewidth=linewidth, color='red')
     # ax.plot(db_adapt_1[df_col], db_adapt_1['error'], label='ADAPT, r=1', marker=marker, linewidth=linewidth, color='orangered')
-    ax.plot(db_adapt_3[df_col], db_adapt_3['error'], label='ADAPT, r=3', marker=marker, linewidth=linewidth, color='darkred')
+    ax.plot(db_adapt_3[df_col], db_adapt_3['error'], label=r'ADAPT, $3\AA$', marker=marker, linewidth=linewidth, color='darkred')
 
-    ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chem. accuracy')
+    ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chemical accuracy')
 
     ax.set_xlabel('Number of iterations')
     ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # ax.xaxis.set_major_locator(MultipleLocator(250))
 
     #  Zoomed
-    zoom = 1.75
+    zoom = 1.8
     zoom_position = 1
     x1, x2, y1, y2 = 0, 25 , 1e-4, 1e-1
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # axins.plot(db_iqeb_1[df_col], db_iqeb_1['error'],  marker=marker, linewidth=1.5*linewidth,color='dodgerblue')
     axins.plot(db_iqeb_3[df_col], db_iqeb_3['error'], marker=marker, linewidth=1.5*linewidth,color='midnightblue')
 
-    axins.plot(db_q_adapt[df_col], db_q_adapt['error'], label='qubit-ADAPT-VQE, r=1.546', marker=marker,linewidth=linewidth, color='green')
+    axins.plot(db_q_adapt[df_col], db_q_adapt['error'], label=r'qubit-ADAPT-VQE, $1.546\AA$', marker=marker,linewidth=linewidth, color='green')
     # axins.plot(db_q_adapt_1[df_col], db_q_adapt_1['error'], marker=marker,linewidth=1.5*linewidth, color='limegreen')
     axins.plot(db_q_adapt_3[df_col], db_q_adapt_3['error'], marker=marker,linewidth=1.5*linewidth, color='darkolivegreen')
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     mark_inset(ax, axins, loc1=2, loc2=3, fc="none", ec="0", linewidth=.75)
 
     # ax.legend(loc=3)#, bbox_to_anchor=(1,0.4))
-    ax.legend(loc=9, fontsize=10)#, bbox_to_anchor=(1,0.4))
+    ax.legend(loc=9, fontsize=10.5)#, bbox_to_anchor=(1,0.4))
 
     plt.show()
 

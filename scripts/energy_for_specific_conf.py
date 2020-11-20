@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_config()
 
-    df = pandas.read_csv("../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_27-Aug-2020.csv")
+    df = pandas.read_csv("../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_17_Nov-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     state = DataUtils.ansatz_from_data_frame(df, molecule)
@@ -39,20 +39,21 @@ if __name__ == "__main__":
     # var_parameters = list(df['var_parameters'])[:49]
     var_parameters = var_parameters
 
-    global_cache = GlobalCache(molecule)
-    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
-    global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
+    # global_cache = GlobalCache(molecule)
+    # global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+    # global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 1e-8}
 
-    # vqe_runner = VQERunner(molecule, backend=QiskitSim, optimizer=optimizer, optimizer_options=None,
-    #                        print_var_parameters=False, use_ansatz_gradient=True)
-    #
-    # energy = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_parameters,
-    #                             init_state_qasm=None, cache=global_cache)
+    vqe_runner = VQERunner(molecule, backend=QiskitSimBackend, optimizer=optimizer, optimizer_options=None,
+                           print_var_parameters=False, use_ansatz_gradient=True)
 
-    ansatz_grad = QiskitSimBackend.ansatz_gradient(var_parameters, ansatz, molecule, cache=global_cache)
+    energy = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_parameters,
+                                init_state_qasm=None, cache=None)
 
-    print(ansatz_grad)
+    # ansatz_grad = QiskitSimBackend.ansatz_gradient(var_parameters, ansatz, molecule, cache=global_cache)
+    print(energy)
+
+    # print(ansatz_grad)
 

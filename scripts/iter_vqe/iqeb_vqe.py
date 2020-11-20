@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.546
+    r = 2
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     # <<<<<<<<<< IQEB-VQE PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_size = 250
-    n_largest_grads = 20
+    n_largest_grads = 10
 
     # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
     backend = backends.MatrixCacheBackend

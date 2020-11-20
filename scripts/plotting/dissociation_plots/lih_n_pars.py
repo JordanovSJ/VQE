@@ -20,7 +20,7 @@ if __name__ == "__main__":
     plt.fill_between([0.5, 3.75], 1e-9, 1e-3, color='lavender', label='chemical accuracy')
 
     plt.xlabel(r'Li-H bond distance, $\AA$')
-    plt.ylabel(r'Number of parameters')
+    plt.ylabel(r'Number of ansatz parameters')
     plt.ylim(20, 95)
     plt.xlim(0.75, 3.75)
     plt.grid(b=True, which='major', color='grey', linestyle='--', linewidth=0.5)

@@ -26,11 +26,11 @@ if __name__ == "__main__":
     db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=3_06-Nov-2020.csv')
     indices_adapt_3 = numpy.arange(len(db_adapt_3))
 
-    db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_01-Sep-2020.csv')
+    db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_17_Nov-2020.csv')
     indices_q_adapt = numpy.arange(len(db_q_adapt))
     db_q_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_r=1_05-Oct-2020.csv')
     indices_q_adapt_1 = numpy.arange(len(db_q_adapt_1))
-    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_r=3_06-Oct-2020.csv')
+    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_r=3_15-Nov-2020.csv')
     indices_q_adapt_3 = numpy.arange(len(db_q_adapt_3))
 
     fig, ax = plt.subplots()
@@ -55,12 +55,12 @@ if __name__ == "__main__":
     ax.set_xlabel('Number of parameters')
     ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
     ax.set_ylim(1e-8, 1)
-    ax.set_xlim(0, 350)
+    ax.set_xlim(0, 425)
     ax.set_yscale('log')
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
 
     #  Zoomed
-    zoom = 1.5
+    zoom = 1.7
     zoom_position = 1
     x1, x2, y1, y2 = 0, 60 , 1e-4, 0.2
 

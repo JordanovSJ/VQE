@@ -21,10 +21,10 @@ if __name__ == "__main__":
     #
     plt.plot(db_data_lih_hf['r'], db_data_lih_hf['E'], label='HF', marker='+', linewidth=0.5)
     plt.plot(db_data_lih_uccsd['r'], db_data_lih_uccsd['E'], label=r'UCCSD', marker='*', linewidth=0.5)
-    plt.plot(db_data_lih_06['r'], db_data_lih_06['E'], label=r'IQEB-VQE $\epsilon=10^{-6}$', marker='*', linewidth=0.5, color='green')
-    plt.plot(db_data_lih_08['r'], db_data_lih_08['E'], label=r'IQEB-VQE $\epsilon=10^{-8}$', marker='*', linewidth=0.5, color='red')
+    plt.plot(db_data_lih_06['r'], db_data_lih_06['E'], label=r'IQEB-VQE $\epsilon=10^{-6}$ Hartree', marker='*', linewidth=0.5, color='green')
+    plt.plot(db_data_lih_08['r'], db_data_lih_08['E'], label=r'IQEB-VQE $\epsilon=10^{-8}$ Hartree', marker='*', linewidth=0.5, color='red')
     plt.plot(fci_rs, fci_Es, label='FCI energy', color='purple')
-    plt.vlines([1.546], ymax=200, ymin=-100, linewidth=0.75, color='black', label='ground configuration')
+    plt.vlines([1.546], ymax=200, ymin=-100, linewidth=0.75, color='black', label='equilibrium configuration')
     plt.fill_between([0.5, 3.75], 1e-9, 1e-3, color='lavender', label='chemical accuracy')
 
     plt.xlabel(r'Li-H bond distance, $\AA$')

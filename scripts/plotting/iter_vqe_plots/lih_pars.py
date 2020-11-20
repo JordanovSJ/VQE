@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # ax.xaxis.set_major_locator(MultipleLocator(250))
 
     #  Zoomed
-    zoom = 1.75
+    zoom = 1.8
     zoom_position = 1
     x1, x2, y1, y2 = 0, 25, 1e-4, 1e-1
 
