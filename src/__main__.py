@@ -1,8 +1,9 @@
 from src.vqe_runner import VQERunner
 from src.q_systems import *
 from src.ansatz_element_sets import *
-from src.backends import QiskitSimBackend
+from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
+from src.cache import *
 
 import logging
 import time
@@ -14,19 +15,24 @@ import qiskit
 
 if __name__ == "__main__":
 
-    r = 0.735
+    r = 1.316
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
+    q_system = BeH2(r=r) #(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_config()
 
-    uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
-    ansatz = uccsd.get_excitations()
+    # uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
+    # ansatz = uccsd
+    ansatz = GSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'pauli_str_exc').get_excitations()
+    print(len(ansatz))
+    backend = MatrixCacheBackend
+    global_cache = GlobalCache(q_system)
+    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz[:500])
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend=QiskitSimBackend, print_var_parameters=False, use_ansatz_gradient=False,
+    vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=False,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()

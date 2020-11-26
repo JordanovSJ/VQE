@@ -182,7 +182,7 @@ if __name__ == "__main__":
 
                 # save data
                 DataUtils.save_data(results_data_frame, molecule, time_stamp, ansatz_element_type=ansatz_element_type,
-                                    frozen_els=frozen_els, iter_vqe_type='iqeb')
+                                    frozen_els=frozen_els, iter_vqe_type='exc_iqeb')
 
                 message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, var. parameters: {}' \
                     .format(element_to_add.element, current_energy, delta_e, ansatz_parameters)
