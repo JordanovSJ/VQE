@@ -5,7 +5,7 @@ import numpy
 # multithreading
 multithread = True
 ray_options = {'n_cpus': 2, 'object_store_memory': None}
-multithread_chunk_size = 5  # number of objects (e.g. commutators) to simultaneously calculate with ray
+multithread_chunk_size = 1000  # number of objects (e.g. commutators) to simultaneously calculate with ray
 qiskit_n_threads = 1
 
 # numerical accuracy
