@@ -183,21 +183,30 @@ class Cache:
 
         commutators = {}
         if config.multithread:
-            ray.init(num_cpus=config.ray_options['n_cpus'])
-            elements_ray_ids = [
-                [
-                    element, GlobalCache.get_commutator_matrix_multithread.
-                    remote(self.get_sparse_matrices_list_copy(self.exc_gen_sparse_matrices_dict[str(element.excitations_generators)]),
-                           self.H_sparse_matrix.copy())
-                ]
-                for element in ansatz_elements
-            ]
-            for element_ray_id in elements_ray_ids:
-                key = str(element_ray_id[0].excitations_generators)
-                commutators[key] = ray.get(element_ray_id[1])
+            chunk_size = config.multithread_chunk_size
+            if chunk_size is None:
+                chunk_size = len(ansatz_elements)
+            n_chunks = int(len(ansatz_elements) / chunk_size) + 1
+            for i in range(n_chunks):
+                logging.info('Calculating commutators, patch No: {}'.format(i))
+                ansatz_elements_chunk = ansatz_elements[i*chunk_size:][:chunk_size]
 
-            del elements_ray_ids
-            ray.shutdown()
+                ray.init(num_cpus=config.ray_options['n_cpus'], object_store_memory=config.ray_options['object_store_memory'])
+                elements_ray_ids = [
+                    [
+                        element, GlobalCache.get_commutator_matrix_multithread.
+                        remote(self.get_sparse_matrices_list_copy(self.exc_gen_sparse_matrices_dict[str(element.excitations_generators)]),
+                               self.H_sparse_matrix.copy())
+                    ]
+                    for element in ansatz_elements_chunk
+                ]
+                for element_ray_id in elements_ray_ids:
+                    key = str(element_ray_id[0].excitations_generators)
+                    commutators[key] = ray.get(element_ray_id[1])
+
+                del elements_ray_ids
+                ray.shutdown()
+            assert len(commutators) == len(ansatz_elements)
         else:
             for i, element in enumerate(ansatz_elements):
                 excitation_generator = element.excitations_generators
