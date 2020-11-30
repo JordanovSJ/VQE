@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import ast
 import pandas
-from src.q_systems import *
+from src.q_system import *
 
 if __name__ == "__main__":
     db_data_lih_hf = pandas.read_csv('../../../results/dissociation_curves/BeH2_hf_06-Oct-2020.csv')

@@ -1,9 +1,11 @@
 from src.vqe_runner import VQERunner
-from src.q_systems import *
+# from src.q_systems import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
 from src.cache import *
+
+from src.molecules.molecules import H2
 
 import logging
 import time
@@ -17,7 +19,7 @@ if __name__ == "__main__":
 
     r = 1.316
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = BeH2(r=r) #(r=r, frozen_els=frozen_els)
+    q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_config()
@@ -28,7 +30,8 @@ if __name__ == "__main__":
     print(len(ansatz))
     backend = MatrixCacheBackend
     global_cache = GlobalCache(q_system)
-    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz[:500])
+    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+    # global_cache.calculate_commutators_sparse_matrices_dict()
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
@@ -36,7 +39,7 @@ if __name__ == "__main__":
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()
-    result = vqe_runner.vqe_run(ansatz=ansatz)#, initial_var_parameters=var_parameters)
+    result = vqe_runner.vqe_run(ansatz=ansatz, cache=global_cache)#, initial_var_parameters=var_parameters)
     t = time.time()
 
     logging.critical(result)
