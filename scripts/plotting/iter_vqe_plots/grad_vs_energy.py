@@ -12,9 +12,9 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_n_1 = pandas.read_csv('../../../results/iter_vqe_results/exc_states/BeH2_exc_1_iter_vqe_gsdqe_r=1316_24-Nov-2020.csv')
-    db_n_10 = pandas.read_csv('../../../results/iter_vqe_results/exc_states/BeH2_exc_1_iqeb_n=10_vqe_gsdqe_r=1316_25-Nov-2020.csv')
-    db_n_20 = pandas.read_csv('../../../results/iter_vqe_results/exc_states/BeH2_exc_1_iqeb_vqe_n=20_gsdqe_r=1316_26-Nov-2020.csv')
+    db_n_1 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=1_gsdqe_r=3_02-Dec-2020.csv')
+    db_n_10 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=10_gsdqe_r=3_02-Dec-2020.csv')
+    db_n_20 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
 
     fig, ax = plt.subplots()
 
@@ -29,8 +29,8 @@ if __name__ == "__main__":
 
     ax.set_xlabel('Number of CNOTs')
     ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
-    ax.set_ylim(1e-8, 1e-1)
-    ax.set_xlim(0, 1200)
+    ax.set_ylim(1e-10, 1e-1)
+    ax.set_xlim(0, 1700)
     ax.set_yscale('log')
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
 
