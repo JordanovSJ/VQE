@@ -10,6 +10,7 @@ from src.backends import QiskitSimBackend
 from src.utils import *
 from src.iter_vqe_utils import *
 from src.cache import *
+from src.molecules.molecules import *
 
 
 if __name__ == "__main__":
