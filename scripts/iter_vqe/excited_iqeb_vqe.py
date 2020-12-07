@@ -21,17 +21,17 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.316
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
+    molecule = H2(r=r)  # (frozen_els=frozen_els)
     excited_state = 1
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
-    # molecule.default_states()
-    df = pandas.read_csv('../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
-    ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
-    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]]
+    molecule.default_states()
+    # df = pandas.read_csv('../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
+    # ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
+    # molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]]
 
     n_largest_grads = 10
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
@@ -88,7 +88,7 @@ if __name__ == "__main__":
         global_cache = None
 
     # initialize a dataFrame to collect the simulation data
-    results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count',
+    results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'rank', 'error', 'n_iters', 'cnot_count', 'u1_count',
                                           'cnot_depth', 'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     # <<<<<<<<<<<<<< INITIALIZE ITERATIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -118,6 +118,7 @@ if __name__ == "__main__":
                                                              ansatz_parameters=ansatz_parameters, excited_state=excited_state,
                                                              n=n_largest_grads, global_cache=global_cache)
         elements = [e_g[0] for e_g in elements_energies]
+        elements_keys = [str(el.excitations_generators) for el in elements]
         elements_parameters = [e_g[1].x[0] for e_g in elements_energies]
         dEs = [e_g[1].fun - current_energy for e_g in elements_energies]
 
@@ -129,6 +130,8 @@ if __name__ == "__main__":
                                                                   ansatz=ansatz, ansatz_parameters=ansatz_parameters,
                                                                   global_cache=global_cache,
                                                                   excited_state=excited_state)
+
+        el_to_add_rank = elements_keys.index(str(element_to_add.excitations_generators))
 
         ansatz.append(element_to_add)
         new_ansatz_elements = [element_to_add]
@@ -145,7 +148,7 @@ if __name__ == "__main__":
                 gate_count = IterVQEQasmUtils.gate_count_from_ansatz(ansatz, molecule.n_orbitals)
                 results_data_frame.loc[df_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e,
                                                     'error': current_energy - exact_energy,
-                                                    'n_iters': result['n_iters'],
+                                                    'rank': el_to_add_rank, 'n_iters': result['n_iters'],
                                                     'cnot_count': gate_count['cnot_count'],
                                                     'u1_count': gate_count['u1_count'],
                                                     'cnot_depth': gate_count['cnot_depth'],

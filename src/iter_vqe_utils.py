@@ -76,7 +76,9 @@ class EnergyUtils:
                                                                            ansatz_parameters=ansatz_parameters,
                                                                            excited_state=excited_state,
                                                                            global_cache=global_cache)
-        return min(elements_results, key=lambda x: x[1].fun)
+        # return min(elements_results, key=lambda x: x[1].fun)
+        elements_results.sort(key=lambda x: x[1].fun)
+        return elements_results[0]
 
     # calculate the full (optimizing all parameters) VQE energy reductions for a set of ansatz elements
     @staticmethod
@@ -141,11 +143,11 @@ class EnergyUtils:
                                                                                  ansatz_parameters=ansatz_parameters,
                                                                                  excited_state=excited_state,
                                                                                  global_cache=global_cache)
-        elements_results.sort(key=lambda x: abs(x[1].fun))
+        elements_results.sort(key=lambda x: x[1].fun)
         if n == 1:
             return min(elements_results, key=lambda x: x[1].fun)
         else:
-            return elements_results[-n:]  # TODO check
+            return elements_results[:n]  # TODO check
 
 
 class GradientUtils:
