@@ -50,8 +50,8 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create the pool of ansatz elements
-    ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         ansatz_element_type=ansatz_element_type).get_excitations()
+    ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                        ansatz_element_type=ansatz_element_type).get_excitations()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:

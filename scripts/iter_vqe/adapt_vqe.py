@@ -17,6 +17,7 @@ from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 from src.iter_vqe_utils import *
 from src.cache import *
+from src.molecules.molecules import *
 
 
 if __name__ == "__main__":
@@ -60,8 +61,8 @@ if __name__ == "__main__":
         ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                                      element_type=ansatz_element_type).get_excitations()
     else:
-        ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                             ansatz_element_type=ansatz_element_type).get_excitations()
+        ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                            ansatz_element_type=ansatz_element_type).get_excitations()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:

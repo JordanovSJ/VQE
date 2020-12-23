@@ -210,7 +210,7 @@ class GlobalCache(Cache):
         exc_gen_sparse_matrices_dict = {}
         sqr_exc_gen_sparse_matrices_dict = {}
         if config.multithread:
-            ray.init(num_cpus=config.ray_options['n_cpus'])
+            ray.init(num_cpus=config.ray_options['n_cpus'], object_store_memory=config.ray_options['object_store_memory'])
             elements_ray_ids = [
                 [
                     element, GlobalCache.get_excitations_generators_matrices_multithread.remote(element, n_qubits=self.q_system.n_qubits)

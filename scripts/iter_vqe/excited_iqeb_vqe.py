@@ -21,17 +21,17 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 0.735
+    r = 1.75
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2(r=r)  # (frozen_els=frozen_els)
+    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
     excited_state = 1
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
-    molecule.default_states()
-    # df = pandas.read_csv('../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
-    # ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
-    # molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]]
+    # molecule.default_states()
+    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=175_19-Nov-2020.csv')
+    ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
+    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]]
 
     n_largest_grads = 10
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
