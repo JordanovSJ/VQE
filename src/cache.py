@@ -272,7 +272,9 @@ class GlobalCache(Cache):
 
                 del elements_ray_ids
                 ray.shutdown()
-            assert len(commutators) == len(ansatz_elements)
+            # print(len(commutators))
+            # print(len(ansatz_elements))
+            # assert len(commutators) == len(ansatz_elements)
         else:
             for i, element in enumerate(ansatz_elements):
                 excitation_generator = element.excitations_generators
