@@ -15,21 +15,10 @@ from src.cache import *
 
 from scripts.zhenghao.iqeb_fun_li import iqeb_litest
 
-# my_r = 1.546
-#
-# molecule = H2(my_r)
-#
-# result = iqeb_litest(my_r, molecule)
-#
-#
-# Energy = result.fun
-
 r_num = 20
 r_start = 0.5
 r_end = 2.0
 r_list = np.linspace(r_start, r_end, r_num)
-
-# fci_energy_0 = map(lambda x: H2(x).fci_energy, r_list)
 
 fci_energy =np.zeros(r_num)
 vqe_energy =np.zeros(r_num)

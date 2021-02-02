@@ -6,7 +6,7 @@ plt.close('all')
 
 molecule = H2()
 
-data = pd.read_csv('{}_dissociation_curve.csv'.format(molecule.name))
+# data = pd.read_csv('{}_dissociation_curve.csv'.format(molecule.name))
 
 data_hf_fci_dif = abs(data['hf']-data['fci'])
 data_iqeb_fci_dif = abs(data['iqeb']-data['fci'])
