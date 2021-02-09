@@ -1,19 +1,11 @@
-import pandas
-
 import sys
 sys.path.append('../../')
 
 import matplotlib.pyplot as plt
 import numpy as np
-from src.vqe_runner import VQERunner
 from src.q_systems import *
-from src.ansatz_element_sets import *
-from src.backends import QiskitSimBackend
-from src.utils import *
-from src.iter_vqe_utils import *
-from src.cache import *
 
-from scripts.zhenghao.iqeb_fun_li import iqeb_litest
+from scripts.zhenghao.dissociation_plotting.iqeb_fun_li import iqeb_litest
 
 r_num = 20
 r_start = 0.5
