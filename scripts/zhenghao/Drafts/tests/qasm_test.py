@@ -1,4 +1,4 @@
-from scripts.zhenghao.Drafts.noisy_backends import *
+from scripts.zhenghao.Drafts.noisy_backends_draft import *
 from scripts.zhenghao.Drafts.utils_li import *
 from scripts.zhenghao.Drafts.test_utils import *
 from qiskit.tools.visualization import plot_histogram

@@ -31,12 +31,12 @@ class QasmStrUtils:
     qasm_0 = 'OPENQASM 2.0;'
     qasm_def = '\ninclude "qelib1.inc";'
 
-    # Composes qasm_str_1 and qasm_str_2 together.
+    # Composes qasm_str_1 and qasm_str_2 together in parallel
     # The two subcircuits occupy separate set of quantum registers
     # No classical registers
     # Returns composite qasm strings, and two list of new qreg names for the two sub-circuits
     @staticmethod
-    def qasm_compose(qasm_str_1: str, qasm_str_2: str):
+    def qasm_compose_parallel(qasm_str_1: str, qasm_str_2: str):
         # The function can't deal with classical registers in qasm_strings yet
         if 'creg' in qasm_str_1:
             raise Exception("qasm_str_1 contains classical register")
@@ -164,9 +164,10 @@ class QasmStrUtils:
         qasm_ancilla = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg ancilla[1];\n'
 
         # Compose psi_U, psi, and ancilla together
-        qasm_swap, new_name_ancilla_list, new_name_bulk_list = QasmStrUtils.qasm_compose(
-            qasm_ancilla,
-            QasmStrUtils.qasm_compose(qasm_psi_U, qasm_psi)[0])
+        qasm_swap, new_name_ancilla_list, new_name_bulk_list = QasmStrUtils.qasm_compose_parallel(qasm_ancilla,
+                                                                                                  QasmStrUtils.qasm_compose_parallel(
+                                                                                                      qasm_psi_U,
+                                                                                                      qasm_psi)[0])
         assert len(new_name_ancilla_list) == 1
         assert len(new_name_bulk_list) == 2
         new_name_ancilla = new_name_ancilla_list[0]
