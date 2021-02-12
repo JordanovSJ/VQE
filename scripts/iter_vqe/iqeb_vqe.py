@@ -65,8 +65,6 @@ if __name__ == "__main__":
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
 
-    print('break')
-
     # initialize a dataFrame to collect the simulation data
     results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count',
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
