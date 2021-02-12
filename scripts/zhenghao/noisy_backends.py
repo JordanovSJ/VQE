@@ -61,7 +61,7 @@ class QasmBackend:
         exp_value_list = [eval_expectation_value(op_U=operator) for operator in ham_keys_list]
         weighted_exp_value = [a * b for a, b in zip(exp_value_list, weights_list)]
 
-        return sum(weighted_exp_value)
+        return sum(weighted_exp_value).real
 
     # Returns expectation value of <psi|U|psi> by manual pauli expectation evaluation
     # U is given in form of a tuple, e.g. ((1, X), (2, Z), (3, Y))

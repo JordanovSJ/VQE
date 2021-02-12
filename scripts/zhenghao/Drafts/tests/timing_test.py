@@ -27,7 +27,7 @@ qasm_ansatz = QasmBackend.qasm_from_ansatz(ansatz, var_pars)
 init_state_qasm = QasmUtils.hf_state(molecule.n_electrons)
 qasm_psi = init_state_qasm + qasm_ansatz
 
-expectation_value = QasmBackend.eval_expectation_value(qasm_psi, test_term, n_qubits)
+expectation_value = QasmBackend.eval_expectation_value(qasm_psi, test_term, n_qubits, n_shots=512)
 print(expectation_value)
 
 t1 = time.time()
