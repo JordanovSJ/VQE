@@ -4,19 +4,20 @@ import sys
 sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
-from src.q_systems import *
+from src.q_system import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend
 from src.utils import *
 from src.iter_vqe_utils import *
 from src.cache import *
+from src.molecules.molecules import *
 
 
 if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.546
+    r = 2
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     # <<<<<<<<<< IQEB-VQE PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_size = 250
-    n_largest_grads = 20
+    n_largest_grads = 10
 
     # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
     backend = backends.MatrixCacheBackend
@@ -49,8 +50,8 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create the pool of ansatz elements
-    ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                         ansatz_element_type=ansatz_element_type).get_excitations()
+    ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                        ansatz_element_type=ansatz_element_type).get_excitations()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:

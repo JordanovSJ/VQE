@@ -9,7 +9,7 @@ import ast
 sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
-from src.q_systems import *
+from src.molecules.molecules import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend
 from src.utils import LogUtils
@@ -21,12 +21,17 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.546
+    r = 1.75
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
     excited_state = 1
-    molecule.default_states()
+
+    # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
+    # molecule.default_states()
+    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=175_19-Nov-2020.csv')
+    ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
+    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]]
 
     n_largest_grads = 10
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
@@ -74,7 +79,7 @@ if __name__ == "__main__":
     logging.info(message)
 
     # create simulation cache
-    if config.use_cache:
+    if backend == backends.MatrixCacheBackend:
         # precompute commutator matrices, that are use in excitation gradient calculation
         global_cache = GlobalCache(molecule, excited_state=excited_state)
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz_element_pool)
@@ -83,7 +88,7 @@ if __name__ == "__main__":
         global_cache = None
 
     # initialize a dataFrame to collect the simulation data
-    results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'error', 'n_iters', 'cnot_count', 'u1_count',
+    results_data_frame = pandas.DataFrame(columns=['n', 'E', 'dE', 'rank', 'error', 'n_iters', 'cnot_count', 'u1_count',
                                           'cnot_depth', 'u1_depth', 'element', 'element_qubits', 'var_parameters'])
 
     # <<<<<<<<<<<<<< INITIALIZE ITERATIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -113,6 +118,7 @@ if __name__ == "__main__":
                                                              ansatz_parameters=ansatz_parameters, excited_state=excited_state,
                                                              n=n_largest_grads, global_cache=global_cache)
         elements = [e_g[0] for e_g in elements_energies]
+        elements_keys = [str(el.excitations_generators) for el in elements]
         elements_parameters = [e_g[1].x[0] for e_g in elements_energies]
         dEs = [e_g[1].fun - current_energy for e_g in elements_energies]
 
@@ -125,42 +131,14 @@ if __name__ == "__main__":
                                                                   global_cache=global_cache,
                                                                   excited_state=excited_state)
 
+        el_to_add_rank = elements_keys.index(str(element_to_add.excitations_generators))
+
         ansatz.append(element_to_add)
         new_ansatz_elements = [element_to_add]
         ansatz_parameters = list(intermediate_result.x)
         result = intermediate_result
         current_energy = intermediate_result.fun
         delta_e = previous_energy - current_energy
-
-        # compl_element_to_add = element_to_add.get_spin_comp_exc()
-        #
-        # # TODO check the if condition
-        # comp_qubits = compl_element_to_add.qubits
-        # qubits = element_to_add.qubits
-        # if [set(qubits[0]), set(qubits[1])] == [set(comp_qubits[0]), set(comp_qubits[1])] or \
-        #         [set(qubits[0]), set(qubits[1])] == [set(comp_qubits[1]), set(comp_qubits[0])]:
-        #     result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add],
-        #                                 init_guess_parameters=list(intermediate_result.x),
-        #                                 cache=global_cache, excited_state=excited_state)
-        #     current_energy = result.fun
-        #     delta_e = previous_energy - current_energy
-        #     if delta_e > 0:
-        #         ansatz_elements.append(element_to_add)
-        #         new_ansatz_elements = [element_to_add]
-        # else:
-        #     result = vqe_runner.vqe_run(ansatz=ansatz_elements + [element_to_add, compl_element_to_add],
-        #                                 init_guess_parameters=list(intermediate_result.x) + [0],
-        #                                 cache=global_cache, excited_state=excited_state)
-        #     current_energy = result.fun
-        #     delta_e = previous_energy - current_energy
-        #     if delta_e > 0:
-        #         ansatz_elements.append(element_to_add)
-        #         ansatz_elements.append(compl_element_to_add)
-        #         print('Add complement element: ', compl_element_to_add.element)
-        #         new_ansatz_elements = [element_to_add, compl_element_to_add]
-        #
-        # # get initial guess for the var. params. for the next iteration
-        # ansatz_parameters = list(result.x)
 
         if delta_e > 0:
             for new_ansatz_element in new_ansatz_elements:
@@ -170,7 +148,7 @@ if __name__ == "__main__":
                 gate_count = IterVQEQasmUtils.gate_count_from_ansatz(ansatz, molecule.n_orbitals)
                 results_data_frame.loc[df_count] = {'n': iter_count, 'E': current_energy, 'dE': delta_e,
                                                     'error': current_energy - exact_energy,
-                                                    'n_iters': result['n_iters'],
+                                                    'rank': el_to_add_rank, 'n_iters': result['n_iters'],
                                                     'cnot_count': gate_count['cnot_count'],
                                                     'u1_count': gate_count['u1_count'],
                                                     'cnot_depth': gate_count['cnot_depth'],
@@ -182,7 +160,7 @@ if __name__ == "__main__":
 
                 # save data
                 DataUtils.save_data(results_data_frame, molecule, time_stamp, ansatz_element_type=ansatz_element_type,
-                                    frozen_els=frozen_els, iter_vqe_type='iqeb')
+                                    frozen_els=frozen_els, iter_vqe_type='exc_iqeb')
 
                 message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, var. parameters: {}' \
                     .format(element_to_add.element, current_energy, delta_e, ansatz_parameters)

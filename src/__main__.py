@@ -1,8 +1,11 @@
 from src.vqe_runner import VQERunner
-from src.q_systems import *
+from src.q_system import *
 from src.ansatz_element_sets import *
-from src.backends import QiskitSimBackend
+from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
+from src.cache import *
+
+from src.molecules.molecules import H2
 
 import logging
 import time
@@ -21,16 +24,25 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_config()
 
-    uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
-    ansatz = uccsd.get_excitations()
+    # uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
+    # ansatz = uccsd
+    ansatz = GSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'pauli_str_exc').get_excitations()
+    print(len(ansatz))
+    backend = MatrixCacheBackend
+    global_cache = GlobalCache(q_system)
+    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+    # global_cache.calculate_commutators_sparse_matrices_dict()
+
+    # backend = QiskitSimBackend
+    # global_cache = None
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend=QiskitSimBackend, print_var_parameters=False, use_ansatz_gradient=False,
+    vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=False,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()
-    result = vqe_runner.vqe_run(ansatz=ansatz)#, initial_var_parameters=var_parameters)
+    result = vqe_runner.vqe_run(ansatz=ansatz, cache=global_cache)#, initial_var_parameters=var_parameters)
     t = time.time()
 
     logging.critical(result)

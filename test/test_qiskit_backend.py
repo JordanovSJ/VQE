@@ -1,4 +1,4 @@
-from src import q_systems
+from src import q_system
 from src.backends import QiskitSimBackend, ExcStateSim
 from src.ansatz_element_lists import UCCSD
 
@@ -85,7 +85,7 @@ class QiskitSimulationTest(unittest.TestCase):
 
     # test that the qiskit and the matrix backends produce same value for <H> for the same given excitation parameters
     def test_energies(self):
-        molecule = q_systems.H2()
+        molecule = q_system.H2()
         molecule_data = openfermion.hamiltonians.MolecularData(geometry=molecule.get_geometry({'distance': 0.735}),
                                                                basis='sto-3g', multiplicity=molecule.multiplicity,
                                                                charge=molecule.charge)

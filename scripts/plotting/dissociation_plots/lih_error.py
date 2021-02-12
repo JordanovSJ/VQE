@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import ast
 import pandas
-from src.q_systems import *
+from src.q_system import *
 
 if __name__ == "__main__":
 
@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     plt.xlabel(r'Li-H bond distance, $\AA$')
     plt.ylabel(r'$E-E_{FCI}$, Hartree')
-    plt.ylim(1e-8, 1)
+    plt.ylim(1e-9, 1)
     plt.xlim(0.75, 3.75)
     plt.yscale('log')
     plt.grid(b=True, which='major', color='grey', linestyle='--', linewidth=0.5)

@@ -1,5 +1,5 @@
 from src.vqe_runner import VQERunner
-from src.q_systems import H2, LiH, HF
+from src.q_system import H2, LiH, HF
 from src.ansatz_elements import UCCGSD, UCCSD
 from src.backends import QiskitSimBackend
 import logging

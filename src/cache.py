@@ -139,103 +139,6 @@ class Cache:
 
         return sparse_matrices_copy
 
-    def calculate_exc_gen_sparse_matrices_dict(self, ansatz_elements):
-        logging.info('Calculating excitation generators')
-        exc_gen_sparse_matrices_dict = {}
-        sqr_exc_gen_sparse_matrices_dict = {}
-        if config.multithread:
-            ray.init(num_cpus=config.ray_options['n_cpus'])
-            elements_ray_ids = [
-                [
-                    element, GlobalCache.get_excitations_generators_matrices_multithread.remote(element, n_qubits=self.q_system.n_qubits)
-                ]
-                for element in ansatz_elements
-            ]
-            for element_ray_id in elements_ray_ids:
-                key = str(element_ray_id[0].excitations_generators)
-                exc_gen_sparse_matrices_dict[key] = ray.get(element_ray_id[1])[0]
-                sqr_exc_gen_sparse_matrices_dict[key] = ray.get(element_ray_id[1])[1]
-
-            del elements_ray_ids
-            ray.shutdown()
-        else:
-            for i, element in enumerate(ansatz_elements):
-                excitation_generators = element.excitations_generators
-                key = str(excitation_generators)
-                logging.info('Calculated excitation generator matrix {}'.format(key))
-                exc_gen_matrix_form = []
-                sqr_exc_gen_matrix_form = []
-                for term in excitation_generators:
-                    exc_gen_matrix_form.append(get_sparse_operator(term, n_qubits=self.q_system.n_qubits))
-                    sqr_exc_gen_matrix_form.append(exc_gen_matrix_form[-1]*exc_gen_matrix_form[-1])
-                exc_gen_sparse_matrices_dict[key] = exc_gen_matrix_form
-                sqr_exc_gen_sparse_matrices_dict[key] = sqr_exc_gen_matrix_form
-
-        self.exc_gen_sparse_matrices_dict = exc_gen_sparse_matrices_dict
-        self.sqr_exc_gen_sparse_matrices_dict = sqr_exc_gen_sparse_matrices_dict
-        return exc_gen_sparse_matrices_dict
-
-    def calculate_commutators_sparse_matrices_dict(self, ansatz_elements):
-        logging.info('Calculating commutators')
-
-        if self.exc_gen_sparse_matrices_dict is None:
-            self.calculate_exc_gen_sparse_matrices_dict(ansatz_elements)
-
-        commutators = {}
-        if config.multithread:
-            ray.init(num_cpus=config.ray_options['n_cpus'])
-            elements_ray_ids = [
-                [
-                    element, GlobalCache.get_commutator_matrix_multithread.
-                    remote(self.get_sparse_matrices_list_copy(self.exc_gen_sparse_matrices_dict[str(element.excitations_generators)]),
-                           self.H_sparse_matrix.copy())
-                ]
-                for element in ansatz_elements
-            ]
-            for element_ray_id in elements_ray_ids:
-                key = str(element_ray_id[0].excitations_generators)
-                commutators[key] = ray.get(element_ray_id[1])
-
-            del elements_ray_ids
-            ray.shutdown()
-        else:
-            for i, element in enumerate(ansatz_elements):
-                excitation_generator = element.excitations_generators
-                key = str(excitation_generator)
-                logging.info('Calculated commutator {}'.format(key))
-                exc_gen_sparse_matrix = sum(self.exc_gen_sparse_matrices_dict[key])
-                commutator_sparse_matrix = self.H_sparse_matrix * exc_gen_sparse_matrix - exc_gen_sparse_matrix * self.H_sparse_matrix
-                commutators[key] = commutator_sparse_matrix
-
-        self.commutators_sparse_matrices_dict = commutators
-        return commutators
-
-    @staticmethod
-    @ray.remote
-    def get_commutator_matrix_multithread(excitations_generators_matrices, H_sparse_matrix):
-        t0 = time.time()
-        exc_gen_matrices_sum = sum(excitations_generators_matrices)
-        commutator_sparse_matrix = H_sparse_matrix * exc_gen_matrices_sum - exc_gen_matrices_sum * H_sparse_matrix
-        del exc_gen_matrices_sum
-        del H_sparse_matrix
-        del excitations_generators_matrices
-        print('Calculated commutator time ', time.time() - t0)
-        return commutator_sparse_matrix
-
-    @staticmethod
-    @ray.remote
-    def get_excitations_generators_matrices_multithread(ansatz_element, n_qubits):
-        t0 = time.time()
-        # in the case of a spin complement pair, there are two generators for each excitation in the pair
-        excitations_generators_matrices = []
-        sqr_excitations_generators_matrices_form = []
-        for term in ansatz_element.excitations_generators:
-            excitations_generators_matrices.append(get_sparse_operator(term, n_qubits=n_qubits))
-            sqr_excitations_generators_matrices_form.append(excitations_generators_matrices[-1]*excitations_generators_matrices[-1])
-
-        print('Calculated excitation matrix time ', time.time() - t0)
-        return excitations_generators_matrices, sqr_excitations_generators_matrices_form
-
 
 class GlobalCache(Cache):
     def __init__(self, q_system, excited_state=0):
@@ -301,6 +204,114 @@ class GlobalCache(Cache):
                                       sqr_exc_gen_sparse_matrices_dict={key: sqr_excitations_generators_matrices_copy}
                                       )
         return thread_cache
+
+    def calculate_exc_gen_sparse_matrices_dict(self, ansatz_elements):
+        logging.info('Calculating excitation generators')
+        exc_gen_sparse_matrices_dict = {}
+        sqr_exc_gen_sparse_matrices_dict = {}
+        if config.multithread:
+            ray.init(num_cpus=config.ray_options['n_cpus'], object_store_memory=config.ray_options['object_store_memory'])
+            elements_ray_ids = [
+                [
+                    element, GlobalCache.get_excitations_generators_matrices_multithread.remote(element, n_qubits=self.q_system.n_qubits)
+                ]
+                for element in ansatz_elements
+            ]
+            for element_ray_id in elements_ray_ids:
+                key = str(element_ray_id[0].excitations_generators)
+                exc_gen_sparse_matrices_dict[key] = ray.get(element_ray_id[1])[0]
+                sqr_exc_gen_sparse_matrices_dict[key] = ray.get(element_ray_id[1])[1]
+
+            del elements_ray_ids
+            ray.shutdown()
+        else:
+            for i, element in enumerate(ansatz_elements):
+                excitation_generators = element.excitations_generators
+                key = str(excitation_generators)
+                logging.info('Calculated excitation generator matrix {}'.format(key))
+                exc_gen_matrix_form = []
+                sqr_exc_gen_matrix_form = []
+                for term in excitation_generators:
+                    exc_gen_matrix_form.append(get_sparse_operator(term, n_qubits=self.q_system.n_qubits))
+                    sqr_exc_gen_matrix_form.append(exc_gen_matrix_form[-1]*exc_gen_matrix_form[-1])
+                exc_gen_sparse_matrices_dict[key] = exc_gen_matrix_form
+                sqr_exc_gen_sparse_matrices_dict[key] = sqr_exc_gen_matrix_form
+
+        self.exc_gen_sparse_matrices_dict = exc_gen_sparse_matrices_dict
+        self.sqr_exc_gen_sparse_matrices_dict = sqr_exc_gen_sparse_matrices_dict
+        return exc_gen_sparse_matrices_dict
+
+    def calculate_commutators_sparse_matrices_dict(self, ansatz_elements):
+        logging.info('Calculating commutators')
+
+        if self.exc_gen_sparse_matrices_dict is None:
+            self.calculate_exc_gen_sparse_matrices_dict(ansatz_elements)
+
+        commutators = {}
+        if config.multithread:
+            chunk_size = config.multithread_chunk_size
+            if chunk_size is None:
+                chunk_size = len(ansatz_elements)
+            n_chunks = int(len(ansatz_elements) / chunk_size) + 1
+            for i in range(n_chunks):
+                logging.info('Calculating commutators, patch No: {}'.format(i))
+                ansatz_elements_chunk = ansatz_elements[i*chunk_size:][:chunk_size]
+
+                ray.init(num_cpus=config.ray_options['n_cpus'], object_store_memory=config.ray_options['object_store_memory'])
+                elements_ray_ids = [
+                    [
+                        element, GlobalCache.get_commutator_matrix_multithread.
+                        remote(self.get_sparse_matrices_list_copy(self.exc_gen_sparse_matrices_dict[str(element.excitations_generators)]),
+                               self.H_sparse_matrix.copy())
+                    ]
+                    for element in ansatz_elements_chunk
+                ]
+                for element_ray_id in elements_ray_ids:
+                    key = str(element_ray_id[0].excitations_generators)
+                    commutators[key] = ray.get(element_ray_id[1])
+
+                del elements_ray_ids
+                ray.shutdown()
+            # print(len(commutators))
+            # print(len(ansatz_elements))
+            # assert len(commutators) == len(ansatz_elements)
+        else:
+            for i, element in enumerate(ansatz_elements):
+                excitation_generator = element.excitations_generators
+                key = str(excitation_generator)
+                logging.info('Calculated commutator {}'.format(key))
+                exc_gen_sparse_matrix = sum(self.exc_gen_sparse_matrices_dict[key])
+                commutator_sparse_matrix = self.H_sparse_matrix * exc_gen_sparse_matrix - exc_gen_sparse_matrix * self.H_sparse_matrix
+                commutators[key] = commutator_sparse_matrix
+
+        self.commutators_sparse_matrices_dict = commutators
+        return commutators
+
+    @staticmethod
+    @ray.remote
+    def get_commutator_matrix_multithread(excitations_generators_matrices, H_sparse_matrix):
+        t0 = time.time()
+        exc_gen_matrices_sum = sum(excitations_generators_matrices)
+        commutator_sparse_matrix = H_sparse_matrix * exc_gen_matrices_sum - exc_gen_matrices_sum * H_sparse_matrix
+        del exc_gen_matrices_sum
+        del H_sparse_matrix
+        del excitations_generators_matrices
+        print('Calculated commutator time ', time.time() - t0)
+        return commutator_sparse_matrix
+
+    @staticmethod
+    @ray.remote
+    def get_excitations_generators_matrices_multithread(ansatz_element, n_qubits):
+        t0 = time.time()
+        # in the case of a spin complement pair, there are two generators for each excitation in the pair
+        excitations_generators_matrices = []
+        sqr_excitations_generators_matrices_form = []
+        for term in ansatz_element.excitations_generators:
+            excitations_generators_matrices.append(get_sparse_operator(term, n_qubits=n_qubits))
+            sqr_excitations_generators_matrices_form.append(excitations_generators_matrices[-1]*excitations_generators_matrices[-1])
+
+        print('Calculated excitation matrix time ', time.time() - t0)
+        return excitations_generators_matrices, sqr_excitations_generators_matrices_form
 
 
 class VQEThreadCache(Cache):
