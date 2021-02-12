@@ -1,14 +1,10 @@
-import numpy as np
-
 # Import Qiskit
-from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
-from qiskit.tools.visualization import plot_histogram, plot_state_city
+from qiskit.tools.visualization import plot_histogram
 from qiskit import IBMQ
 from qiskit.providers.aer.noise import device, NoiseModel
 import qiskit.providers.aer.noise.errors as errors
-from qiskit.providers.aer.noise.errors import pauli_error, reset_error, thermal_relaxation_error
-from qiskit.providers.aer import QasmSimulator
-from scripts.zhenghao.noisy_sim_fun import *
+from qiskit.providers.aer.noise.errors import pauli_error, thermal_relaxation_error
+from scripts.zhenghao.Drafts.noisy_sim_fun import *
 
 # <<<<<<<<<<<< CREATE QASM_STRING >>>>>>>>>>>>>>>>>
 # Create a circuit to generate a qasm_string

@@ -1,4 +1,4 @@
-from scripts.zhenghao.utils_li import *
+from scripts.zhenghao.Drafts.utils_li import *
 from qiskit import QuantumCircuit
 
 qasm_str = 'OPENQASM 2.0;\ninclude "qelib1.inc";\n\nqreg q0[2];\nh q0[0];\ncx q0[0],q0[1];\n'

@@ -1,13 +1,9 @@
-from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
-from qiskit.aqua import QuantumInstance
-from qiskit import Aer, execute
-from scripts.zhenghao.noisy_sim_fun import *
+from scripts.zhenghao.Drafts.noisy_sim_fun import *
 from qiskit import IBMQ
 from qiskit.providers.aer.noise import device, NoiseModel
 import qiskit.providers.aer.noise.errors as errors
-from qiskit.providers.aer.noise.errors import pauli_error, reset_error, thermal_relaxation_error
+from qiskit.providers.aer.noise.errors import pauli_error, thermal_relaxation_error
 from qiskit.quantum_info.operators import Operator
-from qiskit.tools.visualization import plot_histogram
 
 # <<<<<<<<<<<< CONSTRUCT CIRCUITS >>>>>>>>>>>>>>>>>
 # Prepares qasm_psi

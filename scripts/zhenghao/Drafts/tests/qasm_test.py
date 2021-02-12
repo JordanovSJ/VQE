@@ -1,8 +1,6 @@
-from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
-import numpy as np
-from scripts.zhenghao.noisy_backends import *
-from scripts.zhenghao.utils_li import *
-from scripts.zhenghao.test_utils import *
+from scripts.zhenghao.Drafts.noisy_backends import *
+from scripts.zhenghao.Drafts.utils_li import *
+from scripts.zhenghao.Drafts.test_utils import *
 from qiskit.tools.visualization import plot_histogram
 
 # <<<<<<<<<<<< CREATE QASM_STRING >>>>>>>>>>>>>>>>>
