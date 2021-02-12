@@ -17,7 +17,7 @@ import qiskit
 
 if __name__ == "__main__":
 
-    r = 1.316
+    r = 0.735
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
     q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
 
@@ -32,6 +32,9 @@ if __name__ == "__main__":
     global_cache = GlobalCache(q_system)
     global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
     # global_cache.calculate_commutators_sparse_matrices_dict()
+
+    # backend = QiskitSimBackend
+    # global_cache = None
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}

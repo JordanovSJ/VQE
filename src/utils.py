@@ -1,4 +1,6 @@
-from openfermion.transforms import get_sparse_operator
+# from openfermion.transforms import get_sparse_operator
+from openfermion.linalg import get_sparse_operator
+
 from openfermion import QubitOperator
 
 import sys

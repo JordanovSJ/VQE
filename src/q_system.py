@@ -1,4 +1,5 @@
-from openfermion.hamiltonians import MolecularData
+# from openfermion.hamiltonians import MolecularData
+from openfermion.chem import MolecularData
 from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner, get_sparse_operator
 from openfermionpsi4 import run_psi4
 
