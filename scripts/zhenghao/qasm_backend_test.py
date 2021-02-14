@@ -62,8 +62,11 @@ for n_shots in n_shots_list:
     exp_val_list[i] = expectation_value_1
     time_list[i] = time_total
 
+    i += 1
 
-data = {'n_shots': n_shots_list, 'expectation_value': exp_val_list, 'time': time_list}
+
+data = {'n_shots': n_shots_list, 'expectation_value': exp_val_list, 'time': time_list,
+        'ref_result': expectation_value_0}
 df = pandas.DataFrame(data)
 df.to_csv('csv_folder/{}_different_nshots_{}.csv'.format(molecule.name, time_stamp))
 
