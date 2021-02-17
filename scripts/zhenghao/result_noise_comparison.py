@@ -1,3 +1,7 @@
+import sys
+
+sys.path.extend(['/home/adi/VQE'])
+
 import pandas as pd
 import time
 
@@ -54,9 +58,10 @@ coupling_map = backend.configuration().coupling_map
 message = 'Noise model generated from {}'.format(backend.name())
 logging.info(message)
 
-index_list = [1, 10]
+index_list = [1]
 n_shots = 10
 
+noisy_E = []
 for ansatz_index in index_list:
     message = 'Running ham_expectation_value for {} molecule, first {} ansatz elements, {} shots' \
         .format(molecule.name, ansatz_index, n_shots)
@@ -70,10 +75,15 @@ for ansatz_index in index_list:
                                                   noise_model=noise_model, coupling_map=coupling_map)
     t1 = time.time()
     message = 'Expectation value = {}, time = {}s, Yordan result = {}' \
-        .format(exp_value, t1 - t0, reference_results[ansatz_index-1])
+        .format(exp_value, t1 - t0, reference_results[ansatz_index - 1])
     logging.info(message)
 
+    noisy_E.append(exp_value)
 
+time_stamp_2 = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+data_to_export = {'noisy_E': noisy_E}
+df = pd.DataFrame(data_to_export)
+df.to_csv('csv_folder/{}_r={}_noise_comparison_{}.csv'.format(molecule.name, r, time_stamp_2))
 
 # t2 = time.time()
 # test_exp_value = QasmBackend.eval_expectation_value(qasm_psi=qasm_psi, op_U=test_ham_term,
