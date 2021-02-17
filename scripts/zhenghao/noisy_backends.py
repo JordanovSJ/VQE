@@ -7,7 +7,7 @@ from src.utils import QasmUtils, MatrixUtils
 from src import config
 
 from qiskit import QuantumCircuit, execute
-from qiskit import Aer
+from qiskit import Aer, IBMQ
 
 import qiskit.qasm
 import scipy
@@ -22,11 +22,12 @@ class QasmBackend:
     @staticmethod
     def ham_expectation_value(var_parameters, ansatz, q_system, init_state_qasm=None,
                               n_shots=1024, noisy=False,
-                              noise_model=None, coupling_map=None):
+                              noise_model=None, coupling_map=None, provider_ibmq=False):
         """
         Returns expectation value of the q_system's hamiltonian with respect to the ansatz state
         defined by ansatz, parametrised by var_parameters
 
+        :param provider_ibmq: Whether use IBMQ provider. If false, use Aer provider.
         :param init_state_qasm: qasm string for self customed initial state. If none, default is hf_state
         :param coupling_map: Coupling map for real device noise
         :param noisy: Is the evaluation noisy?
@@ -56,7 +57,8 @@ class QasmBackend:
 
         eval_expectation_value = partial(QasmBackend.eval_expectation_value, qasm_psi=qasm_psi,
                                          n_qubits=n_qubits, n_shots=n_shots, noisy=noisy,
-                                         noise_model=noise_model, coupling_map=coupling_map)
+                                         noise_model=noise_model, coupling_map=coupling_map,
+                                         provider_ibmq=provider_ibmq)
 
         exp_value_list = [eval_expectation_value(op_U=operator) for operator in ham_keys_list]
         weighted_exp_value = [a * b for a, b in zip(exp_value_list, weights_list)]
@@ -67,7 +69,7 @@ class QasmBackend:
     # U is given in form of a tuple, e.g. ((1, X), (2, Z), (3, Y))
     @staticmethod
     def eval_expectation_value(qasm_psi: str, op_U: tuple, n_qubits, n_shots=1024, noisy=False,
-                               noise_model=None, coupling_map=None):
+                               noise_model=None, coupling_map=None, provider_ibmq=False):
         if op_U == ():
             return 1.0
 
@@ -79,9 +81,11 @@ class QasmBackend:
 
         if noisy:
             counts = QasmBackend.noisy_sim(qasm_to_eval, noise_model=noise_model,
-                                           coupling_map=coupling_map, n_shots=n_shots)
+                                           coupling_map=coupling_map, n_shots=n_shots,
+                                           provider_ibmq=provider_ibmq)
         else:
-            counts = QasmBackend.noiseless_sim(qasm_to_eval, n_shots=n_shots)
+            counts = QasmBackend.noiseless_sim(qasm_to_eval, n_shots=n_shots,
+                                               provider_ibmq=provider_ibmq)
 
         result_0 = '0' * n_qubits
         result_1 = '0' * (n_qubits - 1) + '1'
@@ -200,16 +204,22 @@ class QasmBackend:
     # Construct circuit from qasm_str, run on qasm_simulator
     # Return counts as a dictionary
     @staticmethod
-    def noiseless_sim(qasm_str: str, n_shots=1024):
+    def noiseless_sim(qasm_str: str, n_shots=1024, provider_ibmq=False):
 
         # construct quantum circuit
         circ = QuantumCircuit.from_qasm_str(qasm_str=qasm_str)
 
-        # Select simulator to be Qasm from the Aer provider
-        simulator = Aer.get_backend('qasm_simulator')
+        # Select simulator to be Qasm
+        if provider_ibmq:
+            IBMQ.load_account()
+            provider = IBMQ.get_provider(hub='ibm-q')
+            simulator = provider.get_backend('ibmq_qasm_simulator')
+        else:
+            simulator = Aer.get_backend('qasm_simulator')
 
         # Execute under noiseless conditions and get counts
-        result = execute(circ, simulator, shots=n_shots).result()
+        job = execute(circ, simulator, shots=n_shots)
+        result = job.result()
         counts = result.get_counts(circ)
 
         return counts
@@ -217,13 +227,18 @@ class QasmBackend:
     # Construct circuit from qasm_str, run on qasm_simulator with noise_model
     # Return counts as a dictionary
     @staticmethod
-    def noisy_sim(qasm_str: str, noise_model, coupling_map=None, n_shots=1024):
+    def noisy_sim(qasm_str: str, noise_model, coupling_map=None, n_shots=1024, provider_ibmq=False):
 
         # construct quantum circuit
         circ = QuantumCircuit.from_qasm_str(qasm_str=qasm_str)
 
-        # Select simulator to be Qasm from the Aer provider
-        simulator = Aer.get_backend('qasm_simulator')
+        # Select simulator to be Qasm
+        if provider_ibmq:
+            IBMQ.load_account()
+            provider = IBMQ.get_provider(hub='ibm-q')
+            simulator = provider.get_backend('ibmq_qasm_simulator')
+        else:
+            simulator = Aer.get_backend('qasm_simulator')
 
         # Get basis gates for the noise model
         basis_gates = noise_model.basis_gates
