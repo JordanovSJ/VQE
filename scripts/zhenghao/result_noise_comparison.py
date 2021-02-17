@@ -1,9 +1,13 @@
 import pandas as pd
+import time
+
+from qiskit import IBMQ
+from qiskit.providers.aer.noise import device, NoiseModel
+
 from src.q_systems import LiH
 from src.iter_vqe_utils import DataUtils, QasmUtils
 from src.utils import *
 from scripts.zhenghao.noisy_backends import QasmBackend
-import time
 
 # <<<<<<<<<< MOLECULE >>>>>>>>>>>>.
 r = 3.25
@@ -34,14 +38,23 @@ ansatz_state = DataUtils.ansatz_from_data_frame(data_frame, molecule)
 ansatz = ansatz_state.ansatz_elements
 var_parameters = ansatz_state.parameters
 
-# <<<<<<<<<< QASM_PSI >>>>>>>>>>>>.
-init_state_qasm = QasmUtils.hf_state(molecule.n_electrons)
-
+# # <<<<<<<<<< QASM_PSI >>>>>>>>>>>>.
+# init_state_qasm = QasmUtils.hf_state(molecule.n_electrons)
 # ansatz_index = 1
 # qasm_ansatz = QasmBackend.qasm_from_ansatz(ansatz[0:ansatz_index], var_parameters[0:ansatz_index])
 # qasm_psi = init_state_qasm + qasm_ansatz
 
-index_list = [1, 10, 30, 66]
+# <<<<<<<<<< NOISE MODEL >>>>>>>>>>>>.
+IBMQ.load_account()
+provider = IBMQ.get_provider(hub='ibm-q')
+backend = provider.get_backend('ibmq_16_melbourne')
+noise_model = device.basic_device_noise_model(backend.properties())
+coupling_map = backend.configuration().coupling_map
+
+message = 'Noise model generated from {}'.format(backend.name())
+logging.info(message)
+
+index_list = [1, 10]
 n_shots = 10
 
 for ansatz_index in index_list:
@@ -52,7 +65,9 @@ for ansatz_index in index_list:
     t0 = time.time()
     exp_value = QasmBackend.ham_expectation_value(var_parameters=var_parameters[0:ansatz_index],
                                                   ansatz=ansatz[0:ansatz_index],
-                                                  q_system=molecule, n_shots=n_shots)
+                                                  q_system=molecule, n_shots=n_shots,
+                                                  noisy=True,
+                                                  noise_model=noise_model, coupling_map=coupling_map)
     t1 = time.time()
     message = 'Expectation value = {}, time = {}s, Yordan result = {}' \
         .format(exp_value, t1 - t0, reference_results[ansatz_index-1])
