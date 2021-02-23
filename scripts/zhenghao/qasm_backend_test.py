@@ -40,37 +40,43 @@ logging.info(message)
 
 # <<<<<<<<<< QasmBackend >>>>>>>>>>>>.
 # n_shots_list = [1, 5, 10, 50, 100, 200, 500]
-n_shots_list = [10]
+n_shots_list = [10, 100, 1000]
 
 n_it = len(n_shots_list)
 exp_val_list = np.zeros(n_it)
 time_list = np.zeros(n_it)
 
+method_list = [
+    'statevector', 'density_matrix',
+    'matrix_product_state', 'automatic'
+]
+
 i=0
 for n_shots in n_shots_list:
-    time_0 = time.time()
-    expectation_value_1 = QasmBackend.ham_expectation_value(var_pars, ansatz, molecule, n_shots=n_shots)
-    time_1 = time.time()
-    time_total = time_1 - time_0
+    for method in method_list:
+        time_0 = time.time()
+        expectation_value_1 = QasmBackend.ham_expectation_value(var_pars, ansatz, molecule,
+                                                                n_shots=n_shots,
+                                                                method=method)
+        time_1 = time.time()
+        time_total = time_1 - time_0
 
-    message = 'QasmBackend result is {} for n_shots={}'.format(expectation_value_1, n_shots)
+        message = 'QasmBackend result is {} for n_shots={}, method={}'.format(expectation_value_1,
+                                                                              n_shots,
+                                                                              method)
 
-    logging.info(message)
+        logging.info(message)
 
-    message_time = 'time used = {}s'.format(time_total)
+        message_time = 'Time used = {}s'.format(time_total)
 
-    logging.info(message_time)
-
-    exp_val_list[i] = expectation_value_1
-    time_list[i] = time_total
-
-    i += 1
+        logging.info(message_time)
 
 
-data = {'n_shots': n_shots_list, 'expectation_value': exp_val_list, 'time': time_list,
-        'ref_result': expectation_value_0}
-df = pandas.DataFrame(data)
-df.to_csv('csv_folder/{}_different_nshots_{}.csv'.format(molecule.name, time_stamp))
+
+# data = {'n_shots': n_shots_list, 'expectation_value': exp_val_list, 'time': time_list,
+#         'ref_result': expectation_value_0}
+# df = pandas.DataFrame(data)
+# df.to_csv('csv_folder/{}_different_nshots_{}.csv'.format(molecule.name, time_stamp))
 
 # qasm_test = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\ncx q[1], q[0];\nh q[0];\nh q[0];\nrz(1.5707963267948966) q[0];\ncx q[2], q[0];\nrz(-1.5707963267948966) q[0];\nrz(1.5707963267948966) q[2];\nh q[0];\nry(2.4059249570334487) q[2];\ncx q[0], q[2];\nry(-2.4059249570334487) q[2];\ncx q[2], q[0];\nh q[0];\ncx q[1], q[0];\nh q[0];\nh q[1];\ncx q[2], q[1];\nh q[1];\nh q[1];\nrz(1.5707963267948966) q[1];\ncx q[3], q[1];\nrz(-1.5707963267948966) q[1];\nrz(1.5707963267948966) q[3];\nh q[1];\nry(2.4533734055084206) q[3];\ncx q[1], q[3];\nry(-2.4533734055084206) q[3];\ncx q[3], q[1];\nh q[1];\ncx q[2], q[1];\nh q[1];\ncx q[0], q[1];\nx q[1];\ncx q[2], q[3];\nx q[3];\ncx q[0], q[2];\nrz(1.5707963267948966) q[0];\nrx(-0.0715007393139433) q[0];\nh q[1];\ncx q[0], q[1];\nh q[1];\nrx(0.0715007393139433) q[0];\nh q[3];\ncx q[0], q[3];\nh q[3];\nrx(-0.0715007393139433) q[0];\nh q[1];\ncx q[0], q[1];\nh q[1];\nrx(0.0715007393139433) q[0];\nh q[2];\ncx q[0], q[2];\nh q[2];\nrx(-0.0715007393139433) q[0];\nh q[1];\ncx q[0], q[1];\nh q[1];\nrx(0.0715007393139433) q[0];\nh q[3];\ncx q[0], q[3];\nh q[3];\nrx(-0.0715007393139433) q[0];\nh q[1];\ncx q[0], q[1];\nh q[1];\nrx(0.0715007393139433) q[0];\nrz(-1.5707963267948966) q[0];\nh q[2];\nrz(1.5707963267948966) q[2];\nrz(-1.5707963267948966) q[0];\ncx q[0], q[2];\nrz(-1.5707963267948966) q[2];\nh q[2];\nx q[1];\ncx q[0], q[1];\nx q[3];\ncx q[2], q[3];\n\nmeasure q[0] -> c[0];'
 

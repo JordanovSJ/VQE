@@ -105,7 +105,7 @@ for n_shots in n_shots_list:
     logging.info(message)
 
     t2 = time.time()
-    counts = QasmBackend.noiseless_sim(qasm_str=qasm_to_eval, n_shots=n_shots)
+    counts = QasmBackend.noisy_sim(qasm_str=qasm_to_eval, n_shots=n_shots)
     t3 = time.time()
     message = 'result = {}, time={} for noiseless_sim with IBMQ backend'.format(counts, t3 - t2)
     logging.info(message)
@@ -118,8 +118,7 @@ for n_shots in n_shots_list:
     logging.info(message)
 
     t6 = time.time()
-    counts = QasmBackend.noiseless_sim(qasm_str=qasm_to_eval, n_shots=n_shots,
-                                       provider_ibmq=False)
+    counts = QasmBackend.noisy_sim(qasm_str=qasm_to_eval, n_shots=n_shots)
     t7 = time.time()
     message = 'result = {}, time = {} for noiseless simulation with Aer backend'.format(counts, t7-t6)
     logging.info(message)
