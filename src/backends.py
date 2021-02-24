@@ -1,7 +1,5 @@
-from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
-from openfermion import QubitOperator
-from openfermion.utils import jw_hartree_fock_state
-import time
+# from openfermion.transforms import get_fermion_operator, jordan_wigner, get_sparse_operator
+from openfermion.linalg import get_sparse_operator
 
 from src.utils import QasmUtils, MatrixUtils
 from src import config

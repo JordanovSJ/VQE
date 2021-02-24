@@ -1,6 +1,8 @@
 <<<<<<<<<<<<<<<<< URGENT >>>>>>>>>>>>>>>>>>>>
 
--separate the use of cache in a separate MatrixBackend?
+-higher excited states for LiH and BeH2
+
+-dissociation curves for Lih and BeH2 excited states
 
 -make excitation_gradient to work for non zero points
 
