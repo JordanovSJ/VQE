@@ -7,22 +7,18 @@ import time
 from functools import partial
 
 from qiskit import IBMQ
-from qiskit.providers.aer.noise import NoiseModel
+from qiskit.providers.aer.noise import NoiseModel, errors, pauli_error
 
 from src.molecules.molecules import LiH, H4
 from src.iter_vqe_utils import DataUtils, QasmUtils
 from src.utils import *
 from scripts.zhenghao.noisy_backends import QasmBackend
+from scripts.zhenghao.test_utils import NoiseUtils
 from src.backends import QiskitSimBackend
 
 # <<<<<<<<<< MOLECULE >>>>>>>>>>>>.
 r = 1.546
 molecule = H4(r=r)
-
-# <<<<<<<<<< HAMILTONIAN >>>>>>>>>>>>.
-hamiltonian = molecule.jw_qubit_ham
-ham_terms = hamiltonian.terms
-ham_keys_list = list(ham_terms.keys())
 n_qubits = molecule.n_qubits
 n_electrons = molecule.n_electrons
 
@@ -43,25 +39,33 @@ ansatz_state = DataUtils.ansatz_from_data_frame(data_frame, molecule)
 ansatz = ansatz_state.ansatz_elements
 var_parameters = ansatz_state.parameters
 
-# <<<<<<<<<< NOISE MODEL >>>>>>>>>>>>.
-IBMQ.load_account()
-provider = IBMQ.get_provider(hub='ibm-q')
-backend = provider.get_backend('ibmq_16_melbourne')
-noise_model = NoiseModel.from_backend(backend)
-coupling_map = backend.configuration().coupling_map
+# <<<<<<<<<< NOISE MODEL FROM DEVICE>>>>>>>>>>>>.
+# device_name = 'ibmq_16_melbourne'
+# noise_model, coupling_map = NoiseUtils.device_noise(device_name)
+# message = 'Noise model generated from {}'.format(device_name)
+# logging.info(message)
 
-message = 'Noise model generated from {}'.format(backend.name())
-# message = 'No noise'
+# <<<<<<<<<< NOISE MODEL SELF CUSTOM>>>>>>>>>>>>.
+# Depolarizing error for two qubit gates
+prob_1 = 0
+prob_2 = 0.03
+# Measurement error
+prob_meas = 0.05
+noise_model = NoiseUtils.gate_and_measure_noise(prob_1, prob_2, prob_meas)
+coupling_map = None
+
+message = 'prob_1 = {}, prob_2 = {}, prob_meas = {}'.format(prob_1, prob_2
+                                                            , prob_meas)
 logging.info(message)
 
 # <<<<<<<<<< DIFFERENT METHODS >>>>>>>>>>>>.
-# methods = ['statevector', 'density_matrix',
-#            'matrix_product_state', 'automatic']
-methods = ['statevector', 'statevector_gpu']
+methods = ['statevector']
+# methods = ['statevector', 'statevector_gpu']
 
 # <<<<<<<<<< INITIALISE DATAFRAME TO COLLECT RESULTS >>>>>>>>>>>>.
 results_df = pd.DataFrame(columns=['n', 'noiseless E', 'noisy E', 'time'])
-filename_head = '../../results/zhenghao_testing/{}_r={}_noise_comparison_'.format(molecule.name, r)
+filename_head = '../../results/zhenghao_testing/{}_r={}_p1={}_p2={}_pm={}_'\
+    .format(molecule.name, r, prob_1, prob_2, prob_meas)
 filename_tail = '{}'.format(time_stamp)
 
 n_shots = 10  # Number of shots
@@ -97,6 +101,6 @@ while dE_list[iter_index] > threshold:
         results_df.loc[iter_index] = {'n': iter_n, 'noiseless E': noiseless_result,
                                       'noisy E': exp_value, 'time': t1-t0}
         filename = 'method={}_'.format(method_str) + filename_tail
-        results_df.to_csv(filename_head + filename)
+        # results_df.to_csv(filename_head + filename)
 
     iter_index += 1

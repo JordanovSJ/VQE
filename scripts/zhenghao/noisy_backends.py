@@ -62,10 +62,17 @@ class QasmBackend:
         circ_psi = QuantumCircuit.from_qasm_str(qasm_psi)
         psi = CircuitStateFn(circ_psi)
 
+        # Get basis gates
+        if noise_model is None:
+            basis_gates = None
+        else:
+            basis_gates = noise_model.basis_gates
+
         # Get backend and specify method, noise_model
         # Initialise QuantumInstance
         backend = QasmSimulator(method=method, noise_model=noise_model)
-        q_instance = QuantumInstance(backend, shots=n_shots, coupling_map=coupling_map)
+        q_instance = QuantumInstance(backend, shots=n_shots, coupling_map=coupling_map,
+                                     basis_gates=basis_gates)
 
         # Generate Summed_Op from hamiltonian
         op = QasmBackend.op_from_ham(hamiltonian, n_qubits)
