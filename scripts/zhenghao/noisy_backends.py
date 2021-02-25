@@ -2,6 +2,10 @@ from src.utils import QasmUtils
 
 from qiskit import QuantumCircuit, execute
 from qiskit.providers.aer import QasmSimulator
+from qiskit.aqua.operators import X, Y, Z, I, SummedOp, CircuitStateFn, StateFn, PauliExpectation, CircuitSampler
+from qiskit.aqua import QuantumInstance
+
+from openfermion.ops.operators.qubit_operator import QubitOperator
 
 from functools import partial
 
@@ -12,43 +16,68 @@ class QasmBackend:
     @staticmethod
     def ham_expectation_value(var_parameters, ansatz, q_system, init_state_qasm=None,
                               n_shots=1024, noise_model=None, coupling_map=None,
-                              method='automatic'):
-        """
-        Returns expectation value of the q_system's hamiltonian with respect to the ansatz state
-        defined by ansatz, parametrised by var_parameters
+                              method='automatic', built_in_Pauli=True):
 
-        :param method: method for QasmSimulator backend options
-        :param init_state_qasm: qasm string for self customed initial state. If none, default is hf_state
-        :param coupling_map: Coupling map for real device noise
-        :param n_shots: Number of shots of experiment
-        :param noise_model: Noise model of the experiment
-        :param var_parameters: List of variational parameters for the ansatz, same order as ansatz
-        :param ansatz: List of ansatz elements that construct the ansatz circuit
-        :param q_system: the molecule, whose hamiltonian expectation value we want to evaluate
-        :return: the expectation value of the molecule's hamiltonian with respect to the ansatz state
-        """
+        n_qubits = q_system.n_qubits  # number of qubits
+        hamiltonian = q_system.jw_qubit_ham  # molecule hamiltonian
 
+        # Generate hartree fock as initial state
         if init_state_qasm is None:
             init_state_qasm = QasmUtils.hf_state(q_system.n_electrons)
+        # Generate qasm string for ansatz
         qasm_ansatz = QasmBackend.qasm_from_ansatz(ansatz, var_parameters)
-        qasm_psi = init_state_qasm + qasm_ansatz
 
-        n_qubits = q_system.n_qubits
+        if built_in_Pauli:
+            # Qasm string for psi, no classical register
+            qasm_psi = init_state_qasm + qasm_ansatz
+            exp_value = QasmBackend.built_in_pauli(qasm_psi, hamiltonian, n_qubits,
+                                                   n_shots=n_shots, noise_model=noise_model,
+                                                   coupling_map=coupling_map, method=method)
+        else:
+            ham_terms = hamiltonian.terms  # Returns a dictionary, tuple_i: h_i
+            ham_keys_list = list(ham_terms.keys())  # List of tuple_i, each tuple_i looks like ((0, 'X'), (1, 'Z'))
+            weights_list = list(ham_terms.values())  # List of h_i, each h_i is a complex number
 
-        hamiltonian = q_system.jw_qubit_ham  # The hamiltonian looks like h = Sum(h_i * tuple_i)
-        ham_terms = hamiltonian.terms  # Returns a dictionary, tuple_i: h_i
-        ham_keys_list = list(ham_terms.keys())  # List of tuple_i, each tuple_i looks like ((0, 'X'), (1, 'Z'))
-        weights_list = list(ham_terms.values())  # List of h_i, each h_i is a complex number
+            # Qasm string for psi
+            qasm_psi = init_state_qasm + qasm_ansatz
 
-        eval_expectation_value = partial(QasmBackend.eval_expectation_value, qasm_psi=qasm_psi,
-                                         n_qubits=n_qubits, n_shots=n_shots,
-                                         noise_model=noise_model, coupling_map=coupling_map,
-                                         method=method)
+            eval_expectation_value = partial(QasmBackend.eval_expectation_value, qasm_psi=qasm_psi,
+                                             n_qubits=n_qubits, n_shots=n_shots,
+                                             noise_model=noise_model, coupling_map=coupling_map,
+                                             method=method)
 
-        exp_value_list = [eval_expectation_value(op_U=operator) for operator in ham_keys_list]
-        weighted_exp_value = [a * b for a, b in zip(exp_value_list, weights_list)]
+            exp_value_list = [eval_expectation_value(op_U=operator) for operator in ham_keys_list]
+            weighted_exp_value = [a * b for a, b in zip(exp_value_list, weights_list)]
 
-        return sum(weighted_exp_value).real
+            exp_value = sum(weighted_exp_value).real
+
+        return exp_value
+
+    # Runs the built in PauliExpectation method for evaluating expectation value
+    @staticmethod
+    def built_in_pauli(qasm_psi, hamiltonian, n_qubits, n_shots=1024,
+                       noise_model=None, coupling_map=None, method='automatic'):
+        # Generate state function for psi
+        qasm_psi = QasmBackend.pure_quantum_header(n_qubits) + qasm_psi  # Add header without classical register
+        circ_psi = QuantumCircuit.from_qasm_str(qasm_psi)
+        psi = CircuitStateFn(circ_psi)
+
+        # Get backend and specify method, noise_model
+        # Initialise QuantumInstance
+        backend = QasmSimulator(method=method, noise_model=noise_model)
+        q_instance = QuantumInstance(backend, shots=n_shots, coupling_map=coupling_map)
+
+        # Generate Summed_Op from hamiltonian
+        op = QasmBackend.op_from_ham(hamiltonian, n_qubits)
+
+        # Define the state to sample
+        measurable_expression = StateFn(op, is_measurement=True).compose(psi)
+
+        # Convert to expectation value
+        expectation = PauliExpectation().convert(measurable_expression)
+        sampler = CircuitSampler(q_instance).convert(expectation)
+
+        return sampler.eval().real
 
     # Returns expectation value of <psi|U|psi> by manual pauli expectation evaluation
     # U is given in form of a tuple, e.g. ((1, X), (2, Z), (3, Y))
@@ -180,6 +209,53 @@ class QasmBackend:
                                                           q_index=qubit_index))
 
         return ''.join(qasm)
+
+    # Returns qiskit operator from openfermion QubitOperator
+    # QubitOperator looks like (-0.09057898654257798+0j) [] + (-0.04523279995089955+0j) [X0 X1 Y2 Y3]
+    # Returns something like (-0.09.. * I^I^I^I) + (-0.045.. * Y^Y^X^X)
+    @staticmethod
+    def op_from_ham(hamiltonian: QubitOperator, n_qubits: int):
+        term_dict = hamiltonian.terms
+        op_list = [term_dict[op_tuple] * QasmBackend.op_from_tuple(op_tuple, n_qubits) for op_tuple in term_dict.keys()]
+
+        return SummedOp(op_list)
+
+    # Returns operator from a tuple
+    # Tuple looks like ((0, 'Y'), (2, 'X')), or ()
+    # Need to return 0^X^I^Y or I^I^I^I
+    @staticmethod
+    def op_from_tuple(ham_term: tuple, n_qubits: int):
+        # Convert tuple of tuples into dict
+        op_dict = dict(ham_term)
+
+        op = QasmBackend.op_from_str(op_dict[n_qubits - 1]) if n_qubits - 1 in op_dict.keys() else I
+        for idx in reversed(range(n_qubits - 1)):
+            if idx in op_dict.keys():
+                op = op.tensor(QasmBackend.op_from_str(op_dict[idx]))
+            else:
+                op = op.tensor(I)
+
+        return op
+
+    # Returns operator X, Y, Z from string 'X', 'Y', 'Z'
+    @staticmethod
+    def op_from_str(op_str: str):
+        if op_str == 'X':
+            op = X
+        elif op_str == 'Y':
+            op = Y
+        elif op_str == 'Z':
+            op = Z
+        else:
+            raise Exception('Only Pauli operators X,Y,Z accepted')
+
+        return op
+
+    # Returns header for quantum register only, no classical register
+    @staticmethod
+    def pure_quantum_header(n_qubits):
+        header = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[{}];\n'.format(n_qubits)
+        return header
 
     # Construct circuit from qasm_str, run on qasm_simulator
     # Return counts as a dictionary

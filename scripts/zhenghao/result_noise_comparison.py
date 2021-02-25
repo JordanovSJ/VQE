@@ -7,9 +7,9 @@ import time
 from functools import partial
 
 from qiskit import IBMQ
-from qiskit.providers.aer.noise import device, NoiseModel
+from qiskit.providers.aer.noise import NoiseModel
 
-from src.q_systems import LiH, H4
+from src.molecules.molecules import LiH, H4
 from src.iter_vqe_utils import DataUtils, QasmUtils
 from src.utils import *
 from scripts.zhenghao.noisy_backends import QasmBackend
@@ -47,7 +47,7 @@ var_parameters = ansatz_state.parameters
 IBMQ.load_account()
 provider = IBMQ.get_provider(hub='ibm-q')
 backend = provider.get_backend('ibmq_16_melbourne')
-noise_model = device.basic_device_noise_model(backend.properties())
+noise_model = NoiseModel.from_backend(backend)
 coupling_map = backend.configuration().coupling_map
 
 message = 'Noise model generated from {}'.format(backend.name())
@@ -57,7 +57,7 @@ logging.info(message)
 # <<<<<<<<<< DIFFERENT METHODS >>>>>>>>>>>>.
 # methods = ['statevector', 'density_matrix',
 #            'matrix_product_state', 'automatic']
-methods = ['statevector']
+methods = ['statevector', 'statevector_gpu']
 
 # <<<<<<<<<< INITIALISE DATAFRAME TO COLLECT RESULTS >>>>>>>>>>>>.
 results_df = pd.DataFrame(columns=['n', 'noiseless E', 'noisy E', 'time'])
