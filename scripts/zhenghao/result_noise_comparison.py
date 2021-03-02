@@ -48,28 +48,30 @@ var_parameters = ansatz_state.parameters
 # <<<<<<<<<< NOISE MODEL SELF CUSTOM>>>>>>>>>>>>.
 # Depolarizing error for two qubit gates
 prob_1 = 0
-prob_2 = 0.03
+prob_2 = 3e-5
 # Measurement error
-prob_meas = 0.05
-noise_model = NoiseUtils.gate_and_measure_noise(prob_1, prob_2, prob_meas)
+prob_meas = 5e-5
+# noise_model = NoiseUtils.gate_and_measure_noise(prob_1, prob_2, prob_meas)
+noise_model = None
 coupling_map = None
 
-message = 'prob_1 = {}, prob_2 = {}, prob_meas = {}'.format(prob_1, prob_2
-                                                            , prob_meas)
+# message = 'prob_1 = {}, prob_2 = {}, prob_meas = {}'.format(prob_1, prob_2
+#                                                            , prob_meas)
+message = 'No noise to see how good qasm backend can get'
 logging.info(message)
 
 # <<<<<<<<<< DIFFERENT METHODS >>>>>>>>>>>>.
-methods = ['statevector']
+methods = ['automatic']
 # methods = ['statevector', 'statevector_gpu']
+
+n_shots = 1e6  # Number of shots
+threshold = 1e-3  # Stopping point for dE
 
 # <<<<<<<<<< INITIALISE DATAFRAME TO COLLECT RESULTS >>>>>>>>>>>>.
 results_df = pd.DataFrame(columns=['n', 'noiseless E', 'noisy E', 'time'])
-filename_head = '../../results/zhenghao_testing/{}_r={}_p1={}_p2={}_pm={}_'\
-    .format(molecule.name, r, prob_1, prob_2, prob_meas)
+filename_head = '../../results/zhenghao_testing/{}_r={}_noiseless_qasm_{}shots_'\
+    .format(molecule.name, r, n_shots)
 filename_tail = '{}'.format(time_stamp)
-
-n_shots = 10  # Number of shots
-threshold = 0.04  # Stopping point for dE
 
 iter_index = 0
 
@@ -101,6 +103,6 @@ while dE_list[iter_index] > threshold:
         results_df.loc[iter_index] = {'n': iter_n, 'noiseless E': noiseless_result,
                                       'noisy E': exp_value, 'time': t1-t0}
         filename = 'method={}_'.format(method_str) + filename_tail
-        # results_df.to_csv(filename_head + filename)
+        results_df.to_csv(filename_head + filename)
 
     iter_index += 1
