@@ -17,7 +17,7 @@ import numpy as np
 
 # <<<<<<<<<< MOLECULE >>>>>>>>>>>>.
 r = 1.546
-molecule = H4(r)
+molecule = H2(r)
 n_qubits = molecule.n_qubits
 n_electrons = molecule.n_electrons
 hamiltonian = molecule.jw_qubit_ham
@@ -50,9 +50,9 @@ coupling_map = backend.configuration().coupling_map
 # noise_model = None
 # coupling_map = None
 
-# message = 'Device noise generated from {}'.format(backend.name())
-# logging.info('')
-# logging.info(message)
+message = 'Device noise generated from {}'.format(backend.name())
+logging.info('')
+logging.info(message)
 
 # <<<<<<<<<< QiskitSimBackend >>>>>>>>>>>>.
 qiskit_sim_result = QiskitSimBackend.ham_expectation_value(var_pars, ansatz, molecule)
@@ -60,26 +60,24 @@ message = 'QiskitSimBackend result is {}, new calculation'.format(qiskit_sim_res
 logging.info('')
 logging.info(message)
 
-ref_result = reference_results[len(reference_results)-1]
+ref_result = reference_results[len(reference_results) - 1]
 message = 'IQEB VQE reference result is {}'.format(ref_result)
 logging.info('')
 logging.info(message)
 
 # <<<<<<<<<< QasmBackend >>>>>>>>>>>>.
-n_shots_list = [1000]
+n_shots_list = [1e2, 1e3, 1e4, 1e5, 1e6]
 # n_shots_list = [10, 100, 1000]
 
 # <<<<<<<<<< INITIALISE DATAFRAME TO COLLECT RESULTS >>>>>>>>>>>>.
-# results_df = pd.DataFrame(columns=['n_shots', 'QiskitSimBackend',
-#                                    'p_statevector', 'time_p_statevector',
-#                                    'n_statevector', ' time_n_statevector',
-#                                    'p_density_matrix', 'time_p_density_matrix',
-#                                    'n_density_matrix', 'time_n_density_matrix'])
-# filename_head = '../../results/zhenghao_testing/{}_r={}_UCCSD_qasm_backend_comparison'.format(molecule.name, r)
-# filename_tail = '{}'.format(time_stamp)
+results_df = pd.DataFrame(columns=['n_shots', 'ref E', 'noiseless E',
+                                   'noiseless time',
+                                   'noisy E', 'noisy time'])
+filename_head = '../../results/zhenghao_testing/{}_r={}_iqeb_ansatz_compare_'.format(molecule.name, r)
+filename_tail = '{}'.format(time_stamp)
 
 method_list = [
-    'statevector'
+    'statevector', 'statevector_gpu'
 ]
 
 idx = 0
@@ -88,41 +86,39 @@ for n_shots in n_shots_list:
     logging.info('')
     logging.info(message)
 
-    # results_df.loc[idx] = {'n_shots': n_shots, 'QiskitSimBackend': qiskit_sim_result,
-    #                        'p_statevector': 0, 'time_p_statevector': 0,
-    #                        'n_statevector': 0, ' time_n_statevector': 0,
-    #                        'p_density_matrix': 0, 'time_p_density_matrix': 0,
-    #                        'n_density_matrix': 0, 'time_n_density_matrix': 0}
-
     for method in method_list:
         message = 'method = {}'.format(method)
-        # logging.info(message)
-        # time_0 = time.time()
-        # expectation_value_1 = QasmBackend.ham_expectation_value(var_pars, ansatz, molecule,
-        #                                                         n_shots=n_shots, noise_model=noise_model,
-        #                                                         method=method, built_in_Pauli=False)
-        # time_1 = time.time()
-        # time_total = time_1 - time_0
-        # message = 'QasmBackend result is {} for manual Pauli, time used = {}s' \
-        #     .format(expectation_value_1, time_total)
-        # logging.info(message)
+        logging.info('')
+        logging.info(message)
 
         time_0 = time.time()
-        expectation_value_1 = QasmBackend.ham_expectation_value(var_pars, ansatz, molecule,
+        expectation_value_n = QasmBackend.ham_expectation_value(var_pars, ansatz, molecule,
                                                                 n_shots=n_shots, noise_model=noise_model,
                                                                 method=method,
                                                                 built_in_Pauli=True)
         time_1 = time.time()
-        time_total = time_1 - time_0
-        message = 'QasmBackend result is {} for built in Pauli, time used = {}s' \
-            .format(expectation_value_1, time_total)
+        time_n = time_1 - time_0
+        message = 'QasmBackend result is {}, noisy, time used = {}s' \
+            .format(expectation_value_n, time_n)
         logging.info(message)
 
+        time_0 = time.time()
+        expectation_value_p = QasmBackend.ham_expectation_value(var_pars, ansatz, molecule,
+                                                                n_shots=n_shots,
+                                                                method=method,
+                                                                built_in_Pauli=True)
+        time_1 = time.time()
+        time_p = time_1 - time_0
+        message = 'QasmBackend result is {}, noiseless, time used = {}s' \
+            .format(expectation_value_p, time_p)
+        logging.info(message)
+
+        results_df.loc[idx] = {'n_shots': n_shots, 'ref E': ref_result,
+                               'noiseless E': expectation_value_p,
+                               'noiseless time': time_p,
+                               'noisy E': expectation_value_n,
+                               'noisy time': time_n}
+        filename = 'method={}_'.format(method) + filename_tail
+        results_df.to_csv(filename_head + filename)
+
     idx += 1
-
-# data = {'n_shots': n_shots_list, 'expectation_value': exp_val_list, 'time': time_list,
-#         'ref_result': expectation_value_0}
-# df = pandas.DataFrame(data)
-# df.to_csv('csv_folder/{}_different_nshots_{}.csv'.format(molecule.name, time_stamp))
-
-# qasm_test = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\ncx q[1], q[0];\nh q[0];\nh q[0];\nrz(1.5707963267948966) q[0];\ncx q[2], q[0];\nrz(-1.5707963267948966) q[0];\nrz(1.5707963267948966) q[2];\nh q[0];\nry(2.4059249570334487) q[2];\ncx q[0], q[2];\nry(-2.4059249570334487) q[2];\ncx q[2], q[0];\nh q[0];\ncx q[1], q[0];\nh q[0];\nh q[1];\ncx q[2], q[1];\nh q[1];\nh q[1];\nrz(1.5707963267948966) q[1];\ncx q[3], q[1];\nrz(-1.5707963267948966) q[1];\nrz(1.5707963267948966) q[3];\nh q[1];\nry(2.4533734055084206) q[3];\ncx q[1], q[3];\nry(-2.4533734055084206) q[3];\ncx q[3], q[1];\nh q[1];\ncx q[2], q[1];\nh q[1];\ncx q[0], q[1];\nx q[1];\ncx q[2], q[3];\nx q[3];\ncx q[0], q[2];\nrz(1.5707963267948966) q[0];\nrx(-0.0715007393139433) q[0];\nh q[1];\ncx q[0], q[1];\nh q[1];\nrx(0.0715007393139433) q[0];\nh q[3];\ncx q[0], q[3];\nh q[3];\nrx(-0.0715007393139433) q[0];\nh q[1];\ncx q[0], q[1];\nh q[1];\nrx(0.0715007393139433) q[0];\nh q[2];\ncx q[0], q[2];\nh q[2];\nrx(-0.0715007393139433) q[0];\nh q[1];\ncx q[0], q[1];\nh q[1];\nrx(0.0715007393139433) q[0];\nh q[3];\ncx q[0], q[3];\nh q[3];\nrx(-0.0715007393139433) q[0];\nh q[1];\ncx q[0], q[1];\nh q[1];\nrx(0.0715007393139433) q[0];\nrz(-1.5707963267948966) q[0];\nh q[2];\nrz(1.5707963267948966) q[2];\nrz(-1.5707963267948966) q[0];\ncx q[0], q[2];\nrz(-1.5707963267948966) q[2];\nh q[2];\nx q[1];\ncx q[0], q[1];\nx q[3];\ncx q[2], q[3];\n\nmeasure q[0] -> c[0];'
