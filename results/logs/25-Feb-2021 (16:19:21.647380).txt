@@ -1,0 +1,4 @@
+INFO 2021-02-25 16:19:21,648 H4, r=1.546, iqeb_vqe result compare with noise
+INFO 2021-02-25 16:19:21,648 n_qubits = 8, n_electrons = 4
+INFO 2021-02-25 16:19:21,677 Running QasmBackend.ham_expectation_value for H4 molecule, first 1 ansatz elements, noiseless value=-1.849405076790277, 10 shots
+INFO 2021-02-25 16:19:25,882 For statevector method, noisy expectation value = -1.6171825139825748, time = 4.204113006591797s, 

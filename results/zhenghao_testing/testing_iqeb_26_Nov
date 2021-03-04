@@ -1,0 +1,104 @@
+H2, r=1.546 ,q_exc
+Calculating excitation generators
+2020-11-26 10:14:53,041	INFO resource_spec.py:212 -- Starting Ray with 6.93 GiB memory available for workers and up to 3.48 GiB for objects. You can adjust these settings with ray.init(memory=<bytes>, object_store_memory=<bytes>).
+2020-11-26 10:14:53,361	INFO services.py:1093 -- View the Ray dashboard at localhost:8265
+(pid=12666) Calculated excitation matrix time  0.0036706924438476562
+(pid=12666) Calculated excitation matrix time  0.02295851707458496
+(pid=12666) Calculated excitation matrix time  0.0275728702545166
+(pid=12668) Calculated excitation matrix time  0.00502777099609375
+(pid=12664) Calculated excitation matrix time  0.0039441585540771484
+(pid=12665) Calculated excitation matrix time  0.005377769470214844
+Calculating commutators
+2020-11-26 10:14:57,723	INFO resource_spec.py:212 -- Starting Ray with 6.88 GiB memory available for workers and up to 3.45 GiB for objects. You can adjust these settings with ray.init(memory=<bytes>, object_store_memory=<bytes>).
+2020-11-26 10:14:58,008	INFO services.py:1093 -- View the Ray dashboard at localhost:8265
+('Length of new pool', 8)
+New cycle  1
+2020-11-26 10:15:00,255	INFO resource_spec.py:212 -- Starting Ray with 6.88 GiB memory available for workers and up to 3.45 GiB for objects. You can adjust these settings with ray.init(memory=<bytes>, object_store_memory=<bytes>).
+2020-11-26 10:15:00,570	INFO services.py:1093 -- View the Ray dashboard at localhost:8265
+(pid=12978) Excitation s_q_exc_1_2. Excitation grad 0.0. Time 0.002131938934326172
+(pid=12978) Excitation d_q_exc_[0, 3]_[2, 1]. Excitation grad 0.0. Time 0.0018804073333740234
+(pid=12976) Excitation s_q_exc_2_3. Excitation grad 0.0. Time 0.001775503158569336
+(pid=12976) Excitation d_q_exc_[0, 1]_[2, 3]. Excitation grad 0.4649709277377444. Time 0.0018804073333740234
+(pid=12977) Excitation s_q_exc_0_1. Excitation grad 0.0. Time 0.0016047954559326172
+Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4649709277377444]
+[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+2020-11-26 10:15:05,074	INFO resource_spec.py:212 -- Starting Ray with 6.88 GiB memory available for workers and up to 3.45 GiB for objects. You can adjust these settings with ray.init(memory=<bytes>, object_store_memory=<bytes>).
+2020-11-26 10:15:05,363	INFO services.py:1093 -- View the Ray dashboard at localhost:8265
+(pid=13162) Ran VQE for last element s_q_exc_1_3. Energy -0.897266366833343. Iterations 1
+(pid=13162) Ran VQE for last element d_q_exc_[0, 3]_[2, 1]. Energy -0.897266366833343. Iterations 1
+(pid=13162) Ran VQE for last element d_q_exc_[0, 1]_[2, 3]. Energy -0.9910655184972104. Iterations 5
+(pid=13165) Ran VQE for last element s_q_exc_2_3. Energy -0.897266366833343. Iterations 1
+(pid=13163) Ran VQE for last element s_q_exc_0_1. Energy -0.897266366833343. Iterations 1
+(pid=13164) Ran VQE for last element s_q_exc_0_3. Energy -0.897266366833343. Iterations 1
+(pid=13160) Ran VQE for last element s_q_exc_0_2. Energy -0.897266366833343. Iterations 1
+-----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+Iteration: 1. Energy -0.897266366833343.  Energy change -3.331e-16 , Iteration dutation: 0.00505828857421875
+Iteration: 2. Energy -0.9866267102460365.  Energy change -8.936e-02 , Iteration dutation: 0.0007569789886474609
+Iteration: 3. Energy -0.9910361023303392.  Energy change -4.409e-03 , Iteration dutation: 0.004700660705566406
+Iteration: 4. Energy -0.9910655180080924.  Energy change -2.942e-05 , Iteration dutation: 0.0045816898345947266
+Iteration: 5. Energy -0.9910655184972104.  Energy change -4.891e-10 , Iteration dutation: 0.004439115524291992
+[Errno 2] No such file or directory: "results/iter_vqe_results/H2_iqeb_q_exc_{'occupied': [], 'unoccupied': []}_26-Nov-2020 (10:14:53.012749).csv"
+Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9910655184972104. Energy change 0.09379915166386765, var. parameters: [-0.38348766689409614]
+Added element  d_q_exc_[0, 1]_[2, 3]
+New cycle  2
+2020-11-26 10:15:10,594	INFO resource_spec.py:212 -- Starting Ray with 6.88 GiB memory available for workers and up to 3.45 GiB for objects. You can adjust these settings with ray.init(memory=<bytes>, object_store_memory=<bytes>).
+2020-11-26 10:15:10,894	INFO services.py:1093 -- View the Ray dashboard at localhost:8265
+(pid=13349) Excitation s_q_exc_0_2. Excitation grad 0.0. Time 0.0018155574798583984
+(pid=13349) Excitation d_q_exc_[0, 1]_[2, 3]. Excitation grad 1.0554237206417127e-09. Time 0.0017774105072021484
+(pid=13349) Excitation d_q_exc_[0, 3]_[2, 1]. Excitation grad 0.0. Time 0.0011563301086425781
+(pid=13350) Excitation s_q_exc_0_3. Excitation grad 0.0. Time 0.0010495185852050781
+(pid=13348) Excitation s_q_exc_1_2. Excitation grad 0.0. Time 0.0011076927185058594
+(pid=13347) Excitation s_q_exc_1_3. Excitation grad 0.0. Time 0.0009739398956298828
+Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0554237206417127e-09]
+[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+2020-11-26 10:15:15,352	INFO resource_spec.py:212 -- Starting Ray with 6.88 GiB memory available for workers and up to 3.45 GiB for objects. You can adjust these settings with ray.init(memory=<bytes>, object_store_memory=<bytes>).
+2020-11-26 10:15:15,667	INFO services.py:1093 -- View the Ray dashboard at localhost:8265
+(pid=13540) Ran VQE for last element s_q_exc_0_3. Energy -0.9910655184972104. Iterations 1
+(pid=13540) Ran VQE for last element d_q_exc_[0, 3]_[2, 1]. Energy -0.9910655184972104. Iterations 1
+(pid=13540) Ran VQE for last element d_q_exc_[0, 1]_[2, 3]. Energy -0.9910655184972104. Iterations 1
+(pid=13535) Ran VQE for last element s_q_exc_0_1. Energy -0.9910655184972104. Iterations 1
+(pid=13536) Ran VQE for last element s_q_exc_0_2. Energy -0.9910655184972104. Iterations 1
+(pid=13539) Ran VQE for last element s_q_exc_1_3. Energy -0.9910655184972104. Iterations 1
+(pid=13538) Ran VQE for last element s_q_exc_1_2. Energy -0.9910655184972104. Iterations 1
+-----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+Iteration: 1. Energy -0.9910655184972104.  Energy change 0.000e+00 , Iteration dutation: 0.007039308547973633
+No contribution to energy decrease. Stop adding elements to the final ansatz
+-----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+Iteration: 1. Energy -0.897266366833343.  Energy change 9.380e-02 , Iteration dutation: 0.004086017608642578
+Iteration: 2. Energy -0.9866267102460365.  Energy change -8.936e-02 , Iteration dutation: 0.0007107257843017578
+Iteration: 3. Energy -0.9910361023303392.  Energy change -4.409e-03 , Iteration dutation: 0.004632234573364258
+Iteration: 4. Energy -0.9910655180080924.  Energy change -2.942e-05 , Iteration dutation: 0.004729032516479492
+Iteration: 5. Energy -0.9910655184972104.  Energy change -4.891e-10 , Iteration dutation: 0.004357337951660156
+      fun: -0.9910655184972104
+ hess_inv: array([[0.74626262]])
+      jac: array([1.05542364e-09])
+  message: 'Optimization terminated successfully.'
+  n_iters: 6
+     nfev: 5
+      nit: 4
+     njev: 5
+   status: 0
+  success: True
+        x: array([-0.38348767])
+Ciao
+

@@ -1,0 +1,135 @@
+INFO 2021-02-17 21:35:18,418 LiH, r=3.25, iqeb_vqe result
+INFO 2021-02-17 21:35:18,418 n_qubits = 12, n_electrons = 4
+INFO 2021-02-17 21:35:18,492 No noise
+INFO 2021-02-17 21:35:18,492 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 1 ansatz elements
+INFO 2021-02-17 21:35:20,485 QiskitSimBackend value = -7.631977268860667, time = 1.993490219116211s, Yordan result = -7.713564559916018
+INFO 2021-02-17 21:35:20,485 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 2 ansatz elements
+INFO 2021-02-17 21:35:22,481 QiskitSimBackend value = -7.643307121615173, time = 1.9950904846191406s, Yordan result = -7.754332431910254
+INFO 2021-02-17 21:35:22,481 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 3 ansatz elements
+INFO 2021-02-17 21:35:24,491 QiskitSimBackend value = -7.637070762752766, time = 2.0097079277038574s, Yordan result = -7.754332431910254
+INFO 2021-02-17 21:35:24,491 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 4 ansatz elements
+INFO 2021-02-17 21:35:26,501 QiskitSimBackend value = -7.73442044100433, time = 2.010493755340576s, Yordan result = -7.785424969413032
+INFO 2021-02-17 21:35:26,502 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 5 ansatz elements
+INFO 2021-02-17 21:35:28,570 QiskitSimBackend value = -7.781291557242253, time = 2.0685625076293945s, Yordan result = -7.785424969413032
+INFO 2021-02-17 21:35:28,570 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 6 ansatz elements
+INFO 2021-02-17 21:35:30,614 QiskitSimBackend value = -7.786086657637133, time = 2.04361629486084s, Yordan result = -7.790952025053303
+INFO 2021-02-17 21:35:30,614 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 7 ansatz elements
+INFO 2021-02-17 21:35:32,697 QiskitSimBackend value = -7.784516829109295, time = 2.0824999809265137s, Yordan result = -7.790952025053303
+INFO 2021-02-17 21:35:32,697 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 8 ansatz elements
+INFO 2021-02-17 21:35:34,819 QiskitSimBackend value = -7.784536448307586, time = 2.12237286567688s, Yordan result = -7.791012949165362
+INFO 2021-02-17 21:35:34,820 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 9 ansatz elements
+INFO 2021-02-17 21:35:37,052 QiskitSimBackend value = -7.784570215442851, time = 2.2323946952819824s, Yordan result = -7.791012949165362
+INFO 2021-02-17 21:35:37,052 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 10 ansatz elements
+INFO 2021-02-17 21:35:39,240 QiskitSimBackend value = -7.791789996636723, time = 2.1871612071990967s, Yordan result = -7.7918033667116
+INFO 2021-02-17 21:35:39,240 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 11 ansatz elements
+INFO 2021-02-17 21:35:41,494 QiskitSimBackend value = -7.7917908477275795, time = 2.253702402114868s, Yordan result = -7.7918033667116
+INFO 2021-02-17 21:35:41,494 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 12 ansatz elements
+INFO 2021-02-17 21:35:43,891 QiskitSimBackend value = -7.791816601398321, time = 2.3962130546569824s, Yordan result = -7.791853930128277
+INFO 2021-02-17 21:35:43,891 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 13 ansatz elements
+INFO 2021-02-17 21:35:46,103 QiskitSimBackend value = -7.791832928701008, time = 2.211667776107788s, Yordan result = -7.791853930128277
+INFO 2021-02-17 21:35:46,103 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 14 ansatz elements
+INFO 2021-02-17 21:35:48,372 QiskitSimBackend value = -7.791824132216591, time = 2.2694737911224365s, Yordan result = -7.791897124970234
+INFO 2021-02-17 21:35:48,372 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 15 ansatz elements
+INFO 2021-02-17 21:35:50,725 QiskitSimBackend value = -7.791818059065473, time = 2.3522331714630127s, Yordan result = -7.791897124970234
+INFO 2021-02-17 21:35:50,725 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 16 ansatz elements
+INFO 2021-02-17 21:35:53,061 QiskitSimBackend value = -7.791858272299191, time = 2.3358776569366455s, Yordan result = -7.791936750456941
+INFO 2021-02-17 21:35:53,061 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 17 ansatz elements
+INFO 2021-02-17 21:35:55,478 QiskitSimBackend value = -7.791896363388755, time = 2.4166312217712402s, Yordan result = -7.791975348103881
+INFO 2021-02-17 21:35:55,478 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 18 ansatz elements
+INFO 2021-02-17 21:35:57,847 QiskitSimBackend value = -7.7919168488797, time = 2.3690054416656494s, Yordan result = -7.791994997161423
+INFO 2021-02-17 21:35:57,847 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 19 ansatz elements
+INFO 2021-02-17 21:36:00,126 QiskitSimBackend value = -7.79193723583883, time = 2.2791473865509033s, Yordan result = -7.79201447653168
+INFO 2021-02-17 21:36:00,127 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 20 ansatz elements
+INFO 2021-02-17 21:36:02,452 QiskitSimBackend value = -7.7918957227798336, time = 2.325603723526001s, Yordan result = -7.792043426461959
+INFO 2021-02-17 21:36:02,452 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 21 ansatz elements
+INFO 2021-02-17 21:36:04,766 QiskitSimBackend value = -7.79187805680685, time = 2.313748598098755s, Yordan result = -7.792043426461959
+INFO 2021-02-17 21:36:04,766 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 22 ansatz elements
+INFO 2021-02-17 21:36:07,191 QiskitSimBackend value = -7.791904228542206, time = 2.424146890640259s, Yordan result = -7.792062128793508
+INFO 2021-02-17 21:36:07,192 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 23 ansatz elements
+INFO 2021-02-17 21:36:09,687 QiskitSimBackend value = -7.79190322478623, time = 2.495645761489868s, Yordan result = -7.792062128793508
+INFO 2021-02-17 21:36:09,687 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 24 ansatz elements
+INFO 2021-02-17 21:36:12,384 QiskitSimBackend value = -7.7919259355237696, time = 2.6968207359313965s, Yordan result = -7.792079966832121
+INFO 2021-02-17 21:36:12,385 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 25 ansatz elements
+INFO 2021-02-17 21:36:14,779 QiskitSimBackend value = -7.791925617233003, time = 2.394346237182617s, Yordan result = -7.792079966832121
+INFO 2021-02-17 21:36:14,779 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 26 ansatz elements
+INFO 2021-02-17 21:36:17,340 QiskitSimBackend value = -7.791940401975464, time = 2.5612170696258545s, Yordan result = -7.79209580522862
+INFO 2021-02-17 21:36:17,341 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 27 ansatz elements
+INFO 2021-02-17 21:36:19,941 QiskitSimBackend value = -7.791950213486745, time = 2.5999317169189453s, Yordan result = -7.792107357174423
+INFO 2021-02-17 21:36:19,941 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 28 ansatz elements
+INFO 2021-02-17 21:36:22,538 QiskitSimBackend value = -7.791950413531256, time = 2.5961132049560547s, Yordan result = -7.792124088244831
+INFO 2021-02-17 21:36:22,538 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 29 ansatz elements
+INFO 2021-02-17 21:36:25,095 QiskitSimBackend value = -7.791884294318445, time = 2.556755542755127s, Yordan result = -7.792124088244831
+INFO 2021-02-17 21:36:25,095 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 30 ansatz elements
+INFO 2021-02-17 21:36:27,783 QiskitSimBackend value = -7.791880107005076, time = 2.687527894973755s, Yordan result = -7.792140264614158
+INFO 2021-02-17 21:36:27,783 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 31 ansatz elements
+INFO 2021-02-17 21:36:30,494 QiskitSimBackend value = -7.791915472948687, time = 2.7108278274536133s, Yordan result = -7.792140264614158
+INFO 2021-02-17 21:36:30,495 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 32 ansatz elements
+INFO 2021-02-17 21:36:33,258 QiskitSimBackend value = -7.791930684878488, time = 2.762120246887207s, Yordan result = -7.792151562772031
+INFO 2021-02-17 21:36:33,258 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 33 ansatz elements
+INFO 2021-02-17 21:36:36,025 QiskitSimBackend value = -7.791931140244001, time = 2.766777515411377s, Yordan result = -7.792151562772031
+INFO 2021-02-17 21:36:36,025 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 34 ansatz elements
+INFO 2021-02-17 21:36:38,811 QiskitSimBackend value = -7.791946727282978, time = 2.7865257263183594s, Yordan result = -7.7921632829684375
+INFO 2021-02-17 21:36:38,811 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 35 ansatz elements
+INFO 2021-02-17 21:36:41,608 QiskitSimBackend value = -7.791947720881972, time = 2.7959299087524414s, Yordan result = -7.7921632829684375
+INFO 2021-02-17 21:36:41,608 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 36 ansatz elements
+INFO 2021-02-17 21:36:44,581 QiskitSimBackend value = -7.791984639637083, time = 2.97312068939209s, Yordan result = -7.792169736483464
+INFO 2021-02-17 21:36:44,581 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 37 ansatz elements
+INFO 2021-02-17 21:36:47,363 QiskitSimBackend value = -7.791995181269883, time = 2.7813620567321777s, Yordan result = -7.792169736483464
+INFO 2021-02-17 21:36:47,363 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 38 ansatz elements
+INFO 2021-02-17 21:36:50,239 QiskitSimBackend value = -7.79200312213731, time = 2.8763856887817383s, Yordan result = -7.792175838766607
+INFO 2021-02-17 21:36:50,239 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 39 ansatz elements
+INFO 2021-02-17 21:36:53,256 QiskitSimBackend value = -7.791952263559275, time = 3.01699161529541s, Yordan result = -7.792175838766607
+INFO 2021-02-17 21:36:53,256 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 40 ansatz elements
+INFO 2021-02-17 21:36:56,148 QiskitSimBackend value = -7.791996242622664, time = 2.8918564319610596s, Yordan result = -7.7921790633199155
+INFO 2021-02-17 21:36:56,149 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 41 ansatz elements
+INFO 2021-02-17 21:36:59,070 QiskitSimBackend value = -7.791946730896845, time = 2.921367883682251s, Yordan result = -7.7921790633199155
+INFO 2021-02-17 21:36:59,070 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 42 ansatz elements
+INFO 2021-02-17 21:37:02,045 QiskitSimBackend value = -7.791949256236237, time = 2.9744744300842285s, Yordan result = -7.792180951592934
+INFO 2021-02-17 21:37:02,045 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 43 ansatz elements
+INFO 2021-02-17 21:37:05,023 QiskitSimBackend value = -7.791933914394262, time = 2.9776155948638916s, Yordan result = -7.792183491761879
+INFO 2021-02-17 21:37:05,023 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 44 ansatz elements
+INFO 2021-02-17 21:37:08,016 QiskitSimBackend value = -7.791798070823196, time = 2.9926607608795166s, Yordan result = -7.792183491761879
+INFO 2021-02-17 21:37:08,016 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 45 ansatz elements
+INFO 2021-02-17 21:37:11,055 QiskitSimBackend value = -7.791879810740706, time = 3.039050817489624s, Yordan result = -7.79218441238376
+INFO 2021-02-17 21:37:11,055 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 46 ansatz elements
+INFO 2021-02-17 21:37:14,085 QiskitSimBackend value = -7.791896502046352, time = 3.0299489498138428s, Yordan result = -7.79218441238376
+INFO 2021-02-17 21:37:14,085 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 47 ansatz elements
+INFO 2021-02-17 21:37:17,188 QiskitSimBackend value = -7.791909337763245, time = 3.102994203567505s, Yordan result = -7.792184435049429
+INFO 2021-02-17 21:37:17,188 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 48 ansatz elements
+INFO 2021-02-17 21:37:20,294 QiskitSimBackend value = -7.791888336765111, time = 3.1052722930908203s, Yordan result = -7.792184435049429
+INFO 2021-02-17 21:37:20,294 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 49 ansatz elements
+INFO 2021-02-17 21:37:23,367 QiskitSimBackend value = -7.792041101961417, time = 3.0729334354400635s, Yordan result = -7.792184451397746
+INFO 2021-02-17 21:37:23,367 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 50 ansatz elements
+INFO 2021-02-17 21:37:26,516 QiskitSimBackend value = -7.792052356793334, time = 3.1489145755767822s, Yordan result = -7.792184451397746
+INFO 2021-02-17 21:37:26,516 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 51 ansatz elements
+INFO 2021-02-17 21:37:29,641 QiskitSimBackend value = -7.792052302471926, time = 3.125014305114746s, Yordan result = -7.792184458134423
+INFO 2021-02-17 21:37:29,641 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 52 ansatz elements
+INFO 2021-02-17 21:37:32,859 QiskitSimBackend value = -7.792052347845596, time = 3.217787742614746s, Yordan result = -7.792184458134423
+INFO 2021-02-17 21:37:32,860 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 53 ansatz elements
+INFO 2021-02-17 21:37:36,078 QiskitSimBackend value = -7.792060680861515, time = 3.2187798023223877s, Yordan result = -7.79218446612898
+INFO 2021-02-17 21:37:36,079 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 54 ansatz elements
+INFO 2021-02-17 21:37:39,269 QiskitSimBackend value = -7.792174492194632, time = 3.190549850463867s, Yordan result = -7.79218446612898
+INFO 2021-02-17 21:37:39,269 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 55 ansatz elements
+INFO 2021-02-17 21:37:42,532 QiskitSimBackend value = -7.792178874374174, time = 3.2625679969787598s, Yordan result = -7.792184468526803
+INFO 2021-02-17 21:37:42,532 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 56 ansatz elements
+INFO 2021-02-17 21:37:45,789 QiskitSimBackend value = -7.792177531016068, time = 3.2566444873809814s, Yordan result = -7.792184468526803
+INFO 2021-02-17 21:37:45,789 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 57 ansatz elements
+INFO 2021-02-17 21:37:49,111 QiskitSimBackend value = -7.7921818598133115, time = 3.321821451187134s, Yordan result = -7.792184469708534
+INFO 2021-02-17 21:37:49,111 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 58 ansatz elements
+INFO 2021-02-17 21:37:52,459 QiskitSimBackend value = -7.792184148058797, time = 3.3474271297454834s, Yordan result = -7.792184469708534
+INFO 2021-02-17 21:37:52,459 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 59 ansatz elements
+INFO 2021-02-17 21:37:55,812 QiskitSimBackend value = -7.79218437561726, time = 3.353316307067871s, Yordan result = -7.792184469957181
+INFO 2021-02-17 21:37:55,812 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 60 ansatz elements
+INFO 2021-02-17 21:37:59,203 QiskitSimBackend value = -7.7921844396439095, time = 3.3907926082611084s, Yordan result = -7.792184469957181
+INFO 2021-02-17 21:37:59,203 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 61 ansatz elements
+INFO 2021-02-17 21:38:02,623 QiskitSimBackend value = -7.792184439678912, time = 3.4194953441619873s, Yordan result = -7.792184470008143
+INFO 2021-02-17 21:38:02,623 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 62 ansatz elements
+INFO 2021-02-17 21:38:06,096 QiskitSimBackend value = -7.79218443974129, time = 3.4729971885681152s, Yordan result = -7.792184470008143
+INFO 2021-02-17 21:38:06,096 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 63 ansatz elements
+INFO 2021-02-17 21:38:09,587 QiskitSimBackend value = -7.792184469516334, time = 3.490602493286133s, Yordan result = -7.792184470020225
+INFO 2021-02-17 21:38:09,587 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 64 ansatz elements
+INFO 2021-02-17 21:38:13,114 QiskitSimBackend value = -7.792184470020042, time = 3.526895523071289s, Yordan result = -7.792184470020225
+INFO 2021-02-17 21:38:13,114 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 65 ansatz elements
+INFO 2021-02-17 21:38:16,661 QiskitSimBackend value = -7.792184470020082, time = 3.5465409755706787s, Yordan result = -7.7921844700203335
+INFO 2021-02-17 21:38:16,661 Running QiskitSimBackend.ham_expectation_value for LiH molecule, first 66 ansatz elements
+INFO 2021-02-17 21:38:20,153 QiskitSimBackend value = -7.792184470020185, time = 3.4917638301849365s, Yordan result = -7.7921844700203335

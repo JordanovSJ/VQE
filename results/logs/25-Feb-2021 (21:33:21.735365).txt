@@ -1,0 +1,27 @@
+INFO 2021-02-25 21:33:21,736 H4, r=1.546, iqeb_vqe result compare with noise
+INFO 2021-02-25 21:33:21,736 n_qubits = 8, n_electrons = 4
+INFO 2021-02-25 21:33:21,757 prob_1 = 0, prob_2 = 0.003, prob_meas = 0.005
+INFO 2021-02-25 21:33:21,758 Running QasmBackend.ham_expectation_value for H4 molecule, first 1 ansatz elements, noiseless value=-1.849405076790277, 1000 shots
+INFO 2021-02-25 21:33:29,785 For statevector method, noisy expectation value = -1.7999244407198907, time = 8.026816844940186s, 
+INFO 2021-02-25 21:33:29,793 Running QasmBackend.ham_expectation_value for H4 molecule, first 2 ansatz elements, noiseless value=-1.9306365540335657, 1000 shots
+INFO 2021-02-25 21:33:42,873 For statevector method, noisy expectation value = -1.8372553822525532, time = 13.079997539520264s, 
+INFO 2021-02-25 21:33:42,878 Running QasmBackend.ham_expectation_value for H4 molecule, first 3 ansatz elements, noiseless value=-1.9306365540335657, 1000 shots
+INFO 2021-02-25 21:34:00,026 For statevector method, noisy expectation value = -1.8448040748190173, time = 17.14734649658203s, 
+INFO 2021-02-25 21:34:00,029 Running QasmBackend.ham_expectation_value for H4 molecule, first 4 ansatz elements, noiseless value=-1.9599999194758757, 1000 shots
+INFO 2021-02-25 21:34:20,815 For statevector method, noisy expectation value = -1.8650029746170105, time = 20.785565853118896s, 
+INFO 2021-02-25 21:34:20,819 Running QasmBackend.ham_expectation_value for H4 molecule, first 5 ansatz elements, noiseless value=-1.9631484985855527, 1000 shots
+INFO 2021-02-25 21:34:44,994 For statevector method, noisy expectation value = -1.780448265113085, time = 24.1748468875885s, 
+INFO 2021-02-25 21:34:44,998 Running QasmBackend.ham_expectation_value for H4 molecule, first 6 ansatz elements, noiseless value=-1.9631484985855527, 1000 shots
+INFO 2021-02-25 21:35:11,972 For statevector method, noisy expectation value = -1.725341976523138, time = 26.973833084106445s, 
+INFO 2021-02-25 21:35:11,976 Running QasmBackend.ham_expectation_value for H4 molecule, first 7 ansatz elements, noiseless value=-1.9647264045699715, 1000 shots
+INFO 2021-02-25 21:35:43,029 For statevector method, noisy expectation value = -1.7147888273483072, time = 31.05253553390503s, 
+INFO 2021-02-25 21:35:43,033 Running QasmBackend.ham_expectation_value for H4 molecule, first 8 ansatz elements, noiseless value=-1.967529790899745, 1000 shots
+INFO 2021-02-25 21:36:19,027 For statevector method, noisy expectation value = -1.6936295295974575, time = 35.99386501312256s, 
+INFO 2021-02-25 21:36:19,031 Running QasmBackend.ham_expectation_value for H4 molecule, first 9 ansatz elements, noiseless value=-1.9780616680396768, 1000 shots
+INFO 2021-02-25 21:37:00,798 For statevector method, noisy expectation value = -1.6966031223679938, time = 41.76696538925171s, 
+INFO 2021-02-25 21:37:00,803 Running QasmBackend.ham_expectation_value for H4 molecule, first 10 ansatz elements, noiseless value=-1.9780616680396768, 1000 shots
+INFO 2021-02-25 21:37:44,934 For statevector method, noisy expectation value = -1.6882251242032669, time = 44.13029718399048s, 
+INFO 2021-02-25 21:37:44,938 Running QasmBackend.ham_expectation_value for H4 molecule, first 11 ansatz elements, noiseless value=-1.981103984387575, 1000 shots
+INFO 2021-02-25 21:38:33,727 For statevector method, noisy expectation value = -1.6593553623983992, time = 48.78940200805664s, 
+INFO 2021-02-25 21:38:33,731 Running QasmBackend.ham_expectation_value for H4 molecule, first 12 ansatz elements, noiseless value=-1.981103984387575, 1000 shots
+INFO 2021-02-25 21:39:26,419 For statevector method, noisy expectation value = -1.6246275878310987, time = 52.68747329711914s, 

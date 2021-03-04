@@ -41,7 +41,11 @@ u1_depth_ls = data_frame['u1_depth']
  
 # <<<<<<<<<< LOGGING >>>>>>>>>>>>.
 LogUtils.log_config()
+<<<<<<< HEAD
 logging.info('{}, r={}, ansatz constructed from iqeb, running on server'.format(molecule.name, r))
+=======
+logging.info('{}, r={}, ansatz constructed from iqeb, run on local'.format(molecule.name, r))
+>>>>>>> refs/remotes/origin/zhenghao_plotting
 logging.info('n_qubits = {}, n_electrons = {}'.format(n_qubits, n_electrons))
 time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
@@ -84,11 +88,11 @@ n_shots_list = [1e2, 1e3, 1e4, 1e5, 1e6]
 results_df = pd.DataFrame(columns=['n_shots', 'ref E', 'noiseless E',
                                    'noiseless time',
                                    'noisy E', 'noisy time'])
-filename_head = '../../results/zhenghao_testing/{}_r={}_iqeb_ansatz_compare_'.format(molecule.name, r)
+filename_head = '../../results/zhenghao_testing/{}_r={}_local_iqeb_ansatz_compare_'.format(molecule.name, r)
 filename_tail = '{}'.format(time_stamp)
 
 method_list = [
-    'statevector', 'statevector_gpu'
+    'statevector' # , 'statevector_gpu'
 ]
 
 idx = 0

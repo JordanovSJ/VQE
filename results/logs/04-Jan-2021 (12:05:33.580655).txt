@@ -1,0 +1,2 @@
+INFO 2021-01-04 12:05:33,581 H2, r=1.546 ,q_exc
+INFO 2021-01-04 12:05:33,629 Calculating excitation generators

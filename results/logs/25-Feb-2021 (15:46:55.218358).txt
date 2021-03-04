@@ -1,0 +1,27 @@
+INFO 2021-02-25 15:46:55,220 H2, r=1.546 ,UCCSD ansatz
+INFO 2021-02-25 15:46:55,220 n_qubits = 4, n_electrons = 2
+DEBUG 2021-02-25 15:46:55,224 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-25 15:46:55,695 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-02-25 15:46:55,699 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-25 15:47:01,849 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-02-25 15:47:02,345 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-02-25 15:47:02,349 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-25 15:47:03,489 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-02-25 15:47:03,499 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-25 15:47:03,994 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+DEBUG 2021-02-25 15:47:04,531 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-02-25 15:47:05,517 
+INFO 2021-02-25 15:47:05,517 Device noise generated from ibmq_16_melbourne
+INFO 2021-02-25 15:47:05,753 
+INFO 2021-02-25 15:47:05,753 QiskitSimBackend result is -0.7957416416896733
+INFO 2021-02-25 15:47:05,753 
+INFO 2021-02-25 15:47:05,753 n_shots = 10
+INFO 2021-02-25 15:47:05,753 method = statevector
+INFO 2021-02-25 15:47:11,354 QasmBackend result is -0.6392552990171863 for manual Pauli, time used = 5.6011083126068115s
+INFO 2021-02-25 15:47:13,178 QasmBackend result is -0.610902512490306 for built in Pauli, time used = 1.8234729766845703s
+INFO 2021-02-25 15:47:13,178 method = density_matrix
+INFO 2021-02-25 15:47:17,865 QasmBackend result is -0.42202508558848484 for manual Pauli, time used = 4.686734914779663s
+INFO 2021-02-25 15:47:19,268 QasmBackend result is -0.6177343909760332 for built in Pauli, time used = 1.4031074047088623s
+INFO 2021-02-25 15:47:19,269 
+INFO 2021-02-25 15:47:19,269 n_shots = 50
+INFO 2021-02-25 15:47:19,269 method = statevector

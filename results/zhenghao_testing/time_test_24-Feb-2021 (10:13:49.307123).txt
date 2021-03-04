@@ -1,0 +1,19 @@
+INFO 2021-02-24 10:13:50,650 molecule=H4, r=1.546, n_qubits=8, n_electrons=4
+INFO 2021-02-24 10:13:50,670 IQEB found q_exc ansatz with random var_pars. Total 24 ansatz elements
+INFO 2021-02-24 10:13:50,670 Use first 1 ansatz elements. Convert into qasm string, time used=4.863739013671875e-05s
+INFO 2021-02-24 10:13:50,670 Take the 10th term from the hamiltonian to test. Total 185 terms
+INFO 2021-02-24 10:13:50,670 Time to generate qasm string from ham term is 2.1457672119140625e-05
+INFO 2021-02-24 10:13:50,701 Time to generate circuit from total qasm string is 0.031311988830566406
+WARNING 2021-02-24 10:13:54,478 Remote backend "ibmq_lima" could not be instantiated due to an invalid config: "{'gates': {5: {'parameters': ['Field may not be null.'], 'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.']}}}"
+WARNING 2021-02-24 10:13:54,479 Remote backend "ibmq_belem" could not be instantiated due to an invalid config: "{'gates': {5: {'parameters': ['Field may not be null.'], 'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.']}}}"
+WARNING 2021-02-24 10:13:54,480 Remote backend "ibmq_quito" could not be instantiated due to an invalid config: "{'gates': {5: {'parameters': ['Field may not be null.'], 'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.']}}}"
+INFO 2021-02-24 10:13:55,385 Noise model generated from ibmq_16_melbourne
+INFO 2021-02-24 10:13:55,387 Time to load backend from Aer is 0.0017085075378417969. Method=automatic
+INFO 2021-02-24 10:13:55,387 
+INFO 2021-02-24 10:13:55,387 n_shots=100
+INFO 2021-02-24 10:14:07,800 Noiseless run full ham_expectation_value, exp_value=-1.8454905385182054, for first 1 ansatz elements, time used=12.412562131881714
+INFO 2021-02-24 10:15:12,708 Noisy run full ham_expectation_value, exp_value=-1.2093993394505071, for first 1 ansatz elements, time used=64.90766406059265
+INFO 2021-02-24 10:15:12,884 Noiseless run noisy_sim, result counts= {'00000001': 86, '00000000': 14}, time = 0.1762409210205078, for test term ham and first 1 ansatz elements
+INFO 2021-02-24 10:15:13,124 Noisy run noisy_sim, result counts= {'00000001': 64, '00000000': 36}, time = 0.23976993560791016, for test term ham and first 1 ansatz elements
+INFO 2021-02-24 10:15:13,157 Noiseless run execute with Aer backend, result counts= {'00000001': 88, '00000000': 12}, time=0.01745438575744629, for test ham term and first 1 ansatz elements
+INFO 2021-02-24 10:15:13,409 Noisy run execute with Aer backend, result counts= {'00000001': 45, '00000000': 55}, time=0.20691370964050293, for test ham term and first 1 ansatz elements

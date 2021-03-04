@@ -61,6 +61,13 @@ noiseless_qasm_df_1 = pd.read_csv('../../../results/zhenghao_testing/'
                                   '(09:40:42.115244)')
 noiseless_qasm_E_1 = noiseless_qasm_df_1['noisy E']
 
+# 1e6 shots, no noise
+noiseless_qasm_df_2 = pd.read_csv('../../../results/zhenghao_testing/'
+                                  'H4_r=1.546_noiseless_qasm_1000000.0shots_method=automatic_02-Mar-2021 '
+                                  '(08:39:46.277502)')
+noiseless_qasm_E_2 = noiseless_qasm_df_2['noisy E']
+
+
 iterations = list(range(1, len(noiseless_E) + 1))
 
 big_list = [noiseless_E,
@@ -68,7 +75,7 @@ big_list = [noiseless_E,
             noisy_E_1, noisy_E_2,
             noisy_E_3,
             noisy_E_5, noiseless_qasm_E,
-            noiseless_qasm_E_1]
+            noiseless_qasm_E_1, noiseless_qasm_E_2]
 legend_list = ['Exact',
                'ibmq_16_melbourne, 10 shots',
                'p_2=3e-2, p_m=5e-2, 10 shots',
@@ -76,7 +83,8 @@ legend_list = ['Exact',
                'p_2=3e-3, p_m=5e-3, 1e3 shots',
                'p_2=3e-4, p_m=5e-4, 1e3 shots',
                'noiseless QasmBackend, 1e3 shots',
-               'noiseless QasmBackend, 1e4 shots']
+               'noiseless QasmBackend, 1e4 shots',
+               'noiseless QasmBackend, 1e6 shots']
 
 plt.figure(1)
 for E_list in big_list:

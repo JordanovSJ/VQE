@@ -1,0 +1,19 @@
+INFO 2021-03-02 12:01:38,140 H4, r=1.546, ansatz constructed from iqeb
+INFO 2021-03-02 12:01:38,141 n_qubits = 8, n_electrons = 4
+DEBUG 2021-03-02 12:01:38,154 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-03-02 12:01:38,670 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-03-02 12:01:38,682 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-03-02 12:01:39,443 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-03-02 12:01:40,084 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-03-02 12:01:40,087 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-03-02 12:01:41,288 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-03-02 12:01:41,291 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-03-02 12:01:41,870 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+DEBUG 2021-03-02 12:01:42,625 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-03-02 12:01:47,196 
+INFO 2021-03-02 12:01:47,196 QiskitSimBackend result is -1.9824234617589285, new calculation
+INFO 2021-03-02 12:01:47,196 
+INFO 2021-03-02 12:01:47,196 IQEB VQE reference result is -1.9824234617589416
+INFO 2021-03-02 12:01:47,197 
+INFO 2021-03-02 12:01:47,197 n_shots = 1000
+INFO 2021-03-02 12:06:41,934 QasmBackend result is -0.9339476546246895 for built in Pauli, time used = 294.73693919181824s

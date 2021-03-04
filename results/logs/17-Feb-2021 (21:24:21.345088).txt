@@ -1,0 +1,2 @@
+INFO 2021-02-17 21:24:21,345 LiH, r=3.25, iqeb_vqe result
+INFO 2021-02-17 21:24:21,346 n_qubits = 12, n_electrons = 4

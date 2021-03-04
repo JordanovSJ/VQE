@@ -1,0 +1,2 @@
+,n,E,dE,error,n_iters,cnot_count,u1_count,cnot_depth,u1_depth,element,element_qubits,var_parameters
+0,1,-0.9486411121296494,0.16484845804660875,4.440892098500626e-16,6,13.0,33,11,11,"d_q_exc_[0, 1]_[2, 3]","[[0, 1], [2, 3]]",-0.5665703251113466

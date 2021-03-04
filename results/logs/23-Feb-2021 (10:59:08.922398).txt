@@ -1,0 +1,18 @@
+INFO 2021-02-23 10:59:08,923 H4, r=1.546, iqeb_vqe result compare with noise
+INFO 2021-02-23 10:59:08,923 n_qubits = 8, n_electrons = 4
+DEBUG 2021-02-23 10:59:09,007 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-23 10:59:10,272 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-02-23 10:59:10,307 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-23 10:59:11,500 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-02-23 10:59:12,419 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-02-23 10:59:12,453 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-23 10:59:13,237 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-02-23 10:59:13,251 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-23 10:59:14,164 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+WARNING 2021-02-23 10:59:14,223 Remote backend "ibmq_lima" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.'], 'parameters': ['Field may not be null.']}}}"
+WARNING 2021-02-23 10:59:14,225 Remote backend "ibmq_belem" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.'], 'parameters': ['Field may not be null.']}}}"
+WARNING 2021-02-23 10:59:14,227 Remote backend "ibmq_quito" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.'], 'parameters': ['Field may not be null.']}}}"
+DEBUG 2021-02-23 10:59:14,974 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-02-23 10:59:15,268 Noise model generated from ibmq_16_melbourne
+INFO 2021-02-23 10:59:15,274 Running QasmBackend.ham_expectation_value for H4 molecule, first 1 ansatz elements, noiseless value=-1.8494050767902768, 10 shots
+INFO 2021-02-23 11:03:24,664 For statevector method, noisy expectation value = -1.262520674514948, time = 249.39008831977844s, 

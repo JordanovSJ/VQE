@@ -1,0 +1,1401 @@
+INFO 2020-12-02 22:51:49,882 H2, r=0.5 ,q_exc
+INFO 2020-12-02 22:51:49,904 Calculating excitation generators
+INFO 2020-12-02 22:51:52,978 Calculating commutators
+INFO 2020-12-02 22:51:55,143 ('Length of new pool', 8)
+INFO 2020-12-02 22:51:58,357 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3377404554013405]
+INFO 2020-12-02 22:52:03,403 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:03,410 Iteration: 1. Energy -1.0429962747511712.  Energy change -2.220e-16 , Iteration dutation: 0.005697965621948242
+INFO 2020-12-02 22:52:03,413 Iteration: 2. Energy -0.8925050403028754.  Energy change 1.505e-01 , Iteration dutation: 0.0008413791656494141
+INFO 2020-12-02 22:52:03,419 Iteration: 3. Energy -1.0551563558198394.  Energy change -1.627e-01 , Iteration dutation: 0.0053348541259765625
+INFO 2020-12-02 22:52:03,423 Iteration: 4. Energy -1.055159794645567.  Energy change -3.439e-06 , Iteration dutation: 0.0050275325775146484
+INFO 2020-12-02 22:52:03,428 Iteration: 5. Energy -1.0551597946880171.  Energy change -4.245e-11 , Iteration dutation: 0.004688262939453125
+INFO 2020-12-02 22:52:03,439 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.0551597946880171. Energy change 0.012163519936846168, var. parameters: [-0.0719046214342329]
+INFO 2020-12-02 22:52:06,635 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.9391765970766528e-11]
+INFO 2020-12-02 22:52:09,917 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:09,926 Iteration: 1. Energy -1.0551597946880171.  Energy change 0.000e+00 , Iteration dutation: 0.007773637771606445
+INFO 2020-12-02 22:52:09,926 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:52:09,926 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:09,932 Iteration: 1. Energy -1.0429962747511712.  Energy change 1.216e-02 , Iteration dutation: 0.0048258304595947266
+INFO 2020-12-02 22:52:09,934 Iteration: 2. Energy -0.8925050403028754.  Energy change 1.505e-01 , Iteration dutation: 0.0007698535919189453
+INFO 2020-12-02 22:52:09,939 Iteration: 3. Energy -1.0551563558198394.  Energy change -1.627e-01 , Iteration dutation: 0.004788637161254883
+INFO 2020-12-02 22:52:09,944 Iteration: 4. Energy -1.055159794645567.  Energy change -3.439e-06 , Iteration dutation: 0.004722118377685547
+INFO 2020-12-02 22:52:09,948 Iteration: 5. Energy -1.0551597946880171.  Energy change -4.245e-11 , Iteration dutation: 0.004564046859741211
+INFO 2020-12-02 22:52:11,102 H2, r=0.5789473684210527 ,q_exc
+INFO 2020-12-02 22:52:11,123 Calculating excitation generators
+INFO 2020-12-02 22:52:15,316 Calculating commutators
+INFO 2020-12-02 22:52:17,653 ('Length of new pool', 8)
+INFO 2020-12-02 22:52:21,100 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3453418933600655]
+INFO 2020-12-02 22:52:25,395 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:25,403 Iteration: 1. Energy -1.0932647393579482.  Energy change -2.220e-16 , Iteration dutation: 0.006346464157104492
+INFO 2020-12-02 22:52:25,406 Iteration: 2. Energy -0.9688484063356523.  Energy change 1.244e-01 , Iteration dutation: 0.0009350776672363281
+INFO 2020-12-02 22:52:25,412 Iteration: 3. Energy -1.1077340337409374.  Energy change -1.389e-01 , Iteration dutation: 0.005817890167236328
+INFO 2020-12-02 22:52:25,418 Iteration: 4. Energy -1.1077374143557208.  Energy change -3.381e-06 , Iteration dutation: 0.0058743953704833984
+INFO 2020-12-02 22:52:25,424 Iteration: 5. Energy -1.1077374144319547.  Energy change -7.623e-11 , Iteration dutation: 0.005908012390136719
+INFO 2020-12-02 22:52:25,433 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.1077374144319547. Energy change 0.014472675074006736, var. parameters: [-0.0836210510041723]
+INFO 2020-12-02 22:52:30,689 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.7194801965890747e-11]
+INFO 2020-12-02 22:52:34,951 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:34,959 Iteration: 1. Energy -1.1077374144319547.  Energy change 0.000e+00 , Iteration dutation: 0.007078409194946289
+INFO 2020-12-02 22:52:34,959 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:52:34,959 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:34,964 Iteration: 1. Energy -1.0932647393579482.  Energy change 1.447e-02 , Iteration dutation: 0.004231929779052734
+INFO 2020-12-02 22:52:34,967 Iteration: 2. Energy -0.9688484063356523.  Energy change 1.244e-01 , Iteration dutation: 0.0006966590881347656
+INFO 2020-12-02 22:52:34,972 Iteration: 3. Energy -1.1077340337409374.  Energy change -1.389e-01 , Iteration dutation: 0.004656553268432617
+INFO 2020-12-02 22:52:34,977 Iteration: 4. Energy -1.1077374143557208.  Energy change -3.381e-06 , Iteration dutation: 0.005044698715209961
+INFO 2020-12-02 22:52:34,981 Iteration: 5. Energy -1.1077374144319547.  Energy change -7.623e-11 , Iteration dutation: 0.0045070648193359375
+INFO 2020-12-02 22:52:36,128 H2, r=0.6578947368421053 ,q_exc
+INFO 2020-12-02 22:52:36,148 Calculating excitation generators
+INFO 2020-12-02 22:52:39,582 Calculating commutators
+INFO 2020-12-02 22:52:41,873 ('Length of new pool', 8)
+INFO 2020-12-02 22:52:45,343 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.35347166513760636]
+INFO 2020-12-02 22:52:49,675 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:49,682 Iteration: 1. Energy -1.1141257099609434.  Energy change 8.882e-16 , Iteration dutation: 0.005449771881103516
+INFO 2020-12-02 22:52:49,685 Iteration: 2. Energy -1.0133872770055319.  Energy change 1.007e-01 , Iteration dutation: 0.0008823871612548828
+INFO 2020-12-02 22:52:49,690 Iteration: 3. Energy -1.1313235527060292.  Energy change -1.179e-01 , Iteration dutation: 0.005278825759887695
+INFO 2020-12-02 22:52:49,695 Iteration: 4. Energy -1.1313266801588056.  Energy change -3.127e-06 , Iteration dutation: 0.0048885345458984375
+INFO 2020-12-02 22:52:49,700 Iteration: 5. Energy -1.1313266802864463.  Energy change -1.276e-10 , Iteration dutation: 0.004693269729614258
+INFO 2020-12-02 22:52:49,709 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.1313266802864463. Energy change 0.017200970325502052, var. parameters: [-0.09702031332309]
+INFO 2020-12-02 22:52:53,928 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.457512054438894e-11]
+INFO 2020-12-02 22:52:59,343 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:59,353 Iteration: 1. Energy -1.1313266802864463.  Energy change 0.000e+00 , Iteration dutation: 0.00854039192199707
+INFO 2020-12-02 22:52:59,353 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:52:59,353 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:52:59,360 Iteration: 1. Energy -1.1141257099609434.  Energy change 1.720e-02 , Iteration dutation: 0.005865812301635742
+INFO 2020-12-02 22:52:59,363 Iteration: 2. Energy -1.0133872770055319.  Energy change 1.007e-01 , Iteration dutation: 0.0009872913360595703
+INFO 2020-12-02 22:52:59,370 Iteration: 3. Energy -1.1313235527060292.  Energy change -1.179e-01 , Iteration dutation: 0.005991935729980469
+INFO 2020-12-02 22:52:59,377 Iteration: 4. Energy -1.1313266801588056.  Energy change -3.127e-06 , Iteration dutation: 0.007448911666870117
+INFO 2020-12-02 22:52:59,383 Iteration: 5. Energy -1.1313266802864463.  Energy change -1.276e-10 , Iteration dutation: 0.006505489349365234
+INFO 2020-12-02 22:53:00,724 H2, r=0.7368421052631579 ,q_exc
+INFO 2020-12-02 22:53:00,745 Calculating excitation generators
+INFO 2020-12-02 22:53:05,064 Calculating commutators
+INFO 2020-12-02 22:53:07,365 ('Length of new pool', 8)
+INFO 2020-12-02 22:53:11,668 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3620679730995803]
+INFO 2020-12-02 22:53:16,143 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:53:16,149 Iteration: 1. Energy -1.1169158055325972.  Energy change -2.220e-16 , Iteration dutation: 0.005274772644042969
+INFO 2020-12-02 22:53:16,152 Iteration: 2. Energy -1.0377151941973004.  Energy change 7.920e-02 , Iteration dutation: 0.0008933544158935547
+INFO 2020-12-02 22:53:16,157 Iteration: 3. Energy -1.1373000741645338.  Energy change -9.958e-02 , Iteration dutation: 0.005061149597167969
+INFO 2020-12-02 22:53:16,162 Iteration: 4. Energy -1.1373027358375136.  Energy change -2.662e-06 , Iteration dutation: 0.004899501800537109
+INFO 2020-12-02 22:53:16,167 Iteration: 5. Energy -1.137302736031205.  Energy change -1.937e-10 , Iteration dutation: 0.0047376155853271484
+INFO 2020-12-02 22:53:16,177 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.137302736031205. Energy change 0.020386930498607958, var. parameters: [-0.11214136786261712]
+INFO 2020-12-02 22:53:20,577 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.8383046740975146e-11]
+INFO 2020-12-02 22:53:25,008 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:53:25,016 Iteration: 1. Energy -1.137302736031205.  Energy change 0.000e+00 , Iteration dutation: 0.007528543472290039
+INFO 2020-12-02 22:53:25,017 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:53:25,017 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:53:25,022 Iteration: 1. Energy -1.1169158055325972.  Energy change 2.039e-02 , Iteration dutation: 0.004921913146972656
+INFO 2020-12-02 22:53:25,026 Iteration: 2. Energy -1.0377151941973004.  Energy change 7.920e-02 , Iteration dutation: 0.0008707046508789062
+INFO 2020-12-02 22:53:25,031 Iteration: 3. Energy -1.1373000741645338.  Energy change -9.958e-02 , Iteration dutation: 0.0056629180908203125
+INFO 2020-12-02 22:53:25,037 Iteration: 4. Energy -1.1373027358375136.  Energy change -2.662e-06 , Iteration dutation: 0.005637407302856445
+INFO 2020-12-02 22:53:25,042 Iteration: 5. Energy -1.137302736031205.  Energy change -1.937e-10 , Iteration dutation: 0.005331516265869141
+INFO 2020-12-02 22:53:26,296 H2, r=0.8157894736842105 ,q_exc
+INFO 2020-12-02 22:53:26,319 Calculating excitation generators
+INFO 2020-12-02 22:53:30,512 Calculating commutators
+INFO 2020-12-02 22:53:32,828 ('Length of new pool', 8)
+INFO 2020-12-02 22:53:37,129 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.37109049126853805]
+INFO 2020-12-02 22:53:41,394 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:53:41,402 Iteration: 1. Energy -1.10850314179213.  Energy change 2.220e-16 , Iteration dutation: 0.006489753723144531
+INFO 2020-12-02 22:53:41,406 Iteration: 2. Energy -1.0490633774244464.  Energy change 5.944e-02 , Iteration dutation: 0.0009045600891113281
+INFO 2020-12-02 22:53:41,411 Iteration: 3. Energy -1.132580093337347.  Energy change -8.352e-02 , Iteration dutation: 0.005782365798950195
+INFO 2020-12-02 22:53:41,417 Iteration: 4. Energy -1.1325821002975056.  Energy change -2.007e-06 , Iteration dutation: 0.005108833312988281
+INFO 2020-12-02 22:53:41,421 Iteration: 5. Energy -1.1325821005534913.  Energy change -2.560e-10 , Iteration dutation: 0.005721330642700195
+INFO 2020-12-02 22:53:41,435 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.1325821005534913. Energy change 0.024078958761361013, var. parameters: [-0.12905280683441045]
+INFO 2020-12-02 22:53:46,742 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.5111691332190276e-11]
+INFO 2020-12-02 22:53:51,024 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:53:51,032 Iteration: 1. Energy -1.1325821005534913.  Energy change 0.000e+00 , Iteration dutation: 0.007544517517089844
+INFO 2020-12-02 22:53:51,032 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:53:51,033 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:53:51,038 Iteration: 1. Energy -1.10850314179213.  Energy change 2.408e-02 , Iteration dutation: 0.0050122737884521484
+INFO 2020-12-02 22:53:51,042 Iteration: 2. Energy -1.0490633774244464.  Energy change 5.944e-02 , Iteration dutation: 0.0008819103240966797
+INFO 2020-12-02 22:53:51,048 Iteration: 3. Energy -1.132580093337347.  Energy change -8.352e-02 , Iteration dutation: 0.005758047103881836
+INFO 2020-12-02 22:53:51,053 Iteration: 4. Energy -1.1325821002975056.  Energy change -2.007e-06 , Iteration dutation: 0.0058400630950927734
+INFO 2020-12-02 22:53:51,058 Iteration: 5. Energy -1.1325821005534913.  Energy change -2.560e-10 , Iteration dutation: 0.0051152706146240234
+INFO 2020-12-02 22:53:52,277 H2, r=0.8947368421052632 ,q_exc
+INFO 2020-12-02 22:53:52,305 Calculating excitation generators
+INFO 2020-12-02 22:53:57,134 Calculating commutators
+INFO 2020-12-02 22:53:59,370 ('Length of new pool', 8)
+INFO 2020-12-02 22:54:02,794 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3805030316341859]
+INFO 2020-12-02 22:54:07,121 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:54:07,128 Iteration: 1. Energy -1.0931172147743733.  Energy change -4.441e-16 , Iteration dutation: 0.005353689193725586
+INFO 2020-12-02 22:54:07,131 Iteration: 2. Energy -1.052072217156113.  Energy change 4.104e-02 , Iteration dutation: 0.0008862018585205078
+INFO 2020-12-02 22:54:07,136 Iteration: 3. Energy -1.121456072385288.  Energy change -6.938e-02 , Iteration dutation: 0.005021810531616211
+INFO 2020-12-02 22:54:07,140 Iteration: 4. Energy -1.1214573147080082.  Energy change -1.242e-06 , Iteration dutation: 0.00474095344543457
+INFO 2020-12-02 22:54:07,145 Iteration: 5. Energy -1.1214573149811635.  Energy change -2.732e-10 , Iteration dutation: 0.00461578369140625
+INFO 2020-12-02 22:54:07,155 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.1214573149811635. Energy change 0.028340100206790675, var. parameters: [-0.14787388319809103]
+INFO 2020-12-02 22:54:12,313 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.361000284167858e-11]
+INFO 2020-12-02 22:54:17,650 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:54:17,659 Iteration: 1. Energy -1.1214573149811635.  Energy change 0.000e+00 , Iteration dutation: 0.0075531005859375
+INFO 2020-12-02 22:54:17,659 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:54:17,659 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:54:17,664 Iteration: 1. Energy -1.0931172147743733.  Energy change 2.834e-02 , Iteration dutation: 0.00453495979309082
+INFO 2020-12-02 22:54:17,667 Iteration: 2. Energy -1.052072217156113.  Energy change 4.104e-02 , Iteration dutation: 0.0008192062377929688
+INFO 2020-12-02 22:54:17,673 Iteration: 3. Energy -1.121456072385288.  Energy change -6.938e-02 , Iteration dutation: 0.005181550979614258
+INFO 2020-12-02 22:54:17,678 Iteration: 4. Energy -1.1214573147080082.  Energy change -1.242e-06 , Iteration dutation: 0.005267143249511719
+INFO 2020-12-02 22:54:17,683 Iteration: 5. Energy -1.1214573149811635.  Energy change -2.732e-10 , Iteration dutation: 0.005211591720581055
+INFO 2020-12-02 22:54:18,910 H2, r=0.9736842105263157 ,q_exc
+INFO 2020-12-02 22:54:18,931 Calculating excitation generators
+INFO 2020-12-02 22:54:23,198 Calculating commutators
+INFO 2020-12-02 22:54:25,276 ('Length of new pool', 8)
+INFO 2020-12-02 22:54:29,602 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.39026121472087144]
+INFO 2020-12-02 22:54:33,863 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:54:33,869 Iteration: 1. Energy -1.073362747667065.  Energy change 8.882e-16 , Iteration dutation: 0.005490779876708984
+INFO 2020-12-02 22:54:33,873 Iteration: 2. Energy -1.0497335524532394.  Energy change 2.363e-02 , Iteration dutation: 0.0009047985076904297
+INFO 2020-12-02 22:54:33,878 Iteration: 3. Energy -1.1066098354825153.  Energy change -5.688e-02 , Iteration dutation: 0.005629777908325195
+INFO 2020-12-02 22:54:33,884 Iteration: 4. Energy -1.1066103521859187.  Energy change -5.167e-07 , Iteration dutation: 0.00563812255859375
+INFO 2020-12-02 22:54:33,890 Iteration: 5. Energy -1.1066103523788635.  Energy change -1.929e-10 , Iteration dutation: 0.005718708038330078
+INFO 2020-12-02 22:54:33,902 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.1066103523788635. Energy change 0.03324760471179755, var. parameters: [-0.1687656947619865]
+INFO 2020-12-02 22:54:39,162 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 8.64824878377135e-12]
+INFO 2020-12-02 22:54:44,418 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:54:44,426 Iteration: 1. Energy -1.1066103523788635.  Energy change 0.000e+00 , Iteration dutation: 0.007218837738037109
+INFO 2020-12-02 22:54:44,426 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:54:44,426 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:54:44,431 Iteration: 1. Energy -1.073362747667065.  Energy change 3.325e-02 , Iteration dutation: 0.004345893859863281
+INFO 2020-12-02 22:54:44,434 Iteration: 2. Energy -1.0497335524532394.  Energy change 2.363e-02 , Iteration dutation: 0.0008027553558349609
+INFO 2020-12-02 22:54:44,439 Iteration: 3. Energy -1.1066098354825153.  Energy change -5.688e-02 , Iteration dutation: 0.00479435920715332
+INFO 2020-12-02 22:54:44,444 Iteration: 4. Energy -1.1066103521859187.  Energy change -5.167e-07 , Iteration dutation: 0.0046536922454833984
+INFO 2020-12-02 22:54:44,448 Iteration: 5. Energy -1.1066103523788635.  Energy change -1.929e-10 , Iteration dutation: 0.0045473575592041016
+INFO 2020-12-02 22:54:45,657 H2, r=1.0526315789473684 ,q_exc
+INFO 2020-12-02 22:54:45,682 Calculating excitation generators
+INFO 2020-12-02 22:54:49,986 Calculating commutators
+INFO 2020-12-02 22:54:52,019 ('Length of new pool', 8)
+INFO 2020-12-02 22:54:56,079 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.40030733006154473]
+INFO 2020-12-02 22:55:00,323 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:00,330 Iteration: 1. Energy -1.0508756745867882.  Energy change -2.220e-16 , Iteration dutation: 0.00570988655090332
+INFO 2020-12-02 22:55:00,333 Iteration: 2. Energy -1.0439904473267136.  Energy change 6.885e-03 , Iteration dutation: 0.0010333061218261719
+INFO 2020-12-02 22:55:00,339 Iteration: 3. Energy -1.089761649441595.  Energy change -4.577e-02 , Iteration dutation: 0.005997657775878906
+INFO 2020-12-02 22:55:00,345 Iteration: 4. Energy -1.0897617024107389.  Energy change -5.297e-08 , Iteration dutation: 0.00592041015625
+INFO 2020-12-02 22:55:00,351 Iteration: 5. Energy -1.0897617024438815.  Energy change -3.314e-11 , Iteration dutation: 0.0059354305267333984
+INFO 2020-12-02 22:55:00,363 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.0897617024438815. Energy change 0.0388860278570935, var. parameters: [-0.1918903956497274]
+INFO 2020-12-02 22:55:04,652 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.8366532173483847e-13]
+INFO 2020-12-02 22:55:09,096 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:09,104 Iteration: 1. Energy -1.0897617024438815.  Energy change 0.000e+00 , Iteration dutation: 0.007300376892089844
+INFO 2020-12-02 22:55:09,105 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:55:09,105 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:09,110 Iteration: 1. Energy -1.0508756745867882.  Energy change 3.889e-02 , Iteration dutation: 0.004219532012939453
+INFO 2020-12-02 22:55:09,112 Iteration: 2. Energy -1.0439904473267136.  Energy change 6.885e-03 , Iteration dutation: 0.0007472038269042969
+INFO 2020-12-02 22:55:09,117 Iteration: 3. Energy -1.089761649441595.  Energy change -4.577e-02 , Iteration dutation: 0.004649162292480469
+INFO 2020-12-02 22:55:09,122 Iteration: 4. Energy -1.0897617024107389.  Energy change -5.297e-08 , Iteration dutation: 0.004580259323120117
+INFO 2020-12-02 22:55:09,126 Iteration: 5. Energy -1.0897617024438815.  Energy change -3.314e-11 , Iteration dutation: 0.004388093948364258
+INFO 2020-12-02 22:55:10,347 H2, r=1.131578947368421 ,q_exc
+INFO 2020-12-02 22:55:10,367 Calculating excitation generators
+INFO 2020-12-02 22:55:14,725 Calculating commutators
+INFO 2020-12-02 22:55:16,916 ('Length of new pool', 8)
+INFO 2020-12-02 22:55:21,103 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4105713221728306]
+INFO 2020-12-02 22:55:25,636 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:25,643 Iteration: 1. Energy -1.0267436886877765.  Energy change -2.220e-16 , Iteration dutation: 0.005422353744506836
+INFO 2020-12-02 22:55:25,646 Iteration: 2. Energy -1.0361358860080223.  Energy change -9.392e-03 , Iteration dutation: 0.0009381771087646484
+INFO 2020-12-02 22:55:25,651 Iteration: 3. Energy -1.0526688787418432.  Energy change -1.653e-02 , Iteration dutation: 0.005162954330444336
+INFO 2020-12-02 22:55:25,656 Iteration: 4. Energy -1.0717292898117794.  Energy change -1.906e-02 , Iteration dutation: 0.0048351287841796875
+INFO 2020-12-02 22:55:25,660 Iteration: 5. Energy -1.0720798185887064.  Energy change -3.505e-04 , Iteration dutation: 0.0047147274017333984
+INFO 2020-12-02 22:55:25,665 Iteration: 6. Energy -1.0720799009570292.  Energy change -8.237e-08 , Iteration dutation: 0.004624843597412109
+INFO 2020-12-02 22:55:25,669 Iteration: 7. Energy -1.072079900957034.  Energy change -4.885e-15 , Iteration dutation: 0.004271984100341797
+INFO 2020-12-02 22:55:25,680 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.072079900957034. Energy change 0.04533621226925777, var. parameters: [-0.217355689592537]
+INFO 2020-12-02 22:55:30,076 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 7.521760991835436e-15]
+INFO 2020-12-02 22:55:34,277 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:34,286 Iteration: 1. Energy -1.072079900957034.  Energy change 0.000e+00 , Iteration dutation: 0.007515430450439453
+INFO 2020-12-02 22:55:34,286 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:55:34,286 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:34,292 Iteration: 1. Energy -1.0267436886877765.  Energy change 4.534e-02 , Iteration dutation: 0.004419088363647461
+INFO 2020-12-02 22:55:34,294 Iteration: 2. Energy -1.0361358860080223.  Energy change -9.392e-03 , Iteration dutation: 0.0007567405700683594
+INFO 2020-12-02 22:55:34,299 Iteration: 3. Energy -1.0526688787418432.  Energy change -1.653e-02 , Iteration dutation: 0.0048825740814208984
+INFO 2020-12-02 22:55:34,304 Iteration: 4. Energy -1.0717292898117794.  Energy change -1.906e-02 , Iteration dutation: 0.004655361175537109
+INFO 2020-12-02 22:55:34,308 Iteration: 5. Energy -1.0720798185887064.  Energy change -3.505e-04 , Iteration dutation: 0.004553556442260742
+INFO 2020-12-02 22:55:34,312 Iteration: 6. Energy -1.0720799009570292.  Energy change -8.237e-08 , Iteration dutation: 0.004320383071899414
+INFO 2020-12-02 22:55:34,316 Iteration: 7. Energy -1.072079900957034.  Energy change -4.885e-15 , Iteration dutation: 0.004071235656738281
+INFO 2020-12-02 22:55:35,462 H2, r=1.2105263157894737 ,q_exc
+INFO 2020-12-02 22:55:35,483 Calculating excitation generators
+INFO 2020-12-02 22:55:38,997 Calculating commutators
+INFO 2020-12-02 22:55:41,253 ('Length of new pool', 8)
+INFO 2020-12-02 22:55:45,491 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4209753447512269]
+INFO 2020-12-02 22:55:49,604 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:49,611 Iteration: 1. Energy -1.0017465339934777.  Energy change 0.000e+00 , Iteration dutation: 0.005697727203369141
+INFO 2020-12-02 22:55:49,614 Iteration: 2. Energy -1.0270617889031728.  Energy change -2.532e-02 , Iteration dutation: 0.0010440349578857422
+INFO 2020-12-02 22:55:49,620 Iteration: 3. Energy -1.054325357215883.  Energy change -2.726e-02 , Iteration dutation: 0.005716085433959961
+INFO 2020-12-02 22:55:49,625 Iteration: 4. Energy -1.0544098853097728.  Energy change -8.453e-05 , Iteration dutation: 0.005372047424316406
+INFO 2020-12-02 22:55:49,630 Iteration: 5. Energy -1.0544099265811482.  Energy change -4.127e-08 , Iteration dutation: 0.005739927291870117
+INFO 2020-12-02 22:55:49,635 Iteration: 6. Energy -1.0544099265811484.  Energy change -2.220e-16 , Iteration dutation: 0.00484466552734375
+INFO 2020-12-02 22:55:49,649 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.0544099265811484. Energy change 0.05266339258767072, var. parameters: [-0.2451641039515601]
+INFO 2020-12-02 22:55:54,016 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6.938893903907228e-16]
+INFO 2020-12-02 22:55:58,340 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:58,347 Iteration: 1. Energy -1.0544099265811484.  Energy change 0.000e+00 , Iteration dutation: 0.0062313079833984375
+INFO 2020-12-02 22:55:58,347 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:55:58,347 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:55:58,352 Iteration: 1. Energy -1.0017465339934777.  Energy change 5.266e-02 , Iteration dutation: 0.004030942916870117
+INFO 2020-12-02 22:55:58,355 Iteration: 2. Energy -1.0270617889031728.  Energy change -2.532e-02 , Iteration dutation: 0.0007226467132568359
+INFO 2020-12-02 22:55:58,359 Iteration: 3. Energy -1.054325357215883.  Energy change -2.726e-02 , Iteration dutation: 0.00465083122253418
+INFO 2020-12-02 22:55:58,364 Iteration: 4. Energy -1.0544098853097728.  Energy change -8.453e-05 , Iteration dutation: 0.0043599605560302734
+INFO 2020-12-02 22:55:58,368 Iteration: 5. Energy -1.0544099265811482.  Energy change -4.127e-08 , Iteration dutation: 0.00428318977355957
+INFO 2020-12-02 22:55:58,372 Iteration: 6. Energy -1.0544099265811484.  Energy change -2.220e-16 , Iteration dutation: 0.00432276725769043
+INFO 2020-12-02 22:55:59,668 H2, r=1.2894736842105263 ,q_exc
+INFO 2020-12-02 22:55:59,690 Calculating excitation generators
+INFO 2020-12-02 22:56:04,114 Calculating commutators
+INFO 2020-12-02 22:56:06,228 ('Length of new pool', 8)
+INFO 2020-12-02 22:56:11,601 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4314393873060695]
+INFO 2020-12-02 22:56:15,650 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:56:15,657 Iteration: 1. Energy -0.9764750422907063.  Energy change -6.661e-16 , Iteration dutation: 0.005387067794799805
+INFO 2020-12-02 22:56:15,660 Iteration: 2. Energy -1.0174020962852761.  Energy change -4.093e-02 , Iteration dutation: 0.0008695125579833984
+INFO 2020-12-02 22:56:15,665 Iteration: 3. Energy -1.0373717384798942.  Energy change -1.997e-02 , Iteration dutation: 0.005422353744506836
+INFO 2020-12-02 22:56:15,670 Iteration: 4. Energy -1.037381678545052.  Energy change -9.940e-06 , Iteration dutation: 0.004937171936035156
+INFO 2020-12-02 22:56:15,675 Iteration: 5. Energy -1.0373816811203935.  Energy change -2.575e-09 , Iteration dutation: 0.004899740219116211
+INFO 2020-12-02 22:56:15,688 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.0373816811203935. Energy change 0.06090663882968794, var. parameters: [-0.2751787250056934]
+INFO 2020-12-02 22:56:19,847 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 7.28791388349137e-10]
+INFO 2020-12-02 22:56:24,493 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:56:24,508 Iteration: 1. Energy -1.0373816811203935.  Energy change 0.000e+00 , Iteration dutation: 0.013219833374023438
+INFO 2020-12-02 22:56:24,508 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:56:24,508 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:56:24,518 Iteration: 1. Energy -0.9764750422907063.  Energy change 6.091e-02 , Iteration dutation: 0.008214950561523438
+INFO 2020-12-02 22:56:24,524 Iteration: 2. Energy -1.0174020962852761.  Energy change -4.093e-02 , Iteration dutation: 0.0014760494232177734
+INFO 2020-12-02 22:56:24,534 Iteration: 3. Energy -1.0373717384798942.  Energy change -1.997e-02 , Iteration dutation: 0.010825634002685547
+INFO 2020-12-02 22:56:24,542 Iteration: 4. Energy -1.037381678545052.  Energy change -9.940e-06 , Iteration dutation: 0.009251594543457031
+INFO 2020-12-02 22:56:24,547 Iteration: 5. Energy -1.0373816811203935.  Energy change -2.575e-09 , Iteration dutation: 0.0061795711517333984
+INFO 2020-12-02 22:56:26,071 H2, r=1.3684210526315788 ,q_exc
+INFO 2020-12-02 22:56:26,092 Calculating excitation generators
+INFO 2020-12-02 22:56:30,466 Calculating commutators
+INFO 2020-12-02 22:56:32,878 ('Length of new pool', 8)
+INFO 2020-12-02 22:56:37,226 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.44188630344129126]
+INFO 2020-12-02 22:56:41,309 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:56:41,315 Iteration: 1. Energy -0.9513849121285454.  Energy change -2.220e-16 , Iteration dutation: 0.00557398796081543
+INFO 2020-12-02 22:56:41,320 Iteration: 2. Energy -1.007612047760231.  Energy change -5.623e-02 , Iteration dutation: 0.0011217594146728516
+INFO 2020-12-02 22:56:41,326 Iteration: 3. Energy -1.0214373182314753.  Energy change -1.383e-02 , Iteration dutation: 0.0070230960845947266
+INFO 2020-12-02 22:56:41,332 Iteration: 4. Energy -1.0214555483385104.  Energy change -1.823e-05 , Iteration dutation: 0.00558161735534668
+INFO 2020-12-02 22:56:41,336 Iteration: 5. Energy -1.021455550862783.  Energy change -2.524e-09 , Iteration dutation: 0.005451679229736328
+INFO 2020-12-02 22:56:41,351 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.021455550862783. Energy change 0.0700706387342378, var. parameters: [-0.30710944646745997]
+INFO 2020-12-02 22:56:45,695 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.378480884994815e-09]
+INFO 2020-12-02 22:56:49,959 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:56:49,967 Iteration: 1. Energy -1.021455550862783.  Energy change 0.000e+00 , Iteration dutation: 0.007287502288818359
+INFO 2020-12-02 22:56:49,967 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:56:49,967 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:56:49,973 Iteration: 1. Energy -0.9513849121285454.  Energy change 7.007e-02 , Iteration dutation: 0.0047109127044677734
+INFO 2020-12-02 22:56:49,976 Iteration: 2. Energy -1.007612047760231.  Energy change -5.623e-02 , Iteration dutation: 0.0008766651153564453
+INFO 2020-12-02 22:56:49,982 Iteration: 3. Energy -1.0214373182314753.  Energy change -1.383e-02 , Iteration dutation: 0.005554676055908203
+INFO 2020-12-02 22:56:49,987 Iteration: 4. Energy -1.0214555483385104.  Energy change -1.823e-05 , Iteration dutation: 0.005510568618774414
+INFO 2020-12-02 22:56:49,993 Iteration: 5. Energy -1.021455550862783.  Energy change -2.524e-09 , Iteration dutation: 0.005546092987060547
+INFO 2020-12-02 22:56:51,231 H2, r=1.4473684210526314 ,q_exc
+INFO 2020-12-02 22:56:51,253 Calculating excitation generators
+INFO 2020-12-02 22:56:55,621 Calculating commutators
+INFO 2020-12-02 22:56:57,936 ('Length of new pool', 8)
+INFO 2020-12-02 22:57:02,023 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.45224547371530976]
+INFO 2020-12-02 22:57:06,276 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:57:06,283 Iteration: 1. Energy -0.9268235481206915.  Energy change 2.220e-16 , Iteration dutation: 0.005932807922363281
+INFO 2020-12-02 22:57:06,286 Iteration: 2. Energy -0.9980148114848162.  Energy change -7.119e-02 , Iteration dutation: 0.0010738372802734375
+INFO 2020-12-02 22:57:06,292 Iteration: 3. Energy -1.0069179018591106.  Energy change -8.903e-03 , Iteration dutation: 0.005692481994628906
+INFO 2020-12-02 22:57:06,297 Iteration: 4. Energy -1.0069438420452574.  Energy change -2.594e-05 , Iteration dutation: 0.00557708740234375
+INFO 2020-12-02 22:57:06,302 Iteration: 5. Energy -1.0069438436711857.  Energy change -1.626e-09 , Iteration dutation: 0.0050432682037353516
+INFO 2020-12-02 22:57:06,316 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -1.0069438436711857. Energy change 0.08012029555049405, var. parameters: [-0.3405200898155434]
+INFO 2020-12-02 22:57:10,495 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.6326612284345288e-09]
+INFO 2020-12-02 22:57:14,811 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:57:14,819 Iteration: 1. Energy -1.0069438436711857.  Energy change 0.000e+00 , Iteration dutation: 0.0076122283935546875
+INFO 2020-12-02 22:57:14,820 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:57:14,820 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:57:14,825 Iteration: 1. Energy -0.9268235481206915.  Energy change 8.012e-02 , Iteration dutation: 0.004601240158081055
+INFO 2020-12-02 22:57:14,828 Iteration: 2. Energy -0.9980148114848162.  Energy change -7.119e-02 , Iteration dutation: 0.0008146762847900391
+INFO 2020-12-02 22:57:14,833 Iteration: 3. Energy -1.0069179018591106.  Energy change -8.903e-03 , Iteration dutation: 0.005034923553466797
+INFO 2020-12-02 22:57:14,838 Iteration: 4. Energy -1.0069438420452574.  Energy change -2.594e-05 , Iteration dutation: 0.004721403121948242
+INFO 2020-12-02 22:57:14,842 Iteration: 5. Energy -1.0069438436711857.  Energy change -1.626e-09 , Iteration dutation: 0.004651308059692383
+INFO 2020-12-02 22:57:16,147 H2, r=1.526315789473684 ,q_exc
+INFO 2020-12-02 22:57:16,168 Calculating excitation generators
+INFO 2020-12-02 22:57:20,573 Calculating commutators
+INFO 2020-12-02 22:57:22,859 ('Length of new pool', 8)
+INFO 2020-12-02 22:57:27,143 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.46245498524003725]
+INFO 2020-12-02 22:57:31,434 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:57:31,441 Iteration: 1. Energy -0.9030487545667347.  Energy change 6.661e-16 , Iteration dutation: 0.0064258575439453125
+INFO 2020-12-02 22:57:31,445 Iteration: 2. Energy -0.988832942104883.  Energy change -8.578e-02 , Iteration dutation: 0.001077890396118164
+INFO 2020-12-02 22:57:31,451 Iteration: 3. Energy -0.9939978865473215.  Energy change -5.165e-03 , Iteration dutation: 0.005896091461181641
+INFO 2020-12-02 22:57:31,457 Iteration: 4. Energy -0.9940274302840876.  Energy change -2.954e-05 , Iteration dutation: 0.0062253475189208984
+INFO 2020-12-02 22:57:31,462 Iteration: 5. Energy -0.9940274309494929.  Energy change -6.654e-10 , Iteration dutation: 0.005605459213256836
+INFO 2020-12-02 22:57:31,477 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9940274309494929. Energy change 0.09097867638275747, var. parameters: [-0.3748554142975139]
+INFO 2020-12-02 22:57:35,877 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.2276684946410654e-09]
+INFO 2020-12-02 22:57:40,216 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:57:40,225 Iteration: 1. Energy -0.9940274309494929.  Energy change 0.000e+00 , Iteration dutation: 0.007164478302001953
+INFO 2020-12-02 22:57:40,225 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:57:40,225 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:57:40,230 Iteration: 1. Energy -0.9030487545667347.  Energy change 9.098e-02 , Iteration dutation: 0.004236936569213867
+INFO 2020-12-02 22:57:40,233 Iteration: 2. Energy -0.988832942104883.  Energy change -8.578e-02 , Iteration dutation: 0.0007879734039306641
+INFO 2020-12-02 22:57:40,237 Iteration: 3. Energy -0.9939978865473215.  Energy change -5.165e-03 , Iteration dutation: 0.0047872066497802734
+INFO 2020-12-02 22:57:40,242 Iteration: 4. Energy -0.9940274302840876.  Energy change -2.954e-05 , Iteration dutation: 0.004582881927490234
+INFO 2020-12-02 22:57:40,246 Iteration: 5. Energy -0.9940274309494929.  Energy change -6.654e-10 , Iteration dutation: 0.004492044448852539
+INFO 2020-12-02 22:57:41,400 H2, r=1.6052631578947367 ,q_exc
+INFO 2020-12-02 22:57:41,421 Calculating excitation generators
+INFO 2020-12-02 22:57:45,754 Calculating commutators
+INFO 2020-12-02 22:57:48,023 ('Length of new pool', 8)
+INFO 2020-12-02 22:57:52,073 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.47246255431503936]
+INFO 2020-12-02 22:57:56,412 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:57:56,419 Iteration: 1. Energy -0.8802452362916027.  Energy change 2.220e-16 , Iteration dutation: 0.00536346435546875
+INFO 2020-12-02 22:57:56,422 Iteration: 2. Energy -0.9802122247504226.  Energy change -9.997e-02 , Iteration dutation: 0.001001119613647461
+INFO 2020-12-02 22:57:56,427 Iteration: 3. Energy -0.9827480866516592.  Energy change -2.536e-03 , Iteration dutation: 0.005249977111816406
+INFO 2020-12-02 22:57:56,432 Iteration: 4. Energy -0.9827741956031235.  Energy change -2.611e-05 , Iteration dutation: 0.004886150360107422
+INFO 2020-12-02 22:57:56,436 Iteration: 5. Energy -0.9827741957511618.  Energy change -1.480e-10 , Iteration dutation: 0.004724740982055664
+INFO 2020-12-02 22:57:56,451 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9827741957511618. Energy change 0.10252895945955887, var. parameters: [-0.40948529732776956]
+INFO 2020-12-02 22:58:00,660 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.254189860970371e-10]
+INFO 2020-12-02 22:58:05,928 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:58:05,937 Iteration: 1. Energy -0.9827741957511618.  Energy change 0.000e+00 , Iteration dutation: 0.0077626705169677734
+INFO 2020-12-02 22:58:05,937 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:58:05,937 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:58:05,943 Iteration: 1. Energy -0.8802452362916027.  Energy change 1.025e-01 , Iteration dutation: 0.004673004150390625
+INFO 2020-12-02 22:58:05,946 Iteration: 2. Energy -0.9802122247504226.  Energy change -9.997e-02 , Iteration dutation: 0.0009086132049560547
+INFO 2020-12-02 22:58:05,951 Iteration: 3. Energy -0.9827480866516592.  Energy change -2.536e-03 , Iteration dutation: 0.005589485168457031
+INFO 2020-12-02 22:58:05,957 Iteration: 4. Energy -0.9827741956031235.  Energy change -2.611e-05 , Iteration dutation: 0.005518436431884766
+INFO 2020-12-02 22:58:05,962 Iteration: 5. Energy -0.9827741957511618.  Energy change -1.480e-10 , Iteration dutation: 0.005604982376098633
+INFO 2020-12-02 22:58:07,143 H2, r=1.6842105263157894 ,q_exc
+INFO 2020-12-02 22:58:07,164 Calculating excitation generators
+INFO 2020-12-02 22:58:12,228 Calculating commutators
+INFO 2020-12-02 22:58:14,236 ('Length of new pool', 8)
+INFO 2020-12-02 22:58:18,459 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4822255361680963]
+INFO 2020-12-02 22:58:22,748 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:58:22,755 Iteration: 1. Energy -0.8585393357094945.  Energy change 6.661e-16 , Iteration dutation: 0.00603485107421875
+INFO 2020-12-02 22:58:22,759 Iteration: 2. Energy -0.9722405011168516.  Energy change -1.137e-01 , Iteration dutation: 0.0010213851928710938
+INFO 2020-12-02 22:58:22,764 Iteration: 3. Energy -0.9731444371779684.  Energy change -9.039e-04 , Iteration dutation: 0.005941867828369141
+INFO 2020-12-02 22:58:22,770 Iteration: 4. Energy -0.9731600781082477.  Energy change -1.564e-05 , Iteration dutation: 0.005737781524658203
+INFO 2020-12-02 22:58:22,776 Iteration: 5. Energy -0.9731600781197691.  Energy change -1.152e-11 , Iteration dutation: 0.0057220458984375
+INFO 2020-12-02 22:58:22,791 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9731600781197691. Energy change 0.11462074241027398, var. parameters: [-0.44376021315571856]
+INFO 2020-12-02 22:58:27,047 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 8.969355813626123e-11]
+INFO 2020-12-02 22:58:31,264 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:58:31,272 Iteration: 1. Energy -0.9731600781197691.  Energy change 0.000e+00 , Iteration dutation: 0.0070269107818603516
+INFO 2020-12-02 22:58:31,272 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:58:31,272 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:58:31,277 Iteration: 1. Energy -0.8585393357094945.  Energy change 1.146e-01 , Iteration dutation: 0.004243373870849609
+INFO 2020-12-02 22:58:31,280 Iteration: 2. Energy -0.9722405011168516.  Energy change -1.137e-01 , Iteration dutation: 0.0008890628814697266
+INFO 2020-12-02 22:58:31,285 Iteration: 3. Energy -0.9731444371779684.  Energy change -9.039e-04 , Iteration dutation: 0.004871368408203125
+INFO 2020-12-02 22:58:31,290 Iteration: 4. Energy -0.9731600781082477.  Energy change -1.564e-05 , Iteration dutation: 0.0046846866607666016
+INFO 2020-12-02 22:58:31,294 Iteration: 5. Energy -0.9731600781197691.  Energy change -1.152e-11 , Iteration dutation: 0.00442957878112793
+INFO 2020-12-02 22:58:32,422 H2, r=1.763157894736842 ,q_exc
+INFO 2020-12-02 22:58:32,451 Calculating excitation generators
+INFO 2020-12-02 22:58:35,891 Calculating commutators
+INFO 2020-12-02 22:58:38,161 ('Length of new pool', 8)
+INFO 2020-12-02 22:58:41,630 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.49171035568095695]
+INFO 2020-12-02 22:58:45,978 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:58:45,985 Iteration: 1. Energy -0.8380113110556908.  Energy change -1.110e-16 , Iteration dutation: 0.005336284637451172
+INFO 2020-12-02 22:58:45,988 Iteration: 2. Energy -0.9649624049564396.  Energy change -1.270e-01 , Iteration dutation: 0.0009381771087646484
+INFO 2020-12-02 22:58:45,993 Iteration: 3. Energy -0.9650881497205961.  Energy change -1.257e-04 , Iteration dutation: 0.005208015441894531
+INFO 2020-12-02 22:58:45,998 Iteration: 4. Energy -0.9650916044043572.  Energy change -3.455e-06 , Iteration dutation: 0.004913806915283203
+INFO 2020-12-02 22:58:46,003 Iteration: 5. Energy -0.9650916044044064.  Energy change -4.929e-14 , Iteration dutation: 0.004708051681518555
+INFO 2020-12-02 22:58:46,017 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9650916044044064. Energy change 0.12708029334871573, var. parameters: [-0.477068804332498]
+INFO 2020-12-02 22:58:49,483 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.3183620861667578e-12]
+INFO 2020-12-02 22:58:53,809 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:58:53,818 Iteration: 1. Energy -0.9650916044044064.  Energy change 0.000e+00 , Iteration dutation: 0.007203340530395508
+INFO 2020-12-02 22:58:53,818 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:58:53,818 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:58:53,823 Iteration: 1. Energy -0.8380113110556908.  Energy change 1.271e-01 , Iteration dutation: 0.0041921138763427734
+INFO 2020-12-02 22:58:53,826 Iteration: 2. Energy -0.9649624049564396.  Energy change -1.270e-01 , Iteration dutation: 0.0007867813110351562
+INFO 2020-12-02 22:58:53,830 Iteration: 3. Energy -0.9650881497205961.  Energy change -1.257e-04 , Iteration dutation: 0.0047206878662109375
+INFO 2020-12-02 22:58:53,835 Iteration: 4. Energy -0.9650916044043572.  Energy change -3.455e-06 , Iteration dutation: 0.0045070648193359375
+INFO 2020-12-02 22:58:53,839 Iteration: 5. Energy -0.9650916044044064.  Energy change -4.929e-14 , Iteration dutation: 0.004326343536376953
+INFO 2020-12-02 22:58:54,954 H2, r=1.8421052631578947 ,q_exc
+INFO 2020-12-02 22:58:54,975 Calculating excitation generators
+INFO 2020-12-02 22:58:58,977 Calculating commutators
+INFO 2020-12-02 22:59:01,092 ('Length of new pool', 8)
+INFO 2020-12-02 22:59:05,314 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5008916278365293]
+INFO 2020-12-02 22:59:10,532 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:59:10,539 Iteration: 1. Energy -0.8187049519621972.  Energy change 4.441e-16 , Iteration dutation: 0.005144596099853516
+INFO 2020-12-02 22:59:10,542 Iteration: 2. Energy -0.9583906778555779.  Energy change -1.397e-01 , Iteration dutation: 0.0010457038879394531
+INFO 2020-12-02 22:59:10,547 Iteration: 3. Energy -0.9584268055128835.  Energy change -3.613e-05 , Iteration dutation: 0.0051212310791015625
+INFO 2020-12-02 22:59:10,552 Iteration: 4. Energy -0.9584283071048428.  Energy change -1.502e-06 , Iteration dutation: 0.0048542022705078125
+INFO 2020-12-02 22:59:10,556 Iteration: 5. Energy -0.9584283071048447.  Energy change -1.887e-15 , Iteration dutation: 0.004753828048706055
+INFO 2020-12-02 22:59:10,571 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9584283071048447. Energy change 0.1397233551426471, var. parameters: [-0.5088871208695382]
+INFO 2020-12-02 22:59:14,877 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0902390101819037e-13]
+INFO 2020-12-02 22:59:19,102 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:59:19,111 Iteration: 1. Energy -0.9584283071048447.  Energy change 0.000e+00 , Iteration dutation: 0.007261753082275391
+INFO 2020-12-02 22:59:19,111 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:59:19,111 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:59:19,117 Iteration: 1. Energy -0.8187049519621972.  Energy change 1.397e-01 , Iteration dutation: 0.004638195037841797
+INFO 2020-12-02 22:59:19,120 Iteration: 2. Energy -0.9583906778555779.  Energy change -1.397e-01 , Iteration dutation: 0.0009083747863769531
+INFO 2020-12-02 22:59:19,126 Iteration: 3. Energy -0.9584268055128835.  Energy change -3.613e-05 , Iteration dutation: 0.00559234619140625
+INFO 2020-12-02 22:59:19,131 Iteration: 4. Energy -0.9584283071048428.  Energy change -1.502e-06 , Iteration dutation: 0.005600690841674805
+INFO 2020-12-02 22:59:19,135 Iteration: 5. Energy -0.9584283071048447.  Energy change -1.887e-15 , Iteration dutation: 0.004733085632324219
+INFO 2020-12-02 22:59:20,389 H2, r=1.9210526315789473 ,q_exc
+INFO 2020-12-02 22:59:20,411 Calculating excitation generators
+INFO 2020-12-02 22:59:24,754 Calculating commutators
+INFO 2020-12-02 22:59:26,946 ('Length of new pool', 8)
+INFO 2020-12-02 22:59:31,177 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5097511589426013]
+INFO 2020-12-02 22:59:35,816 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:59:35,822 Iteration: 1. Energy -0.8006349428336873.  Energy change -3.331e-16 , Iteration dutation: 0.005635976791381836
+INFO 2020-12-02 22:59:35,826 Iteration: 2. Energy -0.9525147956071359.  Energy change -1.519e-01 , Iteration dutation: 0.0011000633239746094
+INFO 2020-12-02 22:59:35,832 Iteration: 3. Energy -0.9529755906298112.  Energy change -4.608e-04 , Iteration dutation: 0.0059680938720703125
+INFO 2020-12-02 22:59:35,838 Iteration: 4. Energy -0.9530033771637911.  Energy change -2.779e-05 , Iteration dutation: 0.005922794342041016
+INFO 2020-12-02 22:59:35,843 Iteration: 5. Energy -0.9530033771689022.  Energy change -5.111e-12 , Iteration dutation: 0.005658864974975586
+INFO 2020-12-02 22:59:35,860 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9530033771689022. Energy change 0.15236843433521519, var. parameters: [-0.5388113043770101]
+INFO 2020-12-02 22:59:40,187 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.1005751865411639e-10]
+INFO 2020-12-02 22:59:44,413 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:59:44,422 Iteration: 1. Energy -0.9530033771689022.  Energy change 0.000e+00 , Iteration dutation: 0.007427692413330078
+INFO 2020-12-02 22:59:44,422 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 22:59:44,423 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 22:59:44,429 Iteration: 1. Energy -0.8006349428336873.  Energy change 1.524e-01 , Iteration dutation: 0.004897356033325195
+INFO 2020-12-02 22:59:44,432 Iteration: 2. Energy -0.9525147956071359.  Energy change -1.519e-01 , Iteration dutation: 0.0010840892791748047
+INFO 2020-12-02 22:59:44,438 Iteration: 3. Energy -0.9529755906298112.  Energy change -4.608e-04 , Iteration dutation: 0.005923032760620117
+INFO 2020-12-02 22:59:44,445 Iteration: 4. Energy -0.9530033771637911.  Energy change -2.779e-05 , Iteration dutation: 0.006357431411743164
+INFO 2020-12-02 22:59:44,451 Iteration: 5. Energy -0.9530033771689022.  Energy change -5.111e-12 , Iteration dutation: 0.006609439849853516
+INFO 2020-12-02 22:59:45,599 H2, r=2.0 ,q_exc
+INFO 2020-12-02 22:59:45,621 Calculating excitation generators
+INFO 2020-12-02 22:59:50,869 Calculating commutators
+INFO 2020-12-02 22:59:53,072 ('Length of new pool', 8)
+INFO 2020-12-02 22:59:56,554 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5182769498621239]
+INFO 2020-12-02 23:00:00,663 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 23:00:00,670 Iteration: 1. Energy -0.7837926540830402.  Energy change 4.441e-16 , Iteration dutation: 0.0054950714111328125
+INFO 2020-12-02 23:00:00,673 Iteration: 2. Energy -0.9473076150170723.  Energy change -1.635e-01 , Iteration dutation: 0.0009922981262207031
+INFO 2020-12-02 23:00:00,679 Iteration: 3. Energy -0.948537389490006.  Energy change -1.230e-03 , Iteration dutation: 0.005681037902832031
+INFO 2020-12-02 23:00:00,685 Iteration: 4. Energy -0.9486411119990239.  Energy change -1.037e-04 , Iteration dutation: 0.005589485168457031
+INFO 2020-12-02 23:00:00,690 Iteration: 5. Energy -0.9486411121296494.  Energy change -1.306e-10 , Iteration dutation: 0.006184816360473633
+INFO 2020-12-02 23:00:00,706 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9486411121296494. Energy change 0.16484845804660875, var. parameters: [-0.5665703251113463]
+INFO 2020-12-02 23:00:04,961 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -2.0874875161780437e-09]
+INFO 2020-12-02 23:00:10,214 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 23:00:10,223 Iteration: 1. Energy -0.9486411121296494.  Energy change 0.000e+00 , Iteration dutation: 0.0071790218353271484
+INFO 2020-12-02 23:00:10,223 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2020-12-02 23:00:10,223 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 23:00:10,228 Iteration: 1. Energy -0.7837926540830402.  Energy change 1.648e-01 , Iteration dutation: 0.004374027252197266
+INFO 2020-12-02 23:00:10,232 Iteration: 2. Energy -0.9473076150170723.  Energy change -1.635e-01 , Iteration dutation: 0.0008616447448730469
+INFO 2020-12-02 23:00:10,237 Iteration: 3. Energy -0.948537389490006.  Energy change -1.230e-03 , Iteration dutation: 0.005332469940185547
+INFO 2020-12-02 23:00:10,242 Iteration: 4. Energy -0.9486411119990239.  Energy change -1.037e-04 , Iteration dutation: 0.0052454471588134766
+INFO 2020-12-02 23:00:10,247 Iteration: 5. Energy -0.9486411121296494.  Energy change -1.306e-10 , Iteration dutation: 0.005174160003662109
+DEBUG 2020-12-02 23:00:10,250 Loaded backend Qt5Agg version unknown.
+DEBUG 2020-12-02 23:00:10,470 findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0.
+DEBUG 2020-12-02 23:00:10,471 findfont: score(<Font 'DejaVu Sans' (DejaVuSans.ttf) normal normal 400 normal>) = 0.05
+DEBUG 2020-12-02 23:00:10,472 findfont: score(<Font 'STIXSizeFiveSym' (STIXSizFiveSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,472 findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Oblique.ttf) oblique normal 400 normal>) = 1.05
+DEBUG 2020-12-02 23:00:10,472 findfont: score(<Font 'cmtt10' (cmtt10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,472 findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,473 findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Bold.ttf) normal normal bold normal>) = 0.33499999999999996
+DEBUG 2020-12-02 23:00:10,473 findfont: score(<Font 'STIXGeneral' (STIXGeneralItalic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,473 findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,473 findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,474 findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,474 findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBolIta.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,474 findfont: score(<Font 'cmss10' (cmss10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,474 findfont: score(<Font 'STIXGeneral' (STIXGeneralBolIta.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,475 findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,475 findfont: score(<Font 'cmb10' (cmb10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,475 findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,475 findfont: score(<Font 'DejaVu Serif Display' (DejaVuSerifDisplay.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,476 findfont: score(<Font 'STIXNonUnicode' (STIXNonUni.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,476 findfont: score(<Font 'DejaVu Sans Display' (DejaVuSansDisplay.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,476 findfont: score(<Font 'STIXNonUnicode' (STIXNonUniIta.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,477 findfont: score(<Font 'DejaVu Serif' (DejaVuSerif.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,477 findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,477 findfont: score(<Font 'DejaVu Sans' (DejaVuSans-BoldOblique.ttf) oblique normal bold normal>) = 1.335
+DEBUG 2020-12-02 23:00:10,477 findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,478 findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,478 findfont: score(<Font 'cmex10' (cmex10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,478 findfont: score(<Font 'cmsy10' (cmsy10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,478 findfont: score(<Font 'cmmi10' (cmmi10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,479 findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,479 findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,479 findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,479 findfont: score(<Font 'cmr10' (cmr10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,480 findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,480 findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,480 findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,481 findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,481 findfont: score(<Font 'STIXGeneral' (STIXGeneralBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,481 findfont: score(<Font 'STIXGeneral' (STIXGeneral.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,481 findfont: score(<Font 'Kinnari' (Kinnari.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,482 findfont: score(<Font 'Umpush' (Umpush-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,482 findfont: score(<Font 'Tlwg Mono' (TlwgMono.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,482 findfont: score(<Font 'Rasa' (Rasa-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,483 findfont: score(<Font 'FreeMono' (FreeMonoBold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,483 findfont: score(<Font 'FreeSerif' (FreeSerifBoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,483 findfont: score(<Font 'Nimbus Sans' (NimbusSans-BoldItalic.otf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,483 findfont: score(<Font 'Garuda' (Garuda-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,484 findfont: score(<Font 'C059' (C059-Roman.otf) normal normal roman normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,484 findfont: score(<Font 'KacstArt' (KacstArt.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,484 findfont: score(<Font 'Uroob' (Uroob-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,485 findfont: score(<Font 'Liberation Serif' (LiberationSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,485 findfont: score(<Font 'URW Bookman' (URWBookman-DemiItalic.otf) italic normal book normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,486 findfont: score(<Font 'Standard Symbols PS' (StandardSymbolsPS.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,487 findfont: score(<Font 'Chandas' (chandas1-2.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,487 findfont: score(<Font 'Liberation Mono' (LiberationMono-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,487 findfont: score(<Font 'Norasi' (Norasi-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,487 findfont: score(<Font 'Yrsa' (Yrsa-Light.ttf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,488 findfont: score(<Font 'Ubuntu Condensed' (Ubuntu-C.ttf) normal normal 400 condensed>) = 10.25
+DEBUG 2020-12-02 23:00:10,488 findfont: score(<Font 'Padauk Book' (PadaukBook-Bold.ttf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,488 findfont: score(<Font 'OpenSymbol' (opens___.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,488 findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Italic.ttf) italic normal 400 condensed>) = 11.25
+DEBUG 2020-12-02 23:00:10,488 findfont: score(<Font 'Purisa' (Purisa-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,489 findfont: score(<Font 'Waree' (Waree-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,489 findfont: score(<Font 'Liberation Sans' (LiberationSans-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,489 findfont: score(<Font 'AnjaliOldLipi' (AnjaliOldLipi-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,490 findfont: score(<Font 'Umpush' (Umpush-Light.ttf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,490 findfont: score(<Font 'KacstDecorative' (KacstDecorative.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,490 findfont: score(<Font 'Liberation Mono' (LiberationMono-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,491 findfont: score(<Font 'Loma' (Loma-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,491 findfont: score(<Font 'Ubuntu' (Ubuntu-RI.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,491 findfont: score(<Font 'Lohit Tamil Classical' (Lohit-Tamil-Classical.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,491 findfont: score(<Font 'Ubuntu' (Ubuntu-Th.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,492 findfont: score(<Font 'Sahadeva' (sahadeva.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,492 findfont: score(<Font 'Ubuntu Mono' (UbuntuMono-RI.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,492 findfont: score(<Font 'FreeMono' (FreeMonoOblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,493 findfont: score(<Font 'Nimbus Sans' (NimbusSans-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,493 findfont: score(<Font 'Garuda' (Garuda-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,493 findfont: score(<Font 'Kalapi' (Kalapi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,493 findfont: score(<Font 'Ubuntu' (Ubuntu-LI.ttf) italic normal light normal>) = 11.24
+DEBUG 2020-12-02 23:00:10,494 findfont: score(<Font 'Umpush' (Umpush.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,494 findfont: score(<Font 'Navilu' (Navilu.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,494 findfont: score(<Font 'Waree' (Waree.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,494 findfont: score(<Font 'Mitra Mono' (mitra.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,494 findfont: score(<Font 'Tlwg Typist' (TlwgTypist-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,495 findfont: score(<Font 'Sawasdee' (Sawasdee-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,495 findfont: score(<Font 'Lohit Assamese' (Lohit-Assamese.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,495 findfont: score(<Font 'Yrsa' (Yrsa-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,496 findfont: score(<Font 'Samanata' (samanata.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,496 findfont: score(<Font 'Noto Sans CJK JP' (NotoSansCJK-Bold.ttc) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,496 findfont: score(<Font 'Lohit Devanagari' (Lohit-Devanagari.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,496 findfont: score(<Font 'Yrsa' (Yrsa-SemiBold.ttf) normal normal semibold normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,497 findfont: score(<Font 'Garuda' (Garuda.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,497 findfont: score(<Font 'padmaa' (padmaa-Medium-0.5.ttf) normal normal normal normal>) = 10.0
+DEBUG 2020-12-02 23:00:10,497 findfont: score(<Font 'Liberation Serif' (LiberationSerif-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,498 findfont: score(<Font 'Sarai' (Sarai.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,498 findfont: score(<Font 'Liberation Mono' (LiberationMono-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,498 findfont: score(<Font 'Kinnari' (Kinnari-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,499 findfont: score(<Font 'Nimbus Mono PS' (NimbusMonoPS-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,499 findfont: score(<Font 'Sawasdee' (Sawasdee-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,499 findfont: score(<Font 'Dyuthi' (Dyuthi-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,500 findfont: score(<Font 'Manjari' (Manjari-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,500 findfont: score(<Font 'Lohit Tamil' (Lohit-Tamil.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,500 findfont: score(<Font 'Liberation Sans' (LiberationSans-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,500 findfont: score(<Font 'Sawasdee' (Sawasdee-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,501 findfont: score(<Font 'KacstTitle' (KacstTitle.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,501 findfont: score(<Font 'aakar' (aakar-medium.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,501 findfont: score(<Font 'RaghuMalayalamSans' (RaghuMalayalamSans-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,502 findfont: score(<Font 'Tlwg Typo' (TlwgTypo-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,502 findfont: score(<Font 'Ubuntu' (Ubuntu-B.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,502 findfont: score(<Font 'Rasa' (Rasa-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,503 findfont: score(<Font 'ori1Uni' (utkal.ttf) normal normal medium normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,503 findfont: score(<Font 'Liberation Serif' (LiberationSerif-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,504 findfont: score(<Font 'KacstOne' (KacstOne-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,506 findfont: score(<Font 'Umpush' (Umpush-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,507 findfont: score(<Font 'Loma' (Loma.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,507 findfont: score(<Font 'mry_KacstQurn' (mry_KacstQurn.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,507 findfont: score(<Font 'Lohit Telugu' (Lohit-Telugu.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,507 findfont: score(<Font 'Lohit Malayalam' (Lohit-Malayalam.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,508 findfont: score(<Font 'C059' (C059-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,508 findfont: score(<Font 'Tlwg Mono' (TlwgMono-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,508 findfont: score(<Font 'Ubuntu' (Ubuntu-M.ttf) normal normal medium normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,508 findfont: score(<Font 'Norasi' (Norasi-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,509 findfont: score(<Font 'Kalimati' (kalimati.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,509 findfont: score(<Font 'Kinnari' (Kinnari-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,509 findfont: score(<Font 'Lohit Kannada' (Lohit-Kannada.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,509 findfont: score(<Font 'FreeSans' (FreeSansOblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,510 findfont: score(<Font 'Liberation Sans' (LiberationSans-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,510 findfont: score(<Font 'Manjari' (Manjari-Regular.otf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,510 findfont: score(<Font 'FreeMono' (FreeMonoBoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,511 findfont: score(<Font 'Liberation Mono' (LiberationMono-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,511 findfont: score(<Font 'Likhan' (LikhanNormal.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,511 findfont: score(<Font 'P052' (P052-Italic.otf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,512 findfont: score(<Font 'Ubuntu Mono' (UbuntuMono-B.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,512 findfont: score(<Font 'Saab' (Saab.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,512 findfont: score(<Font 'LKLUG' (lklug.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,512 findfont: score(<Font 'Nimbus Roman' (NimbusRoman-Regular.otf) normal normal roman normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,513 findfont: score(<Font 'Rasa' (Rasa-SemiBold.ttf) normal normal semibold normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,513 findfont: score(<Font 'Sawasdee' (Sawasdee.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,513 findfont: score(<Font 'Loma' (Loma-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,514 findfont: score(<Font 'Tlwg Typo' (TlwgTypo-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,514 findfont: score(<Font 'KacstQurn' (KacstQurn.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,514 findfont: score(<Font 'Tlwg Typist' (TlwgTypist-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,514 findfont: score(<Font 'Suruma' (Suruma.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,515 findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,515 findfont: score(<Font 'KacstScreen' (KacstScreen.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,515 findfont: score(<Font 'FreeSerif' (FreeSerifItalic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,516 findfont: score(<Font 'Pothana2000' (Pothana2000.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,516 findfont: score(<Font 'Norasi' (Norasi-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,516 findfont: score(<Font 'Nimbus Roman' (NimbusRoman-Italic.otf) italic normal roman normal>) = 11.145
+DEBUG 2020-12-02 23:00:10,517 findfont: score(<Font 'Nakula' (nakula.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,517 findfont: score(<Font 'padmaa' (padmaa.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,517 findfont: score(<Font 'Norasi' (Norasi-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,518 findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Bold.ttf) normal normal bold condensed>) = 10.535
+DEBUG 2020-12-02 23:00:10,518 findfont: score(<Font 'Laksaman' (Laksaman.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,518 findfont: score(<Font 'Mukti Narrow' (MuktiNarrowBold.ttf) normal normal 700 normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,519 findfont: score(<Font 'Nimbus Sans' (NimbusSans-Italic.otf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,519 findfont: score(<Font 'KacstDigital' (KacstDigital.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,520 findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-BoldItalic.ttf) italic normal bold condensed>) = 11.535
+DEBUG 2020-12-02 23:00:10,520 findfont: score(<Font 'Tlwg Mono' (TlwgMono-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,521 findfont: score(<Font 'Karumbi' (Karumbi-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,521 findfont: score(<Font 'Gayathri' (Gayathri-Thin.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,521 findfont: score(<Font 'URW Gothic' (URWGothic-DemiOblique.otf) oblique normal demi normal>) = 11.24
+DEBUG 2020-12-02 23:00:10,521 findfont: score(<Font 'Rachana' (Rachana-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,521 findfont: score(<Font 'Garuda' (Garuda-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,522 findfont: score(<Font 'Kinnari' (Kinnari-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,522 findfont: score(<Font 'KacstNaskh' (KacstNaskh.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,522 findfont: score(<Font 'Ubuntu' (Ubuntu-BI.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,522 findfont: score(<Font 'URW Gothic' (URWGothic-Book.otf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,523 findfont: score(<Font 'URW Gothic' (URWGothic-BookOblique.otf) oblique normal book normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,523 findfont: score(<Font 'Abyssinica SIL' (AbyssinicaSIL-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,523 findfont: score(<Font 'Tlwg Typist' (TlwgTypist-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,523 findfont: score(<Font 'Nimbus Roman' (NimbusRoman-Bold.otf) normal normal roman normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,524 findfont: score(<Font 'Kinnari' (Kinnari-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,524 findfont: score(<Font 'Khmer OS System' (KhmerOSsys.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,524 findfont: score(<Font 'Loma' (Loma-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,524 findfont: score(<Font 'Noto Serif CJK JP' (NotoSerifCJK-Bold.ttc) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,525 findfont: score(<Font 'Nimbus Mono PS' (NimbusMonoPS-BoldItalic.otf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,525 findfont: score(<Font 'Phetsarath OT' (Phetsarath_OT.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,525 findfont: score(<Font 'KacstPen' (KacstPen.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,526 findfont: score(<Font 'Laksaman' (Laksaman-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,526 findfont: score(<Font 'Nimbus Sans Narrow' (NimbusSansNarrow-BoldOblique.otf) oblique normal bold condensed>) = 11.535
+DEBUG 2020-12-02 23:00:10,527 findfont: score(<Font 'Samyak Devanagari' (Samyak-Devanagari.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,527 findfont: score(<Font 'Rasa' (Rasa-Medium.ttf) normal normal medium normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,527 findfont: score(<Font 'Rachana' (Rachana-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,528 findfont: score(<Font 'KacstFarsi' (KacstFarsi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,528 findfont: score(<Font 'FreeSans' (FreeSans.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,528 findfont: score(<Font 'Chilanka' (Chilanka-Regular.otf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,529 findfont: score(<Font 'Ubuntu' (Ubuntu-L.ttf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,529 findfont: score(<Font 'Noto Mono' (NotoMono-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,529 findfont: score(<Font 'Gayathri' (Gayathri-Regular.otf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,530 findfont: score(<Font 'Purisa' (Purisa-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,530 findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,531 findfont: score(<Font 'Rekha' (Rekha.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,531 findfont: score(<Font 'Lohit Gurmukhi' (Lohit-Gurmukhi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,531 findfont: score(<Font 'Manjari' (Manjari-Thin.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,532 findfont: score(<Font 'URW Gothic' (URWGothic-Demi.otf) normal normal demi normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,532 findfont: score(<Font 'Vemana2000' (vemana2000.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,532 findfont: score(<Font 'padmaa-Bold.1.1' (padmaa-Bold.1.1.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,533 findfont: score(<Font 'Tlwg Typo' (TlwgTypo.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,533 findfont: score(<Font 'Purisa' (Purisa-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,533 findfont: score(<Font 'Noto Serif CJK JP' (NotoSerifCJK-Regular.ttc) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,534 findfont: score(<Font 'Umpush' (Umpush-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,534 findfont: score(<Font 'Nimbus Sans Narrow' (NimbusSansNarrow-Regular.otf) normal normal 400 condensed>) = 10.25
+DEBUG 2020-12-02 23:00:10,534 findfont: score(<Font 'Ani' (ani.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,535 findfont: score(<Font 'FreeMono' (FreeMono.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,535 findfont: score(<Font 'Padauk' (Padauk-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,536 findfont: score(<Font 'Pagul' (Pagul.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,536 findfont: score(<Font 'Nimbus Sans' (NimbusSans-Regular.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,537 findfont: score(<Font 'Ubuntu Mono' (UbuntuMono-R.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,537 findfont: score(<Font 'KacstTitleL' (KacstTitleL.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,537 findfont: score(<Font 'FreeSans' (FreeSansBold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,538 findfont: score(<Font 'Yrsa' (Yrsa-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,538 findfont: score(<Font 'Rasa' (Rasa-Light.ttf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,538 findfont: score(<Font 'Nimbus Roman' (NimbusRoman-BoldItalic.otf) italic normal roman normal>) = 11.145
+DEBUG 2020-12-02 23:00:10,539 findfont: score(<Font 'KacstLetter' (KacstLetter.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,539 findfont: score(<Font 'Laksaman' (Laksaman-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,539 findfont: score(<Font 'Noto Sans CJK JP' (NotoSansCJK-Regular.ttc) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,539 findfont: score(<Font 'P052' (P052-BoldItalic.otf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,540 findfont: score(<Font 'URW Bookman' (URWBookman-Light.otf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,540 findfont: score(<Font 'FreeSerif' (FreeSerifBold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,540 findfont: score(<Font 'Nimbus Mono PS' (NimbusMonoPS-Italic.otf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,540 findfont: score(<Font 'KacstOne' (KacstOne.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,541 findfont: score(<Font 'Meera' (Meera-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,541 findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,541 findfont: score(<Font 'Umpush' (Umpush-LightOblique.ttf) oblique normal light normal>) = 11.24
+DEBUG 2020-12-02 23:00:10,542 findfont: score(<Font 'Jamrul' (JamrulNormal.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,542 findfont: score(<Font 'Waree' (Waree-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,542 findfont: score(<Font 'Padauk' (Padauk-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,542 findfont: score(<Font 'Samyak Malayalam' (Samyak-Malayalam.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,543 findfont: score(<Font 'Yrsa' (Yrsa-Medium.ttf) normal normal medium normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,543 findfont: score(<Font 'Lohit Odia' (Lohit-Odia.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,543 findfont: score(<Font 'Ubuntu Mono' (UbuntuMono-BI.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,544 findfont: score(<Font 'Liberation Sans' (LiberationSans-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,544 findfont: score(<Font 'Liberation Serif' (LiberationSerif-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,544 findfont: score(<Font 'KacstPoster' (KacstPoster.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,544 findfont: score(<Font 'Nimbus Sans Narrow' (NimbusSansNarrow-Oblique.otf) oblique normal 400 condensed>) = 11.25
+DEBUG 2020-12-02 23:00:10,545 findfont: score(<Font 'KacstOffice' (KacstOffice.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,545 findfont: score(<Font 'Ubuntu' (Ubuntu-R.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,545 findfont: score(<Font 'Lohit Gujarati' (Lohit-Gujarati.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,546 findfont: score(<Font 'Droid Sans Fallback' (DroidSansFallbackFull.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,546 findfont: score(<Font 'Nimbus Sans Narrow' (NimbusSansNarrow-Bold.otf) normal normal bold condensed>) = 10.535
+DEBUG 2020-12-02 23:00:10,546 findfont: score(<Font 'Tlwg Typist' (TlwgTypist.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,547 findfont: score(<Font 'Samyak Tamil' (Samyak-Tamil.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,547 findfont: score(<Font 'Z003' (Z003-MediumItalic.otf) italic normal medium normal>) = 11.145
+DEBUG 2020-12-02 23:00:10,547 findfont: score(<Font 'FreeSans' (FreeSansBoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,547 findfont: score(<Font 'P052' (P052-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,547 findfont: score(<Font 'Keraleeyam' (Keraleeyam-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,548 findfont: score(<Font 'Waree' (Waree-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,548 findfont: score(<Font 'Nimbus Mono PS' (NimbusMonoPS-Regular.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,548 findfont: score(<Font 'Padauk Book' (PadaukBook-Regular.ttf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,548 findfont: score(<Font 'Gargi' (Gargi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,549 findfont: score(<Font 'Norasi' (Norasi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,549 findfont: score(<Font 'Gubbi' (Gubbi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,549 findfont: score(<Font 'URW Bookman' (URWBookman-LightItalic.otf) italic normal light normal>) = 11.24
+DEBUG 2020-12-02 23:00:10,549 findfont: score(<Font 'Norasi' (Norasi-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,550 findfont: score(<Font 'C059' (C059-Italic.otf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,550 findfont: score(<Font 'Mukti Narrow' (MuktiNarrow.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,550 findfont: score(<Font 'Ubuntu' (Ubuntu-MI.ttf) italic normal medium normal>) = 11.145
+DEBUG 2020-12-02 23:00:10,550 findfont: score(<Font 'Kinnari' (Kinnari-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,550 findfont: score(<Font 'FreeSerif' (FreeSerif.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,551 findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,551 findfont: score(<Font 'Samyak Gujarati' (Samyak-Gujarati.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,551 findfont: score(<Font 'Tibetan Machine Uni' (TibetanMachineUni.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,551 findfont: score(<Font 'URW Bookman' (URWBookman-Demi.otf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,551 findfont: score(<Font 'Tlwg Typo' (TlwgTypo-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,552 findfont: score(<Font 'P052' (P052-Roman.otf) normal normal roman normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,552 findfont: score(<Font 'Khmer OS' (KhmerOS.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,552 findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Regular.ttf) normal normal 400 condensed>) = 10.25
+DEBUG 2020-12-02 23:00:10,553 findfont: score(<Font 'Tlwg Mono' (TlwgMono-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,554 findfont: score(<Font 'KacstBook' (KacstBook.ttf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,554 findfont: score(<Font 'C059' (C059-BdIta.otf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,554 findfont: score(<Font 'Laksaman' (Laksaman-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,554 findfont: score(<Font 'D050000L' (D050000L.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,554 findfont: score(<Font 'Purisa' (Purisa.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,555 findfont: score(<Font 'Lohit Bengali' (Lohit-Bengali.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,555 findfont: score(<Font 'Gayathri' (Gayathri-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,555 findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans ('/home/adi/anaconda3/envs/vqe_3/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+DEBUG 2020-12-02 23:00:10,564 findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+DEBUG 2020-12-02 23:00:10,565 findfont: score(<Font 'DejaVu Sans' (DejaVuSans.ttf) normal normal 400 normal>) = 0.05
+DEBUG 2020-12-02 23:00:10,565 findfont: score(<Font 'STIXSizeFiveSym' (STIXSizFiveSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,565 findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Oblique.ttf) oblique normal 400 normal>) = 1.05
+DEBUG 2020-12-02 23:00:10,566 findfont: score(<Font 'cmtt10' (cmtt10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,566 findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,566 findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Bold.ttf) normal normal bold normal>) = 0.33499999999999996
+DEBUG 2020-12-02 23:00:10,566 findfont: score(<Font 'STIXGeneral' (STIXGeneralItalic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,566 findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,566 findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,567 findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,567 findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBolIta.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,567 findfont: score(<Font 'cmss10' (cmss10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,567 findfont: score(<Font 'STIXGeneral' (STIXGeneralBolIta.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,568 findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,568 findfont: score(<Font 'cmb10' (cmb10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,568 findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,568 findfont: score(<Font 'DejaVu Serif Display' (DejaVuSerifDisplay.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,568 findfont: score(<Font 'STIXNonUnicode' (STIXNonUni.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,569 findfont: score(<Font 'DejaVu Sans Display' (DejaVuSansDisplay.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,570 findfont: score(<Font 'STIXNonUnicode' (STIXNonUniIta.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,570 findfont: score(<Font 'DejaVu Serif' (DejaVuSerif.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,570 findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,570 findfont: score(<Font 'DejaVu Sans' (DejaVuSans-BoldOblique.ttf) oblique normal bold normal>) = 1.335
+DEBUG 2020-12-02 23:00:10,571 findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,571 findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,571 findfont: score(<Font 'cmex10' (cmex10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,571 findfont: score(<Font 'cmsy10' (cmsy10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,572 findfont: score(<Font 'cmmi10' (cmmi10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,572 findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,572 findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,573 findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,573 findfont: score(<Font 'cmr10' (cmr10.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,574 findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymReg.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,574 findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,574 findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,575 findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,575 findfont: score(<Font 'STIXGeneral' (STIXGeneralBol.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,575 findfont: score(<Font 'STIXGeneral' (STIXGeneral.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,576 findfont: score(<Font 'Kinnari' (Kinnari.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,576 findfont: score(<Font 'Umpush' (Umpush-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,577 findfont: score(<Font 'Tlwg Mono' (TlwgMono.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,577 findfont: score(<Font 'Rasa' (Rasa-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,577 findfont: score(<Font 'FreeMono' (FreeMonoBold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,577 findfont: score(<Font 'FreeSerif' (FreeSerifBoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,578 findfont: score(<Font 'Nimbus Sans' (NimbusSans-BoldItalic.otf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,578 findfont: score(<Font 'Garuda' (Garuda-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,578 findfont: score(<Font 'C059' (C059-Roman.otf) normal normal roman normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,578 findfont: score(<Font 'KacstArt' (KacstArt.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,578 findfont: score(<Font 'Uroob' (Uroob-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,579 findfont: score(<Font 'Liberation Serif' (LiberationSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,579 findfont: score(<Font 'URW Bookman' (URWBookman-DemiItalic.otf) italic normal book normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,579 findfont: score(<Font 'Standard Symbols PS' (StandardSymbolsPS.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,579 findfont: score(<Font 'Chandas' (chandas1-2.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,580 findfont: score(<Font 'Liberation Mono' (LiberationMono-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,580 findfont: score(<Font 'Norasi' (Norasi-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,580 findfont: score(<Font 'Yrsa' (Yrsa-Light.ttf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,580 findfont: score(<Font 'Ubuntu Condensed' (Ubuntu-C.ttf) normal normal 400 condensed>) = 10.25
+DEBUG 2020-12-02 23:00:10,580 findfont: score(<Font 'Padauk Book' (PadaukBook-Bold.ttf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,581 findfont: score(<Font 'OpenSymbol' (opens___.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,581 findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Italic.ttf) italic normal 400 condensed>) = 11.25
+DEBUG 2020-12-02 23:00:10,581 findfont: score(<Font 'Purisa' (Purisa-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,581 findfont: score(<Font 'Waree' (Waree-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,581 findfont: score(<Font 'Liberation Sans' (LiberationSans-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,582 findfont: score(<Font 'AnjaliOldLipi' (AnjaliOldLipi-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,582 findfont: score(<Font 'Umpush' (Umpush-Light.ttf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,582 findfont: score(<Font 'KacstDecorative' (KacstDecorative.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,582 findfont: score(<Font 'Liberation Mono' (LiberationMono-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,583 findfont: score(<Font 'Loma' (Loma-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,583 findfont: score(<Font 'Ubuntu' (Ubuntu-RI.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,583 findfont: score(<Font 'Lohit Tamil Classical' (Lohit-Tamil-Classical.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,584 findfont: score(<Font 'Ubuntu' (Ubuntu-Th.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,584 findfont: score(<Font 'Sahadeva' (sahadeva.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,584 findfont: score(<Font 'Ubuntu Mono' (UbuntuMono-RI.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,585 findfont: score(<Font 'FreeMono' (FreeMonoOblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,585 findfont: score(<Font 'Nimbus Sans' (NimbusSans-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,585 findfont: score(<Font 'Garuda' (Garuda-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,586 findfont: score(<Font 'Kalapi' (Kalapi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,586 findfont: score(<Font 'Ubuntu' (Ubuntu-LI.ttf) italic normal light normal>) = 11.24
+DEBUG 2020-12-02 23:00:10,586 findfont: score(<Font 'Umpush' (Umpush.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,586 findfont: score(<Font 'Navilu' (Navilu.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,586 findfont: score(<Font 'Waree' (Waree.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,587 findfont: score(<Font 'Mitra Mono' (mitra.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,587 findfont: score(<Font 'Tlwg Typist' (TlwgTypist-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,588 findfont: score(<Font 'Sawasdee' (Sawasdee-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,588 findfont: score(<Font 'Lohit Assamese' (Lohit-Assamese.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,588 findfont: score(<Font 'Yrsa' (Yrsa-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,589 findfont: score(<Font 'Samanata' (samanata.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,589 findfont: score(<Font 'Noto Sans CJK JP' (NotoSansCJK-Bold.ttc) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,589 findfont: score(<Font 'Lohit Devanagari' (Lohit-Devanagari.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,589 findfont: score(<Font 'Yrsa' (Yrsa-SemiBold.ttf) normal normal semibold normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,589 findfont: score(<Font 'Garuda' (Garuda.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,590 findfont: score(<Font 'padmaa' (padmaa-Medium-0.5.ttf) normal normal normal normal>) = 10.0
+DEBUG 2020-12-02 23:00:10,590 findfont: score(<Font 'Liberation Serif' (LiberationSerif-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,590 findfont: score(<Font 'Sarai' (Sarai.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,590 findfont: score(<Font 'Liberation Mono' (LiberationMono-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,591 findfont: score(<Font 'Kinnari' (Kinnari-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,591 findfont: score(<Font 'Nimbus Mono PS' (NimbusMonoPS-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,591 findfont: score(<Font 'Sawasdee' (Sawasdee-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,591 findfont: score(<Font 'Dyuthi' (Dyuthi-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,592 findfont: score(<Font 'Manjari' (Manjari-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,592 findfont: score(<Font 'Lohit Tamil' (Lohit-Tamil.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,592 findfont: score(<Font 'Liberation Sans' (LiberationSans-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,592 findfont: score(<Font 'Sawasdee' (Sawasdee-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,593 findfont: score(<Font 'KacstTitle' (KacstTitle.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,593 findfont: score(<Font 'aakar' (aakar-medium.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,593 findfont: score(<Font 'RaghuMalayalamSans' (RaghuMalayalamSans-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,593 findfont: score(<Font 'Tlwg Typo' (TlwgTypo-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,593 findfont: score(<Font 'Ubuntu' (Ubuntu-B.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,594 findfont: score(<Font 'Rasa' (Rasa-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,594 findfont: score(<Font 'ori1Uni' (utkal.ttf) normal normal medium normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,594 findfont: score(<Font 'Liberation Serif' (LiberationSerif-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,594 findfont: score(<Font 'KacstOne' (KacstOne-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,594 findfont: score(<Font 'Umpush' (Umpush-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,595 findfont: score(<Font 'Loma' (Loma.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,595 findfont: score(<Font 'mry_KacstQurn' (mry_KacstQurn.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,596 findfont: score(<Font 'Lohit Telugu' (Lohit-Telugu.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,596 findfont: score(<Font 'Lohit Malayalam' (Lohit-Malayalam.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,596 findfont: score(<Font 'C059' (C059-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,597 findfont: score(<Font 'Tlwg Mono' (TlwgMono-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,597 findfont: score(<Font 'Ubuntu' (Ubuntu-M.ttf) normal normal medium normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,597 findfont: score(<Font 'Norasi' (Norasi-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,597 findfont: score(<Font 'Kalimati' (kalimati.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,597 findfont: score(<Font 'Kinnari' (Kinnari-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,598 findfont: score(<Font 'Lohit Kannada' (Lohit-Kannada.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,598 findfont: score(<Font 'FreeSans' (FreeSansOblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,598 findfont: score(<Font 'Liberation Sans' (LiberationSans-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,598 findfont: score(<Font 'Manjari' (Manjari-Regular.otf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,599 findfont: score(<Font 'FreeMono' (FreeMonoBoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,599 findfont: score(<Font 'Liberation Mono' (LiberationMono-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,599 findfont: score(<Font 'Likhan' (LikhanNormal.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,600 findfont: score(<Font 'P052' (P052-Italic.otf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,600 findfont: score(<Font 'Ubuntu Mono' (UbuntuMono-B.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,600 findfont: score(<Font 'Saab' (Saab.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,601 findfont: score(<Font 'LKLUG' (lklug.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,601 findfont: score(<Font 'Nimbus Roman' (NimbusRoman-Regular.otf) normal normal roman normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,601 findfont: score(<Font 'Rasa' (Rasa-SemiBold.ttf) normal normal semibold normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,601 findfont: score(<Font 'Sawasdee' (Sawasdee.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,601 findfont: score(<Font 'Loma' (Loma-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,602 findfont: score(<Font 'Tlwg Typo' (TlwgTypo-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,602 findfont: score(<Font 'KacstQurn' (KacstQurn.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,602 findfont: score(<Font 'Tlwg Typist' (TlwgTypist-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,602 findfont: score(<Font 'Suruma' (Suruma.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,603 findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,603 findfont: score(<Font 'KacstScreen' (KacstScreen.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,604 findfont: score(<Font 'FreeSerif' (FreeSerifItalic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,604 findfont: score(<Font 'Pothana2000' (Pothana2000.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,605 findfont: score(<Font 'Norasi' (Norasi-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,605 findfont: score(<Font 'Nimbus Roman' (NimbusRoman-Italic.otf) italic normal roman normal>) = 11.145
+DEBUG 2020-12-02 23:00:10,605 findfont: score(<Font 'Nakula' (nakula.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,606 findfont: score(<Font 'padmaa' (padmaa.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,606 findfont: score(<Font 'Norasi' (Norasi-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,607 findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Bold.ttf) normal normal bold condensed>) = 10.535
+DEBUG 2020-12-02 23:00:10,607 findfont: score(<Font 'Laksaman' (Laksaman.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,607 findfont: score(<Font 'Mukti Narrow' (MuktiNarrowBold.ttf) normal normal 700 normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,608 findfont: score(<Font 'Nimbus Sans' (NimbusSans-Italic.otf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,608 findfont: score(<Font 'KacstDigital' (KacstDigital.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,609 findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-BoldItalic.ttf) italic normal bold condensed>) = 11.535
+DEBUG 2020-12-02 23:00:10,609 findfont: score(<Font 'Tlwg Mono' (TlwgMono-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,609 findfont: score(<Font 'Karumbi' (Karumbi-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,610 findfont: score(<Font 'Gayathri' (Gayathri-Thin.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,610 findfont: score(<Font 'URW Gothic' (URWGothic-DemiOblique.otf) oblique normal demi normal>) = 11.24
+DEBUG 2020-12-02 23:00:10,611 findfont: score(<Font 'Rachana' (Rachana-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,611 findfont: score(<Font 'Garuda' (Garuda-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,612 findfont: score(<Font 'Kinnari' (Kinnari-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,612 findfont: score(<Font 'KacstNaskh' (KacstNaskh.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,613 findfont: score(<Font 'Ubuntu' (Ubuntu-BI.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,613 findfont: score(<Font 'URW Gothic' (URWGothic-Book.otf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,614 findfont: score(<Font 'URW Gothic' (URWGothic-BookOblique.otf) oblique normal book normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,614 findfont: score(<Font 'Abyssinica SIL' (AbyssinicaSIL-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,615 findfont: score(<Font 'Tlwg Typist' (TlwgTypist-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,615 findfont: score(<Font 'Nimbus Roman' (NimbusRoman-Bold.otf) normal normal roman normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,616 findfont: score(<Font 'Kinnari' (Kinnari-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,616 findfont: score(<Font 'Khmer OS System' (KhmerOSsys.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,617 findfont: score(<Font 'Loma' (Loma-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,617 findfont: score(<Font 'Noto Serif CJK JP' (NotoSerifCJK-Bold.ttc) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,618 findfont: score(<Font 'Nimbus Mono PS' (NimbusMonoPS-BoldItalic.otf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,618 findfont: score(<Font 'Phetsarath OT' (Phetsarath_OT.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,618 findfont: score(<Font 'KacstPen' (KacstPen.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,619 findfont: score(<Font 'Laksaman' (Laksaman-BoldItalic.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,620 findfont: score(<Font 'Nimbus Sans Narrow' (NimbusSansNarrow-BoldOblique.otf) oblique normal bold condensed>) = 11.535
+DEBUG 2020-12-02 23:00:10,620 findfont: score(<Font 'Samyak Devanagari' (Samyak-Devanagari.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,621 findfont: score(<Font 'Rasa' (Rasa-Medium.ttf) normal normal medium normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,621 findfont: score(<Font 'Rachana' (Rachana-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,621 findfont: score(<Font 'KacstFarsi' (KacstFarsi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,622 findfont: score(<Font 'FreeSans' (FreeSans.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,622 findfont: score(<Font 'Chilanka' (Chilanka-Regular.otf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,623 findfont: score(<Font 'Ubuntu' (Ubuntu-L.ttf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,623 findfont: score(<Font 'Noto Mono' (NotoMono-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,624 findfont: score(<Font 'Gayathri' (Gayathri-Regular.otf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,624 findfont: score(<Font 'Purisa' (Purisa-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,625 findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,625 findfont: score(<Font 'Rekha' (Rekha.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,625 findfont: score(<Font 'Lohit Gurmukhi' (Lohit-Gurmukhi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,626 findfont: score(<Font 'Manjari' (Manjari-Thin.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,626 findfont: score(<Font 'URW Gothic' (URWGothic-Demi.otf) normal normal demi normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,627 findfont: score(<Font 'Vemana2000' (vemana2000.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,627 findfont: score(<Font 'padmaa-Bold.1.1' (padmaa-Bold.1.1.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,628 findfont: score(<Font 'Tlwg Typo' (TlwgTypo.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,628 findfont: score(<Font 'Purisa' (Purisa-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,628 findfont: score(<Font 'Noto Serif CJK JP' (NotoSerifCJK-Regular.ttc) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,629 findfont: score(<Font 'Umpush' (Umpush-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,629 findfont: score(<Font 'Nimbus Sans Narrow' (NimbusSansNarrow-Regular.otf) normal normal 400 condensed>) = 10.25
+DEBUG 2020-12-02 23:00:10,630 findfont: score(<Font 'Ani' (ani.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,630 findfont: score(<Font 'FreeMono' (FreeMono.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,630 findfont: score(<Font 'Padauk' (Padauk-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,631 findfont: score(<Font 'Pagul' (Pagul.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,631 findfont: score(<Font 'Nimbus Sans' (NimbusSans-Regular.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,632 findfont: score(<Font 'Ubuntu Mono' (UbuntuMono-R.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,632 findfont: score(<Font 'KacstTitleL' (KacstTitleL.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,632 findfont: score(<Font 'FreeSans' (FreeSansBold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,633 findfont: score(<Font 'Yrsa' (Yrsa-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,633 findfont: score(<Font 'Rasa' (Rasa-Light.ttf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,634 findfont: score(<Font 'Nimbus Roman' (NimbusRoman-BoldItalic.otf) italic normal roman normal>) = 11.145
+DEBUG 2020-12-02 23:00:10,634 findfont: score(<Font 'KacstLetter' (KacstLetter.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,634 findfont: score(<Font 'Laksaman' (Laksaman-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,634 findfont: score(<Font 'Noto Sans CJK JP' (NotoSansCJK-Regular.ttc) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,635 findfont: score(<Font 'P052' (P052-BoldItalic.otf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,635 findfont: score(<Font 'URW Bookman' (URWBookman-Light.otf) normal normal light normal>) = 10.24
+DEBUG 2020-12-02 23:00:10,635 findfont: score(<Font 'FreeSerif' (FreeSerifBold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,636 findfont: score(<Font 'Nimbus Mono PS' (NimbusMonoPS-Italic.otf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,636 findfont: score(<Font 'KacstOne' (KacstOne.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,636 findfont: score(<Font 'Meera' (Meera-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,637 findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,637 findfont: score(<Font 'Umpush' (Umpush-LightOblique.ttf) oblique normal light normal>) = 11.24
+DEBUG 2020-12-02 23:00:10,637 findfont: score(<Font 'Jamrul' (JamrulNormal.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,638 findfont: score(<Font 'Waree' (Waree-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,638 findfont: score(<Font 'Padauk' (Padauk-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,638 findfont: score(<Font 'Samyak Malayalam' (Samyak-Malayalam.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,638 findfont: score(<Font 'Yrsa' (Yrsa-Medium.ttf) normal normal medium normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,639 findfont: score(<Font 'Lohit Odia' (Lohit-Odia.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,639 findfont: score(<Font 'Ubuntu Mono' (UbuntuMono-BI.ttf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,639 findfont: score(<Font 'Liberation Sans' (LiberationSans-Regular.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,640 findfont: score(<Font 'Liberation Serif' (LiberationSerif-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,640 findfont: score(<Font 'KacstPoster' (KacstPoster.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,640 findfont: score(<Font 'Nimbus Sans Narrow' (NimbusSansNarrow-Oblique.otf) oblique normal 400 condensed>) = 11.25
+DEBUG 2020-12-02 23:00:10,641 findfont: score(<Font 'KacstOffice' (KacstOffice.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,641 findfont: score(<Font 'Ubuntu' (Ubuntu-R.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,641 findfont: score(<Font 'Lohit Gujarati' (Lohit-Gujarati.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,641 findfont: score(<Font 'Droid Sans Fallback' (DroidSansFallbackFull.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,642 findfont: score(<Font 'Nimbus Sans Narrow' (NimbusSansNarrow-Bold.otf) normal normal bold condensed>) = 10.535
+DEBUG 2020-12-02 23:00:10,642 findfont: score(<Font 'Tlwg Typist' (TlwgTypist.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,642 findfont: score(<Font 'Samyak Tamil' (Samyak-Tamil.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,642 findfont: score(<Font 'Z003' (Z003-MediumItalic.otf) italic normal medium normal>) = 11.145
+DEBUG 2020-12-02 23:00:10,643 findfont: score(<Font 'FreeSans' (FreeSansBoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,643 findfont: score(<Font 'P052' (P052-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,643 findfont: score(<Font 'Keraleeyam' (Keraleeyam-Regular.ttf) normal normal regular normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,643 findfont: score(<Font 'Waree' (Waree-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,643 findfont: score(<Font 'Nimbus Mono PS' (NimbusMonoPS-Regular.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,644 findfont: score(<Font 'Padauk Book' (PadaukBook-Regular.ttf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,644 findfont: score(<Font 'Gargi' (Gargi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,644 findfont: score(<Font 'Norasi' (Norasi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,644 findfont: score(<Font 'Gubbi' (Gubbi.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,645 findfont: score(<Font 'URW Bookman' (URWBookman-LightItalic.otf) italic normal light normal>) = 11.24
+DEBUG 2020-12-02 23:00:10,645 findfont: score(<Font 'Norasi' (Norasi-Italic.ttf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,645 findfont: score(<Font 'C059' (C059-Italic.otf) italic normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,645 findfont: score(<Font 'Mukti Narrow' (MuktiNarrow.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,645 findfont: score(<Font 'Ubuntu' (Ubuntu-MI.ttf) italic normal medium normal>) = 11.145
+DEBUG 2020-12-02 23:00:10,646 findfont: score(<Font 'Kinnari' (Kinnari-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,646 findfont: score(<Font 'FreeSerif' (FreeSerif.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,646 findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,646 findfont: score(<Font 'Samyak Gujarati' (Samyak-Gujarati.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,647 findfont: score(<Font 'Tibetan Machine Uni' (TibetanMachineUni.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,647 findfont: score(<Font 'URW Bookman' (URWBookman-Demi.otf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,647 findfont: score(<Font 'Tlwg Typo' (TlwgTypo-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,647 findfont: score(<Font 'P052' (P052-Roman.otf) normal normal roman normal>) = 10.145
+DEBUG 2020-12-02 23:00:10,647 findfont: score(<Font 'Khmer OS' (KhmerOS.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,648 findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Regular.ttf) normal normal 400 condensed>) = 10.25
+DEBUG 2020-12-02 23:00:10,648 findfont: score(<Font 'Tlwg Mono' (TlwgMono-Oblique.ttf) oblique normal 400 normal>) = 11.05
+DEBUG 2020-12-02 23:00:10,648 findfont: score(<Font 'KacstBook' (KacstBook.ttf) normal normal book normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,648 findfont: score(<Font 'C059' (C059-BdIta.otf) italic normal bold normal>) = 11.335
+DEBUG 2020-12-02 23:00:10,649 findfont: score(<Font 'Laksaman' (Laksaman-Bold.ttf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,649 findfont: score(<Font 'D050000L' (D050000L.otf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,649 findfont: score(<Font 'Purisa' (Purisa.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,649 findfont: score(<Font 'Lohit Bengali' (Lohit-Bengali.ttf) normal normal 400 normal>) = 10.05
+DEBUG 2020-12-02 23:00:10,650 findfont: score(<Font 'Gayathri' (Gayathri-Bold.otf) normal normal bold normal>) = 10.335
+DEBUG 2020-12-02 23:00:10,650 findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/home/adi/anaconda3/envs/vqe_3/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.

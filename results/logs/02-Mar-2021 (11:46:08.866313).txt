@@ -1,0 +1,9 @@
+INFO 2021-03-02 11:46:08,868 H4, r=1.546, ansatz constructed from iqeb
+INFO 2021-03-02 11:46:08,868 n_qubits = 8, n_electrons = 4
+INFO 2021-03-02 11:46:10,524 
+INFO 2021-03-02 11:46:10,524 QiskitSimBackend result is -1.9824234617589285, new calculation
+INFO 2021-03-02 11:46:10,525 
+INFO 2021-03-02 11:46:10,525 IQEB VQE reference result is -1.9824234617589416
+INFO 2021-03-02 11:46:10,525 
+INFO 2021-03-02 11:46:10,525 n_shots = 1000
+INFO 2021-03-02 11:46:57,428 QasmBackend result is -1.9533223027545008 for built in Pauli, time used = 46.90309548377991s

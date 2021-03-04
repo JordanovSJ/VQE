@@ -1,0 +1,40 @@
+INFO 2021-03-04 12:29:07,372 H4, r=1.546, ansatz constructed from iqeb, run on local
+INFO 2021-03-04 12:29:07,372 n_qubits = 8, n_electrons = 4
+DEBUG 2021-03-04 12:29:07,377 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-03-04 12:29:07,969 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-03-04 12:29:07,979 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-03-04 12:29:08,971 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-03-04 12:29:09,780 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-03-04 12:29:09,784 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-03-04 12:29:10,804 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-03-04 12:29:10,810 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-03-04 12:29:11,525 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+DEBUG 2021-03-04 12:29:11,938 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-03-04 12:29:13,068 
+INFO 2021-03-04 12:29:13,068 Device noise generated from ibmq_16_melbourne
+INFO 2021-03-04 12:29:13,773 
+INFO 2021-03-04 12:29:13,773 QiskitSimBackend result is -1.9824234617589285, new calculation
+INFO 2021-03-04 12:29:13,773 
+INFO 2021-03-04 12:29:13,773 IQEB VQE reference result is -1.9824234617589416
+INFO 2021-03-04 12:29:13,775 
+INFO 2021-03-04 12:29:13,775 n_shots = 100.0
+INFO 2021-03-04 12:29:13,775 
+INFO 2021-03-04 12:29:13,775 method = statevector
+INFO 2021-03-04 12:31:02,693 QasmBackend result is -0.9896000219455466, noisy, time used = 108.9177303314209s
+INFO 2021-03-04 12:31:29,455 QasmBackend result is -1.9780228722094055, noiseless, time used = 26.761845588684082s
+INFO 2021-03-04 12:31:29,460 
+INFO 2021-03-04 12:31:29,460 n_shots = 1000.0
+INFO 2021-03-04 12:31:29,460 
+INFO 2021-03-04 12:31:29,460 method = statevector
+INFO 2021-03-04 12:35:14,810 QasmBackend result is -0.9969889974875058, noisy, time used = 225.3498613834381s
+INFO 2021-03-04 12:35:40,042 QasmBackend result is -1.981546060949488, noiseless, time used = 25.231924533843994s
+INFO 2021-03-04 12:35:40,046 
+INFO 2021-03-04 12:35:40,046 n_shots = 10000.0
+INFO 2021-03-04 12:35:40,046 
+INFO 2021-03-04 12:35:40,046 method = statevector
+INFO 2021-03-04 12:57:56,664 QasmBackend result is -1.001346995354102, noisy, time used = 1336.6181569099426s
+INFO 2021-03-04 12:58:27,060 QasmBackend result is -1.9875289210562328, noiseless, time used = 30.395935535430908s
+INFO 2021-03-04 12:58:27,064 
+INFO 2021-03-04 12:58:27,064 n_shots = 100000.0
+INFO 2021-03-04 12:58:27,064 
+INFO 2021-03-04 12:58:27,064 method = statevector

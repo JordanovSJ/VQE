@@ -1,0 +1,1364 @@
+INFO 2020-12-02 15:26:59,414 H4, r=1.546 ,q_exc
+INFO 2020-12-02 15:26:59,836 Calculating excitation generators
+INFO 2020-12-02 15:26:59,837 Calculated excitation generator matrix [-0.5j [X0 Y1] +
+0.5j [Y0 X1]]
+INFO 2020-12-02 15:26:59,839 Calculated excitation generator matrix [-0.5j [X0 Y2] +
+0.5j [Y0 X2]]
+INFO 2020-12-02 15:26:59,842 Calculated excitation generator matrix [-0.5j [X0 Y3] +
+0.5j [Y0 X3]]
+INFO 2020-12-02 15:26:59,845 Calculated excitation generator matrix [-0.5j [X0 Y4] +
+0.5j [Y0 X4]]
+INFO 2020-12-02 15:26:59,849 Calculated excitation generator matrix [-0.5j [X0 Y5] +
+0.5j [Y0 X5]]
+INFO 2020-12-02 15:26:59,852 Calculated excitation generator matrix [-0.5j [X0 Y6] +
+0.5j [Y0 X6]]
+INFO 2020-12-02 15:26:59,855 Calculated excitation generator matrix [-0.5j [X0 Y7] +
+0.5j [Y0 X7]]
+INFO 2020-12-02 15:26:59,858 Calculated excitation generator matrix [-0.5j [X1 Y2] +
+0.5j [Y1 X2]]
+INFO 2020-12-02 15:26:59,861 Calculated excitation generator matrix [-0.5j [X1 Y3] +
+0.5j [Y1 X3]]
+INFO 2020-12-02 15:26:59,865 Calculated excitation generator matrix [-0.5j [X1 Y4] +
+0.5j [Y1 X4]]
+INFO 2020-12-02 15:26:59,869 Calculated excitation generator matrix [-0.5j [X1 Y5] +
+0.5j [Y1 X5]]
+INFO 2020-12-02 15:26:59,872 Calculated excitation generator matrix [-0.5j [X1 Y6] +
+0.5j [Y1 X6]]
+INFO 2020-12-02 15:26:59,876 Calculated excitation generator matrix [-0.5j [X1 Y7] +
+0.5j [Y1 X7]]
+INFO 2020-12-02 15:26:59,879 Calculated excitation generator matrix [-0.5j [X2 Y3] +
+0.5j [Y2 X3]]
+INFO 2020-12-02 15:26:59,882 Calculated excitation generator matrix [-0.5j [X2 Y4] +
+0.5j [Y2 X4]]
+INFO 2020-12-02 15:26:59,887 Calculated excitation generator matrix [-0.5j [X2 Y5] +
+0.5j [Y2 X5]]
+INFO 2020-12-02 15:26:59,891 Calculated excitation generator matrix [-0.5j [X2 Y6] +
+0.5j [Y2 X6]]
+INFO 2020-12-02 15:26:59,895 Calculated excitation generator matrix [-0.5j [X2 Y7] +
+0.5j [Y2 X7]]
+INFO 2020-12-02 15:26:59,898 Calculated excitation generator matrix [-0.5j [X3 Y4] +
+0.5j [Y3 X4]]
+INFO 2020-12-02 15:26:59,901 Calculated excitation generator matrix [-0.5j [X3 Y5] +
+0.5j [Y3 X5]]
+INFO 2020-12-02 15:26:59,905 Calculated excitation generator matrix [-0.5j [X3 Y6] +
+0.5j [Y3 X6]]
+INFO 2020-12-02 15:26:59,909 Calculated excitation generator matrix [-0.5j [X3 Y7] +
+0.5j [Y3 X7]]
+INFO 2020-12-02 15:26:59,913 Calculated excitation generator matrix [-0.5j [X4 Y5] +
+0.5j [Y4 X5]]
+INFO 2020-12-02 15:26:59,916 Calculated excitation generator matrix [-0.5j [X4 Y6] +
+0.5j [Y4 X6]]
+INFO 2020-12-02 15:26:59,921 Calculated excitation generator matrix [-0.5j [X4 Y7] +
+0.5j [Y4 X7]]
+INFO 2020-12-02 15:26:59,924 Calculated excitation generator matrix [-0.5j [X5 Y6] +
+0.5j [Y5 X6]]
+INFO 2020-12-02 15:26:59,928 Calculated excitation generator matrix [-0.5j [X5 Y7] +
+0.5j [Y5 X7]]
+INFO 2020-12-02 15:26:59,931 Calculated excitation generator matrix [-0.5j [X6 Y7] +
+0.5j [Y6 X7]]
+INFO 2020-12-02 15:26:59,934 Calculated excitation generator matrix [-0.125j [X0 X1 X2 Y3] +
+-0.125j [X0 X1 Y2 X3] +
+0.125j [X0 Y1 X2 X3] +
+-0.125j [X0 Y1 Y2 Y3] +
+0.125j [Y0 X1 X2 X3] +
+-0.125j [Y0 X1 Y2 Y3] +
+0.125j [Y0 Y1 X2 Y3] +
+0.125j [Y0 Y1 Y2 X3]]
+INFO 2020-12-02 15:26:59,948 Calculated excitation generator matrix [0.125j [X0 X1 X2 Y3] +
+-0.125j [X0 X1 Y2 X3] +
+-0.125j [X0 Y1 X2 X3] +
+-0.125j [X0 Y1 Y2 Y3] +
+0.125j [Y0 X1 X2 X3] +
+0.125j [Y0 X1 Y2 Y3] +
+0.125j [Y0 Y1 X2 Y3] +
+-0.125j [Y0 Y1 Y2 X3]]
+INFO 2020-12-02 15:26:59,961 Calculated excitation generator matrix [-0.125j [X0 X1 X2 Y5] +
+-0.125j [X0 X1 Y2 X5] +
+0.125j [X0 Y1 X2 X5] +
+-0.125j [X0 Y1 Y2 Y5] +
+0.125j [Y0 X1 X2 X5] +
+-0.125j [Y0 X1 Y2 Y5] +
+0.125j [Y0 Y1 X2 Y5] +
+0.125j [Y0 Y1 Y2 X5]]
+INFO 2020-12-02 15:26:59,980 Calculated excitation generator matrix [0.125j [X0 X1 X2 Y5] +
+-0.125j [X0 X1 Y2 X5] +
+-0.125j [X0 Y1 X2 X5] +
+-0.125j [X0 Y1 Y2 Y5] +
+0.125j [Y0 X1 X2 X5] +
+0.125j [Y0 X1 Y2 Y5] +
+0.125j [Y0 Y1 X2 Y5] +
+-0.125j [Y0 Y1 Y2 X5]]
+INFO 2020-12-02 15:26:59,997 Calculated excitation generator matrix [-0.125j [X0 X1 X2 Y7] +
+-0.125j [X0 X1 Y2 X7] +
+0.125j [X0 Y1 X2 X7] +
+-0.125j [X0 Y1 Y2 Y7] +
+0.125j [Y0 X1 X2 X7] +
+-0.125j [Y0 X1 Y2 Y7] +
+0.125j [Y0 Y1 X2 Y7] +
+0.125j [Y0 Y1 Y2 X7]]
+INFO 2020-12-02 15:27:00,011 Calculated excitation generator matrix [0.125j [X0 X1 X2 Y7] +
+-0.125j [X0 X1 Y2 X7] +
+-0.125j [X0 Y1 X2 X7] +
+-0.125j [X0 Y1 Y2 Y7] +
+0.125j [Y0 X1 X2 X7] +
+0.125j [Y0 X1 Y2 Y7] +
+0.125j [Y0 Y1 X2 Y7] +
+-0.125j [Y0 Y1 Y2 X7]]
+INFO 2020-12-02 15:27:00,024 Calculated excitation generator matrix [-0.125j [X0 X1 X3 Y4] +
+-0.125j [X0 X1 Y3 X4] +
+0.125j [X0 Y1 X3 X4] +
+-0.125j [X0 Y1 Y3 Y4] +
+0.125j [Y0 X1 X3 X4] +
+-0.125j [Y0 X1 Y3 Y4] +
+0.125j [Y0 Y1 X3 Y4] +
+0.125j [Y0 Y1 Y3 X4]]
+INFO 2020-12-02 15:27:00,041 Calculated excitation generator matrix [-0.125j [X0 X1 X3 Y4] +
+0.125j [X0 X1 Y3 X4] +
+-0.125j [X0 Y1 X3 X4] +
+-0.125j [X0 Y1 Y3 Y4] +
+0.125j [Y0 X1 X3 X4] +
+0.125j [Y0 X1 Y3 Y4] +
+-0.125j [Y0 Y1 X3 Y4] +
+0.125j [Y0 Y1 Y3 X4]]
+INFO 2020-12-02 15:27:00,059 Calculated excitation generator matrix [-0.125j [X0 X1 X3 Y6] +
+-0.125j [X0 X1 Y3 X6] +
+0.125j [X0 Y1 X3 X6] +
+-0.125j [X0 Y1 Y3 Y6] +
+0.125j [Y0 X1 X3 X6] +
+-0.125j [Y0 X1 Y3 Y6] +
+0.125j [Y0 Y1 X3 Y6] +
+0.125j [Y0 Y1 Y3 X6]]
+INFO 2020-12-02 15:27:00,080 Calculated excitation generator matrix [-0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+-0.125j [X0 Y1 Y3 Y6] +
+0.125j [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+0.125j [Y0 Y1 Y3 X6]]
+INFO 2020-12-02 15:27:00,101 Calculated excitation generator matrix [-0.125j [X0 X1 X4 Y5] +
+-0.125j [X0 X1 Y4 X5] +
+0.125j [X0 Y1 X4 X5] +
+-0.125j [X0 Y1 Y4 Y5] +
+0.125j [Y0 X1 X4 X5] +
+-0.125j [Y0 X1 Y4 Y5] +
+0.125j [Y0 Y1 X4 Y5] +
+0.125j [Y0 Y1 Y4 X5]]
+INFO 2020-12-02 15:27:00,119 Calculated excitation generator matrix [0.125j [X0 X1 X4 Y5] +
+-0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+-0.125j [X0 Y1 Y4 Y5] +
+0.125j [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]]
+INFO 2020-12-02 15:27:00,136 Calculated excitation generator matrix [-0.125j [X0 X1 X4 Y7] +
+-0.125j [X0 X1 Y4 X7] +
+0.125j [X0 Y1 X4 X7] +
+-0.125j [X0 Y1 Y4 Y7] +
+0.125j [Y0 X1 X4 X7] +
+-0.125j [Y0 X1 Y4 Y7] +
+0.125j [Y0 Y1 X4 Y7] +
+0.125j [Y0 Y1 Y4 X7]]
+INFO 2020-12-02 15:27:00,152 Calculated excitation generator matrix [0.125j [X0 X1 X4 Y7] +
+-0.125j [X0 X1 Y4 X7] +
+-0.125j [X0 Y1 X4 X7] +
+-0.125j [X0 Y1 Y4 Y7] +
+0.125j [Y0 X1 X4 X7] +
+0.125j [Y0 X1 Y4 Y7] +
+0.125j [Y0 Y1 X4 Y7] +
+-0.125j [Y0 Y1 Y4 X7]]
+INFO 2020-12-02 15:27:00,168 Calculated excitation generator matrix [-0.125j [X0 X1 X5 Y6] +
+-0.125j [X0 X1 Y5 X6] +
+0.125j [X0 Y1 X5 X6] +
+-0.125j [X0 Y1 Y5 Y6] +
+0.125j [Y0 X1 X5 X6] +
+-0.125j [Y0 X1 Y5 Y6] +
+0.125j [Y0 Y1 X5 Y6] +
+0.125j [Y0 Y1 Y5 X6]]
+INFO 2020-12-02 15:27:00,185 Calculated excitation generator matrix [-0.125j [X0 X1 X5 Y6] +
+0.125j [X0 X1 Y5 X6] +
+-0.125j [X0 Y1 X5 X6] +
+-0.125j [X0 Y1 Y5 Y6] +
+0.125j [Y0 X1 X5 X6] +
+0.125j [Y0 X1 Y5 Y6] +
+-0.125j [Y0 Y1 X5 Y6] +
+0.125j [Y0 Y1 Y5 X6]]
+INFO 2020-12-02 15:27:00,203 Calculated excitation generator matrix [-0.125j [X0 X1 X6 Y7] +
+-0.125j [X0 X1 Y6 X7] +
+0.125j [X0 Y1 X6 X7] +
+-0.125j [X0 Y1 Y6 Y7] +
+0.125j [Y0 X1 X6 X7] +
+-0.125j [Y0 X1 Y6 Y7] +
+0.125j [Y0 Y1 X6 Y7] +
+0.125j [Y0 Y1 Y6 X7]]
+INFO 2020-12-02 15:27:00,218 Calculated excitation generator matrix [0.125j [X0 X1 X6 Y7] +
+-0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+-0.125j [X0 Y1 Y6 Y7] +
+0.125j [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]]
+INFO 2020-12-02 15:27:00,231 Calculated excitation generator matrix [-0.125j [X0 X2 X3 Y5] +
+0.125j [X0 X2 Y3 X5] +
+-0.125j [X0 Y2 X3 X5] +
+-0.125j [X0 Y2 Y3 Y5] +
+0.125j [Y0 X2 X3 X5] +
+0.125j [Y0 X2 Y3 Y5] +
+-0.125j [Y0 Y2 X3 Y5] +
+0.125j [Y0 Y2 Y3 X5]]
+INFO 2020-12-02 15:27:00,256 Calculated excitation generator matrix [0.125j [X0 X2 X3 Y5] +
+-0.125j [X0 X2 Y3 X5] +
+-0.125j [X0 Y2 X3 X5] +
+-0.125j [X0 Y2 Y3 Y5] +
+0.125j [Y0 X2 X3 X5] +
+0.125j [Y0 X2 Y3 Y5] +
+0.125j [Y0 Y2 X3 Y5] +
+-0.125j [Y0 Y2 Y3 X5]]
+INFO 2020-12-02 15:27:00,276 Calculated excitation generator matrix [-0.125j [X0 X2 X3 Y7] +
+0.125j [X0 X2 Y3 X7] +
+-0.125j [X0 Y2 X3 X7] +
+-0.125j [X0 Y2 Y3 Y7] +
+0.125j [Y0 X2 X3 X7] +
+0.125j [Y0 X2 Y3 Y7] +
+-0.125j [Y0 Y2 X3 Y7] +
+0.125j [Y0 Y2 Y3 X7]]
+INFO 2020-12-02 15:27:00,294 Calculated excitation generator matrix [0.125j [X0 X2 X3 Y7] +
+-0.125j [X0 X2 Y3 X7] +
+-0.125j [X0 Y2 X3 X7] +
+-0.125j [X0 Y2 Y3 Y7] +
+0.125j [Y0 X2 X3 X7] +
+0.125j [Y0 X2 Y3 Y7] +
+0.125j [Y0 Y2 X3 Y7] +
+-0.125j [Y0 Y2 Y3 X7]]
+INFO 2020-12-02 15:27:00,311 Calculated excitation generator matrix [-0.125j [X0 X2 X4 Y6] +
+-0.125j [X0 X2 Y4 X6] +
+0.125j [X0 Y2 X4 X6] +
+-0.125j [X0 Y2 Y4 Y6] +
+0.125j [Y0 X2 X4 X6] +
+-0.125j [Y0 X2 Y4 Y6] +
+0.125j [Y0 Y2 X4 Y6] +
+0.125j [Y0 Y2 Y4 X6]]
+INFO 2020-12-02 15:27:00,332 Calculated excitation generator matrix [-0.125j [X0 X2 X4 Y6] +
+0.125j [X0 X2 Y4 X6] +
+-0.125j [X0 Y2 X4 X6] +
+-0.125j [X0 Y2 Y4 Y6] +
+0.125j [Y0 X2 X4 X6] +
+0.125j [Y0 X2 Y4 Y6] +
+-0.125j [Y0 Y2 X4 Y6] +
+0.125j [Y0 Y2 Y4 X6]]
+INFO 2020-12-02 15:27:00,357 Calculated excitation generator matrix [0.125j [X0 X2 X4 Y6] +
+-0.125j [X0 X2 Y4 X6] +
+-0.125j [X0 Y2 X4 X6] +
+-0.125j [X0 Y2 Y4 Y6] +
+0.125j [Y0 X2 X4 X6] +
+0.125j [Y0 X2 Y4 Y6] +
+0.125j [Y0 Y2 X4 Y6] +
+-0.125j [Y0 Y2 Y4 X6]]
+INFO 2020-12-02 15:27:00,385 Calculated excitation generator matrix [-0.125j [X0 X2 X5 Y7] +
+0.125j [X0 X2 Y5 X7] +
+-0.125j [X0 Y2 X5 X7] +
+-0.125j [X0 Y2 Y5 Y7] +
+0.125j [Y0 X2 X5 X7] +
+0.125j [Y0 X2 Y5 Y7] +
+-0.125j [Y0 Y2 X5 Y7] +
+0.125j [Y0 Y2 Y5 X7]]
+INFO 2020-12-02 15:27:00,407 Calculated excitation generator matrix [0.125j [X0 X2 X5 Y7] +
+-0.125j [X0 X2 Y5 X7] +
+-0.125j [X0 Y2 X5 X7] +
+-0.125j [X0 Y2 Y5 Y7] +
+0.125j [Y0 X2 X5 X7] +
+0.125j [Y0 X2 Y5 Y7] +
+0.125j [Y0 Y2 X5 Y7] +
+-0.125j [Y0 Y2 Y5 X7]]
+INFO 2020-12-02 15:27:00,428 Calculated excitation generator matrix [-0.125j [X0 X3 X4 Y5] +
+-0.125j [X0 X3 Y4 X5] +
+0.125j [X0 Y3 X4 X5] +
+-0.125j [X0 Y3 Y4 Y5] +
+0.125j [Y0 X3 X4 X5] +
+-0.125j [Y0 X3 Y4 Y5] +
+0.125j [Y0 Y3 X4 Y5] +
+0.125j [Y0 Y3 Y4 X5]]
+INFO 2020-12-02 15:27:00,445 Calculated excitation generator matrix [0.125j [X0 X3 X4 Y5] +
+-0.125j [X0 X3 Y4 X5] +
+-0.125j [X0 Y3 X4 X5] +
+-0.125j [X0 Y3 Y4 Y5] +
+0.125j [Y0 X3 X4 X5] +
+0.125j [Y0 X3 Y4 Y5] +
+0.125j [Y0 Y3 X4 Y5] +
+-0.125j [Y0 Y3 Y4 X5]]
+INFO 2020-12-02 15:27:00,467 Calculated excitation generator matrix [-0.125j [X0 X3 X4 Y7] +
+-0.125j [X0 X3 Y4 X7] +
+0.125j [X0 Y3 X4 X7] +
+-0.125j [X0 Y3 Y4 Y7] +
+0.125j [Y0 X3 X4 X7] +
+-0.125j [Y0 X3 Y4 Y7] +
+0.125j [Y0 Y3 X4 Y7] +
+0.125j [Y0 Y3 Y4 X7]]
+INFO 2020-12-02 15:27:00,485 Calculated excitation generator matrix [0.125j [X0 X3 X4 Y7] +
+-0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+-0.125j [X0 Y3 Y4 Y7] +
+0.125j [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]]
+INFO 2020-12-02 15:27:00,503 Calculated excitation generator matrix [-0.125j [X0 X3 X5 Y6] +
+-0.125j [X0 X3 Y5 X6] +
+0.125j [X0 Y3 X5 X6] +
+-0.125j [X0 Y3 Y5 Y6] +
+0.125j [Y0 X3 X5 X6] +
+-0.125j [Y0 X3 Y5 Y6] +
+0.125j [Y0 Y3 X5 Y6] +
+0.125j [Y0 Y3 Y5 X6]]
+INFO 2020-12-02 15:27:00,524 Calculated excitation generator matrix [-0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+-0.125j [X0 Y3 Y5 Y6] +
+0.125j [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+0.125j [Y0 Y3 Y5 X6]]
+INFO 2020-12-02 15:27:00,546 Calculated excitation generator matrix [-0.125j [X0 X3 X6 Y7] +
+-0.125j [X0 X3 Y6 X7] +
+0.125j [X0 Y3 X6 X7] +
+-0.125j [X0 Y3 Y6 Y7] +
+0.125j [Y0 X3 X6 X7] +
+-0.125j [Y0 X3 Y6 Y7] +
+0.125j [Y0 Y3 X6 Y7] +
+0.125j [Y0 Y3 Y6 X7]]
+INFO 2020-12-02 15:27:00,563 Calculated excitation generator matrix [0.125j [X0 X3 X6 Y7] +
+-0.125j [X0 X3 Y6 X7] +
+-0.125j [X0 Y3 X6 X7] +
+-0.125j [X0 Y3 Y6 Y7] +
+0.125j [Y0 X3 X6 X7] +
+0.125j [Y0 X3 Y6 Y7] +
+0.125j [Y0 Y3 X6 Y7] +
+-0.125j [Y0 Y3 Y6 X7]]
+INFO 2020-12-02 15:27:00,580 Calculated excitation generator matrix [-0.125j [X0 X4 X5 Y7] +
+0.125j [X0 X4 Y5 X7] +
+-0.125j [X0 Y4 X5 X7] +
+-0.125j [X0 Y4 Y5 Y7] +
+0.125j [Y0 X4 X5 X7] +
+0.125j [Y0 X4 Y5 Y7] +
+-0.125j [Y0 Y4 X5 Y7] +
+0.125j [Y0 Y4 Y5 X7]]
+INFO 2020-12-02 15:27:00,598 Calculated excitation generator matrix [0.125j [X0 X4 X5 Y7] +
+-0.125j [X0 X4 Y5 X7] +
+-0.125j [X0 Y4 X5 X7] +
+-0.125j [X0 Y4 Y5 Y7] +
+0.125j [Y0 X4 X5 X7] +
+0.125j [Y0 X4 Y5 Y7] +
+0.125j [Y0 Y4 X5 Y7] +
+-0.125j [Y0 Y4 Y5 X7]]
+INFO 2020-12-02 15:27:00,617 Calculated excitation generator matrix [-0.125j [X0 X5 X6 Y7] +
+-0.125j [X0 X5 Y6 X7] +
+0.125j [X0 Y5 X6 X7] +
+-0.125j [X0 Y5 Y6 Y7] +
+0.125j [Y0 X5 X6 X7] +
+-0.125j [Y0 X5 Y6 Y7] +
+0.125j [Y0 Y5 X6 Y7] +
+0.125j [Y0 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:00,634 Calculated excitation generator matrix [0.125j [X0 X5 X6 Y7] +
+-0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+-0.125j [X0 Y5 Y6 Y7] +
+0.125j [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:00,651 Calculated excitation generator matrix [-0.125j [X1 X2 X3 Y4] +
+-0.125j [X1 X2 Y3 X4] +
+0.125j [X1 Y2 X3 X4] +
+-0.125j [X1 Y2 Y3 Y4] +
+0.125j [Y1 X2 X3 X4] +
+-0.125j [Y1 X2 Y3 Y4] +
+0.125j [Y1 Y2 X3 Y4] +
+0.125j [Y1 Y2 Y3 X4]]
+INFO 2020-12-02 15:27:00,670 Calculated excitation generator matrix [0.125j [X1 X2 X3 Y4] +
+-0.125j [X1 X2 Y3 X4] +
+-0.125j [X1 Y2 X3 X4] +
+-0.125j [X1 Y2 Y3 Y4] +
+0.125j [Y1 X2 X3 X4] +
+0.125j [Y1 X2 Y3 Y4] +
+0.125j [Y1 Y2 X3 Y4] +
+-0.125j [Y1 Y2 Y3 X4]]
+INFO 2020-12-02 15:27:00,687 Calculated excitation generator matrix [-0.125j [X1 X2 X3 Y6] +
+-0.125j [X1 X2 Y3 X6] +
+0.125j [X1 Y2 X3 X6] +
+-0.125j [X1 Y2 Y3 Y6] +
+0.125j [Y1 X2 X3 X6] +
+-0.125j [Y1 X2 Y3 Y6] +
+0.125j [Y1 Y2 X3 Y6] +
+0.125j [Y1 Y2 Y3 X6]]
+INFO 2020-12-02 15:27:00,708 Calculated excitation generator matrix [0.125j [X1 X2 X3 Y6] +
+-0.125j [X1 X2 Y3 X6] +
+-0.125j [X1 Y2 X3 X6] +
+-0.125j [X1 Y2 Y3 Y6] +
+0.125j [Y1 X2 X3 X6] +
+0.125j [Y1 X2 Y3 Y6] +
+0.125j [Y1 Y2 X3 Y6] +
+-0.125j [Y1 Y2 Y3 X6]]
+INFO 2020-12-02 15:27:00,729 Calculated excitation generator matrix [-0.125j [X1 X2 X4 Y5] +
+-0.125j [X1 X2 Y4 X5] +
+0.125j [X1 Y2 X4 X5] +
+-0.125j [X1 Y2 Y4 Y5] +
+0.125j [Y1 X2 X4 X5] +
+-0.125j [Y1 X2 Y4 Y5] +
+0.125j [Y1 Y2 X4 Y5] +
+0.125j [Y1 Y2 Y4 X5]]
+INFO 2020-12-02 15:27:00,750 Calculated excitation generator matrix [-0.125j [X1 X2 X4 Y5] +
+0.125j [X1 X2 Y4 X5] +
+-0.125j [X1 Y2 X4 X5] +
+-0.125j [X1 Y2 Y4 Y5] +
+0.125j [Y1 X2 X4 X5] +
+0.125j [Y1 X2 Y4 Y5] +
+-0.125j [Y1 Y2 X4 Y5] +
+0.125j [Y1 Y2 Y4 X5]]
+INFO 2020-12-02 15:27:00,771 Calculated excitation generator matrix [-0.125j [X1 X2 X4 Y7] +
+-0.125j [X1 X2 Y4 X7] +
+0.125j [X1 Y2 X4 X7] +
+-0.125j [X1 Y2 Y4 Y7] +
+0.125j [Y1 X2 X4 X7] +
+-0.125j [Y1 X2 Y4 Y7] +
+0.125j [Y1 Y2 X4 Y7] +
+0.125j [Y1 Y2 Y4 X7]]
+INFO 2020-12-02 15:27:00,791 Calculated excitation generator matrix [-0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+-0.125j [X1 Y2 Y4 Y7] +
+0.125j [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+0.125j [Y1 Y2 Y4 X7]]
+INFO 2020-12-02 15:27:00,809 Calculated excitation generator matrix [-0.125j [X1 X2 X5 Y6] +
+-0.125j [X1 X2 Y5 X6] +
+0.125j [X1 Y2 X5 X6] +
+-0.125j [X1 Y2 Y5 Y6] +
+0.125j [Y1 X2 X5 X6] +
+-0.125j [Y1 X2 Y5 Y6] +
+0.125j [Y1 Y2 X5 Y6] +
+0.125j [Y1 Y2 Y5 X6]]
+INFO 2020-12-02 15:27:00,830 Calculated excitation generator matrix [0.125j [X1 X2 X5 Y6] +
+-0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+-0.125j [X1 Y2 Y5 Y6] +
+0.125j [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]]
+INFO 2020-12-02 15:27:00,850 Calculated excitation generator matrix [-0.125j [X1 X2 X6 Y7] +
+-0.125j [X1 X2 Y6 X7] +
+0.125j [X1 Y2 X6 X7] +
+-0.125j [X1 Y2 Y6 Y7] +
+0.125j [Y1 X2 X6 X7] +
+-0.125j [Y1 X2 Y6 Y7] +
+0.125j [Y1 Y2 X6 Y7] +
+0.125j [Y1 Y2 Y6 X7]]
+INFO 2020-12-02 15:27:00,868 Calculated excitation generator matrix [-0.125j [X1 X2 X6 Y7] +
+0.125j [X1 X2 Y6 X7] +
+-0.125j [X1 Y2 X6 X7] +
+-0.125j [X1 Y2 Y6 Y7] +
+0.125j [Y1 X2 X6 X7] +
+0.125j [Y1 X2 Y6 Y7] +
+-0.125j [Y1 Y2 X6 Y7] +
+0.125j [Y1 Y2 Y6 X7]]
+INFO 2020-12-02 15:27:00,887 Calculated excitation generator matrix [-0.125j [X1 X3 X4 Y6] +
+0.125j [X1 X3 Y4 X6] +
+-0.125j [X1 Y3 X4 X6] +
+-0.125j [X1 Y3 Y4 Y6] +
+0.125j [Y1 X3 X4 X6] +
+0.125j [Y1 X3 Y4 Y6] +
+-0.125j [Y1 Y3 X4 Y6] +
+0.125j [Y1 Y3 Y4 X6]]
+INFO 2020-12-02 15:27:00,911 Calculated excitation generator matrix [0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+-0.125j [X1 Y3 X4 X6] +
+-0.125j [X1 Y3 Y4 Y6] +
+0.125j [Y1 X3 X4 X6] +
+0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]]
+INFO 2020-12-02 15:27:00,936 Calculated excitation generator matrix [-0.125j [X1 X3 X5 Y7] +
+-0.125j [X1 X3 Y5 X7] +
+0.125j [X1 Y3 X5 X7] +
+-0.125j [X1 Y3 Y5 Y7] +
+0.125j [Y1 X3 X5 X7] +
+-0.125j [Y1 X3 Y5 Y7] +
+0.125j [Y1 Y3 X5 Y7] +
+0.125j [Y1 Y3 Y5 X7]]
+INFO 2020-12-02 15:27:00,961 Calculated excitation generator matrix [-0.125j [X1 X3 X5 Y7] +
+0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+-0.125j [X1 Y3 Y5 Y7] +
+0.125j [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+-0.125j [Y1 Y3 X5 Y7] +
+0.125j [Y1 Y3 Y5 X7]]
+INFO 2020-12-02 15:27:00,985 Calculated excitation generator matrix [0.125j [X1 X3 X5 Y7] +
+-0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+-0.125j [X1 Y3 Y5 Y7] +
+0.125j [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+0.125j [Y1 Y3 X5 Y7] +
+-0.125j [Y1 Y3 Y5 X7]]
+INFO 2020-12-02 15:27:01,007 Calculated excitation generator matrix [-0.125j [X1 X4 X5 Y6] +
+-0.125j [X1 X4 Y5 X6] +
+0.125j [X1 Y4 X5 X6] +
+-0.125j [X1 Y4 Y5 Y6] +
+0.125j [Y1 X4 X5 X6] +
+-0.125j [Y1 X4 Y5 Y6] +
+0.125j [Y1 Y4 X5 Y6] +
+0.125j [Y1 Y4 Y5 X6]]
+INFO 2020-12-02 15:27:01,026 Calculated excitation generator matrix [0.125j [X1 X4 X5 Y6] +
+-0.125j [X1 X4 Y5 X6] +
+-0.125j [X1 Y4 X5 X6] +
+-0.125j [X1 Y4 Y5 Y6] +
+0.125j [Y1 X4 X5 X6] +
+0.125j [Y1 X4 Y5 Y6] +
+0.125j [Y1 Y4 X5 Y6] +
+-0.125j [Y1 Y4 Y5 X6]]
+INFO 2020-12-02 15:27:01,045 Calculated excitation generator matrix [-0.125j [X1 X4 X6 Y7] +
+-0.125j [X1 X4 Y6 X7] +
+0.125j [X1 Y4 X6 X7] +
+-0.125j [X1 Y4 Y6 Y7] +
+0.125j [Y1 X4 X6 X7] +
+-0.125j [Y1 X4 Y6 Y7] +
+0.125j [Y1 Y4 X6 Y7] +
+0.125j [Y1 Y4 Y6 X7]]
+INFO 2020-12-02 15:27:01,065 Calculated excitation generator matrix [-0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+-0.125j [X1 Y4 Y6 Y7] +
+0.125j [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+0.125j [Y1 Y4 Y6 X7]]
+INFO 2020-12-02 15:27:01,084 Calculated excitation generator matrix [-0.125j [X2 X3 X4 Y5] +
+-0.125j [X2 X3 Y4 X5] +
+0.125j [X2 Y3 X4 X5] +
+-0.125j [X2 Y3 Y4 Y5] +
+0.125j [Y2 X3 X4 X5] +
+-0.125j [Y2 X3 Y4 Y5] +
+0.125j [Y2 Y3 X4 Y5] +
+0.125j [Y2 Y3 Y4 X5]]
+INFO 2020-12-02 15:27:01,103 Calculated excitation generator matrix [0.125j [X2 X3 X4 Y5] +
+-0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+-0.125j [X2 Y3 Y4 Y5] +
+0.125j [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]]
+INFO 2020-12-02 15:27:01,120 Calculated excitation generator matrix [-0.125j [X2 X3 X4 Y7] +
+-0.125j [X2 X3 Y4 X7] +
+0.125j [X2 Y3 X4 X7] +
+-0.125j [X2 Y3 Y4 Y7] +
+0.125j [Y2 X3 X4 X7] +
+-0.125j [Y2 X3 Y4 Y7] +
+0.125j [Y2 Y3 X4 Y7] +
+0.125j [Y2 Y3 Y4 X7]]
+INFO 2020-12-02 15:27:01,137 Calculated excitation generator matrix [0.125j [X2 X3 X4 Y7] +
+-0.125j [X2 X3 Y4 X7] +
+-0.125j [X2 Y3 X4 X7] +
+-0.125j [X2 Y3 Y4 Y7] +
+0.125j [Y2 X3 X4 X7] +
+0.125j [Y2 X3 Y4 Y7] +
+0.125j [Y2 Y3 X4 Y7] +
+-0.125j [Y2 Y3 Y4 X7]]
+INFO 2020-12-02 15:27:01,155 Calculated excitation generator matrix [-0.125j [X2 X3 X5 Y6] +
+-0.125j [X2 X3 Y5 X6] +
+0.125j [X2 Y3 X5 X6] +
+-0.125j [X2 Y3 Y5 Y6] +
+0.125j [Y2 X3 X5 X6] +
+-0.125j [Y2 X3 Y5 Y6] +
+0.125j [Y2 Y3 X5 Y6] +
+0.125j [Y2 Y3 Y5 X6]]
+INFO 2020-12-02 15:27:01,179 Calculated excitation generator matrix [-0.125j [X2 X3 X5 Y6] +
+0.125j [X2 X3 Y5 X6] +
+-0.125j [X2 Y3 X5 X6] +
+-0.125j [X2 Y3 Y5 Y6] +
+0.125j [Y2 X3 X5 X6] +
+0.125j [Y2 X3 Y5 Y6] +
+-0.125j [Y2 Y3 X5 Y6] +
+0.125j [Y2 Y3 Y5 X6]]
+INFO 2020-12-02 15:27:01,201 Calculated excitation generator matrix [-0.125j [X2 X3 X6 Y7] +
+-0.125j [X2 X3 Y6 X7] +
+0.125j [X2 Y3 X6 X7] +
+-0.125j [X2 Y3 Y6 Y7] +
+0.125j [Y2 X3 X6 X7] +
+-0.125j [Y2 X3 Y6 Y7] +
+0.125j [Y2 Y3 X6 Y7] +
+0.125j [Y2 Y3 Y6 X7]]
+INFO 2020-12-02 15:27:01,219 Calculated excitation generator matrix [0.125j [X2 X3 X6 Y7] +
+-0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+-0.125j [X2 Y3 Y6 Y7] +
+0.125j [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]]
+INFO 2020-12-02 15:27:01,237 Calculated excitation generator matrix [-0.125j [X2 X4 X5 Y7] +
+0.125j [X2 X4 Y5 X7] +
+-0.125j [X2 Y4 X5 X7] +
+-0.125j [X2 Y4 Y5 Y7] +
+0.125j [Y2 X4 X5 X7] +
+0.125j [Y2 X4 Y5 Y7] +
+-0.125j [Y2 Y4 X5 Y7] +
+0.125j [Y2 Y4 Y5 X7]]
+INFO 2020-12-02 15:27:01,258 Calculated excitation generator matrix [0.125j [X2 X4 X5 Y7] +
+-0.125j [X2 X4 Y5 X7] +
+-0.125j [X2 Y4 X5 X7] +
+-0.125j [X2 Y4 Y5 Y7] +
+0.125j [Y2 X4 X5 X7] +
+0.125j [Y2 X4 Y5 Y7] +
+0.125j [Y2 Y4 X5 Y7] +
+-0.125j [Y2 Y4 Y5 X7]]
+INFO 2020-12-02 15:27:01,279 Calculated excitation generator matrix [-0.125j [X2 X5 X6 Y7] +
+-0.125j [X2 X5 Y6 X7] +
+0.125j [X2 Y5 X6 X7] +
+-0.125j [X2 Y5 Y6 Y7] +
+0.125j [Y2 X5 X6 X7] +
+-0.125j [Y2 X5 Y6 Y7] +
+0.125j [Y2 Y5 X6 Y7] +
+0.125j [Y2 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,297 Calculated excitation generator matrix [0.125j [X2 X5 X6 Y7] +
+-0.125j [X2 X5 Y6 X7] +
+-0.125j [X2 Y5 X6 X7] +
+-0.125j [X2 Y5 Y6 Y7] +
+0.125j [Y2 X5 X6 X7] +
+0.125j [Y2 X5 Y6 Y7] +
+0.125j [Y2 Y5 X6 Y7] +
+-0.125j [Y2 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,315 Calculated excitation generator matrix [-0.125j [X3 X4 X5 Y6] +
+-0.125j [X3 X4 Y5 X6] +
+0.125j [X3 Y4 X5 X6] +
+-0.125j [X3 Y4 Y5 Y6] +
+0.125j [Y3 X4 X5 X6] +
+-0.125j [Y3 X4 Y5 Y6] +
+0.125j [Y3 Y4 X5 Y6] +
+0.125j [Y3 Y4 Y5 X6]]
+INFO 2020-12-02 15:27:01,332 Calculated excitation generator matrix [0.125j [X3 X4 X5 Y6] +
+-0.125j [X3 X4 Y5 X6] +
+-0.125j [X3 Y4 X5 X6] +
+-0.125j [X3 Y4 Y5 Y6] +
+0.125j [Y3 X4 X5 X6] +
+0.125j [Y3 X4 Y5 Y6] +
+0.125j [Y3 Y4 X5 Y6] +
+-0.125j [Y3 Y4 Y5 X6]]
+INFO 2020-12-02 15:27:01,350 Calculated excitation generator matrix [-0.125j [X3 X4 X6 Y7] +
+-0.125j [X3 X4 Y6 X7] +
+0.125j [X3 Y4 X6 X7] +
+-0.125j [X3 Y4 Y6 Y7] +
+0.125j [Y3 X4 X6 X7] +
+-0.125j [Y3 X4 Y6 Y7] +
+0.125j [Y3 Y4 X6 Y7] +
+0.125j [Y3 Y4 Y6 X7]]
+INFO 2020-12-02 15:27:01,368 Calculated excitation generator matrix [-0.125j [X3 X4 X6 Y7] +
+0.125j [X3 X4 Y6 X7] +
+-0.125j [X3 Y4 X6 X7] +
+-0.125j [X3 Y4 Y6 Y7] +
+0.125j [Y3 X4 X6 X7] +
+0.125j [Y3 X4 Y6 Y7] +
+-0.125j [Y3 Y4 X6 Y7] +
+0.125j [Y3 Y4 Y6 X7]]
+INFO 2020-12-02 15:27:01,390 Calculated excitation generator matrix [-0.125j [X4 X5 X6 Y7] +
+-0.125j [X4 X5 Y6 X7] +
+0.125j [X4 Y5 X6 X7] +
+-0.125j [X4 Y5 Y6 Y7] +
+0.125j [Y4 X5 X6 X7] +
+-0.125j [Y4 X5 Y6 Y7] +
+0.125j [Y4 Y5 X6 Y7] +
+0.125j [Y4 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,405 Calculated excitation generator matrix [0.125j [X4 X5 X6 Y7] +
+-0.125j [X4 X5 Y6 X7] +
+-0.125j [X4 Y5 X6 X7] +
+-0.125j [X4 Y5 Y6 Y7] +
+0.125j [Y4 X5 X6 X7] +
+0.125j [Y4 X5 Y6 Y7] +
+0.125j [Y4 Y5 X6 Y7] +
+-0.125j [Y4 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,419 Calculating commutators
+INFO 2020-12-02 15:27:01,419 Calculated commutator [-0.5j [X0 Y1] +
+0.5j [Y0 X1]]
+INFO 2020-12-02 15:27:01,420 Calculated commutator [-0.5j [X0 Y2] +
+0.5j [Y0 X2]]
+INFO 2020-12-02 15:27:01,420 Calculated commutator [-0.5j [X0 Y3] +
+0.5j [Y0 X3]]
+INFO 2020-12-02 15:27:01,421 Calculated commutator [-0.5j [X0 Y4] +
+0.5j [Y0 X4]]
+INFO 2020-12-02 15:27:01,422 Calculated commutator [-0.5j [X0 Y5] +
+0.5j [Y0 X5]]
+INFO 2020-12-02 15:27:01,422 Calculated commutator [-0.5j [X0 Y6] +
+0.5j [Y0 X6]]
+INFO 2020-12-02 15:27:01,423 Calculated commutator [-0.5j [X0 Y7] +
+0.5j [Y0 X7]]
+INFO 2020-12-02 15:27:01,423 Calculated commutator [-0.5j [X1 Y2] +
+0.5j [Y1 X2]]
+INFO 2020-12-02 15:27:01,424 Calculated commutator [-0.5j [X1 Y3] +
+0.5j [Y1 X3]]
+INFO 2020-12-02 15:27:01,425 Calculated commutator [-0.5j [X1 Y4] +
+0.5j [Y1 X4]]
+INFO 2020-12-02 15:27:01,425 Calculated commutator [-0.5j [X1 Y5] +
+0.5j [Y1 X5]]
+INFO 2020-12-02 15:27:01,426 Calculated commutator [-0.5j [X1 Y6] +
+0.5j [Y1 X6]]
+INFO 2020-12-02 15:27:01,426 Calculated commutator [-0.5j [X1 Y7] +
+0.5j [Y1 X7]]
+INFO 2020-12-02 15:27:01,427 Calculated commutator [-0.5j [X2 Y3] +
+0.5j [Y2 X3]]
+INFO 2020-12-02 15:27:01,428 Calculated commutator [-0.5j [X2 Y4] +
+0.5j [Y2 X4]]
+INFO 2020-12-02 15:27:01,428 Calculated commutator [-0.5j [X2 Y5] +
+0.5j [Y2 X5]]
+INFO 2020-12-02 15:27:01,429 Calculated commutator [-0.5j [X2 Y6] +
+0.5j [Y2 X6]]
+INFO 2020-12-02 15:27:01,429 Calculated commutator [-0.5j [X2 Y7] +
+0.5j [Y2 X7]]
+INFO 2020-12-02 15:27:01,430 Calculated commutator [-0.5j [X3 Y4] +
+0.5j [Y3 X4]]
+INFO 2020-12-02 15:27:01,431 Calculated commutator [-0.5j [X3 Y5] +
+0.5j [Y3 X5]]
+INFO 2020-12-02 15:27:01,431 Calculated commutator [-0.5j [X3 Y6] +
+0.5j [Y3 X6]]
+INFO 2020-12-02 15:27:01,432 Calculated commutator [-0.5j [X3 Y7] +
+0.5j [Y3 X7]]
+INFO 2020-12-02 15:27:01,432 Calculated commutator [-0.5j [X4 Y5] +
+0.5j [Y4 X5]]
+INFO 2020-12-02 15:27:01,433 Calculated commutator [-0.5j [X4 Y6] +
+0.5j [Y4 X6]]
+INFO 2020-12-02 15:27:01,434 Calculated commutator [-0.5j [X4 Y7] +
+0.5j [Y4 X7]]
+INFO 2020-12-02 15:27:01,434 Calculated commutator [-0.5j [X5 Y6] +
+0.5j [Y5 X6]]
+INFO 2020-12-02 15:27:01,435 Calculated commutator [-0.5j [X5 Y7] +
+0.5j [Y5 X7]]
+INFO 2020-12-02 15:27:01,435 Calculated commutator [-0.5j [X6 Y7] +
+0.5j [Y6 X7]]
+INFO 2020-12-02 15:27:01,436 Calculated commutator [-0.125j [X0 X1 X2 Y3] +
+-0.125j [X0 X1 Y2 X3] +
+0.125j [X0 Y1 X2 X3] +
+-0.125j [X0 Y1 Y2 Y3] +
+0.125j [Y0 X1 X2 X3] +
+-0.125j [Y0 X1 Y2 Y3] +
+0.125j [Y0 Y1 X2 Y3] +
+0.125j [Y0 Y1 Y2 X3]]
+INFO 2020-12-02 15:27:01,437 Calculated commutator [0.125j [X0 X1 X2 Y3] +
+-0.125j [X0 X1 Y2 X3] +
+-0.125j [X0 Y1 X2 X3] +
+-0.125j [X0 Y1 Y2 Y3] +
+0.125j [Y0 X1 X2 X3] +
+0.125j [Y0 X1 Y2 Y3] +
+0.125j [Y0 Y1 X2 Y3] +
+-0.125j [Y0 Y1 Y2 X3]]
+INFO 2020-12-02 15:27:01,438 Calculated commutator [-0.125j [X0 X1 X2 Y5] +
+-0.125j [X0 X1 Y2 X5] +
+0.125j [X0 Y1 X2 X5] +
+-0.125j [X0 Y1 Y2 Y5] +
+0.125j [Y0 X1 X2 X5] +
+-0.125j [Y0 X1 Y2 Y5] +
+0.125j [Y0 Y1 X2 Y5] +
+0.125j [Y0 Y1 Y2 X5]]
+INFO 2020-12-02 15:27:01,439 Calculated commutator [0.125j [X0 X1 X2 Y5] +
+-0.125j [X0 X1 Y2 X5] +
+-0.125j [X0 Y1 X2 X5] +
+-0.125j [X0 Y1 Y2 Y5] +
+0.125j [Y0 X1 X2 X5] +
+0.125j [Y0 X1 Y2 Y5] +
+0.125j [Y0 Y1 X2 Y5] +
+-0.125j [Y0 Y1 Y2 X5]]
+INFO 2020-12-02 15:27:01,439 Calculated commutator [-0.125j [X0 X1 X2 Y7] +
+-0.125j [X0 X1 Y2 X7] +
+0.125j [X0 Y1 X2 X7] +
+-0.125j [X0 Y1 Y2 Y7] +
+0.125j [Y0 X1 X2 X7] +
+-0.125j [Y0 X1 Y2 Y7] +
+0.125j [Y0 Y1 X2 Y7] +
+0.125j [Y0 Y1 Y2 X7]]
+INFO 2020-12-02 15:27:01,440 Calculated commutator [0.125j [X0 X1 X2 Y7] +
+-0.125j [X0 X1 Y2 X7] +
+-0.125j [X0 Y1 X2 X7] +
+-0.125j [X0 Y1 Y2 Y7] +
+0.125j [Y0 X1 X2 X7] +
+0.125j [Y0 X1 Y2 Y7] +
+0.125j [Y0 Y1 X2 Y7] +
+-0.125j [Y0 Y1 Y2 X7]]
+INFO 2020-12-02 15:27:01,441 Calculated commutator [-0.125j [X0 X1 X3 Y4] +
+-0.125j [X0 X1 Y3 X4] +
+0.125j [X0 Y1 X3 X4] +
+-0.125j [X0 Y1 Y3 Y4] +
+0.125j [Y0 X1 X3 X4] +
+-0.125j [Y0 X1 Y3 Y4] +
+0.125j [Y0 Y1 X3 Y4] +
+0.125j [Y0 Y1 Y3 X4]]
+INFO 2020-12-02 15:27:01,442 Calculated commutator [-0.125j [X0 X1 X3 Y4] +
+0.125j [X0 X1 Y3 X4] +
+-0.125j [X0 Y1 X3 X4] +
+-0.125j [X0 Y1 Y3 Y4] +
+0.125j [Y0 X1 X3 X4] +
+0.125j [Y0 X1 Y3 Y4] +
+-0.125j [Y0 Y1 X3 Y4] +
+0.125j [Y0 Y1 Y3 X4]]
+INFO 2020-12-02 15:27:01,442 Calculated commutator [-0.125j [X0 X1 X3 Y6] +
+-0.125j [X0 X1 Y3 X6] +
+0.125j [X0 Y1 X3 X6] +
+-0.125j [X0 Y1 Y3 Y6] +
+0.125j [Y0 X1 X3 X6] +
+-0.125j [Y0 X1 Y3 Y6] +
+0.125j [Y0 Y1 X3 Y6] +
+0.125j [Y0 Y1 Y3 X6]]
+INFO 2020-12-02 15:27:01,443 Calculated commutator [-0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+-0.125j [X0 Y1 Y3 Y6] +
+0.125j [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+0.125j [Y0 Y1 Y3 X6]]
+INFO 2020-12-02 15:27:01,444 Calculated commutator [-0.125j [X0 X1 X4 Y5] +
+-0.125j [X0 X1 Y4 X5] +
+0.125j [X0 Y1 X4 X5] +
+-0.125j [X0 Y1 Y4 Y5] +
+0.125j [Y0 X1 X4 X5] +
+-0.125j [Y0 X1 Y4 Y5] +
+0.125j [Y0 Y1 X4 Y5] +
+0.125j [Y0 Y1 Y4 X5]]
+INFO 2020-12-02 15:27:01,445 Calculated commutator [0.125j [X0 X1 X4 Y5] +
+-0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+-0.125j [X0 Y1 Y4 Y5] +
+0.125j [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]]
+INFO 2020-12-02 15:27:01,446 Calculated commutator [-0.125j [X0 X1 X4 Y7] +
+-0.125j [X0 X1 Y4 X7] +
+0.125j [X0 Y1 X4 X7] +
+-0.125j [X0 Y1 Y4 Y7] +
+0.125j [Y0 X1 X4 X7] +
+-0.125j [Y0 X1 Y4 Y7] +
+0.125j [Y0 Y1 X4 Y7] +
+0.125j [Y0 Y1 Y4 X7]]
+INFO 2020-12-02 15:27:01,446 Calculated commutator [0.125j [X0 X1 X4 Y7] +
+-0.125j [X0 X1 Y4 X7] +
+-0.125j [X0 Y1 X4 X7] +
+-0.125j [X0 Y1 Y4 Y7] +
+0.125j [Y0 X1 X4 X7] +
+0.125j [Y0 X1 Y4 Y7] +
+0.125j [Y0 Y1 X4 Y7] +
+-0.125j [Y0 Y1 Y4 X7]]
+INFO 2020-12-02 15:27:01,447 Calculated commutator [-0.125j [X0 X1 X5 Y6] +
+-0.125j [X0 X1 Y5 X6] +
+0.125j [X0 Y1 X5 X6] +
+-0.125j [X0 Y1 Y5 Y6] +
+0.125j [Y0 X1 X5 X6] +
+-0.125j [Y0 X1 Y5 Y6] +
+0.125j [Y0 Y1 X5 Y6] +
+0.125j [Y0 Y1 Y5 X6]]
+INFO 2020-12-02 15:27:01,448 Calculated commutator [-0.125j [X0 X1 X5 Y6] +
+0.125j [X0 X1 Y5 X6] +
+-0.125j [X0 Y1 X5 X6] +
+-0.125j [X0 Y1 Y5 Y6] +
+0.125j [Y0 X1 X5 X6] +
+0.125j [Y0 X1 Y5 Y6] +
+-0.125j [Y0 Y1 X5 Y6] +
+0.125j [Y0 Y1 Y5 X6]]
+INFO 2020-12-02 15:27:01,449 Calculated commutator [-0.125j [X0 X1 X6 Y7] +
+-0.125j [X0 X1 Y6 X7] +
+0.125j [X0 Y1 X6 X7] +
+-0.125j [X0 Y1 Y6 Y7] +
+0.125j [Y0 X1 X6 X7] +
+-0.125j [Y0 X1 Y6 Y7] +
+0.125j [Y0 Y1 X6 Y7] +
+0.125j [Y0 Y1 Y6 X7]]
+INFO 2020-12-02 15:27:01,449 Calculated commutator [0.125j [X0 X1 X6 Y7] +
+-0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+-0.125j [X0 Y1 Y6 Y7] +
+0.125j [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]]
+INFO 2020-12-02 15:27:01,450 Calculated commutator [-0.125j [X0 X2 X3 Y5] +
+0.125j [X0 X2 Y3 X5] +
+-0.125j [X0 Y2 X3 X5] +
+-0.125j [X0 Y2 Y3 Y5] +
+0.125j [Y0 X2 X3 X5] +
+0.125j [Y0 X2 Y3 Y5] +
+-0.125j [Y0 Y2 X3 Y5] +
+0.125j [Y0 Y2 Y3 X5]]
+INFO 2020-12-02 15:27:01,451 Calculated commutator [0.125j [X0 X2 X3 Y5] +
+-0.125j [X0 X2 Y3 X5] +
+-0.125j [X0 Y2 X3 X5] +
+-0.125j [X0 Y2 Y3 Y5] +
+0.125j [Y0 X2 X3 X5] +
+0.125j [Y0 X2 Y3 Y5] +
+0.125j [Y0 Y2 X3 Y5] +
+-0.125j [Y0 Y2 Y3 X5]]
+INFO 2020-12-02 15:27:01,452 Calculated commutator [-0.125j [X0 X2 X3 Y7] +
+0.125j [X0 X2 Y3 X7] +
+-0.125j [X0 Y2 X3 X7] +
+-0.125j [X0 Y2 Y3 Y7] +
+0.125j [Y0 X2 X3 X7] +
+0.125j [Y0 X2 Y3 Y7] +
+-0.125j [Y0 Y2 X3 Y7] +
+0.125j [Y0 Y2 Y3 X7]]
+INFO 2020-12-02 15:27:01,452 Calculated commutator [0.125j [X0 X2 X3 Y7] +
+-0.125j [X0 X2 Y3 X7] +
+-0.125j [X0 Y2 X3 X7] +
+-0.125j [X0 Y2 Y3 Y7] +
+0.125j [Y0 X2 X3 X7] +
+0.125j [Y0 X2 Y3 Y7] +
+0.125j [Y0 Y2 X3 Y7] +
+-0.125j [Y0 Y2 Y3 X7]]
+INFO 2020-12-02 15:27:01,453 Calculated commutator [-0.125j [X0 X2 X4 Y6] +
+-0.125j [X0 X2 Y4 X6] +
+0.125j [X0 Y2 X4 X6] +
+-0.125j [X0 Y2 Y4 Y6] +
+0.125j [Y0 X2 X4 X6] +
+-0.125j [Y0 X2 Y4 Y6] +
+0.125j [Y0 Y2 X4 Y6] +
+0.125j [Y0 Y2 Y4 X6]]
+INFO 2020-12-02 15:27:01,454 Calculated commutator [-0.125j [X0 X2 X4 Y6] +
+0.125j [X0 X2 Y4 X6] +
+-0.125j [X0 Y2 X4 X6] +
+-0.125j [X0 Y2 Y4 Y6] +
+0.125j [Y0 X2 X4 X6] +
+0.125j [Y0 X2 Y4 Y6] +
+-0.125j [Y0 Y2 X4 Y6] +
+0.125j [Y0 Y2 Y4 X6]]
+INFO 2020-12-02 15:27:01,455 Calculated commutator [0.125j [X0 X2 X4 Y6] +
+-0.125j [X0 X2 Y4 X6] +
+-0.125j [X0 Y2 X4 X6] +
+-0.125j [X0 Y2 Y4 Y6] +
+0.125j [Y0 X2 X4 X6] +
+0.125j [Y0 X2 Y4 Y6] +
+0.125j [Y0 Y2 X4 Y6] +
+-0.125j [Y0 Y2 Y4 X6]]
+INFO 2020-12-02 15:27:01,455 Calculated commutator [-0.125j [X0 X2 X5 Y7] +
+0.125j [X0 X2 Y5 X7] +
+-0.125j [X0 Y2 X5 X7] +
+-0.125j [X0 Y2 Y5 Y7] +
+0.125j [Y0 X2 X5 X7] +
+0.125j [Y0 X2 Y5 Y7] +
+-0.125j [Y0 Y2 X5 Y7] +
+0.125j [Y0 Y2 Y5 X7]]
+INFO 2020-12-02 15:27:01,456 Calculated commutator [0.125j [X0 X2 X5 Y7] +
+-0.125j [X0 X2 Y5 X7] +
+-0.125j [X0 Y2 X5 X7] +
+-0.125j [X0 Y2 Y5 Y7] +
+0.125j [Y0 X2 X5 X7] +
+0.125j [Y0 X2 Y5 Y7] +
+0.125j [Y0 Y2 X5 Y7] +
+-0.125j [Y0 Y2 Y5 X7]]
+INFO 2020-12-02 15:27:01,457 Calculated commutator [-0.125j [X0 X3 X4 Y5] +
+-0.125j [X0 X3 Y4 X5] +
+0.125j [X0 Y3 X4 X5] +
+-0.125j [X0 Y3 Y4 Y5] +
+0.125j [Y0 X3 X4 X5] +
+-0.125j [Y0 X3 Y4 Y5] +
+0.125j [Y0 Y3 X4 Y5] +
+0.125j [Y0 Y3 Y4 X5]]
+INFO 2020-12-02 15:27:01,458 Calculated commutator [0.125j [X0 X3 X4 Y5] +
+-0.125j [X0 X3 Y4 X5] +
+-0.125j [X0 Y3 X4 X5] +
+-0.125j [X0 Y3 Y4 Y5] +
+0.125j [Y0 X3 X4 X5] +
+0.125j [Y0 X3 Y4 Y5] +
+0.125j [Y0 Y3 X4 Y5] +
+-0.125j [Y0 Y3 Y4 X5]]
+INFO 2020-12-02 15:27:01,459 Calculated commutator [-0.125j [X0 X3 X4 Y7] +
+-0.125j [X0 X3 Y4 X7] +
+0.125j [X0 Y3 X4 X7] +
+-0.125j [X0 Y3 Y4 Y7] +
+0.125j [Y0 X3 X4 X7] +
+-0.125j [Y0 X3 Y4 Y7] +
+0.125j [Y0 Y3 X4 Y7] +
+0.125j [Y0 Y3 Y4 X7]]
+INFO 2020-12-02 15:27:01,459 Calculated commutator [0.125j [X0 X3 X4 Y7] +
+-0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+-0.125j [X0 Y3 Y4 Y7] +
+0.125j [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]]
+INFO 2020-12-02 15:27:01,460 Calculated commutator [-0.125j [X0 X3 X5 Y6] +
+-0.125j [X0 X3 Y5 X6] +
+0.125j [X0 Y3 X5 X6] +
+-0.125j [X0 Y3 Y5 Y6] +
+0.125j [Y0 X3 X5 X6] +
+-0.125j [Y0 X3 Y5 Y6] +
+0.125j [Y0 Y3 X5 Y6] +
+0.125j [Y0 Y3 Y5 X6]]
+INFO 2020-12-02 15:27:01,461 Calculated commutator [-0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+-0.125j [X0 Y3 Y5 Y6] +
+0.125j [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+0.125j [Y0 Y3 Y5 X6]]
+INFO 2020-12-02 15:27:01,462 Calculated commutator [-0.125j [X0 X3 X6 Y7] +
+-0.125j [X0 X3 Y6 X7] +
+0.125j [X0 Y3 X6 X7] +
+-0.125j [X0 Y3 Y6 Y7] +
+0.125j [Y0 X3 X6 X7] +
+-0.125j [Y0 X3 Y6 Y7] +
+0.125j [Y0 Y3 X6 Y7] +
+0.125j [Y0 Y3 Y6 X7]]
+INFO 2020-12-02 15:27:01,463 Calculated commutator [0.125j [X0 X3 X6 Y7] +
+-0.125j [X0 X3 Y6 X7] +
+-0.125j [X0 Y3 X6 X7] +
+-0.125j [X0 Y3 Y6 Y7] +
+0.125j [Y0 X3 X6 X7] +
+0.125j [Y0 X3 Y6 Y7] +
+0.125j [Y0 Y3 X6 Y7] +
+-0.125j [Y0 Y3 Y6 X7]]
+INFO 2020-12-02 15:27:01,463 Calculated commutator [-0.125j [X0 X4 X5 Y7] +
+0.125j [X0 X4 Y5 X7] +
+-0.125j [X0 Y4 X5 X7] +
+-0.125j [X0 Y4 Y5 Y7] +
+0.125j [Y0 X4 X5 X7] +
+0.125j [Y0 X4 Y5 Y7] +
+-0.125j [Y0 Y4 X5 Y7] +
+0.125j [Y0 Y4 Y5 X7]]
+INFO 2020-12-02 15:27:01,464 Calculated commutator [0.125j [X0 X4 X5 Y7] +
+-0.125j [X0 X4 Y5 X7] +
+-0.125j [X0 Y4 X5 X7] +
+-0.125j [X0 Y4 Y5 Y7] +
+0.125j [Y0 X4 X5 X7] +
+0.125j [Y0 X4 Y5 Y7] +
+0.125j [Y0 Y4 X5 Y7] +
+-0.125j [Y0 Y4 Y5 X7]]
+INFO 2020-12-02 15:27:01,465 Calculated commutator [-0.125j [X0 X5 X6 Y7] +
+-0.125j [X0 X5 Y6 X7] +
+0.125j [X0 Y5 X6 X7] +
+-0.125j [X0 Y5 Y6 Y7] +
+0.125j [Y0 X5 X6 X7] +
+-0.125j [Y0 X5 Y6 Y7] +
+0.125j [Y0 Y5 X6 Y7] +
+0.125j [Y0 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,466 Calculated commutator [0.125j [X0 X5 X6 Y7] +
+-0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+-0.125j [X0 Y5 Y6 Y7] +
+0.125j [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,467 Calculated commutator [-0.125j [X1 X2 X3 Y4] +
+-0.125j [X1 X2 Y3 X4] +
+0.125j [X1 Y2 X3 X4] +
+-0.125j [X1 Y2 Y3 Y4] +
+0.125j [Y1 X2 X3 X4] +
+-0.125j [Y1 X2 Y3 Y4] +
+0.125j [Y1 Y2 X3 Y4] +
+0.125j [Y1 Y2 Y3 X4]]
+INFO 2020-12-02 15:27:01,468 Calculated commutator [0.125j [X1 X2 X3 Y4] +
+-0.125j [X1 X2 Y3 X4] +
+-0.125j [X1 Y2 X3 X4] +
+-0.125j [X1 Y2 Y3 Y4] +
+0.125j [Y1 X2 X3 X4] +
+0.125j [Y1 X2 Y3 Y4] +
+0.125j [Y1 Y2 X3 Y4] +
+-0.125j [Y1 Y2 Y3 X4]]
+INFO 2020-12-02 15:27:01,468 Calculated commutator [-0.125j [X1 X2 X3 Y6] +
+-0.125j [X1 X2 Y3 X6] +
+0.125j [X1 Y2 X3 X6] +
+-0.125j [X1 Y2 Y3 Y6] +
+0.125j [Y1 X2 X3 X6] +
+-0.125j [Y1 X2 Y3 Y6] +
+0.125j [Y1 Y2 X3 Y6] +
+0.125j [Y1 Y2 Y3 X6]]
+INFO 2020-12-02 15:27:01,469 Calculated commutator [0.125j [X1 X2 X3 Y6] +
+-0.125j [X1 X2 Y3 X6] +
+-0.125j [X1 Y2 X3 X6] +
+-0.125j [X1 Y2 Y3 Y6] +
+0.125j [Y1 X2 X3 X6] +
+0.125j [Y1 X2 Y3 Y6] +
+0.125j [Y1 Y2 X3 Y6] +
+-0.125j [Y1 Y2 Y3 X6]]
+INFO 2020-12-02 15:27:01,470 Calculated commutator [-0.125j [X1 X2 X4 Y5] +
+-0.125j [X1 X2 Y4 X5] +
+0.125j [X1 Y2 X4 X5] +
+-0.125j [X1 Y2 Y4 Y5] +
+0.125j [Y1 X2 X4 X5] +
+-0.125j [Y1 X2 Y4 Y5] +
+0.125j [Y1 Y2 X4 Y5] +
+0.125j [Y1 Y2 Y4 X5]]
+INFO 2020-12-02 15:27:01,470 Calculated commutator [-0.125j [X1 X2 X4 Y5] +
+0.125j [X1 X2 Y4 X5] +
+-0.125j [X1 Y2 X4 X5] +
+-0.125j [X1 Y2 Y4 Y5] +
+0.125j [Y1 X2 X4 X5] +
+0.125j [Y1 X2 Y4 Y5] +
+-0.125j [Y1 Y2 X4 Y5] +
+0.125j [Y1 Y2 Y4 X5]]
+INFO 2020-12-02 15:27:01,471 Calculated commutator [-0.125j [X1 X2 X4 Y7] +
+-0.125j [X1 X2 Y4 X7] +
+0.125j [X1 Y2 X4 X7] +
+-0.125j [X1 Y2 Y4 Y7] +
+0.125j [Y1 X2 X4 X7] +
+-0.125j [Y1 X2 Y4 Y7] +
+0.125j [Y1 Y2 X4 Y7] +
+0.125j [Y1 Y2 Y4 X7]]
+INFO 2020-12-02 15:27:01,472 Calculated commutator [-0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+-0.125j [X1 Y2 Y4 Y7] +
+0.125j [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+0.125j [Y1 Y2 Y4 X7]]
+INFO 2020-12-02 15:27:01,473 Calculated commutator [-0.125j [X1 X2 X5 Y6] +
+-0.125j [X1 X2 Y5 X6] +
+0.125j [X1 Y2 X5 X6] +
+-0.125j [X1 Y2 Y5 Y6] +
+0.125j [Y1 X2 X5 X6] +
+-0.125j [Y1 X2 Y5 Y6] +
+0.125j [Y1 Y2 X5 Y6] +
+0.125j [Y1 Y2 Y5 X6]]
+INFO 2020-12-02 15:27:01,474 Calculated commutator [0.125j [X1 X2 X5 Y6] +
+-0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+-0.125j [X1 Y2 Y5 Y6] +
+0.125j [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]]
+INFO 2020-12-02 15:27:01,474 Calculated commutator [-0.125j [X1 X2 X6 Y7] +
+-0.125j [X1 X2 Y6 X7] +
+0.125j [X1 Y2 X6 X7] +
+-0.125j [X1 Y2 Y6 Y7] +
+0.125j [Y1 X2 X6 X7] +
+-0.125j [Y1 X2 Y6 Y7] +
+0.125j [Y1 Y2 X6 Y7] +
+0.125j [Y1 Y2 Y6 X7]]
+INFO 2020-12-02 15:27:01,475 Calculated commutator [-0.125j [X1 X2 X6 Y7] +
+0.125j [X1 X2 Y6 X7] +
+-0.125j [X1 Y2 X6 X7] +
+-0.125j [X1 Y2 Y6 Y7] +
+0.125j [Y1 X2 X6 X7] +
+0.125j [Y1 X2 Y6 Y7] +
+-0.125j [Y1 Y2 X6 Y7] +
+0.125j [Y1 Y2 Y6 X7]]
+INFO 2020-12-02 15:27:01,476 Calculated commutator [-0.125j [X1 X3 X4 Y6] +
+0.125j [X1 X3 Y4 X6] +
+-0.125j [X1 Y3 X4 X6] +
+-0.125j [X1 Y3 Y4 Y6] +
+0.125j [Y1 X3 X4 X6] +
+0.125j [Y1 X3 Y4 Y6] +
+-0.125j [Y1 Y3 X4 Y6] +
+0.125j [Y1 Y3 Y4 X6]]
+INFO 2020-12-02 15:27:01,477 Calculated commutator [0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+-0.125j [X1 Y3 X4 X6] +
+-0.125j [X1 Y3 Y4 Y6] +
+0.125j [Y1 X3 X4 X6] +
+0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]]
+INFO 2020-12-02 15:27:01,477 Calculated commutator [-0.125j [X1 X3 X5 Y7] +
+-0.125j [X1 X3 Y5 X7] +
+0.125j [X1 Y3 X5 X7] +
+-0.125j [X1 Y3 Y5 Y7] +
+0.125j [Y1 X3 X5 X7] +
+-0.125j [Y1 X3 Y5 Y7] +
+0.125j [Y1 Y3 X5 Y7] +
+0.125j [Y1 Y3 Y5 X7]]
+INFO 2020-12-02 15:27:01,478 Calculated commutator [-0.125j [X1 X3 X5 Y7] +
+0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+-0.125j [X1 Y3 Y5 Y7] +
+0.125j [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+-0.125j [Y1 Y3 X5 Y7] +
+0.125j [Y1 Y3 Y5 X7]]
+INFO 2020-12-02 15:27:01,479 Calculated commutator [0.125j [X1 X3 X5 Y7] +
+-0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+-0.125j [X1 Y3 Y5 Y7] +
+0.125j [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+0.125j [Y1 Y3 X5 Y7] +
+-0.125j [Y1 Y3 Y5 X7]]
+INFO 2020-12-02 15:27:01,480 Calculated commutator [-0.125j [X1 X4 X5 Y6] +
+-0.125j [X1 X4 Y5 X6] +
+0.125j [X1 Y4 X5 X6] +
+-0.125j [X1 Y4 Y5 Y6] +
+0.125j [Y1 X4 X5 X6] +
+-0.125j [Y1 X4 Y5 Y6] +
+0.125j [Y1 Y4 X5 Y6] +
+0.125j [Y1 Y4 Y5 X6]]
+INFO 2020-12-02 15:27:01,481 Calculated commutator [0.125j [X1 X4 X5 Y6] +
+-0.125j [X1 X4 Y5 X6] +
+-0.125j [X1 Y4 X5 X6] +
+-0.125j [X1 Y4 Y5 Y6] +
+0.125j [Y1 X4 X5 X6] +
+0.125j [Y1 X4 Y5 Y6] +
+0.125j [Y1 Y4 X5 Y6] +
+-0.125j [Y1 Y4 Y5 X6]]
+INFO 2020-12-02 15:27:01,481 Calculated commutator [-0.125j [X1 X4 X6 Y7] +
+-0.125j [X1 X4 Y6 X7] +
+0.125j [X1 Y4 X6 X7] +
+-0.125j [X1 Y4 Y6 Y7] +
+0.125j [Y1 X4 X6 X7] +
+-0.125j [Y1 X4 Y6 Y7] +
+0.125j [Y1 Y4 X6 Y7] +
+0.125j [Y1 Y4 Y6 X7]]
+INFO 2020-12-02 15:27:01,482 Calculated commutator [-0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+-0.125j [X1 Y4 Y6 Y7] +
+0.125j [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+0.125j [Y1 Y4 Y6 X7]]
+INFO 2020-12-02 15:27:01,483 Calculated commutator [-0.125j [X2 X3 X4 Y5] +
+-0.125j [X2 X3 Y4 X5] +
+0.125j [X2 Y3 X4 X5] +
+-0.125j [X2 Y3 Y4 Y5] +
+0.125j [Y2 X3 X4 X5] +
+-0.125j [Y2 X3 Y4 Y5] +
+0.125j [Y2 Y3 X4 Y5] +
+0.125j [Y2 Y3 Y4 X5]]
+INFO 2020-12-02 15:27:01,484 Calculated commutator [0.125j [X2 X3 X4 Y5] +
+-0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+-0.125j [X2 Y3 Y4 Y5] +
+0.125j [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]]
+INFO 2020-12-02 15:27:01,484 Calculated commutator [-0.125j [X2 X3 X4 Y7] +
+-0.125j [X2 X3 Y4 X7] +
+0.125j [X2 Y3 X4 X7] +
+-0.125j [X2 Y3 Y4 Y7] +
+0.125j [Y2 X3 X4 X7] +
+-0.125j [Y2 X3 Y4 Y7] +
+0.125j [Y2 Y3 X4 Y7] +
+0.125j [Y2 Y3 Y4 X7]]
+INFO 2020-12-02 15:27:01,485 Calculated commutator [0.125j [X2 X3 X4 Y7] +
+-0.125j [X2 X3 Y4 X7] +
+-0.125j [X2 Y3 X4 X7] +
+-0.125j [X2 Y3 Y4 Y7] +
+0.125j [Y2 X3 X4 X7] +
+0.125j [Y2 X3 Y4 Y7] +
+0.125j [Y2 Y3 X4 Y7] +
+-0.125j [Y2 Y3 Y4 X7]]
+INFO 2020-12-02 15:27:01,486 Calculated commutator [-0.125j [X2 X3 X5 Y6] +
+-0.125j [X2 X3 Y5 X6] +
+0.125j [X2 Y3 X5 X6] +
+-0.125j [X2 Y3 Y5 Y6] +
+0.125j [Y2 X3 X5 X6] +
+-0.125j [Y2 X3 Y5 Y6] +
+0.125j [Y2 Y3 X5 Y6] +
+0.125j [Y2 Y3 Y5 X6]]
+INFO 2020-12-02 15:27:01,487 Calculated commutator [-0.125j [X2 X3 X5 Y6] +
+0.125j [X2 X3 Y5 X6] +
+-0.125j [X2 Y3 X5 X6] +
+-0.125j [X2 Y3 Y5 Y6] +
+0.125j [Y2 X3 X5 X6] +
+0.125j [Y2 X3 Y5 Y6] +
+-0.125j [Y2 Y3 X5 Y6] +
+0.125j [Y2 Y3 Y5 X6]]
+INFO 2020-12-02 15:27:01,488 Calculated commutator [-0.125j [X2 X3 X6 Y7] +
+-0.125j [X2 X3 Y6 X7] +
+0.125j [X2 Y3 X6 X7] +
+-0.125j [X2 Y3 Y6 Y7] +
+0.125j [Y2 X3 X6 X7] +
+-0.125j [Y2 X3 Y6 Y7] +
+0.125j [Y2 Y3 X6 Y7] +
+0.125j [Y2 Y3 Y6 X7]]
+INFO 2020-12-02 15:27:01,489 Calculated commutator [0.125j [X2 X3 X6 Y7] +
+-0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+-0.125j [X2 Y3 Y6 Y7] +
+0.125j [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]]
+INFO 2020-12-02 15:27:01,489 Calculated commutator [-0.125j [X2 X4 X5 Y7] +
+0.125j [X2 X4 Y5 X7] +
+-0.125j [X2 Y4 X5 X7] +
+-0.125j [X2 Y4 Y5 Y7] +
+0.125j [Y2 X4 X5 X7] +
+0.125j [Y2 X4 Y5 Y7] +
+-0.125j [Y2 Y4 X5 Y7] +
+0.125j [Y2 Y4 Y5 X7]]
+INFO 2020-12-02 15:27:01,490 Calculated commutator [0.125j [X2 X4 X5 Y7] +
+-0.125j [X2 X4 Y5 X7] +
+-0.125j [X2 Y4 X5 X7] +
+-0.125j [X2 Y4 Y5 Y7] +
+0.125j [Y2 X4 X5 X7] +
+0.125j [Y2 X4 Y5 Y7] +
+0.125j [Y2 Y4 X5 Y7] +
+-0.125j [Y2 Y4 Y5 X7]]
+INFO 2020-12-02 15:27:01,491 Calculated commutator [-0.125j [X2 X5 X6 Y7] +
+-0.125j [X2 X5 Y6 X7] +
+0.125j [X2 Y5 X6 X7] +
+-0.125j [X2 Y5 Y6 Y7] +
+0.125j [Y2 X5 X6 X7] +
+-0.125j [Y2 X5 Y6 Y7] +
+0.125j [Y2 Y5 X6 Y7] +
+0.125j [Y2 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,492 Calculated commutator [0.125j [X2 X5 X6 Y7] +
+-0.125j [X2 X5 Y6 X7] +
+-0.125j [X2 Y5 X6 X7] +
+-0.125j [X2 Y5 Y6 Y7] +
+0.125j [Y2 X5 X6 X7] +
+0.125j [Y2 X5 Y6 Y7] +
+0.125j [Y2 Y5 X6 Y7] +
+-0.125j [Y2 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,493 Calculated commutator [-0.125j [X3 X4 X5 Y6] +
+-0.125j [X3 X4 Y5 X6] +
+0.125j [X3 Y4 X5 X6] +
+-0.125j [X3 Y4 Y5 Y6] +
+0.125j [Y3 X4 X5 X6] +
+-0.125j [Y3 X4 Y5 Y6] +
+0.125j [Y3 Y4 X5 Y6] +
+0.125j [Y3 Y4 Y5 X6]]
+INFO 2020-12-02 15:27:01,494 Calculated commutator [0.125j [X3 X4 X5 Y6] +
+-0.125j [X3 X4 Y5 X6] +
+-0.125j [X3 Y4 X5 X6] +
+-0.125j [X3 Y4 Y5 Y6] +
+0.125j [Y3 X4 X5 X6] +
+0.125j [Y3 X4 Y5 Y6] +
+0.125j [Y3 Y4 X5 Y6] +
+-0.125j [Y3 Y4 Y5 X6]]
+INFO 2020-12-02 15:27:01,495 Calculated commutator [-0.125j [X3 X4 X6 Y7] +
+-0.125j [X3 X4 Y6 X7] +
+0.125j [X3 Y4 X6 X7] +
+-0.125j [X3 Y4 Y6 Y7] +
+0.125j [Y3 X4 X6 X7] +
+-0.125j [Y3 X4 Y6 Y7] +
+0.125j [Y3 Y4 X6 Y7] +
+0.125j [Y3 Y4 Y6 X7]]
+INFO 2020-12-02 15:27:01,496 Calculated commutator [-0.125j [X3 X4 X6 Y7] +
+0.125j [X3 X4 Y6 X7] +
+-0.125j [X3 Y4 X6 X7] +
+-0.125j [X3 Y4 Y6 Y7] +
+0.125j [Y3 X4 X6 X7] +
+0.125j [Y3 X4 Y6 Y7] +
+-0.125j [Y3 Y4 X6 Y7] +
+0.125j [Y3 Y4 Y6 X7]]
+INFO 2020-12-02 15:27:01,497 Calculated commutator [-0.125j [X4 X5 X6 Y7] +
+-0.125j [X4 X5 Y6 X7] +
+0.125j [X4 Y5 X6 X7] +
+-0.125j [X4 Y5 Y6 Y7] +
+0.125j [Y4 X5 X6 X7] +
+-0.125j [Y4 X5 Y6 Y7] +
+0.125j [Y4 Y5 X6 Y7] +
+0.125j [Y4 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,497 Calculated commutator [0.125j [X4 X5 X6 Y7] +
+-0.125j [X4 X5 Y6 X7] +
+-0.125j [X4 Y5 X6 X7] +
+-0.125j [X4 Y5 Y6 Y7] +
+0.125j [Y4 X5 X6 X7] +
+0.125j [Y4 X5 Y6 Y7] +
+0.125j [Y4 Y5 X6 Y7] +
+-0.125j [Y4 Y5 Y6 X7]]
+INFO 2020-12-02 15:27:01,498 ('Length of new pool', 106)
