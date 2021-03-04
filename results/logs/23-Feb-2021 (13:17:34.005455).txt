@@ -1,0 +1,52 @@
+INFO 2021-02-23 13:17:34,006 H4, r=1.546, iqeb_vqe result compare with noise
+INFO 2021-02-23 13:17:34,006 n_qubits = 8, n_electrons = 4
+DEBUG 2021-02-23 13:17:34,026 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-23 13:17:34,472 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-02-23 13:17:34,479 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-23 13:17:35,143 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-02-23 13:17:35,729 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-02-23 13:17:35,733 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-23 13:17:37,236 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-02-23 13:17:37,241 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-23 13:17:37,759 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+WARNING 2021-02-23 13:17:37,789 Remote backend "ibmq_lima" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.'], 'parameters': ['Field may not be null.']}}}"
+WARNING 2021-02-23 13:17:37,790 Remote backend "ibmq_belem" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.'], 'parameters': ['Field may not be null.']}}}"
+WARNING 2021-02-23 13:17:37,791 Remote backend "ibmq_quito" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.'], 'parameters': ['Field may not be null.']}}}"
+DEBUG 2021-02-23 13:17:38,554 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-02-23 13:17:38,670 Noise model generated from ibmq_16_melbourne
+INFO 2021-02-23 13:17:38,672 Running QasmBackend.ham_expectation_value for H4 molecule, first 1 ansatz elements, noiseless value=-1.8494050767902768, 10 shots
+INFO 2021-02-23 13:18:19,239 For statevector method, noisy expectation value = -1.0340340924400604, time = 40.56680870056152s, 
+INFO 2021-02-23 13:18:19,242 Running QasmBackend.ham_expectation_value for H4 molecule, first 2 ansatz elements, noiseless value=-1.9306365540335657, 10 shots
+INFO 2021-02-23 13:19:54,314 For statevector method, noisy expectation value = -1.2264261566472274, time = 95.07259488105774s, 
+INFO 2021-02-23 13:19:54,317 Running QasmBackend.ham_expectation_value for H4 molecule, first 3 ansatz elements, noiseless value=-1.9306365540335657, 10 shots
+INFO 2021-02-23 13:22:23,312 For statevector method, noisy expectation value = -0.893073790262272, time = 148.99540424346924s, 
+INFO 2021-02-23 13:22:23,316 Running QasmBackend.ham_expectation_value for H4 molecule, first 4 ansatz elements, noiseless value=-1.9599999194758757, 10 shots
+INFO 2021-02-23 13:25:17,801 For statevector method, noisy expectation value = -0.6295727145737332, time = 174.48501253128052s, 
+INFO 2021-02-23 13:25:17,806 Running QasmBackend.ham_expectation_value for H4 molecule, first 5 ansatz elements, noiseless value=-1.9631484985855527, 10 shots
+INFO 2021-02-23 13:28:56,760 For statevector method, noisy expectation value = -0.4748526033813121, time = 218.95330142974854s, 
+INFO 2021-02-23 13:28:56,763 Running QasmBackend.ham_expectation_value for H4 molecule, first 6 ansatz elements, noiseless value=-1.9631484985855527, 10 shots
+INFO 2021-02-23 13:32:44,019 For statevector method, noisy expectation value = -0.7082573413453845, time = 227.2561616897583s, 
+INFO 2021-02-23 13:32:44,023 Running QasmBackend.ham_expectation_value for H4 molecule, first 7 ansatz elements, noiseless value=-1.9647264045699715, 10 shots
+INFO 2021-02-23 13:37:13,874 For statevector method, noisy expectation value = -0.7491111518286223, time = 269.8510959148407s, 
+INFO 2021-02-23 13:37:13,878 Running QasmBackend.ham_expectation_value for H4 molecule, first 8 ansatz elements, noiseless value=-1.967529790899745, 10 shots
+INFO 2021-02-23 13:42:19,763 For statevector method, noisy expectation value = -0.7734558066949474, time = 305.88491916656494s, 
+INFO 2021-02-23 13:42:19,768 Running QasmBackend.ham_expectation_value for H4 molecule, first 9 ansatz elements, noiseless value=-1.9780616680396768, 10 shots
+INFO 2021-02-23 13:47:55,948 For statevector method, noisy expectation value = -0.4526949760512475, time = 336.17923283576965s, 
+INFO 2021-02-23 13:47:55,951 Running QasmBackend.ham_expectation_value for H4 molecule, first 10 ansatz elements, noiseless value=-1.9780616680396768, 10 shots
+INFO 2021-02-23 13:54:10,744 For statevector method, noisy expectation value = -0.9236547351106633, time = 374.7929105758667s, 
+INFO 2021-02-23 13:54:10,748 Running QasmBackend.ham_expectation_value for H4 molecule, first 11 ansatz elements, noiseless value=-1.981103984387575, 10 shots
+INFO 2021-02-23 14:00:41,062 For statevector method, noisy expectation value = -0.9168116562870771, time = 390.31334018707275s, 
+INFO 2021-02-23 14:00:41,067 Running QasmBackend.ham_expectation_value for H4 molecule, first 12 ansatz elements, noiseless value=-1.981103984387575, 10 shots
+INFO 2021-02-23 14:07:54,328 For statevector method, noisy expectation value = -0.48593506289390326, time = 433.26014494895935s, 
+INFO 2021-02-23 14:07:54,331 Running QasmBackend.ham_expectation_value for H4 molecule, first 13 ansatz elements, noiseless value=-1.9816043921455029, 10 shots
+INFO 2021-02-23 14:16:33,370 For statevector method, noisy expectation value = -0.3457177327193274, time = 519.0389261245728s, 
+INFO 2021-02-23 14:16:33,374 Running QasmBackend.ham_expectation_value for H4 molecule, first 14 ansatz elements, noiseless value=-1.9816043921455029, 10 shots
+INFO 2021-02-23 14:25:40,526 For statevector method, noisy expectation value = -0.7922016358482513, time = 547.152444601059s, 
+INFO 2021-02-23 14:25:40,530 Running QasmBackend.ham_expectation_value for H4 molecule, first 15 ansatz elements, noiseless value=-1.9822292619091533, 10 shots
+INFO 2021-02-23 14:35:39,506 For statevector method, noisy expectation value = -0.41795072117835586, time = 598.9762575626373s, 
+INFO 2021-02-23 14:35:39,513 Running QasmBackend.ham_expectation_value for H4 molecule, first 16 ansatz elements, noiseless value=-1.9822292619091533, 10 shots
+INFO 2021-02-23 14:46:07,597 For statevector method, noisy expectation value = -0.5956124263473961, time = 628.083735704422s, 
+INFO 2021-02-23 14:46:07,601 Running QasmBackend.ham_expectation_value for H4 molecule, first 17 ansatz elements, noiseless value=-1.9823690422881064, 10 shots
+INFO 2021-02-23 14:57:37,200 For statevector method, noisy expectation value = -0.8048618723032143, time = 689.5984792709351s, 
+INFO 2021-02-23 14:57:37,203 Running QasmBackend.ham_expectation_value for H4 molecule, first 18 ansatz elements, noiseless value=-1.9823690422881064, 10 shots
+INFO 2021-02-23 15:08:24,053 For statevector method, noisy expectation value = -0.6964741251564269, time = 646.8494417667389s, 

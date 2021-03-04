@@ -1,0 +1,5 @@
+INFO 2021-03-03 09:40:20,485 H4, r=1.546, iqeb_vqe result compare with noise
+INFO 2021-03-03 09:40:20,486 n_qubits = 8, n_electrons = 4
+INFO 2021-03-03 09:40:20,502 No noise to see how good qasm backend can get
+INFO 2021-03-03 09:40:20,504 Running QasmBackend.ham_expectation_value for H4 molecule, first 1 ansatz elements, noiseless value=-1.849405076790277, 1000000.0 shots
+INFO 2021-03-03 09:43:13,625 For automatic method, noisy expectation value = -1.8483159755877787, time = 173.12137293815613s, 

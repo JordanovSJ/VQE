@@ -1,0 +1,2 @@
+INFO 2021-02-22 22:49:44,637 H4, r=1.25, iqeb_vqe result
+INFO 2021-02-22 22:49:44,637 n_qubits = 8, n_electrons = 4

@@ -1,0 +1,5 @@
+INFO 2021-03-04 10:40:47,945 H2, r=2 ,q_exc
+INFO 2021-03-04 10:40:47,958 Calculating excitation generators
+INFO 2021-03-04 10:40:52,645 Calculating commutators
+INFO 2021-03-04 10:40:52,645 Calculating commutators, patch No: 0
+INFO 2021-03-04 10:40:55,759 ('Length of new pool', 8)

@@ -1,0 +1,60 @@
+INFO 2021-03-04 10:40:00,805 H2, r=2 ,q_exc
+INFO 2021-03-04 10:40:00,818 Calculating excitation generators
+INFO 2021-03-04 10:40:00,818 Calculated excitation generator matrix [-0.5j [X0 Y1] +
+0.5j [Y0 X1]]
+INFO 2021-03-04 10:40:00,820 Calculated excitation generator matrix [-0.5j [X0 Y2] +
+0.5j [Y0 X2]]
+INFO 2021-03-04 10:40:00,822 Calculated excitation generator matrix [-0.5j [X0 Y3] +
+0.5j [Y0 X3]]
+INFO 2021-03-04 10:40:00,824 Calculated excitation generator matrix [-0.5j [X1 Y2] +
+0.5j [Y1 X2]]
+INFO 2021-03-04 10:40:00,826 Calculated excitation generator matrix [-0.5j [X1 Y3] +
+0.5j [Y1 X3]]
+INFO 2021-03-04 10:40:00,828 Calculated excitation generator matrix [-0.5j [X2 Y3] +
+0.5j [Y2 X3]]
+INFO 2021-03-04 10:40:00,830 Calculated excitation generator matrix [-0.125j [X0 X1 X2 Y3] +
+-0.125j [X0 X1 Y2 X3] +
+0.125j [X0 Y1 X2 X3] +
+-0.125j [X0 Y1 Y2 Y3] +
+0.125j [Y0 X1 X2 X3] +
+-0.125j [Y0 X1 Y2 Y3] +
+0.125j [Y0 Y1 X2 Y3] +
+0.125j [Y0 Y1 Y2 X3]]
+INFO 2021-03-04 10:40:00,837 Calculated excitation generator matrix [0.125j [X0 X1 X2 Y3] +
+-0.125j [X0 X1 Y2 X3] +
+-0.125j [X0 Y1 X2 X3] +
+-0.125j [X0 Y1 Y2 Y3] +
+0.125j [Y0 X1 X2 X3] +
+0.125j [Y0 X1 Y2 Y3] +
+0.125j [Y0 Y1 X2 Y3] +
+-0.125j [Y0 Y1 Y2 X3]]
+INFO 2021-03-04 10:40:00,845 Calculating commutators
+INFO 2021-03-04 10:40:00,845 Calculated commutator [-0.5j [X0 Y1] +
+0.5j [Y0 X1]]
+INFO 2021-03-04 10:40:00,845 Calculated commutator [-0.5j [X0 Y2] +
+0.5j [Y0 X2]]
+INFO 2021-03-04 10:40:00,845 Calculated commutator [-0.5j [X0 Y3] +
+0.5j [Y0 X3]]
+INFO 2021-03-04 10:40:00,846 Calculated commutator [-0.5j [X1 Y2] +
+0.5j [Y1 X2]]
+INFO 2021-03-04 10:40:00,846 Calculated commutator [-0.5j [X1 Y3] +
+0.5j [Y1 X3]]
+INFO 2021-03-04 10:40:00,846 Calculated commutator [-0.5j [X2 Y3] +
+0.5j [Y2 X3]]
+INFO 2021-03-04 10:40:00,847 Calculated commutator [-0.125j [X0 X1 X2 Y3] +
+-0.125j [X0 X1 Y2 X3] +
+0.125j [X0 Y1 X2 X3] +
+-0.125j [X0 Y1 Y2 Y3] +
+0.125j [Y0 X1 X2 X3] +
+-0.125j [Y0 X1 Y2 Y3] +
+0.125j [Y0 Y1 X2 Y3] +
+0.125j [Y0 Y1 Y2 X3]]
+INFO 2021-03-04 10:40:00,847 Calculated commutator [0.125j [X0 X1 X2 Y3] +
+-0.125j [X0 X1 Y2 X3] +
+-0.125j [X0 Y1 X2 X3] +
+-0.125j [X0 Y1 Y2 Y3] +
+0.125j [Y0 X1 X2 X3] +
+0.125j [Y0 X1 Y2 Y3] +
+0.125j [Y0 Y1 X2 Y3] +
+-0.125j [Y0 Y1 Y2 X3]]
+INFO 2021-03-04 10:40:00,847 ('Length of new pool', 8)

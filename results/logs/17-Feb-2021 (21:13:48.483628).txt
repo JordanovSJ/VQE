@@ -1,0 +1,17 @@
+INFO 2021-02-17 21:13:48,484 LiH, r=3.25, iqeb_vqe result
+INFO 2021-02-17 21:13:48,484 n_qubits = 12, n_electrons = 4
+DEBUG 2021-02-17 21:13:48,524 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 21:13:48,977 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-02-17 21:13:48,984 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 21:13:49,772 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-02-17 21:13:50,253 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-02-17 21:13:50,257 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 21:13:51,161 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-02-17 21:13:51,166 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 21:13:51,690 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+WARNING 2021-02-17 21:13:51,715 Remote backend "ibmq_lima" could not be instantiated due to an invalid config: "{'gates': {5: {'qasm_def': ['Field may not be null.'], 'coupling_map': ['Shorter than minimum length 1.'], 'parameters': ['Field may not be null.']}}}"
+WARNING 2021-02-17 21:13:51,716 Remote backend "ibmq_quito" could not be instantiated due to an invalid config: "{'gates': {5: {'qasm_def': ['Field may not be null.'], 'coupling_map': ['Shorter than minimum length 1.'], 'parameters': ['Field may not be null.']}}}"
+DEBUG 2021-02-17 21:13:52,414 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-02-17 21:13:52,551 Noise model generated from ibmq_16_melbourne
+INFO 2021-02-17 21:13:52,551 Running ham_expectation_value for LiH molecule, first 1 ansatz elements, 10 shots
+INFO 2021-02-17 21:16:49,583 Expectation value = -6.8043696001160985, time = 177.031813621521s, Yordan result = -7.713564559916018

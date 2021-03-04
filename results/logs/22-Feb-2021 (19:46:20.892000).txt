@@ -1,0 +1,819 @@
+INFO 2021-02-22 19:46:20,892 H4, r=2.25 ,q_exc
+INFO 2021-02-22 19:46:21,186 Calculating excitation generators
+INFO 2021-02-22 19:46:26,780 Calculating commutators
+INFO 2021-02-22 19:46:30,847 ('Length of new pool', 106)
+INFO 2021-02-22 19:46:36,461 Elements with largest grads ['d_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[3, 4]_[6, 7]', 'd_q_exc_[3, 6]_[4, 7]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[4, 7]_[6, 5]', 's_q_exc_0_4', 's_q_exc_1_5', 's_q_exc_3_7', 's_q_exc_2_6', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[2, 3]_[4, 5]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.102400190231001e-09, -1.1024002041087888e-09, 1.2481211381261403e-09, -1.2481211463660769e-09, -0.043679881693362385, -0.043679881693362385, -0.22884254022308181, -0.22884254022308181, 0.2578878001407461, 0.2694506525079993, 0.2725224219164442, 0.2725224219164442, 0.2773068700429738, 0.29452337153809394]
+INFO 2021-02-22 19:46:42,348 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[2, 3]_[4, 5]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:46:42,355 Iteration: 1. Energy -1.4822425461673234.  Energy change -7.616e-14 , Iteration dutation: 0.0061647891998291016
+INFO 2021-02-22 19:46:42,360 Iteration: 2. Energy -1.5498651623050004.  Energy change -6.762e-02 , Iteration dutation: 0.0013270378112792969
+INFO 2021-02-22 19:46:42,367 Iteration: 3. Energy -1.5655023055760062.  Energy change -1.564e-02 , Iteration dutation: 0.00806570053100586
+INFO 2021-02-22 19:46:42,372 Iteration: 4. Energy -1.5676716201997016.  Energy change -2.169e-03 , Iteration dutation: 0.005143642425537109
+INFO 2021-02-22 19:46:42,376 Iteration: 5. Energy -1.5676728368361341.  Energy change -1.217e-06 , Iteration dutation: 0.004859447479248047
+INFO 2021-02-22 19:46:42,379 Iteration: 6. Energy -1.567672836857445.  Energy change -2.131e-11 , Iteration dutation: 0.003447294235229492
+INFO 2021-02-22 19:46:42,386 Add new element to final ansatz d_q_exc_[2, 3]_[4, 5]. Energy -1.567672836857445. Energy change 0.08543029069019781, var. parameters: [-0.5256778579909915]
+INFO 2021-02-22 19:46:48,153 Elements with largest grads ['d_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[2, 3]_[6, 7]', 's_q_exc_1_5', 's_q_exc_0_4', 'd_q_exc_[0, 1]_[4, 5]', 's_q_exc_2_6', 's_q_exc_3_7', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[1, 5]_[3, 7]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 5]_[2, 7]', 'd_q_exc_[1, 4]_[3, 6]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[1, 2]_[5, 6]']. Grads [-0.03276862288468292, 0.05325565282031641, 0.05446053675702954, -0.05446053675702955, 0.055112187275528926, 0.05648538249790055, -0.056485382497900555, 0.07658235517348622, 0.07658235517348622, 0.12855257439271928, 0.12855257439271928, -0.13200993034670522, -0.13200993034670522, -0.20513492956620552, -0.20513492956620552, -0.2215943392316539, -0.2215943392316539, 0.2578878001407461, 0.3536042695783591, 0.3536042695783591]
+INFO 2021-02-22 19:46:54,132 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 3-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:46:54,145 Iteration: 1. Energy -1.567672836857445.  Energy change 0.000e+00 , Iteration dutation: 0.012285709381103516
+INFO 2021-02-22 19:46:54,149 Iteration: 2. Energy -1.6471894985590358.  Energy change -7.952e-02 , Iteration dutation: 0.0005900859832763672
+INFO 2021-02-22 19:46:54,156 Iteration: 3. Energy -1.7735196649470362.  Energy change -1.263e-01 , Iteration dutation: 0.007357120513916016
+INFO 2021-02-22 19:46:54,163 Iteration: 4. Energy -1.7725498023134798.  Energy change 9.699e-04 , Iteration dutation: 0.007227897644042969
+INFO 2021-02-22 19:46:54,170 Iteration: 5. Energy -1.7960774089515956.  Energy change -2.353e-02 , Iteration dutation: 0.007154703140258789
+INFO 2021-02-22 19:46:54,177 Iteration: 6. Energy -1.8050081742323072.  Energy change -8.931e-03 , Iteration dutation: 0.0071675777435302734
+INFO 2021-02-22 19:46:54,185 Iteration: 7. Energy -1.8134638677215178.  Energy change -8.456e-03 , Iteration dutation: 0.007177829742431641
+INFO 2021-02-22 19:46:54,192 Iteration: 8. Energy -1.8135750700363995.  Energy change -1.112e-04 , Iteration dutation: 0.007220268249511719
+INFO 2021-02-22 19:46:54,199 Iteration: 9. Energy -1.8135791405745614.  Energy change -4.071e-06 , Iteration dutation: 0.0071773529052734375
+INFO 2021-02-22 19:46:54,206 Iteration: 10. Energy -1.81357914576102.  Energy change -5.186e-09 , Iteration dutation: 0.007152080535888672
+INFO 2021-02-22 19:46:54,213 Iteration: 11. Energy -1.8135791457810415.  Energy change -2.002e-11 , Iteration dutation: 0.0071926116943359375
+INFO 2021-02-22 19:46:54,220 Iteration: 12. Energy -1.8135791457810415.  Energy change 0.000e+00 , Iteration dutation: 0.007144451141357422
+INFO 2021-02-22 19:46:54,230 Add new element to final ansatz d_q_exc_[0, 5]_[2, 7]. Energy -1.8135791457810415. Energy change 0.24590630892359644, var. parameters: [-0.8798976661723691, 0.7009618808793112, 0.7009618808793122]
+INFO 2021-02-22 19:46:54,234 Add new element to final ansatz d_q_exc_[0, 5]_[2, 7]. Energy -1.8135791457810415. Energy change 0.24590630892359644, var. parameters: [-0.8798976661723691, 0.7009618808793112, 0.7009618808793122]
+INFO 2021-02-22 19:46:59,967 Elements with largest grads ['d_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]', 's_q_exc_1_5', 's_q_exc_0_4', 'd_q_exc_[2, 3]_[6, 7]', 's_q_exc_2_6', 's_q_exc_3_7', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[0, 1]_[6, 7]']. Grads [0.00769607267047253, -0.007696072670472638, 0.008693965042195707, -0.008693965042195814, 0.010303059113039527, -0.010303059113039637, -0.01043922463366192, 0.010439224633662024, 0.01777901147122503, 0.017779011471225036, 0.021074685076905818, -0.02107468507690599, -0.023211513851405734, 0.02328449140387009, -0.023284491403870268, -0.024930819095611033, 0.13373893300939083, 0.15873112606279874, 0.1587311260627991, 0.18777634667717485]
+INFO 2021-02-22 19:47:06,100 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 4-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:47:06,122 Iteration: 1. Energy -1.8135791457810415.  Energy change 0.000e+00 , Iteration dutation: 0.020897865295410156
+INFO 2021-02-22 19:47:06,130 Iteration: 2. Energy -1.8342341680019587.  Energy change -2.066e-02 , Iteration dutation: 0.0010128021240234375
+INFO 2021-02-22 19:47:06,141 Iteration: 3. Energy -1.8487751769431018.  Energy change -1.454e-02 , Iteration dutation: 0.013417482376098633
+INFO 2021-02-22 19:47:06,149 Iteration: 4. Energy -1.851304097944957.  Energy change -2.529e-03 , Iteration dutation: 0.008839130401611328
+INFO 2021-02-22 19:47:06,158 Iteration: 5. Energy -1.851711170884827.  Energy change -4.071e-04 , Iteration dutation: 0.008700370788574219
+INFO 2021-02-22 19:47:06,167 Iteration: 6. Energy -1.8517180913839648.  Energy change -6.920e-06 , Iteration dutation: 0.00911259651184082
+INFO 2021-02-22 19:47:06,176 Iteration: 7. Energy -1.8517181648508885.  Energy change -7.347e-08 , Iteration dutation: 0.008746147155761719
+INFO 2021-02-22 19:47:06,185 Iteration: 8. Energy -1.851718165411905.  Energy change -5.610e-10 , Iteration dutation: 0.00871896743774414
+INFO 2021-02-22 19:47:06,193 Iteration: 9. Energy -1.8517181654142254.  Energy change -2.320e-12 , Iteration dutation: 0.008672952651977539
+INFO 2021-02-22 19:47:06,202 Iteration: 10. Energy -1.851718165414228.  Energy change -2.665e-15 , Iteration dutation: 0.009022235870361328
+INFO 2021-02-22 19:47:06,212 Add new element to final ansatz d_q_exc_[0, 1]_[6, 7]. Energy -1.851718165414228. Energy change 0.038139019633186555, var. parameters: [-0.8767890513285835, 0.5453204131887676, 0.5453204131887689, -0.3569008008779032]
+INFO 2021-02-22 19:47:12,053 Elements with largest grads ['d_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[0, 1]_[4, 5]', 's_q_exc_1_5', 's_q_exc_0_4', 's_q_exc_2_6', 's_q_exc_3_7', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[0, 3]_[4, 7]']. Grads [0.010327959430115928, -0.010327959430116102, 0.010797235568868024, -0.010797235568868203, -0.012864631840512293, -0.012864631840512314, -0.016279073985024317, 0.016279073985024487, 0.016477185781678453, -0.016477185781678626, -0.020235103923324838, -0.02023510392332484, -0.026162157154810052, -0.026633859991780695, 0.028359347213045054, -0.028359347213045248, 0.029363831422744013, -0.029363831422744215, 0.06775589584126276, 0.0677558958412634]
+INFO 2021-02-22 19:47:18,176 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 6-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:47:18,204 Iteration: 1. Energy -1.851718165414228.  Energy change 0.000e+00 , Iteration dutation: 0.026452302932739258
+INFO 2021-02-22 19:47:18,217 Iteration: 2. Energy -1.8574421869705227.  Energy change -5.724e-03 , Iteration dutation: 0.0007386207580566406
+INFO 2021-02-22 19:47:18,245 Iteration: 3. Energy -1.8680588531737676.  Energy change -1.062e-02 , Iteration dutation: 0.030112504959106445
+INFO 2021-02-22 19:47:18,259 Iteration: 4. Energy -1.8672852738274401.  Energy change 7.736e-04 , Iteration dutation: 0.018258094787597656
+INFO 2021-02-22 19:47:18,271 Iteration: 5. Energy -1.874666609409486.  Energy change -7.381e-03 , Iteration dutation: 0.012333869934082031
+INFO 2021-02-22 19:47:18,283 Iteration: 6. Energy -1.8755886947018645.  Energy change -9.221e-04 , Iteration dutation: 0.012359142303466797
+INFO 2021-02-22 19:47:18,296 Iteration: 7. Energy -1.875633399850565.  Energy change -4.471e-05 , Iteration dutation: 0.012454986572265625
+INFO 2021-02-22 19:47:18,309 Iteration: 8. Energy -1.8756365443309695.  Energy change -3.144e-06 , Iteration dutation: 0.012782096862792969
+INFO 2021-02-22 19:47:18,321 Iteration: 9. Energy -1.875637401875324.  Energy change -8.575e-07 , Iteration dutation: 0.012369394302368164
+INFO 2021-02-22 19:47:18,334 Iteration: 10. Energy -1.875638070922284.  Energy change -6.690e-07 , Iteration dutation: 0.012653827667236328
+INFO 2021-02-22 19:47:18,346 Iteration: 11. Energy -1.8756380727665511.  Energy change -1.844e-09 , Iteration dutation: 0.012526988983154297
+INFO 2021-02-22 19:47:18,359 Iteration: 12. Energy -1.8756380727784023.  Energy change -1.185e-11 , Iteration dutation: 0.012445926666259766
+INFO 2021-02-22 19:47:18,371 Iteration: 13. Energy -1.8756380727784039.  Energy change -1.554e-15 , Iteration dutation: 0.0124664306640625
+INFO 2021-02-22 19:47:18,383 Add new element to final ansatz d_q_exc_[0, 3]_[4, 7]. Energy -1.8756380727784039. Energy change 0.02391990736417582, var. parameters: [-0.6698467770933473, 0.5328492563987803, 0.5328492563987826, -0.23622469462491824, -0.2605982272920796, -0.2605982272920793]
+INFO 2021-02-22 19:47:18,387 Add new element to final ansatz d_q_exc_[0, 3]_[4, 7]. Energy -1.8756380727784039. Energy change 0.02391990736417582, var. parameters: [-0.6698467770933473, 0.5328492563987803, 0.5328492563987826, -0.23622469462491824, -0.2605982272920796, -0.2605982272920793]
+INFO 2021-02-22 19:47:24,512 Elements with largest grads ['d_q_exc_[0, 1]_[2, 3]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[1, 5]_[3, 7]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]', 's_q_exc_1_5', 's_q_exc_0_4', 's_q_exc_2_6', 's_q_exc_3_7']. Grads [-0.0011672756647524273, -0.0012786853760789864, 0.0013285377201674433, 0.0013285377201674485, 0.002917904366831363, 0.0030357362197689468, -0.003233753914955971, -0.0032337539149559814, 0.012765864825757372, -0.012765864825757518, 0.013081657509737337, -0.013081657509737488, -0.013445661286813964, 0.013445661286814112, 0.01370156615024647, -0.013701566150246614, 0.027557754689120736, -0.027557754689121028, 0.02825147146819592, -0.028251471468196215]
+INFO 2021-02-22 19:47:30,653 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 8-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:47:30,672 Iteration: 1. Energy -1.8756380727784039.  Energy change 0.000e+00 , Iteration dutation: 0.01814413070678711
+INFO 2021-02-22 19:47:30,680 Iteration: 2. Energy -1.8765678048057657.  Energy change -9.297e-04 , Iteration dutation: 0.0005707740783691406
+INFO 2021-02-22 19:47:30,697 Iteration: 3. Energy -1.876604665992459.  Energy change -3.686e-05 , Iteration dutation: 0.016390085220336914
+INFO 2021-02-22 19:47:30,713 Iteration: 4. Energy -1.8766055113743778.  Energy change -8.454e-07 , Iteration dutation: 0.016250133514404297
+INFO 2021-02-22 19:47:30,729 Iteration: 5. Energy -1.8766060894416734.  Energy change -5.781e-07 , Iteration dutation: 0.016409873962402344
+INFO 2021-02-22 19:47:30,746 Iteration: 6. Energy -1.8766061744518172.  Energy change -8.501e-08 , Iteration dutation: 0.016468048095703125
+INFO 2021-02-22 19:47:30,762 Iteration: 7. Energy -1.8766062354837703.  Energy change -6.103e-08 , Iteration dutation: 0.016416311264038086
+INFO 2021-02-22 19:47:30,779 Iteration: 8. Energy -1.8766062394638512.  Energy change -3.980e-09 , Iteration dutation: 0.016377925872802734
+INFO 2021-02-22 19:47:30,795 Iteration: 9. Energy -1.8766062403877612.  Energy change -9.239e-10 , Iteration dutation: 0.01642298698425293
+INFO 2021-02-22 19:47:30,812 Iteration: 10. Energy -1.8766062403902541.  Energy change -2.493e-12 , Iteration dutation: 0.0163881778717041
+INFO 2021-02-22 19:47:30,828 Iteration: 11. Energy -1.8766062403902715.  Energy change -1.732e-14 , Iteration dutation: 0.016408205032348633
+INFO 2021-02-22 19:47:30,841 Add new element to final ansatz s_q_exc_3_7. Energy -1.8766062403902715. Energy change 0.0009681676118675764, var. parameters: [-0.6713467061532022, 0.5287476528349432, 0.5287476528349453, -0.23494553687393466, -0.26198556701239323, -0.2619855670123929, 0.03419870334304345, -0.03419870334304158]
+INFO 2021-02-22 19:47:30,846 Add new element to final ansatz s_q_exc_3_7. Energy -1.8766062403902715. Energy change 0.0009681676118675764, var. parameters: [-0.6713467061532022, 0.5287476528349432, 0.5287476528349453, -0.23494553687393466, -0.26198556701239323, -0.2619855670123929, 0.03419870334304345, -0.03419870334304158]
+INFO 2021-02-22 19:47:36,519 Elements with largest grads ['d_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[1, 4]_[2, 7]', 's_q_exc_1_5', 's_q_exc_0_4', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[1, 5]_[3, 7]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 1]_[2, 3]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[0, 3]_[5, 6]']. Grads [-0.0004413868107363758, 0.000610192361684663, -0.0006101923616847094, 0.0006405749254744504, 0.0006405749254744548, 0.0007549662373088737, -0.000754966237309074, -0.0008433379039424092, 0.000843337903942505, 0.0008640806872453164, -0.0008640806872454009, 0.0012698796791690888, 0.0012698796791691044, -0.0013334475524608264, -0.0013334475524608303, -0.001455894505323684, 0.001832925805585861, 0.002785077813464768, -0.002904012728163083, -0.002904012728163114]
+INFO 2021-02-22 19:47:42,798 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 10-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:47:42,843 Iteration: 1. Energy -1.8766062403902715.  Energy change 0.000e+00 , Iteration dutation: 0.044007062911987305
+INFO 2021-02-22 19:47:42,856 Iteration: 2. Energy -1.8766223586002146.  Energy change -1.612e-05 , Iteration dutation: 0.0007970333099365234
+INFO 2021-02-22 19:47:42,876 Iteration: 3. Energy -1.876671856232981.  Energy change -4.950e-05 , Iteration dutation: 0.021906614303588867
+INFO 2021-02-22 19:47:42,896 Iteration: 4. Energy -1.876726043788905.  Energy change -5.419e-05 , Iteration dutation: 0.020108938217163086
+INFO 2021-02-22 19:47:42,916 Iteration: 5. Energy -1.8767364614898754.  Energy change -1.042e-05 , Iteration dutation: 0.020087003707885742
+INFO 2021-02-22 19:47:42,936 Iteration: 6. Energy -1.8767429637378592.  Energy change -6.502e-06 , Iteration dutation: 0.020099401473999023
+INFO 2021-02-22 19:47:42,956 Iteration: 7. Energy -1.8767446189494779.  Energy change -1.655e-06 , Iteration dutation: 0.020054101943969727
+INFO 2021-02-22 19:47:42,976 Iteration: 8. Energy -1.8767455733706457.  Energy change -9.544e-07 , Iteration dutation: 0.02015089988708496
+INFO 2021-02-22 19:47:42,996 Iteration: 9. Energy -1.8767458603448914.  Energy change -2.870e-07 , Iteration dutation: 0.020064830780029297
+INFO 2021-02-22 19:47:43,016 Iteration: 10. Energy -1.8767458755618547.  Energy change -1.522e-08 , Iteration dutation: 0.0200502872467041
+INFO 2021-02-22 19:47:43,036 Iteration: 11. Energy -1.876745876048008.  Energy change -4.862e-10 , Iteration dutation: 0.01991558074951172
+INFO 2021-02-22 19:47:43,056 Iteration: 12. Energy -1.8767458760512579.  Energy change -3.250e-12 , Iteration dutation: 0.020072221755981445
+INFO 2021-02-22 19:47:43,076 Iteration: 13. Energy -1.876745876051292.  Energy change -3.419e-14 , Iteration dutation: 0.020069122314453125
+INFO 2021-02-22 19:47:43,092 Add new element to final ansatz d_q_exc_[1, 2]_[4, 7]. Energy -1.876745876051292. Energy change 0.00013963566102059843, var. parameters: [-0.6655612270657925, 0.5185996191915411, 0.518599619191542, -0.24375754590557216, -0.26197792724586316, -0.2619779272458641, 0.033704937347277725, -0.033704937347273235, 0.04757339107669023, 0.04757339107669026]
+INFO 2021-02-22 19:47:43,097 Add new element to final ansatz d_q_exc_[1, 2]_[4, 7]. Energy -1.876745876051292. Energy change 0.00013963566102059843, var. parameters: [-0.6655612270657925, 0.5185996191915411, 0.518599619191542, -0.24375754590557216, -0.26197792724586316, -0.2619779272458641, 0.033704937347277725, -0.033704937347273235, 0.04757339107669023, 0.04757339107669026]
+INFO 2021-02-22 19:47:48,816 Elements with largest grads ['d_q_exc_[1, 7]_[5, 3]', 'd_q_exc_[0, 6]_[4, 2]', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 's_q_exc_1_5', 's_q_exc_0_4', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[0, 1]_[2, 3]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[0, 1]_[4, 5]']. Grads [-0.0004553471642206138, -0.0004553471642206622, 0.0005752112143811053, -0.0005752112143811139, 0.000745128257980298, -0.0007451282579804736, 0.000756551996632097, -0.0007565519966321369, -0.0008081679886021743, 0.0008081679886022424, -0.0011073178474985761, 0.0011073178474986828, -0.0014501820247462757, 0.0018351805398261636, 0.0018351805398261665, -0.002553595681260808, 0.00413756510045981, -0.00417050785191298, -0.004170507851912987, 0.0051950363452482225]
+INFO 2021-02-22 19:47:56,043 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 11-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:47:56,084 Iteration: 1. Energy -1.876745876051292.  Energy change 0.000e+00 , Iteration dutation: 0.039762258529663086
+INFO 2021-02-22 19:47:56,107 Iteration: 2. Energy -1.876765417633493.  Energy change -1.954e-05 , Iteration dutation: 0.001476287841796875
+INFO 2021-02-22 19:47:56,130 Iteration: 3. Energy -1.8767706843093728.  Energy change -5.267e-06 , Iteration dutation: 0.03434872627258301
+INFO 2021-02-22 19:47:56,151 Iteration: 4. Energy -1.8767710017177652.  Energy change -3.174e-07 , Iteration dutation: 0.021254301071166992
+INFO 2021-02-22 19:47:56,172 Iteration: 5. Energy -1.876771217858297.  Energy change -2.161e-07 , Iteration dutation: 0.02159571647644043
+INFO 2021-02-22 19:47:56,194 Iteration: 6. Energy -1.8767715109299876.  Energy change -2.931e-07 , Iteration dutation: 0.02120375633239746
+INFO 2021-02-22 19:47:56,215 Iteration: 7. Energy -1.8767717270466489.  Energy change -2.161e-07 , Iteration dutation: 0.021198272705078125
+INFO 2021-02-22 19:47:56,237 Iteration: 8. Energy -1.8767718651701695.  Energy change -1.381e-07 , Iteration dutation: 0.021399259567260742
+INFO 2021-02-22 19:47:56,258 Iteration: 9. Energy -1.8767719425022213.  Energy change -7.733e-08 , Iteration dutation: 0.022008180618286133
+INFO 2021-02-22 19:47:56,279 Iteration: 10. Energy -1.8767719932395757.  Energy change -5.074e-08 , Iteration dutation: 0.02119159698486328
+INFO 2021-02-22 19:47:56,300 Iteration: 11. Energy -1.8767720190104695.  Energy change -2.577e-08 , Iteration dutation: 0.021166563034057617
+INFO 2021-02-22 19:47:56,322 Iteration: 12. Energy -1.876772026086265.  Energy change -7.076e-09 , Iteration dutation: 0.021178722381591797
+INFO 2021-02-22 19:47:56,343 Iteration: 13. Energy -1.876772026953452.  Energy change -8.672e-10 , Iteration dutation: 0.021201133728027344
+INFO 2021-02-22 19:47:56,364 Iteration: 14. Energy -1.8767720270058657.  Energy change -5.241e-11 , Iteration dutation: 0.021299362182617188
+INFO 2021-02-22 19:47:56,385 Iteration: 15. Energy -1.8767720270080854.  Energy change -2.220e-12 , Iteration dutation: 0.021164655685424805
+INFO 2021-02-22 19:47:56,407 Iteration: 16. Energy -1.8767720270081671.  Energy change -8.171e-14 , Iteration dutation: 0.021196365356445312
+INFO 2021-02-22 19:47:56,428 Iteration: 17. Energy -1.8767720270081687.  Energy change -1.554e-15 , Iteration dutation: 0.021451473236083984
+INFO 2021-02-22 19:47:56,444 Add new element to final ansatz d_q_exc_[0, 1]_[4, 5]. Energy -1.8767720270081687. Energy change 2.6150956876636045e-05, var. parameters: [-0.6635956072766257, 0.517153444099217, 0.5171534440992163, -0.24427291210618232, -0.2627919546885161, -0.2627919546885173, 0.033657949899367094, -0.033657949899363576, 0.051504636753172996, 0.05150463675317307, -0.010050445536982396]
+INFO 2021-02-22 19:48:02,281 Elements with largest grads ['d_q_exc_[0, 7]_[4, 3]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]', 's_q_exc_0_4', 's_q_exc_1_5', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[0, 1]_[2, 3]', 'd_q_exc_[0, 6]_[4, 2]', 'd_q_exc_[1, 7]_[5, 3]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[2, 3]_[6, 7]']. Grads [-0.00020052590749873668, -0.0002295022952838034, 0.00022950229528386846, -0.00024791215662079823, 0.00024791215662083727, -0.0004105622403194507, 0.00041056224031956346, -0.0006085002569379025, 0.0006085002569379224, -0.0006534174459461028, 0.0006534174459461094, 0.0018332862576783157, 0.0018332862576783259, 0.0022361979964398955, 0.004139497606888478, 0.004139497606888487, -0.00419766705552176, -0.004197667055521764, -0.006129341120713889, 0.009038822206032613]
+INFO 2021-02-22 19:48:09,905 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 13-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:48:09,952 Iteration: 1. Energy -1.8767720270081687.  Energy change 0.000e+00 , Iteration dutation: 0.04617595672607422
+INFO 2021-02-22 19:48:09,966 Iteration: 2. Energy -1.876772107396741.  Energy change -8.039e-08 , Iteration dutation: 0.0006556510925292969
+INFO 2021-02-22 19:48:09,992 Iteration: 3. Energy -1.8767724282967426.  Energy change -3.209e-07 , Iteration dutation: 0.02639603614807129
+INFO 2021-02-22 19:48:10,018 Iteration: 4. Energy -1.8767737014196348.  Energy change -1.273e-06 , Iteration dutation: 0.02597808837890625
+INFO 2021-02-22 19:48:10,044 Iteration: 5. Energy -1.8767786257296497.  Energy change -4.924e-06 , Iteration dutation: 0.026172876358032227
+INFO 2021-02-22 19:48:10,070 Iteration: 6. Energy -1.876795597331732.  Energy change -1.697e-05 , Iteration dutation: 0.02608203887939453
+INFO 2021-02-22 19:48:10,097 Iteration: 7. Energy -1.876833264900955.  Energy change -3.767e-05 , Iteration dutation: 0.026497840881347656
+INFO 2021-02-22 19:48:10,123 Iteration: 8. Energy -1.8768656835715647.  Energy change -3.242e-05 , Iteration dutation: 0.026091575622558594
+INFO 2021-02-22 19:48:10,149 Iteration: 9. Energy -1.8768849706629536.  Energy change -1.929e-05 , Iteration dutation: 0.026101112365722656
+INFO 2021-02-22 19:48:10,175 Iteration: 10. Energy -1.8769200318700199.  Energy change -3.506e-05 , Iteration dutation: 0.02623724937438965
+INFO 2021-02-22 19:48:10,201 Iteration: 11. Energy -1.8769827743735967.  Energy change -6.274e-05 , Iteration dutation: 0.026106595993041992
+INFO 2021-02-22 19:48:10,227 Iteration: 12. Energy -1.8770857231579998.  Energy change -1.029e-04 , Iteration dutation: 0.026057004928588867
+INFO 2021-02-22 19:48:10,254 Iteration: 13. Energy -1.8772352971008561.  Energy change -1.496e-04 , Iteration dutation: 0.026072025299072266
+INFO 2021-02-22 19:48:10,280 Iteration: 14. Energy -1.8770201970590332.  Energy change 2.151e-04 , Iteration dutation: 0.026119470596313477
+INFO 2021-02-22 19:48:10,306 Iteration: 15. Energy -1.8773081730249797.  Energy change -2.880e-04 , Iteration dutation: 0.02607250213623047
+INFO 2021-02-22 19:48:10,332 Iteration: 16. Energy -1.8774494490037843.  Energy change -1.413e-04 , Iteration dutation: 0.02603912353515625
+INFO 2021-02-22 19:48:10,358 Iteration: 17. Energy -1.8777970994634616.  Energy change -3.477e-04 , Iteration dutation: 0.025978565216064453
+INFO 2021-02-22 19:48:10,384 Iteration: 18. Energy -1.8778689001674445.  Energy change -7.180e-05 , Iteration dutation: 0.026105880737304688
+INFO 2021-02-22 19:48:10,410 Iteration: 19. Energy -1.8781003768310605.  Energy change -2.315e-04 , Iteration dutation: 0.02593994140625
+INFO 2021-02-22 19:48:10,436 Iteration: 20. Energy -1.8785689626820565.  Energy change -4.686e-04 , Iteration dutation: 0.02635812759399414
+INFO 2021-02-22 19:48:10,462 Iteration: 21. Energy -1.8789167070259278.  Energy change -3.477e-04 , Iteration dutation: 0.026057004928588867
+INFO 2021-02-22 19:48:10,488 Iteration: 22. Energy -1.878879975265902.  Energy change 3.673e-05 , Iteration dutation: 0.026060819625854492
+INFO 2021-02-22 19:48:10,514 Iteration: 23. Energy -1.8789437876174326.  Energy change -6.381e-05 , Iteration dutation: 0.026001930236816406
+INFO 2021-02-22 19:48:10,540 Iteration: 24. Energy -1.8789674214332188.  Energy change -2.363e-05 , Iteration dutation: 0.026160240173339844
+INFO 2021-02-22 19:48:10,567 Iteration: 25. Energy -1.8789811205688394.  Energy change -1.370e-05 , Iteration dutation: 0.026103973388671875
+INFO 2021-02-22 19:48:10,593 Iteration: 26. Energy -1.8790000936416353.  Energy change -1.897e-05 , Iteration dutation: 0.02611541748046875
+INFO 2021-02-22 19:48:10,619 Iteration: 27. Energy -1.8790086632619287.  Energy change -8.570e-06 , Iteration dutation: 0.0261385440826416
+INFO 2021-02-22 19:48:10,645 Iteration: 28. Energy -1.8790104897426883.  Energy change -1.826e-06 , Iteration dutation: 0.02610301971435547
+INFO 2021-02-22 19:48:10,672 Iteration: 29. Energy -1.8790108993400554.  Energy change -4.096e-07 , Iteration dutation: 0.026167631149291992
+INFO 2021-02-22 19:48:10,698 Iteration: 30. Energy -1.8790112156821603.  Energy change -3.163e-07 , Iteration dutation: 0.026623249053955078
+INFO 2021-02-22 19:48:10,724 Iteration: 31. Energy -1.8790115092217154.  Energy change -2.935e-07 , Iteration dutation: 0.026098012924194336
+INFO 2021-02-22 19:48:10,750 Iteration: 32. Energy -1.8790116057969803.  Energy change -9.658e-08 , Iteration dutation: 0.026089906692504883
+INFO 2021-02-22 19:48:10,776 Iteration: 33. Energy -1.8790116168203905.  Energy change -1.102e-08 , Iteration dutation: 0.02608966827392578
+INFO 2021-02-22 19:48:10,802 Iteration: 34. Energy -1.8790116171792361.  Energy change -3.588e-10 , Iteration dutation: 0.026206016540527344
+INFO 2021-02-22 19:48:10,829 Iteration: 35. Energy -1.8790116171833322.  Energy change -4.096e-12 , Iteration dutation: 0.02611255645751953
+INFO 2021-02-22 19:48:10,855 Iteration: 36. Energy -1.8790116171833424.  Energy change -1.021e-14 , Iteration dutation: 0.02702164649963379
+INFO 2021-02-22 19:48:10,875 Add new element to final ansatz d_q_exc_[0, 7]_[4, 3]. Energy -1.8790116171833424. Energy change 0.0022395901751737224, var. parameters: [-0.5774863763912019, 0.3460313508739979, 0.34603135087205505, -0.34359343660641317, -0.20888273720651893, -0.2088827372077136, 0.023157879662071317, -0.023157879662083283, 0.39109013287294814, 0.39109013287294636, -0.24352784748190107, 0.7841392643027465, 0.784139264302823]
+INFO 2021-02-22 19:48:10,880 Add new element to final ansatz d_q_exc_[0, 7]_[4, 3]. Energy -1.8790116171833424. Energy change 0.0022395901751737224, var. parameters: [-0.5774863763912019, 0.3460313508739979, 0.34603135087205505, -0.34359343660641317, -0.20888273720651893, -0.2088827372077136, 0.023157879662071317, -0.023157879662083283, 0.39109013287294814, 0.39109013287294636, -0.24352784748190107, 0.7841392643027465, 0.784139264302823]
+INFO 2021-02-22 19:48:16,702 Elements with largest grads ['d_q_exc_[0, 3]_[1, 6]', 'd_q_exc_[0, 7]_[2, 1]', 'd_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[1, 6]_[4, 7]', 'd_q_exc_[0, 3]_[2, 5]', 'd_q_exc_[1, 2]_[3, 4]', 'd_q_exc_[0, 7]_[6, 5]', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 's_q_exc_1_5', 's_q_exc_0_4', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 's_q_exc_2_6', 's_q_exc_3_7']. Grads [-0.0011678916900663082, -0.0011678916900686536, 0.0011678916900686614, -0.001447290982012123, 0.001447290982019232, -0.0017819483021871002, -0.002949315365017092, -0.0029493153650171078, 0.0029493153650195785, 0.0029493153650195967, 0.00497039763915879, -0.004970397639164591, 0.006908280698889113, -0.006908280698902087, 0.007347009290709672, -0.007347009290715927, 0.008853980480971064, -0.008853980480978477, 0.009708343616615623, -0.009708343616626048]
+INFO 2021-02-22 19:48:26,482 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 15-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:48:26,508 Iteration: 1. Energy -1.8790116171833424.  Energy change 0.000e+00 , Iteration dutation: 0.025124311447143555
+INFO 2021-02-22 19:48:26,523 Iteration: 2. Energy -1.8791186830868671.  Energy change -1.071e-04 , Iteration dutation: 0.0005762577056884766
+INFO 2021-02-22 19:48:26,554 Iteration: 3. Energy -1.8792277909638675.  Energy change -1.091e-04 , Iteration dutation: 0.03054952621459961
+INFO 2021-02-22 19:48:26,607 Iteration: 4. Energy -1.8793617017675115.  Energy change -1.339e-04 , Iteration dutation: 0.04963994026184082
+INFO 2021-02-22 19:48:26,637 Iteration: 5. Energy -1.879370884471675.  Energy change -9.183e-06 , Iteration dutation: 0.03368353843688965
+INFO 2021-02-22 19:48:26,668 Iteration: 6. Energy -1.8793716230897082.  Energy change -7.386e-07 , Iteration dutation: 0.030412673950195312
+INFO 2021-02-22 19:48:26,698 Iteration: 7. Energy -1.8793725736133862.  Energy change -9.505e-07 , Iteration dutation: 0.03031182289123535
+INFO 2021-02-22 19:48:26,729 Iteration: 8. Energy -1.879374328770051.  Energy change -1.755e-06 , Iteration dutation: 0.031026363372802734
+INFO 2021-02-22 19:48:26,760 Iteration: 9. Energy -1.879377355059277.  Energy change -3.026e-06 , Iteration dutation: 0.030622482299804688
+INFO 2021-02-22 19:48:26,790 Iteration: 10. Energy -1.8793811862144532.  Energy change -3.831e-06 , Iteration dutation: 0.030817747116088867
+INFO 2021-02-22 19:48:26,821 Iteration: 11. Energy -1.8793820134089514.  Energy change -8.272e-07 , Iteration dutation: 0.030579566955566406
+INFO 2021-02-22 19:48:26,852 Iteration: 12. Energy -1.879382621992798.  Energy change -6.086e-07 , Iteration dutation: 0.030619144439697266
+INFO 2021-02-22 19:48:26,882 Iteration: 13. Energy -1.879383098231622.  Energy change -4.762e-07 , Iteration dutation: 0.03052353858947754
+INFO 2021-02-22 19:48:26,913 Iteration: 14. Energy -1.8793834970033205.  Energy change -3.988e-07 , Iteration dutation: 0.03056478500366211
+INFO 2021-02-22 19:48:26,943 Iteration: 15. Energy -1.87938387955648.  Energy change -3.826e-07 , Iteration dutation: 0.03038620948791504
+INFO 2021-02-22 19:48:26,972 Iteration: 16. Energy -1.8793841035390868.  Energy change -2.240e-07 , Iteration dutation: 0.029775142669677734
+INFO 2021-02-22 19:48:27,002 Iteration: 17. Energy -1.879384172288076.  Energy change -6.875e-08 , Iteration dutation: 0.02991771697998047
+INFO 2021-02-22 19:48:27,032 Iteration: 18. Energy -1.8793841817051442.  Energy change -9.417e-09 , Iteration dutation: 0.029874324798583984
+INFO 2021-02-22 19:48:27,062 Iteration: 19. Energy -1.8793841825020152.  Energy change -7.969e-10 , Iteration dutation: 0.029764652252197266
+INFO 2021-02-22 19:48:27,092 Iteration: 20. Energy -1.8793841826650832.  Energy change -1.631e-10 , Iteration dutation: 0.029877424240112305
+INFO 2021-02-22 19:48:27,122 Iteration: 21. Energy -1.8793841828098115.  Energy change -1.447e-10 , Iteration dutation: 0.03017878532409668
+INFO 2021-02-22 19:48:27,153 Iteration: 22. Energy -1.879384182963882.  Energy change -1.541e-10 , Iteration dutation: 0.030263900756835938
+INFO 2021-02-22 19:48:27,183 Iteration: 23. Energy -1.8793841830552993.  Energy change -9.142e-11 , Iteration dutation: 0.030017614364624023
+INFO 2021-02-22 19:48:27,213 Iteration: 24. Energy -1.8793841830759708.  Energy change -2.067e-11 , Iteration dutation: 0.030379533767700195
+INFO 2021-02-22 19:48:27,243 Iteration: 25. Energy -1.879384183077455.  Energy change -1.484e-12 , Iteration dutation: 0.03036642074584961
+INFO 2021-02-22 19:48:27,273 Iteration: 26. Energy -1.8793841830774856.  Energy change -3.064e-14 , Iteration dutation: 0.030029296875
+INFO 2021-02-22 19:48:27,294 Add new element to final ansatz s_q_exc_3_7. Energy -1.8793841830774856. Energy change 0.0003725658941431398, var. parameters: [-0.5684445749568781, 0.33042900021497607, 0.33042900021293203, -0.3454533044071539, -0.20642756365721357, -0.20642756365837472, -0.011948433559047834, 0.01194843355904972, 0.4082444249905994, 0.40824442499059993, -0.25905878527257226, 0.781379132620263, 0.7813791326203016, 0.03919653349329691, -0.03919653349329288]
+INFO 2021-02-22 19:48:27,299 Add new element to final ansatz s_q_exc_3_7. Energy -1.8793841830774856. Energy change 0.0003725658941431398, var. parameters: [-0.5684445749568781, 0.33042900021497607, 0.33042900021293203, -0.3454533044071539, -0.20642756365721357, -0.20642756365837472, -0.011948433559047834, 0.01194843355904972, 0.4082444249905994, 0.40824442499059993, -0.25905878527257226, 0.781379132620263, 0.7813791326203016, 0.03919653349329691, -0.03919653349329288]
+INFO 2021-02-22 19:48:33,013 Elements with largest grads ['d_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[0, 7]_[2, 1]', 'd_q_exc_[0, 3]_[1, 6]', 'd_q_exc_[2, 5]_[4, 7]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]', 's_q_exc_0_4', 's_q_exc_1_5', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[0, 5]_[6, 7]']. Grads [0.0003648855283409705, -0.0004947756529640503, 0.0005416297114837296, -0.0008573508005138841, -0.0008976965990862007, -0.001004350459196758, -0.001280523628409904, 0.0012805236284125008, 0.0013037056509101021, -0.0013037056509101104, -0.0013037056509104265, -0.0013037056509104343, -0.0013285071200644996, 0.0013285071200669573, -0.0021166201080572225, 0.0021166201080596646, 0.002777117117066863, -0.0027771171170678077, -0.0038550710394791685, 0.0038550710394798637]
+INFO 2021-02-22 19:48:44,062 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 16-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:48:44,094 Iteration: 1. Energy -1.8793841830774856.  Energy change 0.000e+00 , Iteration dutation: 0.030625581741333008
+INFO 2021-02-22 19:48:44,110 Iteration: 2. Energy -1.8793844083097886.  Energy change -2.252e-07 , Iteration dutation: 0.0005893707275390625
+INFO 2021-02-22 19:48:44,143 Iteration: 3. Energy -1.8793845562049185.  Energy change -1.479e-07 , Iteration dutation: 0.03295183181762695
+INFO 2021-02-22 19:48:44,176 Iteration: 4. Energy -1.8793846312916374.  Energy change -7.509e-08 , Iteration dutation: 0.03304457664489746
+INFO 2021-02-22 19:48:44,209 Iteration: 5. Energy -1.8793847744255838.  Energy change -1.431e-07 , Iteration dutation: 0.032824039459228516
+INFO 2021-02-22 19:48:44,242 Iteration: 6. Energy -1.8793850501099767.  Energy change -2.757e-07 , Iteration dutation: 0.03285360336303711
+INFO 2021-02-22 19:48:44,275 Iteration: 7. Energy -1.879385886963136.  Energy change -8.369e-07 , Iteration dutation: 0.03298377990722656
+INFO 2021-02-22 19:48:44,308 Iteration: 8. Energy -1.8793876071945663.  Energy change -1.720e-06 , Iteration dutation: 0.03313016891479492
+INFO 2021-02-22 19:48:44,341 Iteration: 9. Energy -1.879390578906702.  Energy change -2.972e-06 , Iteration dutation: 0.03307199478149414
+INFO 2021-02-22 19:48:44,374 Iteration: 10. Energy -1.8793957969978425.  Energy change -5.218e-06 , Iteration dutation: 0.03306221961975098
+INFO 2021-02-22 19:48:44,407 Iteration: 11. Energy -1.8794024450749491.  Energy change -6.648e-06 , Iteration dutation: 0.032770395278930664
+INFO 2021-02-22 19:48:44,440 Iteration: 12. Energy -1.8794089686366868.  Energy change -6.524e-06 , Iteration dutation: 0.033030033111572266
+INFO 2021-02-22 19:48:44,473 Iteration: 13. Energy -1.8794171781248898.  Energy change -8.209e-06 , Iteration dutation: 0.032958984375
+INFO 2021-02-22 19:48:44,506 Iteration: 14. Energy -1.879418894075004.  Energy change -1.716e-06 , Iteration dutation: 0.033010005950927734
+INFO 2021-02-22 19:48:44,539 Iteration: 15. Energy -1.8794204007115753.  Energy change -1.507e-06 , Iteration dutation: 0.0327916145324707
+INFO 2021-02-22 19:48:44,572 Iteration: 16. Energy -1.8794253257427185.  Energy change -4.925e-06 , Iteration dutation: 0.03289151191711426
+INFO 2021-02-22 19:48:44,604 Iteration: 17. Energy -1.879430265361389.  Energy change -4.940e-06 , Iteration dutation: 0.03271985054016113
+INFO 2021-02-22 19:48:44,637 Iteration: 18. Energy -1.8794326693881884.  Energy change -2.404e-06 , Iteration dutation: 0.032810211181640625
+INFO 2021-02-22 19:48:44,670 Iteration: 19. Energy -1.8794364145608053.  Energy change -3.745e-06 , Iteration dutation: 0.03268289566040039
+INFO 2021-02-22 19:48:44,703 Iteration: 20. Energy -1.8794420951598174.  Energy change -5.681e-06 , Iteration dutation: 0.03274679183959961
+INFO 2021-02-22 19:48:44,735 Iteration: 21. Energy -1.8794500365302427.  Energy change -7.941e-06 , Iteration dutation: 0.03278994560241699
+INFO 2021-02-22 19:48:44,767 Iteration: 22. Energy -1.8794598095876427.  Energy change -9.773e-06 , Iteration dutation: 0.032732486724853516
+INFO 2021-02-22 19:48:44,798 Iteration: 23. Energy -1.8794063122853633.  Energy change 5.350e-05 , Iteration dutation: 0.03093719482421875
+INFO 2021-02-22 19:48:44,829 Iteration: 24. Energy -1.8794626228507565.  Energy change -5.631e-05 , Iteration dutation: 0.03062891960144043
+INFO 2021-02-22 19:48:44,859 Iteration: 25. Energy -1.8794669991908601.  Energy change -4.376e-06 , Iteration dutation: 0.03066110610961914
+INFO 2021-02-22 19:48:44,890 Iteration: 26. Energy -1.8794723656267087.  Energy change -5.366e-06 , Iteration dutation: 0.03087306022644043
+INFO 2021-02-22 19:48:44,921 Iteration: 27. Energy -1.8794739517343335.  Energy change -1.586e-06 , Iteration dutation: 0.030629634857177734
+INFO 2021-02-22 19:48:44,951 Iteration: 28. Energy -1.8794765645370584.  Energy change -2.613e-06 , Iteration dutation: 0.03063678741455078
+INFO 2021-02-22 19:48:44,982 Iteration: 29. Energy -1.8794799996034877.  Energy change -3.435e-06 , Iteration dutation: 0.030889272689819336
+INFO 2021-02-22 19:48:45,014 Iteration: 30. Energy -1.8794851980418763.  Energy change -5.198e-06 , Iteration dutation: 0.030707836151123047
+INFO 2021-02-22 19:48:45,045 Iteration: 31. Energy -1.8794906421550879.  Energy change -5.444e-06 , Iteration dutation: 0.0316619873046875
+INFO 2021-02-22 19:48:45,076 Iteration: 32. Energy -1.8794940276052317.  Energy change -3.385e-06 , Iteration dutation: 0.03074193000793457
+INFO 2021-02-22 19:48:45,106 Iteration: 33. Energy -1.8794958962166506.  Energy change -1.869e-06 , Iteration dutation: 0.030884742736816406
+INFO 2021-02-22 19:48:45,137 Iteration: 34. Energy -1.879499149848213.  Energy change -3.254e-06 , Iteration dutation: 0.031141281127929688
+INFO 2021-02-22 19:48:45,168 Iteration: 35. Energy -1.879504936788202.  Energy change -5.787e-06 , Iteration dutation: 0.03072977066040039
+INFO 2021-02-22 19:48:45,199 Iteration: 36. Energy -1.87951439116846.  Energy change -9.454e-06 , Iteration dutation: 0.030599355697631836
+INFO 2021-02-22 19:48:45,230 Iteration: 37. Energy -1.8795253858657395.  Energy change -1.099e-05 , Iteration dutation: 0.031225204467773438
+INFO 2021-02-22 19:48:45,261 Iteration: 38. Energy -1.8795296763322398.  Energy change -4.290e-06 , Iteration dutation: 0.030665874481201172
+INFO 2021-02-22 19:48:45,291 Iteration: 39. Energy -1.8795313409545895.  Energy change -1.665e-06 , Iteration dutation: 0.0306704044342041
+INFO 2021-02-22 19:48:45,322 Iteration: 40. Energy -1.8795324219642844.  Energy change -1.081e-06 , Iteration dutation: 0.03065657615661621
+INFO 2021-02-22 19:48:45,353 Iteration: 41. Energy -1.8795343371327107.  Energy change -1.915e-06 , Iteration dutation: 0.030596256256103516
+INFO 2021-02-22 19:48:45,383 Iteration: 42. Energy -1.8795374806300829.  Energy change -3.143e-06 , Iteration dutation: 0.030598878860473633
+INFO 2021-02-22 19:48:45,414 Iteration: 43. Energy -1.879541584288907.  Energy change -4.104e-06 , Iteration dutation: 0.030740976333618164
+INFO 2021-02-22 19:48:45,444 Iteration: 44. Energy -1.8795379529949985.  Energy change 3.631e-06 , Iteration dutation: 0.03062891960144043
+INFO 2021-02-22 19:48:45,476 Iteration: 45. Energy -1.879542648658994.  Energy change -4.696e-06 , Iteration dutation: 0.03061652183532715
+INFO 2021-02-22 19:48:45,507 Iteration: 46. Energy -1.879544432787663.  Energy change -1.784e-06 , Iteration dutation: 0.03177809715270996
+INFO 2021-02-22 19:48:45,538 Iteration: 47. Energy -1.879547064020104.  Energy change -2.631e-06 , Iteration dutation: 0.0307004451751709
+INFO 2021-02-22 19:48:45,568 Iteration: 48. Energy -1.8795486504099834.  Energy change -1.586e-06 , Iteration dutation: 0.030626773834228516
+INFO 2021-02-22 19:48:45,599 Iteration: 49. Energy -1.879549608537252.  Energy change -9.581e-07 , Iteration dutation: 0.030969619750976562
+INFO 2021-02-22 19:48:45,630 Iteration: 50. Energy -1.8795498659076926.  Energy change -2.574e-07 , Iteration dutation: 0.030722856521606445
+INFO 2021-02-22 19:48:45,661 Iteration: 51. Energy -1.879550235762034.  Energy change -3.699e-07 , Iteration dutation: 0.03063654899597168
+INFO 2021-02-22 19:48:45,691 Iteration: 52. Energy -1.8795509357130775.  Energy change -7.000e-07 , Iteration dutation: 0.030794620513916016
+INFO 2021-02-22 19:48:45,723 Iteration: 53. Energy -1.8795517630148144.  Energy change -8.273e-07 , Iteration dutation: 0.031047344207763672
+INFO 2021-02-22 19:48:45,753 Iteration: 54. Energy -1.8795521657016105.  Energy change -4.027e-07 , Iteration dutation: 0.03074789047241211
+INFO 2021-02-22 19:48:45,784 Iteration: 55. Energy -1.8795524044771068.  Energy change -2.388e-07 , Iteration dutation: 0.03066563606262207
+INFO 2021-02-22 19:48:45,814 Iteration: 56. Energy -1.8795525514832012.  Energy change -1.470e-07 , Iteration dutation: 0.03062295913696289
+INFO 2021-02-22 19:48:45,845 Iteration: 57. Energy -1.8795527399861285.  Energy change -1.885e-07 , Iteration dutation: 0.030633211135864258
+INFO 2021-02-22 19:48:45,876 Iteration: 58. Energy -1.8795527958458422.  Energy change -5.586e-08 , Iteration dutation: 0.030660629272460938
+INFO 2021-02-22 19:48:45,906 Iteration: 59. Energy -1.8795528091554754.  Energy change -1.331e-08 , Iteration dutation: 0.030688762664794922
+INFO 2021-02-22 19:48:45,937 Iteration: 60. Energy -1.8795528152028922.  Energy change -6.047e-09 , Iteration dutation: 0.030787944793701172
+INFO 2021-02-22 19:48:45,968 Iteration: 61. Energy -1.8795528158713148.  Energy change -6.684e-10 , Iteration dutation: 0.03062295913696289
+INFO 2021-02-22 19:48:45,999 Iteration: 62. Energy -1.8795528159275166.  Energy change -5.620e-11 , Iteration dutation: 0.030767440795898438
+INFO 2021-02-22 19:48:46,030 Iteration: 63. Energy -1.8795528159309591.  Energy change -3.443e-12 , Iteration dutation: 0.03146839141845703
+INFO 2021-02-22 19:48:46,061 Iteration: 64. Energy -1.8795528159311279.  Energy change -1.688e-13 , Iteration dutation: 0.030843257904052734
+INFO 2021-02-22 19:48:46,092 Iteration: 65. Energy -1.8795528159311552.  Energy change -2.731e-14 , Iteration dutation: 0.030775785446166992
+INFO 2021-02-22 19:48:46,114 Add new element to final ansatz d_q_exc_[4, 5]_[6, 7]. Energy -1.8795528159311552. Energy change 0.00016863285366963687, var. parameters: [-0.4255855949266468, -2.2440002940252014e-07, -2.244044052064894e-07, -0.3601487287130351, -0.44803645994499297, -0.4480364599468035, -0.009443931354130757, 0.00944393135413131, 0.39511543697728285, 0.39511543697728346, -0.42343061851624625, 1.271756223648183, 1.271756223648253, 0.04026047659381998, -0.040260476593817145, -0.4502536917881018]
+INFO 2021-02-22 19:48:51,825 Elements with largest grads ['d_q_exc_[2, 5]_[4, 7]', 'd_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[0, 7]_[2, 1]', 'd_q_exc_[1, 6]_[4, 7]', 'd_q_exc_[0, 3]_[2, 5]', 'd_q_exc_[1, 2]_[3, 4]', 'd_q_exc_[0, 7]_[6, 5]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 's_q_exc_0_4', 's_q_exc_1_5', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 's_q_exc_2_6', 's_q_exc_3_7', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]']. Grads [-0.0010161664709274604, 0.0010161664709276948, -0.0010161664709277052, 0.001156524006744668, 0.001156524006744678, -0.0011565240067448982, -0.0011565240067449069, -0.0012545631047445327, -0.0018312257425256886, 0.0018312257425262216, 0.0019764851014783197, -0.0019764851014785817, -0.0020794615874568656, 0.0020794615874573912, -0.002556602558110907, 0.0025566025581113183, 0.0032534187917324627, -0.0032534187917331375, -0.0036989115985962577, 0.0036989115985968713]
+INFO 2021-02-22 19:49:10,189 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 18-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:49:10,253 Iteration: 1. Energy -1.8795528159311552.  Energy change 0.000e+00 , Iteration dutation: 0.0632638931274414
+INFO 2021-02-22 19:49:10,274 Iteration: 2. Energy -1.8795726602964837.  Energy change -1.984e-05 , Iteration dutation: 0.000804901123046875
+INFO 2021-02-22 19:49:10,311 Iteration: 3. Energy -1.8795889732062436.  Energy change -1.631e-05 , Iteration dutation: 0.03880429267883301
+INFO 2021-02-22 19:49:10,348 Iteration: 4. Energy -1.8796030843098235.  Energy change -1.411e-05 , Iteration dutation: 0.037097930908203125
+INFO 2021-02-22 19:49:10,385 Iteration: 5. Energy -1.8796218965914249.  Energy change -1.881e-05 , Iteration dutation: 0.03705239295959473
+INFO 2021-02-22 19:49:10,421 Iteration: 6. Energy -1.8796272857888705.  Energy change -5.389e-06 , Iteration dutation: 0.036960601806640625
+INFO 2021-02-22 19:49:10,456 Iteration: 7. Energy -1.879627811354228.  Energy change -5.256e-07 , Iteration dutation: 0.034992218017578125
+INFO 2021-02-22 19:49:10,490 Iteration: 8. Energy -1.879628219260483.  Energy change -4.079e-07 , Iteration dutation: 0.034699201583862305
+INFO 2021-02-22 19:49:10,526 Iteration: 9. Energy -1.8796282512173657.  Energy change -3.196e-08 , Iteration dutation: 0.034912824630737305
+INFO 2021-02-22 19:49:10,560 Iteration: 10. Energy -1.8796283056722765.  Energy change -5.445e-08 , Iteration dutation: 0.03507232666015625
+INFO 2021-02-22 19:49:10,595 Iteration: 11. Energy -1.8796283920393215.  Energy change -8.637e-08 , Iteration dutation: 0.03449726104736328
+INFO 2021-02-22 19:49:10,630 Iteration: 12. Energy -1.8796285109400581.  Energy change -1.189e-07 , Iteration dutation: 0.03486347198486328
+INFO 2021-02-22 19:49:10,664 Iteration: 13. Energy -1.8796286540853864.  Energy change -1.431e-07 , Iteration dutation: 0.03467822074890137
+INFO 2021-02-22 19:49:10,699 Iteration: 14. Energy -1.8796288777542927.  Energy change -2.237e-07 , Iteration dutation: 0.03473782539367676
+INFO 2021-02-22 19:49:10,734 Iteration: 15. Energy -1.879629119738919.  Energy change -2.420e-07 , Iteration dutation: 0.03495025634765625
+INFO 2021-02-22 19:49:10,769 Iteration: 16. Energy -1.8796292276187545.  Energy change -1.079e-07 , Iteration dutation: 0.03478384017944336
+INFO 2021-02-22 19:49:10,803 Iteration: 17. Energy -1.8796292999091597.  Energy change -7.229e-08 , Iteration dutation: 0.034667253494262695
+INFO 2021-02-22 19:49:10,838 Iteration: 18. Energy -1.8796293490180882.  Energy change -4.911e-08 , Iteration dutation: 0.03471565246582031
+INFO 2021-02-22 19:49:10,873 Iteration: 19. Energy -1.8796293922478309.  Energy change -4.323e-08 , Iteration dutation: 0.03472280502319336
+INFO 2021-02-22 19:49:10,907 Iteration: 20. Energy -1.8796294101601605.  Energy change -1.791e-08 , Iteration dutation: 0.034627676010131836
+INFO 2021-02-22 19:49:10,942 Iteration: 21. Energy -1.879629413322451.  Energy change -3.162e-09 , Iteration dutation: 0.034627437591552734
+INFO 2021-02-22 19:49:10,977 Iteration: 22. Energy -1.8796294135496177.  Energy change -2.272e-10 , Iteration dutation: 0.034580230712890625
+INFO 2021-02-22 19:49:11,011 Iteration: 23. Energy -1.87962941357815.  Energy change -2.853e-11 , Iteration dutation: 0.03477215766906738
+INFO 2021-02-22 19:49:11,046 Iteration: 24. Energy -1.8796294135995413.  Energy change -2.139e-11 , Iteration dutation: 0.03459644317626953
+INFO 2021-02-22 19:49:11,081 Iteration: 25. Energy -1.8796294136291851.  Energy change -2.964e-11 , Iteration dutation: 0.03467130661010742
+INFO 2021-02-22 19:49:11,116 Iteration: 26. Energy -1.8796294136802574.  Energy change -5.107e-11 , Iteration dutation: 0.03461503982543945
+INFO 2021-02-22 19:49:11,150 Iteration: 27. Energy -1.8796294137707084.  Energy change -9.045e-11 , Iteration dutation: 0.03495955467224121
+INFO 2021-02-22 19:49:11,185 Iteration: 28. Energy -1.8796294139289462.  Energy change -1.582e-10 , Iteration dutation: 0.03471016883850098
+INFO 2021-02-22 19:49:11,220 Iteration: 29. Energy -1.8796294141883867.  Energy change -2.594e-10 , Iteration dutation: 0.03489279747009277
+INFO 2021-02-22 19:49:11,255 Iteration: 30. Energy -1.879629414535.  Energy change -3.466e-10 , Iteration dutation: 0.035085201263427734
+INFO 2021-02-22 19:49:11,290 Iteration: 31. Energy -1.8796294147301582.  Energy change -1.952e-10 , Iteration dutation: 0.03465151786804199
+INFO 2021-02-22 19:49:11,324 Iteration: 32. Energy -1.879629414951438.  Energy change -2.213e-10 , Iteration dutation: 0.034705400466918945
+INFO 2021-02-22 19:49:11,359 Iteration: 33. Energy -1.8796294151198891.  Energy change -1.685e-10 , Iteration dutation: 0.03461456298828125
+INFO 2021-02-22 19:49:11,394 Iteration: 34. Energy -1.879629415397781.  Energy change -2.779e-10 , Iteration dutation: 0.03476834297180176
+INFO 2021-02-22 19:49:11,428 Iteration: 35. Energy -1.8796294158715412.  Energy change -4.738e-10 , Iteration dutation: 0.0346379280090332
+INFO 2021-02-22 19:49:11,463 Iteration: 36. Energy -1.8796294166694896.  Energy change -7.979e-10 , Iteration dutation: 0.03476524353027344
+INFO 2021-02-22 19:49:11,498 Iteration: 37. Energy -1.8796294178832331.  Energy change -1.214e-09 , Iteration dutation: 0.03473329544067383
+INFO 2021-02-22 19:49:11,532 Iteration: 38. Energy -1.879629418871131.  Energy change -9.879e-10 , Iteration dutation: 0.03463244438171387
+INFO 2021-02-22 19:49:11,567 Iteration: 39. Energy -1.8796294192129253.  Energy change -3.418e-10 , Iteration dutation: 0.034921884536743164
+INFO 2021-02-22 19:49:11,602 Iteration: 40. Energy -1.8796294192969545.  Energy change -8.403e-11 , Iteration dutation: 0.03470587730407715
+INFO 2021-02-22 19:49:11,637 Iteration: 41. Energy -1.8796294193011036.  Energy change -4.149e-12 , Iteration dutation: 0.034963130950927734
+INFO 2021-02-22 19:49:11,672 Iteration: 42. Energy -1.8796294193017429.  Energy change -6.393e-13 , Iteration dutation: 0.03461909294128418
+INFO 2021-02-22 19:49:11,707 Iteration: 43. Energy -1.8796294193027456.  Energy change -1.003e-12 , Iteration dutation: 0.03483009338378906
+INFO 2021-02-22 19:49:11,742 Iteration: 44. Energy -1.879629419304564.  Energy change -1.818e-12 , Iteration dutation: 0.03479623794555664
+INFO 2021-02-22 19:49:11,776 Iteration: 45. Energy -1.8796294193077012.  Energy change -3.137e-12 , Iteration dutation: 0.035070180892944336
+INFO 2021-02-22 19:49:11,811 Iteration: 46. Energy -1.8796294193119638.  Energy change -4.263e-12 , Iteration dutation: 0.0345308780670166
+INFO 2021-02-22 19:49:11,846 Iteration: 47. Energy -1.8796294193131775.  Energy change -1.214e-12 , Iteration dutation: 0.03454422950744629
+INFO 2021-02-22 19:49:11,880 Iteration: 48. Energy -1.8796294193134329.  Energy change -2.554e-13 , Iteration dutation: 0.03489875793457031
+INFO 2021-02-22 19:49:11,915 Iteration: 49. Energy -1.8796294193134755.  Energy change -4.263e-14 , Iteration dutation: 0.03469705581665039
+INFO 2021-02-22 19:49:11,939 Add new element to final ansatz d_q_exc_[2, 7]_[5, 4]. Energy -1.8796294193134755. Energy change 7.660338232029495e-05, var. parameters: [-0.42464869137315786, -7.196050337621177e-07, 4.2937521004628287e-07, -0.3602155327669113, -0.44218550953851116, -0.4421862888547847, -0.021298810423358086, 0.0212998458613062, 0.40025906138322775, 0.4002590386406035, -0.4194681547151899, 1.2635455579234087, 1.2635480625641273, 0.058581307871559116, -0.05856630813746382, -0.44118876372601173, -0.02086869459631798, 0.020835809416856657]
+INFO 2021-02-22 19:49:11,944 Add new element to final ansatz d_q_exc_[2, 7]_[5, 4]. Energy -1.8796294193134755. Energy change 7.660338232029495e-05, var. parameters: [-0.42464869137315786, -7.196050337621177e-07, 4.2937521004628287e-07, -0.3602155327669113, -0.44218550953851116, -0.4421862888547847, -0.021298810423358086, 0.0212998458613062, 0.40025906138322775, 0.4002590386406035, -0.4194681547151899, 1.2635455579234087, 1.2635480625641273, 0.058581307871559116, -0.05856630813746382, -0.44118876372601173, -0.02086869459631798, 0.020835809416856657]
+INFO 2021-02-22 19:49:17,621 Elements with largest grads ['d_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[1, 6]_[4, 7]', 'd_q_exc_[0, 3]_[2, 5]', 'd_q_exc_[1, 2]_[3, 4]', 'd_q_exc_[0, 7]_[6, 5]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[0, 3]_[1, 6]', 'd_q_exc_[2, 5]_[4, 7]', 'd_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[0, 7]_[2, 1]', 's_q_exc_0_4', 's_q_exc_1_5', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 's_q_exc_2_6', 's_q_exc_3_7']. Grads [-0.00027058751279934734, -0.00036386633239467864, -0.00036386668268389684, 0.0003640169756044336, 0.0003640173260344203, -0.0004632148795918334, 0.00047302454618560635, 0.0004730246156149486, -0.00047307503663687007, 0.0004730751060589859, 0.0007830126689827771, -0.0007830427202538316, -0.0010038249543146214, 0.0010039656773884896, 0.0013099502140132672, -0.001310057532954862, 0.0017571541538521757, -0.00175788013843428, -0.0025085861618109957, 0.0025090767438143134]
+INFO 2021-02-22 19:49:44,606 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 20-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:49:44,674 Iteration: 1. Energy -1.8796294193134755.  Energy change 0.000e+00 , Iteration dutation: 0.06736874580383301
+INFO 2021-02-22 19:49:44,695 Iteration: 2. Energy -1.8796338248947606.  Energy change -4.406e-06 , Iteration dutation: 0.0005693435668945312
+INFO 2021-02-22 19:49:44,736 Iteration: 3. Energy -1.8796413614040755.  Energy change -7.537e-06 , Iteration dutation: 0.04128551483154297
+INFO 2021-02-22 19:49:44,778 Iteration: 4. Energy -1.8796544847942016.  Energy change -1.312e-05 , Iteration dutation: 0.04159998893737793
+INFO 2021-02-22 19:49:44,819 Iteration: 5. Energy -1.8796750376969702.  Energy change -2.055e-05 , Iteration dutation: 0.04113125801086426
+INFO 2021-02-22 19:49:44,860 Iteration: 6. Energy -1.8796920366885272.  Energy change -1.700e-05 , Iteration dutation: 0.04136204719543457
+INFO 2021-02-22 19:49:44,902 Iteration: 7. Energy -1.879698344029876.  Energy change -6.307e-06 , Iteration dutation: 0.041324615478515625
+INFO 2021-02-22 19:49:44,943 Iteration: 8. Energy -1.8797073727088278.  Energy change -9.029e-06 , Iteration dutation: 0.041795969009399414
+INFO 2021-02-22 19:49:44,985 Iteration: 9. Energy -1.8797200068250162.  Energy change -1.263e-05 , Iteration dutation: 0.04143404960632324
+INFO 2021-02-22 19:49:45,026 Iteration: 10. Energy -1.879734925145696.  Energy change -1.492e-05 , Iteration dutation: 0.04131269454956055
+INFO 2021-02-22 19:49:45,068 Iteration: 11. Energy -1.8797436820186213.  Energy change -8.757e-06 , Iteration dutation: 0.04147768020629883
+INFO 2021-02-22 19:49:45,109 Iteration: 12. Energy -1.8797458367645534.  Energy change -2.155e-06 , Iteration dutation: 0.04128098487854004
+INFO 2021-02-22 19:49:45,150 Iteration: 13. Energy -1.8797460268520343.  Energy change -1.901e-07 , Iteration dutation: 0.04130864143371582
+INFO 2021-02-22 19:49:45,191 Iteration: 14. Energy -1.87974603884867.  Energy change -1.200e-08 , Iteration dutation: 0.04118633270263672
+INFO 2021-02-22 19:49:45,232 Iteration: 15. Energy -1.8797460423574626.  Energy change -3.509e-09 , Iteration dutation: 0.04117178916931152
+INFO 2021-02-22 19:49:45,274 Iteration: 16. Energy -1.8797460466695637.  Energy change -4.312e-09 , Iteration dutation: 0.04108691215515137
+INFO 2021-02-22 19:49:45,315 Iteration: 17. Energy -1.8797460509518986.  Energy change -4.282e-09 , Iteration dutation: 0.04114246368408203
+INFO 2021-02-22 19:49:45,356 Iteration: 18. Energy -1.8797460560040269.  Energy change -5.052e-09 , Iteration dutation: 0.04118776321411133
+INFO 2021-02-22 19:49:45,397 Iteration: 19. Energy -1.879746061636445.  Energy change -5.632e-09 , Iteration dutation: 0.041268110275268555
+INFO 2021-02-22 19:49:45,436 Iteration: 20. Energy -1.8797460670599064.  Energy change -5.423e-09 , Iteration dutation: 0.040558576583862305
+INFO 2021-02-22 19:49:45,475 Iteration: 21. Energy -1.8797460730447275.  Energy change -5.985e-09 , Iteration dutation: 0.03837323188781738
+INFO 2021-02-22 19:49:45,514 Iteration: 22. Energy -1.8797460811909354.  Energy change -8.146e-09 , Iteration dutation: 0.03869962692260742
+INFO 2021-02-22 19:49:45,552 Iteration: 23. Energy -1.8797460920240974.  Energy change -1.083e-08 , Iteration dutation: 0.039064645767211914
+INFO 2021-02-22 19:49:45,591 Iteration: 24. Energy -1.8797461023291617.  Energy change -1.031e-08 , Iteration dutation: 0.038420915603637695
+INFO 2021-02-22 19:49:45,629 Iteration: 25. Energy -1.8797461077669047.  Energy change -5.438e-09 , Iteration dutation: 0.038425445556640625
+INFO 2021-02-22 19:49:45,668 Iteration: 26. Energy -1.8797461091575212.  Energy change -1.391e-09 , Iteration dutation: 0.03835654258728027
+INFO 2021-02-22 19:49:45,706 Iteration: 27. Energy -1.8797461093624679.  Energy change -2.049e-10 , Iteration dutation: 0.03851127624511719
+INFO 2021-02-22 19:49:45,745 Iteration: 28. Energy -1.8797461093932788.  Energy change -3.081e-11 , Iteration dutation: 0.03853464126586914
+INFO 2021-02-22 19:49:45,784 Iteration: 29. Energy -1.879746109401976.  Energy change -8.697e-12 , Iteration dutation: 0.038771867752075195
+INFO 2021-02-22 19:49:45,822 Iteration: 30. Energy -1.8797461094095582.  Energy change -7.582e-12 , Iteration dutation: 0.03856253623962402
+INFO 2021-02-22 19:49:45,860 Iteration: 31. Energy -1.8797461094232704.  Energy change -1.371e-11 , Iteration dutation: 0.03833889961242676
+INFO 2021-02-22 19:49:45,899 Iteration: 32. Energy -1.879746109448565.  Energy change -2.529e-11 , Iteration dutation: 0.038466453552246094
+INFO 2021-02-22 19:49:45,937 Iteration: 33. Energy -1.8797461094951422.  Energy change -4.658e-11 , Iteration dutation: 0.03855586051940918
+INFO 2021-02-22 19:49:45,976 Iteration: 34. Energy -1.8797461095792927.  Energy change -8.415e-11 , Iteration dutation: 0.03829646110534668
+INFO 2021-02-22 19:49:46,015 Iteration: 35. Energy -1.879746109725034.  Energy change -1.457e-10 , Iteration dutation: 0.03848099708557129
+INFO 2021-02-22 19:49:46,054 Iteration: 36. Energy -1.879746109957195.  Energy change -2.322e-10 , Iteration dutation: 0.03928017616271973
+INFO 2021-02-22 19:49:46,092 Iteration: 37. Energy -1.8797461102615491.  Energy change -3.044e-10 , Iteration dutation: 0.03865337371826172
+INFO 2021-02-22 19:49:46,131 Iteration: 38. Energy -1.87974611055447.  Energy change -2.929e-10 , Iteration dutation: 0.03877878189086914
+INFO 2021-02-22 19:49:46,170 Iteration: 39. Energy -1.8797461109658826.  Energy change -4.114e-10 , Iteration dutation: 0.038906097412109375
+INFO 2021-02-22 19:49:46,208 Iteration: 40. Energy -1.8797461112272378.  Energy change -2.614e-10 , Iteration dutation: 0.03847026824951172
+INFO 2021-02-22 19:49:46,247 Iteration: 41. Energy -1.8797461114152656.  Energy change -1.880e-10 , Iteration dutation: 0.038619041442871094
+INFO 2021-02-22 19:49:46,286 Iteration: 42. Energy -1.8797461115847134.  Energy change -1.694e-10 , Iteration dutation: 0.0387570858001709
+INFO 2021-02-22 19:49:46,324 Iteration: 43. Energy -1.8797461117300078.  Energy change -1.453e-10 , Iteration dutation: 0.038461923599243164
+INFO 2021-02-22 19:49:46,363 Iteration: 44. Energy -1.879746111793755.  Energy change -6.375e-11 , Iteration dutation: 0.038495779037475586
+INFO 2021-02-22 19:49:46,401 Iteration: 45. Energy -1.8797461118095742.  Energy change -1.582e-11 , Iteration dutation: 0.038489341735839844
+INFO 2021-02-22 19:49:46,440 Iteration: 46. Energy -1.8797461118175902.  Energy change -8.016e-12 , Iteration dutation: 0.03847360610961914
+INFO 2021-02-22 19:49:46,478 Iteration: 47. Energy -1.879746111831122.  Energy change -1.353e-11 , Iteration dutation: 0.03845787048339844
+INFO 2021-02-22 19:49:46,517 Iteration: 48. Energy -1.8797461118538608.  Energy change -2.274e-11 , Iteration dutation: 0.03867673873901367
+INFO 2021-02-22 19:49:46,555 Iteration: 49. Energy -1.879746111888251.  Energy change -3.439e-11 , Iteration dutation: 0.03834939002990723
+INFO 2021-02-22 19:49:46,594 Iteration: 50. Energy -1.8797461119143266.  Energy change -2.608e-11 , Iteration dutation: 0.038301706314086914
+INFO 2021-02-22 19:49:46,632 Iteration: 51. Energy -1.8797461119221581.  Energy change -7.832e-12 , Iteration dutation: 0.03853440284729004
+INFO 2021-02-22 19:49:46,670 Iteration: 52. Energy -1.8797461119238041.  Energy change -1.646e-12 , Iteration dutation: 0.038289785385131836
+INFO 2021-02-22 19:49:46,709 Iteration: 53. Energy -1.879746111923862.  Energy change -5.795e-14 , Iteration dutation: 0.038590192794799805
+INFO 2021-02-22 19:49:46,747 Iteration: 54. Energy -1.8797461119238634.  Energy change -1.332e-15 , Iteration dutation: 0.03861522674560547
+INFO 2021-02-22 19:49:46,786 Iteration: 55. Energy -1.8797461119238643.  Energy change -8.882e-16 , Iteration dutation: 0.03865194320678711
+INFO 2021-02-22 19:49:46,824 Iteration: 56. Energy -1.8797461119238654.  Energy change -1.110e-15 , Iteration dutation: 0.03830409049987793
+INFO 2021-02-22 19:49:46,863 Iteration: 57. Energy -1.8797461119238674.  Energy change -1.998e-15 , Iteration dutation: 0.038529157638549805
+INFO 2021-02-22 19:49:46,901 Iteration: 58. Energy -1.8797461119238716.  Energy change -4.219e-15 , Iteration dutation: 0.03832864761352539
+INFO 2021-02-22 19:49:46,940 Iteration: 59. Energy -1.8797461119238794.  Energy change -7.772e-15 , Iteration dutation: 0.03840041160583496
+INFO 2021-02-22 19:49:46,978 Iteration: 60. Energy -1.8797461119238932.  Energy change -1.377e-14 , Iteration dutation: 0.038318634033203125
+INFO 2021-02-22 19:49:47,016 Iteration: 61. Energy -1.879746111923918.  Energy change -2.487e-14 , Iteration dutation: 0.03844738006591797
+INFO 2021-02-22 19:49:47,055 Iteration: 62. Energy -1.8797461119239611.  Energy change -4.308e-14 , Iteration dutation: 0.038300275802612305
+INFO 2021-02-22 19:49:47,093 Iteration: 63. Energy -1.8797461119240277.  Energy change -6.661e-14 , Iteration dutation: 0.03859066963195801
+INFO 2021-02-22 19:49:47,132 Iteration: 64. Energy -1.8797461119241232.  Energy change -9.548e-14 , Iteration dutation: 0.03848457336425781
+INFO 2021-02-22 19:49:47,171 Iteration: 65. Energy -1.8797461119242578.  Energy change -1.346e-13 , Iteration dutation: 0.0385587215423584
+INFO 2021-02-22 19:49:47,209 Iteration: 66. Energy -1.8797461119244485.  Energy change -1.907e-13 , Iteration dutation: 0.038538217544555664
+INFO 2021-02-22 19:49:47,247 Iteration: 67. Energy -1.8797461119245549.  Energy change -1.064e-13 , Iteration dutation: 0.03842973709106445
+INFO 2021-02-22 19:49:47,286 Iteration: 68. Energy -1.8797461119245802.  Energy change -2.531e-14 , Iteration dutation: 0.03874611854553223
+INFO 2021-02-22 19:49:47,312 Add new element to final ansatz d_q_exc_[0, 1]_[2, 7]. Energy -1.8797461119245802. Energy change 0.0001166926111046962, var. parameters: [-0.41925001615184354, 2.0887673551301285e-06, -2.234868478970524e-06, -0.35878243594929166, -0.43811386766819327, -0.4381157562972044, -0.02667481655247902, 0.026674858687170296, 0.40023570590390006, 0.400235705082014, -0.41587926228003996, 1.2626221189388942, 1.2626225966898523, 0.06218321119516147, -0.06218183205099232, -0.43955492018520315, -0.09201280408526867, 0.0917863286210317, -0.06739565418153888, 0.067529769938315]
+INFO 2021-02-22 19:49:47,317 Add new element to final ansatz d_q_exc_[0, 1]_[2, 7]. Energy -1.8797461119245802. Energy change 0.0001166926111046962, var. parameters: [-0.41925001615184354, 2.0887673551301285e-06, -2.234868478970524e-06, -0.35878243594929166, -0.43811386766819327, -0.4381157562972044, -0.02667481655247902, 0.026674858687170296, 0.40023570590390006, 0.400235705082014, -0.41587926228003996, 1.2626221189388942, 1.2626225966898523, 0.06218321119516147, -0.06218183205099232, -0.43955492018520315, -0.09201280408526867, 0.0917863286210317, -0.06739565418153888, 0.067529769938315]
+INFO 2021-02-22 19:49:53,155 Elements with largest grads ['d_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[0, 6]_[4, 2]', 'd_q_exc_[1, 7]_[5, 3]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[0, 1]_[2, 3]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[1, 5]_[3, 7]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[1, 4]_[3, 6]', 'd_q_exc_[0, 5]_[2, 7]', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[2, 3]_[4, 5]']. Grads [-0.00016667357505636689, 0.00016668812747535526, -0.00020098440061605517, -0.00020098441785849788, -0.00048497006111698424, -0.0004850036500272936, -0.000607611358438143, -0.0006076396478095811, -0.0006125374989006472, -0.0007979524031115903, -0.0007979524463047824, -0.0008071934074740973, -0.0008071934495326658, 0.001292894019186211, 0.0013386179277830174, 0.001338619902188365, 0.0013491665439323208, 0.0013491691740541052, 0.0019839730549751633, 0.003710016891268958]
+INFO 2021-02-22 19:50:40,623 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 22-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:50:40,673 Iteration: 1. Energy -1.8797461119245802.  Energy change 0.000e+00 , Iteration dutation: 0.04944872856140137
+INFO 2021-02-22 19:50:40,696 Iteration: 2. Energy -1.8797488945466088.  Energy change -2.783e-06 , Iteration dutation: 0.0006003379821777344
+INFO 2021-02-22 19:50:40,742 Iteration: 3. Energy -1.8797529242864832.  Energy change -4.030e-06 , Iteration dutation: 0.04643368721008301
+INFO 2021-02-22 19:50:40,788 Iteration: 4. Energy -1.8797590996449622.  Energy change -6.175e-06 , Iteration dutation: 0.046286821365356445
+INFO 2021-02-22 19:50:40,834 Iteration: 5. Energy -1.879769708311129.  Energy change -1.061e-05 , Iteration dutation: 0.04597067832946777
+INFO 2021-02-22 19:50:40,879 Iteration: 6. Energy -1.8797880406008418.  Energy change -1.833e-05 , Iteration dutation: 0.04593253135681152
+INFO 2021-02-22 19:50:40,922 Iteration: 7. Energy -1.879815290808691.  Energy change -2.725e-05 , Iteration dutation: 0.04317784309387207
+INFO 2021-02-22 19:50:40,965 Iteration: 8. Energy -1.879826596884139.  Energy change -1.131e-05 , Iteration dutation: 0.043192386627197266
+INFO 2021-02-22 19:50:41,009 Iteration: 9. Energy -1.879830294059878.  Energy change -3.697e-06 , Iteration dutation: 0.04340100288391113
+INFO 2021-02-22 19:50:41,053 Iteration: 10. Energy -1.87983708153506.  Energy change -6.787e-06 , Iteration dutation: 0.044272661209106445
+INFO 2021-02-22 19:50:41,096 Iteration: 11. Energy -1.879848082289831.  Energy change -1.100e-05 , Iteration dutation: 0.043297529220581055
+INFO 2021-02-22 19:50:41,140 Iteration: 12. Energy -1.8798567689225818.  Energy change -8.687e-06 , Iteration dutation: 0.04340720176696777
+INFO 2021-02-22 19:50:41,183 Iteration: 13. Energy -1.8798590669910413.  Energy change -2.298e-06 , Iteration dutation: 0.04348182678222656
+INFO 2021-02-22 19:50:41,226 Iteration: 14. Energy -1.8798634141127968.  Energy change -4.347e-06 , Iteration dutation: 0.0431060791015625
+INFO 2021-02-22 19:50:41,270 Iteration: 15. Energy -1.8798717474487419.  Energy change -8.333e-06 , Iteration dutation: 0.043401241302490234
+INFO 2021-02-22 19:50:41,313 Iteration: 16. Energy -1.879887514961648.  Energy change -1.577e-05 , Iteration dutation: 0.04322934150695801
+INFO 2021-02-22 19:50:41,356 Iteration: 17. Energy -1.8799163201210578.  Energy change -2.881e-05 , Iteration dutation: 0.04329991340637207
+INFO 2021-02-22 19:50:41,399 Iteration: 18. Energy -1.8799643775456785.  Energy change -4.806e-05 , Iteration dutation: 0.043190717697143555
+INFO 2021-02-22 19:50:41,443 Iteration: 19. Energy -1.8800212658471265.  Energy change -5.689e-05 , Iteration dutation: 0.043277740478515625
+INFO 2021-02-22 19:50:41,486 Iteration: 20. Energy -1.8800356041999866.  Energy change -1.434e-05 , Iteration dutation: 0.04342293739318848
+INFO 2021-02-22 19:50:41,529 Iteration: 21. Energy -1.8800593862366397.  Energy change -2.378e-05 , Iteration dutation: 0.043261051177978516
+INFO 2021-02-22 19:50:41,573 Iteration: 22. Energy -1.8800723292147115.  Energy change -1.294e-05 , Iteration dutation: 0.043259620666503906
+INFO 2021-02-22 19:50:41,616 Iteration: 23. Energy -1.8800812957225443.  Energy change -8.967e-06 , Iteration dutation: 0.04329395294189453
+INFO 2021-02-22 19:50:41,659 Iteration: 24. Energy -1.880084059312519.  Energy change -2.764e-06 , Iteration dutation: 0.04339718818664551
+INFO 2021-02-22 19:50:41,703 Iteration: 25. Energy -1.8800855347883454.  Energy change -1.475e-06 , Iteration dutation: 0.04353904724121094
+INFO 2021-02-22 19:50:41,746 Iteration: 26. Energy -1.8800867082628325.  Energy change -1.173e-06 , Iteration dutation: 0.04328513145446777
+INFO 2021-02-22 19:50:41,789 Iteration: 27. Energy -1.880088413196067.  Energy change -1.705e-06 , Iteration dutation: 0.04311823844909668
+INFO 2021-02-22 19:50:41,833 Iteration: 28. Energy -1.8800894441737512.  Energy change -1.031e-06 , Iteration dutation: 0.04322218894958496
+INFO 2021-02-22 19:50:41,876 Iteration: 29. Energy -1.8800901064037359.  Energy change -6.622e-07 , Iteration dutation: 0.043325185775756836
+INFO 2021-02-22 19:50:41,919 Iteration: 30. Energy -1.880091169193795.  Energy change -1.063e-06 , Iteration dutation: 0.04332780838012695
+INFO 2021-02-22 19:50:41,963 Iteration: 31. Energy -1.8800928926241989.  Energy change -1.723e-06 , Iteration dutation: 0.04337430000305176
+INFO 2021-02-22 19:50:42,006 Iteration: 32. Energy -1.8800956003684095.  Energy change -2.708e-06 , Iteration dutation: 0.04378223419189453
+INFO 2021-02-22 19:50:42,050 Iteration: 33. Energy -1.8800985205492595.  Energy change -2.920e-06 , Iteration dutation: 0.04400038719177246
+INFO 2021-02-22 19:50:42,094 Iteration: 34. Energy -1.8801021668721885.  Energy change -3.646e-06 , Iteration dutation: 0.04309964179992676
+INFO 2021-02-22 19:50:42,137 Iteration: 35. Energy -1.8801068051062204.  Energy change -4.638e-06 , Iteration dutation: 0.04334235191345215
+INFO 2021-02-22 19:50:42,180 Iteration: 36. Energy -1.8801145354069977.  Energy change -7.730e-06 , Iteration dutation: 0.04345226287841797
+INFO 2021-02-22 19:50:42,223 Iteration: 37. Energy -1.8801239584190057.  Energy change -9.423e-06 , Iteration dutation: 0.043146371841430664
+INFO 2021-02-22 19:50:42,267 Iteration: 38. Energy -1.8801094638190814.  Energy change 1.449e-05 , Iteration dutation: 0.043317317962646484
+INFO 2021-02-22 19:50:42,310 Iteration: 39. Energy -1.8801252999806846.  Energy change -1.584e-05 , Iteration dutation: 0.043198585510253906
+INFO 2021-02-22 19:50:42,353 Iteration: 40. Energy -1.8801273335486335.  Energy change -2.034e-06 , Iteration dutation: 0.04342007637023926
+INFO 2021-02-22 19:50:42,397 Iteration: 41. Energy -1.880128896476893.  Energy change -1.563e-06 , Iteration dutation: 0.04332780838012695
+INFO 2021-02-22 19:50:42,440 Iteration: 42. Energy -1.8801295069392059.  Energy change -6.105e-07 , Iteration dutation: 0.04314398765563965
+INFO 2021-02-22 19:50:42,483 Iteration: 43. Energy -1.8801302544019927.  Energy change -7.475e-07 , Iteration dutation: 0.04327559471130371
+INFO 2021-02-22 19:50:42,526 Iteration: 44. Energy -1.880130877314571.  Energy change -6.229e-07 , Iteration dutation: 0.043359994888305664
+INFO 2021-02-22 19:50:42,570 Iteration: 45. Energy -1.8801316051625818.  Energy change -7.278e-07 , Iteration dutation: 0.04316973686218262
+INFO 2021-02-22 19:50:42,613 Iteration: 46. Energy -1.880132165847591.  Energy change -5.607e-07 , Iteration dutation: 0.04326343536376953
+INFO 2021-02-22 19:50:42,656 Iteration: 47. Energy -1.8801325045170763.  Energy change -3.387e-07 , Iteration dutation: 0.04349827766418457
+INFO 2021-02-22 19:50:42,700 Iteration: 48. Energy -1.8801327015513511.  Energy change -1.970e-07 , Iteration dutation: 0.04322624206542969
+INFO 2021-02-22 19:50:42,743 Iteration: 49. Energy -1.8801328810620437.  Energy change -1.795e-07 , Iteration dutation: 0.04361534118652344
+INFO 2021-02-22 19:50:42,786 Iteration: 50. Energy -1.8801331505239989.  Energy change -2.695e-07 , Iteration dutation: 0.04318594932556152
+INFO 2021-02-22 19:50:42,830 Iteration: 51. Energy -1.8801333909020346.  Energy change -2.404e-07 , Iteration dutation: 0.0431981086730957
+INFO 2021-02-22 19:50:42,873 Iteration: 52. Energy -1.8801335229456746.  Energy change -1.320e-07 , Iteration dutation: 0.0435335636138916
+INFO 2021-02-22 19:50:42,916 Iteration: 53. Energy -1.8801336053091302.  Energy change -8.236e-08 , Iteration dutation: 0.043274641036987305
+INFO 2021-02-22 19:50:42,960 Iteration: 54. Energy -1.8801336624182718.  Energy change -5.711e-08 , Iteration dutation: 0.04323911666870117
+INFO 2021-02-22 19:50:43,004 Iteration: 55. Energy -1.8801337348598954.  Energy change -7.244e-08 , Iteration dutation: 0.044054508209228516
+INFO 2021-02-22 19:50:43,047 Iteration: 56. Energy -1.8801338365887257.  Energy change -1.017e-07 , Iteration dutation: 0.04337167739868164
+INFO 2021-02-22 19:50:43,091 Iteration: 57. Energy -1.8801339977009772.  Energy change -1.611e-07 , Iteration dutation: 0.04336953163146973
+INFO 2021-02-22 19:50:43,134 Iteration: 58. Energy -1.880134259671724.  Energy change -2.620e-07 , Iteration dutation: 0.04343390464782715
+INFO 2021-02-22 19:50:43,177 Iteration: 59. Energy -1.880134693838535.  Energy change -4.342e-07 , Iteration dutation: 0.043554067611694336
+INFO 2021-02-22 19:50:43,221 Iteration: 60. Energy -1.8801354123745533.  Energy change -7.185e-07 , Iteration dutation: 0.043212890625
+INFO 2021-02-22 19:50:43,264 Iteration: 61. Energy -1.8801365589295451.  Energy change -1.147e-06 , Iteration dutation: 0.0431981086730957
+INFO 2021-02-22 19:50:43,307 Iteration: 62. Energy -1.8801382542984393.  Energy change -1.695e-06 , Iteration dutation: 0.04323387145996094
+INFO 2021-02-22 19:50:43,350 Iteration: 63. Energy -1.8801403834585868.  Energy change -2.129e-06 , Iteration dutation: 0.04342198371887207
+INFO 2021-02-22 19:50:43,394 Iteration: 64. Energy -1.8801387820322737.  Energy change 1.601e-06 , Iteration dutation: 0.0431818962097168
+INFO 2021-02-22 19:50:43,437 Iteration: 65. Energy -1.8801411281254738.  Energy change -2.346e-06 , Iteration dutation: 0.04318118095397949
+INFO 2021-02-22 19:50:43,480 Iteration: 66. Energy -1.8801423505204773.  Energy change -1.222e-06 , Iteration dutation: 0.04314374923706055
+INFO 2021-02-22 19:50:43,524 Iteration: 67. Energy -1.880143161507394.  Energy change -8.110e-07 , Iteration dutation: 0.04353213310241699
+INFO 2021-02-22 19:50:43,567 Iteration: 68. Energy -1.8801435440961383.  Energy change -3.826e-07 , Iteration dutation: 0.043596744537353516
+INFO 2021-02-22 19:50:43,610 Iteration: 69. Energy -1.8801437709536115.  Energy change -2.269e-07 , Iteration dutation: 0.04320549964904785
+INFO 2021-02-22 19:50:43,654 Iteration: 70. Energy -1.8801438453097041.  Energy change -7.436e-08 , Iteration dutation: 0.04364633560180664
+INFO 2021-02-22 19:50:43,697 Iteration: 71. Energy -1.8801439074371464.  Energy change -6.213e-08 , Iteration dutation: 0.04327654838562012
+INFO 2021-02-22 19:50:43,741 Iteration: 72. Energy -1.8801439932278226.  Energy change -8.579e-08 , Iteration dutation: 0.04335474967956543
+INFO 2021-02-22 19:50:43,784 Iteration: 73. Energy -1.880144099248017.  Energy change -1.060e-07 , Iteration dutation: 0.04373812675476074
+INFO 2021-02-22 19:50:43,828 Iteration: 74. Energy -1.8801441800111305.  Energy change -8.076e-08 , Iteration dutation: 0.04342055320739746
+INFO 2021-02-22 19:50:43,871 Iteration: 75. Energy -1.8801442043633851.  Energy change -2.435e-08 , Iteration dutation: 0.04348182678222656
+INFO 2021-02-22 19:50:43,915 Iteration: 76. Energy -1.8801442086611755.  Energy change -4.298e-09 , Iteration dutation: 0.0434114933013916
+INFO 2021-02-22 19:50:43,958 Iteration: 77. Energy -1.8801442101469936.  Energy change -1.486e-09 , Iteration dutation: 0.043538808822631836
+INFO 2021-02-22 19:50:44,001 Iteration: 78. Energy -1.8801442115174922.  Energy change -1.370e-09 , Iteration dutation: 0.043387413024902344
+INFO 2021-02-22 19:50:44,045 Iteration: 79. Energy -1.8801442133520476.  Energy change -1.835e-09 , Iteration dutation: 0.04318976402282715
+INFO 2021-02-22 19:50:44,088 Iteration: 80. Energy -1.8801442165725148.  Energy change -3.220e-09 , Iteration dutation: 0.043140411376953125
+INFO 2021-02-22 19:50:44,131 Iteration: 81. Energy -1.8801442224352711.  Energy change -5.863e-09 , Iteration dutation: 0.0431981086730957
+INFO 2021-02-22 19:50:44,174 Iteration: 82. Energy -1.8801442332427807.  Energy change -1.081e-08 , Iteration dutation: 0.043309688568115234
+INFO 2021-02-22 19:50:44,218 Iteration: 83. Energy -1.8801442531406616.  Energy change -1.990e-08 , Iteration dutation: 0.04329085350036621
+INFO 2021-02-22 19:50:44,261 Iteration: 84. Energy -1.880144289353065.  Energy change -3.621e-08 , Iteration dutation: 0.04337882995605469
+INFO 2021-02-22 19:50:44,304 Iteration: 85. Energy -1.8801443538328473.  Energy change -6.448e-08 , Iteration dutation: 0.043213844299316406
+INFO 2021-02-22 19:50:44,348 Iteration: 86. Energy -1.8801444648620922.  Energy change -1.110e-07 , Iteration dutation: 0.043399810791015625
+INFO 2021-02-22 19:50:44,391 Iteration: 87. Energy -1.8801446467489358.  Energy change -1.819e-07 , Iteration dutation: 0.04340052604675293
+INFO 2021-02-22 19:50:44,434 Iteration: 88. Energy -1.8801449158041912.  Energy change -2.691e-07 , Iteration dutation: 0.043203115463256836
+INFO 2021-02-22 19:50:44,478 Iteration: 89. Energy -1.8801451901026724.  Energy change -2.743e-07 , Iteration dutation: 0.043212890625
+INFO 2021-02-22 19:50:44,521 Iteration: 90. Energy -1.88014546736368.  Energy change -2.773e-07 , Iteration dutation: 0.04347586631774902
+INFO 2021-02-22 19:50:44,564 Iteration: 91. Energy -1.8801454807451794.  Energy change -1.338e-08 , Iteration dutation: 0.04316544532775879
+INFO 2021-02-22 19:50:44,607 Iteration: 92. Energy -1.880145565292621.  Energy change -8.455e-08 , Iteration dutation: 0.0430908203125
+INFO 2021-02-22 19:50:44,651 Iteration: 93. Energy -1.88014568050404.  Energy change -1.152e-07 , Iteration dutation: 0.04324769973754883
+INFO 2021-02-22 19:50:44,694 Iteration: 94. Energy -1.8801457477153871.  Energy change -6.721e-08 , Iteration dutation: 0.043759822845458984
+INFO 2021-02-22 19:50:44,738 Iteration: 95. Energy -1.8801458087595624.  Energy change -6.104e-08 , Iteration dutation: 0.043584585189819336
+INFO 2021-02-22 19:50:44,781 Iteration: 96. Energy -1.8801458319318054.  Energy change -2.317e-08 , Iteration dutation: 0.043436527252197266
+INFO 2021-02-22 19:50:44,824 Iteration: 97. Energy -1.8801458681306433.  Energy change -3.620e-08 , Iteration dutation: 0.043129920959472656
+INFO 2021-02-22 19:50:44,868 Iteration: 98. Energy -1.880145906745848.  Energy change -3.862e-08 , Iteration dutation: 0.04344010353088379
+INFO 2021-02-22 19:50:44,911 Iteration: 99. Energy -1.8801459276305474.  Energy change -2.088e-08 , Iteration dutation: 0.043321847915649414
+INFO 2021-02-22 19:50:44,954 Iteration: 100. Energy -1.8801459379346355.  Energy change -1.030e-08 , Iteration dutation: 0.043243408203125
+INFO 2021-02-22 19:50:44,998 Iteration: 101. Energy -1.8801459432654.  Energy change -5.331e-09 , Iteration dutation: 0.043379783630371094
+INFO 2021-02-22 19:50:45,041 Iteration: 102. Energy -1.8801459450948428.  Energy change -1.829e-09 , Iteration dutation: 0.04319572448730469
+INFO 2021-02-22 19:50:45,084 Iteration: 103. Energy -1.8801459481223666.  Energy change -3.028e-09 , Iteration dutation: 0.04322481155395508
+INFO 2021-02-22 19:50:45,128 Iteration: 104. Energy -1.8801459531527502.  Energy change -5.030e-09 , Iteration dutation: 0.043578386306762695
+INFO 2021-02-22 19:50:45,171 Iteration: 105. Energy -1.8801459617918301.  Energy change -8.639e-09 , Iteration dutation: 0.04367399215698242
+INFO 2021-02-22 19:50:45,215 Iteration: 106. Energy -1.8801459771341456.  Energy change -1.534e-08 , Iteration dutation: 0.043195486068725586
+INFO 2021-02-22 19:50:45,258 Iteration: 107. Energy -1.8801460049678886.  Energy change -2.783e-08 , Iteration dutation: 0.0437464714050293
+INFO 2021-02-22 19:50:45,301 Iteration: 108. Energy -1.8801460559230945.  Energy change -5.096e-08 , Iteration dutation: 0.043183326721191406
+INFO 2021-02-22 19:50:45,345 Iteration: 109. Energy -1.8801461475102716.  Energy change -9.159e-08 , Iteration dutation: 0.043137550354003906
+INFO 2021-02-22 19:50:45,388 Iteration: 110. Energy -1.8801462974249765.  Energy change -1.499e-07 , Iteration dutation: 0.04355955123901367
+INFO 2021-02-22 19:50:45,431 Iteration: 111. Energy -1.8801465341542782.  Energy change -2.367e-07 , Iteration dutation: 0.043179988861083984
+INFO 2021-02-22 19:50:45,475 Iteration: 112. Energy -1.8801469496510617.  Energy change -4.155e-07 , Iteration dutation: 0.04318881034851074
+INFO 2021-02-22 19:50:45,518 Iteration: 113. Energy -1.8801465820808438.  Energy change 3.676e-07 , Iteration dutation: 0.04363059997558594
+INFO 2021-02-22 19:50:45,561 Iteration: 114. Energy -1.8801471940028973.  Energy change -6.119e-07 , Iteration dutation: 0.04310011863708496
+INFO 2021-02-22 19:50:45,604 Iteration: 115. Energy -1.8801476394625993.  Energy change -4.455e-07 , Iteration dutation: 0.04311990737915039
+INFO 2021-02-22 19:50:45,648 Iteration: 116. Energy -1.8801484605230434.  Energy change -8.211e-07 , Iteration dutation: 0.04316520690917969
+INFO 2021-02-22 19:50:45,691 Iteration: 117. Energy -1.8801498589510268.  Energy change -1.398e-06 , Iteration dutation: 0.043589115142822266
+INFO 2021-02-22 19:50:45,735 Iteration: 118. Energy -1.8801520259917277.  Energy change -2.167e-06 , Iteration dutation: 0.043204545974731445
+INFO 2021-02-22 19:50:45,778 Iteration: 119. Energy -1.8801541559855823.  Energy change -2.130e-06 , Iteration dutation: 0.04341745376586914
+INFO 2021-02-22 19:50:45,821 Iteration: 120. Energy -1.8801544168179936.  Energy change -2.608e-07 , Iteration dutation: 0.04311013221740723
+INFO 2021-02-22 19:50:45,865 Iteration: 121. Energy -1.880154918300022.  Energy change -5.015e-07 , Iteration dutation: 0.043517112731933594
+INFO 2021-02-22 19:50:45,908 Iteration: 122. Energy -1.8801562915898262.  Energy change -1.373e-06 , Iteration dutation: 0.043364524841308594
+INFO 2021-02-22 19:50:45,951 Iteration: 123. Energy -1.8801577726685923.  Energy change -1.481e-06 , Iteration dutation: 0.04324150085449219
+INFO 2021-02-22 19:50:45,994 Iteration: 124. Energy -1.8801586089486118.  Energy change -8.363e-07 , Iteration dutation: 0.04333925247192383
+INFO 2021-02-22 19:50:46,038 Iteration: 125. Energy -1.8801598184602453.  Energy change -1.210e-06 , Iteration dutation: 0.043866872787475586
+INFO 2021-02-22 19:50:46,081 Iteration: 126. Energy -1.8801607953879005.  Energy change -9.769e-07 , Iteration dutation: 0.04316401481628418
+INFO 2021-02-22 19:50:46,125 Iteration: 127. Energy -1.8801616639014607.  Energy change -8.685e-07 , Iteration dutation: 0.043369293212890625
+INFO 2021-02-22 19:50:46,169 Iteration: 128. Energy -1.8801627234132825.  Energy change -1.060e-06 , Iteration dutation: 0.04380965232849121
+INFO 2021-02-22 19:50:46,212 Iteration: 129. Energy -1.8801634684358008.  Energy change -7.450e-07 , Iteration dutation: 0.04323577880859375
+INFO 2021-02-22 19:50:46,255 Iteration: 130. Energy -1.8801640666621964.  Energy change -5.982e-07 , Iteration dutation: 0.04351639747619629
+INFO 2021-02-22 19:50:46,299 Iteration: 131. Energy -1.8801646040599247.  Energy change -5.374e-07 , Iteration dutation: 0.04322481155395508
+INFO 2021-02-22 19:50:46,342 Iteration: 132. Energy -1.880165178559428.  Energy change -5.745e-07 , Iteration dutation: 0.043112754821777344
+INFO 2021-02-22 19:50:46,385 Iteration: 133. Energy -1.8801659705931963.  Energy change -7.920e-07 , Iteration dutation: 0.04339933395385742
+INFO 2021-02-22 19:50:46,429 Iteration: 134. Energy -1.8801671985008044.  Energy change -1.228e-06 , Iteration dutation: 0.043488502502441406
+INFO 2021-02-22 19:50:46,472 Iteration: 135. Energy -1.8801684595982708.  Energy change -1.261e-06 , Iteration dutation: 0.04329967498779297
+INFO 2021-02-22 19:50:46,516 Iteration: 136. Energy -1.8801695091587476.  Energy change -1.050e-06 , Iteration dutation: 0.043698787689208984
+INFO 2021-02-22 19:50:46,559 Iteration: 137. Energy -1.8801703667793954.  Energy change -8.576e-07 , Iteration dutation: 0.04328560829162598
+INFO 2021-02-22 19:50:46,602 Iteration: 138. Energy -1.8801708612341828.  Energy change -4.945e-07 , Iteration dutation: 0.04321718215942383
+INFO 2021-02-22 19:50:46,646 Iteration: 139. Energy -1.8801705771702826.  Energy change 2.841e-07 , Iteration dutation: 0.043256521224975586
+INFO 2021-02-22 19:50:46,689 Iteration: 140. Energy -1.8801710485404557.  Energy change -4.714e-07 , Iteration dutation: 0.04345369338989258
+INFO 2021-02-22 19:50:46,732 Iteration: 141. Energy -1.8801712674428108.  Energy change -2.189e-07 , Iteration dutation: 0.04315614700317383
+INFO 2021-02-22 19:50:46,776 Iteration: 142. Energy -1.8801713864173708.  Energy change -1.190e-07 , Iteration dutation: 0.04363059997558594
+INFO 2021-02-22 19:50:46,819 Iteration: 143. Energy -1.8801714393684326.  Energy change -5.295e-08 , Iteration dutation: 0.04323244094848633
+INFO 2021-02-22 19:50:46,862 Iteration: 144. Energy -1.880171479491679.  Energy change -4.012e-08 , Iteration dutation: 0.043288230895996094
+INFO 2021-02-22 19:50:46,906 Iteration: 145. Energy -1.8801715480967955.  Energy change -6.861e-08 , Iteration dutation: 0.043426513671875
+INFO 2021-02-22 19:50:46,949 Iteration: 146. Energy -1.8801716642138628.  Energy change -1.161e-07 , Iteration dutation: 0.043243408203125
+INFO 2021-02-22 19:50:46,992 Iteration: 147. Energy -1.8801718502331997.  Energy change -1.860e-07 , Iteration dutation: 0.04320383071899414
+INFO 2021-02-22 19:50:47,035 Iteration: 148. Energy -1.8801721341553828.  Energy change -2.839e-07 , Iteration dutation: 0.043482065200805664
+INFO 2021-02-22 19:50:47,079 Iteration: 149. Energy -1.8801725706305235.  Energy change -4.365e-07 , Iteration dutation: 0.04325103759765625
+INFO 2021-02-22 19:50:47,122 Iteration: 150. Energy -1.8801733089724628.  Energy change -7.383e-07 , Iteration dutation: 0.04336667060852051
+INFO 2021-02-22 19:50:47,166 Iteration: 151. Energy -1.8801745697905576.  Energy change -1.261e-06 , Iteration dutation: 0.04394245147705078
+INFO 2021-02-22 19:50:47,210 Iteration: 152. Energy -1.8801765803578037.  Energy change -2.011e-06 , Iteration dutation: 0.043404579162597656
+INFO 2021-02-22 19:50:47,253 Iteration: 153. Energy -1.880178361121993.  Energy change -1.781e-06 , Iteration dutation: 0.04347515106201172
+INFO 2021-02-22 19:50:47,296 Iteration: 154. Energy -1.8801802145749393.  Energy change -1.853e-06 , Iteration dutation: 0.04318380355834961
+INFO 2021-02-22 19:50:47,340 Iteration: 155. Energy -1.880182560879432.  Energy change -2.346e-06 , Iteration dutation: 0.04317045211791992
+INFO 2021-02-22 19:50:47,383 Iteration: 156. Energy -1.8801847413147421.  Energy change -2.180e-06 , Iteration dutation: 0.043567657470703125
+INFO 2021-02-22 19:50:47,426 Iteration: 157. Energy -1.8801853579163086.  Energy change -6.166e-07 , Iteration dutation: 0.0431978702545166
+INFO 2021-02-22 19:50:47,469 Iteration: 158. Energy -1.8801861451792137.  Energy change -7.873e-07 , Iteration dutation: 0.0431363582611084
+INFO 2021-02-22 19:50:47,513 Iteration: 159. Energy -1.8801865948030114.  Energy change -4.496e-07 , Iteration dutation: 0.04410219192504883
+INFO 2021-02-22 19:50:47,557 Iteration: 160. Energy -1.8801869957706439.  Energy change -4.010e-07 , Iteration dutation: 0.04335355758666992
+INFO 2021-02-22 19:50:47,600 Iteration: 161. Energy -1.8801874549336839.  Energy change -4.592e-07 , Iteration dutation: 0.04311370849609375
+INFO 2021-02-22 19:50:47,643 Iteration: 162. Energy -1.8801879295664068.  Energy change -4.746e-07 , Iteration dutation: 0.04317903518676758
+INFO 2021-02-22 19:50:47,687 Iteration: 163. Energy -1.8801883605395662.  Energy change -4.310e-07 , Iteration dutation: 0.043602705001831055
+INFO 2021-02-22 19:50:47,730 Iteration: 164. Energy -1.8801885307818709.  Energy change -1.702e-07 , Iteration dutation: 0.04327058792114258
+INFO 2021-02-22 19:50:47,773 Iteration: 165. Energy -1.8801885898612052.  Energy change -5.908e-08 , Iteration dutation: 0.04356646537780762
+INFO 2021-02-22 19:50:47,817 Iteration: 166. Energy -1.8801886276134132.  Energy change -3.775e-08 , Iteration dutation: 0.04355764389038086
+INFO 2021-02-22 19:50:47,861 Iteration: 167. Energy -1.8801886438056197.  Energy change -1.619e-08 , Iteration dutation: 0.04367256164550781
+INFO 2021-02-22 19:50:47,904 Iteration: 168. Energy -1.8801886544119917.  Energy change -1.061e-08 , Iteration dutation: 0.043450117111206055
+INFO 2021-02-22 19:50:47,947 Iteration: 169. Energy -1.8801886563668764.  Energy change -1.955e-09 , Iteration dutation: 0.043357133865356445
+INFO 2021-02-22 19:50:47,991 Iteration: 170. Energy -1.880188657022427.  Energy change -6.556e-10 , Iteration dutation: 0.04317951202392578
+INFO 2021-02-22 19:50:48,034 Iteration: 171. Energy -1.8801886580130935.  Energy change -9.907e-10 , Iteration dutation: 0.04346799850463867
+INFO 2021-02-22 19:50:48,077 Iteration: 172. Energy -1.8801886595453707.  Energy change -1.532e-09 , Iteration dutation: 0.04313492774963379
+INFO 2021-02-22 19:50:48,120 Iteration: 173. Energy -1.880188661768185.  Energy change -2.223e-09 , Iteration dutation: 0.04311943054199219
+INFO 2021-02-22 19:50:48,164 Iteration: 174. Energy -1.8801886634006832.  Energy change -1.632e-09 , Iteration dutation: 0.043251752853393555
+INFO 2021-02-22 19:50:48,207 Iteration: 175. Energy -1.8801886639510217.  Energy change -5.503e-10 , Iteration dutation: 0.043230533599853516
+INFO 2021-02-22 19:50:48,250 Iteration: 176. Energy -1.880188664014025.  Energy change -6.300e-11 , Iteration dutation: 0.0433659553527832
+INFO 2021-02-22 19:50:48,293 Iteration: 177. Energy -1.880188664015621.  Energy change -1.596e-12 , Iteration dutation: 0.04319405555725098
+INFO 2021-02-22 19:50:48,337 Iteration: 178. Energy -1.8801886640156806.  Energy change -5.973e-14 , Iteration dutation: 0.043192386627197266
+INFO 2021-02-22 19:50:48,380 Iteration: 179. Energy -1.8801886640156855.  Energy change -4.885e-15 , Iteration dutation: 0.04338979721069336
+INFO 2021-02-22 19:50:48,409 Add new element to final ansatz d_q_exc_[0, 3]_[4, 7]. Energy -1.8801886640156855. Energy change 0.00044255209110533045, var. parameters: [-0.3388201904544214, -0.6664535208769026, 0.3768270774164737, -0.4969528707865321, -0.4787668452400831, -0.12821786135207427, -0.0771040874965765, 0.058321831724741736, 0.3103046061181288, 0.310304604565056, -0.2926340255423015, 1.3009738342989186, 1.308500887395117, 0.20989178185559063, -0.15273209914023664, -0.4150320210912955, -1.5490472426200024, 0.669148257514358, -0.2956419053599842, 1.3105323186399003, -0.1929732446673575, -0.26824404667668234]
+INFO 2021-02-22 19:50:48,414 Add new element to final ansatz d_q_exc_[0, 3]_[4, 7]. Energy -1.8801886640156855. Energy change 0.00044255209110533045, var. parameters: [-0.3388201904544214, -0.6664535208769026, 0.3768270774164737, -0.4969528707865321, -0.4787668452400831, -0.12821786135207427, -0.0771040874965765, 0.058321831724741736, 0.3103046061181288, 0.310304604565056, -0.2926340255423015, 1.3009738342989186, 1.308500887395117, 0.20989178185559063, -0.15273209914023664, -0.4150320210912955, -1.5490472426200024, 0.669148257514358, -0.2956419053599842, 1.3105323186399003, -0.1929732446673575, -0.26824404667668234]
+INFO 2021-02-22 19:50:54,022 Elements with largest grads ['d_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[0, 3]_[4, 7]', 's_q_exc_0_4', 'd_q_exc_[2, 5]_[4, 7]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 3]_[1, 6]', 'd_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[1, 2]_[5, 6]', 's_q_exc_3_7', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[3, 6]', 'd_q_exc_[1, 4]_[3, 2]', 's_q_exc_2_6', 'd_q_exc_[0, 1]_[6, 7]', 's_q_exc_1_5']. Grads [8.941378679128142e-10, -9.647879162244521e-10, 9.842928399422801e-10, -1.0520442819857145e-09, -1.0565198126089026e-09, -1.1213969306096694e-09, -1.2029331068579008e-09, 1.2132203713877132e-09, -1.260433635068281e-09, -1.3218443429673793e-09, 1.33052513017623e-09, 1.546027042498288e-09, 1.5610189514712186e-09, -1.6027274507557365e-09, 1.655429552769802e-09, -1.928441145486459e-09, -2.147311512412306e-09, 2.176839421393073e-09, 2.418285766081496e-09, 5.116739473960685e-09]
+INFO 2021-02-22 19:50:59,982 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 23-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:51:00,067 Iteration: 1. Energy -1.8801886640156855.  Energy change 0.000e+00 , Iteration dutation: 0.08372235298156738
+INFO 2021-02-22 19:51:00,068 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2021-02-22 19:51:00,068 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 22-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 19:51:00,134 Iteration: 1. Energy -1.4822425461673234.  Energy change 3.979e-01 , Iteration dutation: 0.0659637451171875
+INFO 2021-02-22 19:51:00,151 Iteration: 2. Energy -1.8270338711711736.  Energy change -3.448e-01 , Iteration dutation: 0.0006008148193359375
+INFO 2021-02-22 19:51:00,195 Iteration: 3. Energy -1.8238486339969944.  Energy change 3.185e-03 , Iteration dutation: 0.038225650787353516
+INFO 2021-02-22 19:51:00,240 Iteration: 4. Energy -1.8570403268543205.  Energy change -3.319e-02 , Iteration dutation: 0.0457308292388916
+INFO 2021-02-22 19:51:00,285 Iteration: 5. Energy -1.8697865980048096.  Energy change -1.275e-02 , Iteration dutation: 0.04494142532348633
+INFO 2021-02-22 19:51:00,331 Iteration: 6. Energy -1.8729998682002709.  Energy change -3.213e-03 , Iteration dutation: 0.04569363594055176
+INFO 2021-02-22 19:51:00,377 Iteration: 7. Energy -1.8750761991565774.  Energy change -2.076e-03 , Iteration dutation: 0.04568791389465332
+INFO 2021-02-22 19:51:00,423 Iteration: 8. Energy -1.8760041971769836.  Energy change -9.280e-04 , Iteration dutation: 0.045619964599609375
+INFO 2021-02-22 19:51:00,468 Iteration: 9. Energy -1.8764853798542067.  Energy change -4.812e-04 , Iteration dutation: 0.04572701454162598
+INFO 2021-02-22 19:51:00,512 Iteration: 10. Energy -1.8769186349490727.  Energy change -4.333e-04 , Iteration dutation: 0.04450654983520508
+INFO 2021-02-22 19:51:00,554 Iteration: 11. Energy -1.8770422014663999.  Energy change -1.236e-04 , Iteration dutation: 0.043013572692871094
+INFO 2021-02-22 19:51:00,597 Iteration: 12. Energy -1.8771027999069785.  Energy change -6.060e-05 , Iteration dutation: 0.042871713638305664
+INFO 2021-02-22 19:51:00,640 Iteration: 13. Energy -1.8771960141094115.  Energy change -9.321e-05 , Iteration dutation: 0.04278731346130371
+INFO 2021-02-22 19:51:00,683 Iteration: 14. Energy -1.8773528481243442.  Energy change -1.568e-04 , Iteration dutation: 0.04286909103393555
+INFO 2021-02-22 19:51:00,725 Iteration: 15. Energy -1.8776393886970761.  Energy change -2.865e-04 , Iteration dutation: 0.0426483154296875
+INFO 2021-02-22 19:51:00,769 Iteration: 16. Energy -1.8781814365460168.  Energy change -5.420e-04 , Iteration dutation: 0.04263138771057129
+INFO 2021-02-22 19:51:00,812 Iteration: 17. Energy -1.8788240944643244.  Energy change -6.427e-04 , Iteration dutation: 0.04352092742919922
+INFO 2021-02-22 19:51:00,855 Iteration: 18. Energy -1.8793044080976995.  Energy change -4.803e-04 , Iteration dutation: 0.04289984703063965
+INFO 2021-02-22 19:51:00,897 Iteration: 19. Energy -1.8797027404193316.  Energy change -3.983e-04 , Iteration dutation: 0.04299664497375488
+INFO 2021-02-22 19:51:00,940 Iteration: 20. Energy -1.8797280125478775.  Energy change -2.527e-05 , Iteration dutation: 0.042678117752075195
+INFO 2021-02-22 19:51:00,983 Iteration: 21. Energy -1.87976986753245.  Energy change -4.185e-05 , Iteration dutation: 0.04300665855407715
+INFO 2021-02-22 19:51:01,026 Iteration: 22. Energy -1.8798025186080944.  Energy change -3.265e-05 , Iteration dutation: 0.04302573204040527
+INFO 2021-02-22 19:51:01,069 Iteration: 23. Energy -1.8798061770943726.  Energy change -3.658e-06 , Iteration dutation: 0.04303431510925293
+INFO 2021-02-22 19:51:01,112 Iteration: 24. Energy -1.8798127262979905.  Energy change -6.549e-06 , Iteration dutation: 0.042853355407714844
+INFO 2021-02-22 19:51:01,155 Iteration: 25. Energy -1.8798244953324033.  Energy change -1.177e-05 , Iteration dutation: 0.0428011417388916
+INFO 2021-02-22 19:51:01,198 Iteration: 26. Energy -1.8798450259032442.  Energy change -2.053e-05 , Iteration dutation: 0.042858123779296875
+INFO 2021-02-22 19:51:01,241 Iteration: 27. Energy -1.8798782110586747.  Energy change -3.319e-05 , Iteration dutation: 0.04275107383728027
+INFO 2021-02-22 19:51:01,283 Iteration: 28. Energy -1.8799209104865202.  Energy change -4.270e-05 , Iteration dutation: 0.042891740798950195
+INFO 2021-02-22 19:51:01,326 Iteration: 29. Energy -1.8799528844439959.  Energy change -3.197e-05 , Iteration dutation: 0.04265761375427246
+INFO 2021-02-22 19:51:01,370 Iteration: 30. Energy -1.8800028896479932.  Energy change -5.001e-05 , Iteration dutation: 0.043518781661987305
+INFO 2021-02-22 19:51:01,413 Iteration: 31. Energy -1.8800521139825301.  Energy change -4.922e-05 , Iteration dutation: 0.0429840087890625
+INFO 2021-02-22 19:51:01,455 Iteration: 32. Energy -1.8800782881044915.  Energy change -2.617e-05 , Iteration dutation: 0.042777061462402344
+INFO 2021-02-22 19:51:01,499 Iteration: 33. Energy -1.8801062734586638.  Energy change -2.799e-05 , Iteration dutation: 0.04271817207336426
+INFO 2021-02-22 19:51:01,541 Iteration: 34. Energy -1.8801163565572796.  Energy change -1.008e-05 , Iteration dutation: 0.04331636428833008
+INFO 2021-02-22 19:51:01,584 Iteration: 35. Energy -1.8801198113545685.  Energy change -3.455e-06 , Iteration dutation: 0.04275202751159668
+INFO 2021-02-22 19:51:01,627 Iteration: 36. Energy -1.8801220223098154.  Energy change -2.211e-06 , Iteration dutation: 0.04287552833557129
+INFO 2021-02-22 19:51:01,670 Iteration: 37. Energy -1.880122864929335.  Energy change -8.426e-07 , Iteration dutation: 0.042658329010009766
+INFO 2021-02-22 19:51:01,713 Iteration: 38. Energy -1.8801238735982189.  Energy change -1.009e-06 , Iteration dutation: 0.04301571846008301
+INFO 2021-02-22 19:51:01,755 Iteration: 39. Energy -1.8801245265413238.  Energy change -6.529e-07 , Iteration dutation: 0.04273724555969238
+INFO 2021-02-22 19:51:01,798 Iteration: 40. Energy -1.8801255579480376.  Energy change -1.031e-06 , Iteration dutation: 0.042661190032958984
+INFO 2021-02-22 19:51:01,841 Iteration: 41. Energy -1.8801269295157044.  Energy change -1.372e-06 , Iteration dutation: 0.042668819427490234
+INFO 2021-02-22 19:51:01,884 Iteration: 42. Energy -1.880128048870717.  Energy change -1.119e-06 , Iteration dutation: 0.0430753231048584
+INFO 2021-02-22 19:51:01,927 Iteration: 43. Energy -1.8801290108298265.  Energy change -9.620e-07 , Iteration dutation: 0.04282784461975098
+INFO 2021-02-22 19:51:01,969 Iteration: 44. Energy -1.8801294312732155.  Energy change -4.204e-07 , Iteration dutation: 0.04269719123840332
+INFO 2021-02-22 19:51:02,012 Iteration: 45. Energy -1.8801296922798616.  Energy change -2.610e-07 , Iteration dutation: 0.04272961616516113
+INFO 2021-02-22 19:51:02,055 Iteration: 46. Energy -1.8801299389907788.  Energy change -2.467e-07 , Iteration dutation: 0.04284834861755371
+INFO 2021-02-22 19:51:02,098 Iteration: 47. Energy -1.8801303001169694.  Energy change -3.611e-07 , Iteration dutation: 0.04291701316833496
+INFO 2021-02-22 19:51:02,141 Iteration: 48. Energy -1.8801305814537095.  Energy change -2.813e-07 , Iteration dutation: 0.043013572692871094
+INFO 2021-02-22 19:51:02,184 Iteration: 49. Energy -1.8801306962049689.  Energy change -1.148e-07 , Iteration dutation: 0.04271817207336426
+INFO 2021-02-22 19:51:02,226 Iteration: 50. Energy -1.8801307419507935.  Energy change -4.575e-08 , Iteration dutation: 0.042806148529052734
+INFO 2021-02-22 19:51:02,269 Iteration: 51. Energy -1.8801308027176937.  Energy change -6.077e-08 , Iteration dutation: 0.04277372360229492
+INFO 2021-02-22 19:51:02,312 Iteration: 52. Energy -1.8801309095470273.  Energy change -1.068e-07 , Iteration dutation: 0.04274797439575195
+INFO 2021-02-22 19:51:02,355 Iteration: 53. Energy -1.880131103936125.  Energy change -1.944e-07 , Iteration dutation: 0.042761802673339844
+INFO 2021-02-22 19:51:02,398 Iteration: 54. Energy -1.8801314591574496.  Energy change -3.552e-07 , Iteration dutation: 0.043572187423706055
+INFO 2021-02-22 19:51:02,441 Iteration: 55. Energy -1.8801320956196257.  Energy change -6.365e-07 , Iteration dutation: 0.04286694526672363
+INFO 2021-02-22 19:51:02,484 Iteration: 56. Energy -1.8801331739740228.  Energy change -1.078e-06 , Iteration dutation: 0.04305434226989746
+INFO 2021-02-22 19:51:02,527 Iteration: 57. Energy -1.8801347625309566.  Energy change -1.589e-06 , Iteration dutation: 0.04298114776611328
+INFO 2021-02-22 19:51:02,570 Iteration: 58. Energy -1.8801362034671296.  Energy change -1.441e-06 , Iteration dutation: 0.04276680946350098
+INFO 2021-02-22 19:51:02,613 Iteration: 59. Energy -1.8801377018203533.  Energy change -1.498e-06 , Iteration dutation: 0.0428156852722168
+INFO 2021-02-22 19:51:02,656 Iteration: 60. Energy -1.8801385838821036.  Energy change -8.821e-07 , Iteration dutation: 0.04305863380432129
+INFO 2021-02-22 19:51:02,699 Iteration: 61. Energy -1.8801389741100545.  Energy change -3.902e-07 , Iteration dutation: 0.04287362098693848
+INFO 2021-02-22 19:51:02,742 Iteration: 62. Energy -1.880139625285087.  Energy change -6.512e-07 , Iteration dutation: 0.0429229736328125
+INFO 2021-02-22 19:51:02,784 Iteration: 63. Energy -1.8801407356227315.  Energy change -1.110e-06 , Iteration dutation: 0.042653799057006836
+INFO 2021-02-22 19:51:02,827 Iteration: 64. Energy -1.880142588690929.  Energy change -1.853e-06 , Iteration dutation: 0.042710065841674805
+INFO 2021-02-22 19:51:02,870 Iteration: 65. Energy -1.880145183557327.  Energy change -2.595e-06 , Iteration dutation: 0.04312300682067871
+INFO 2021-02-22 19:51:02,913 Iteration: 66. Energy -1.8801466382459306.  Energy change -1.455e-06 , Iteration dutation: 0.042714834213256836
+INFO 2021-02-22 19:51:02,955 Iteration: 67. Energy -1.880147398675307.  Energy change -7.604e-07 , Iteration dutation: 0.042680978775024414
+INFO 2021-02-22 19:51:02,999 Iteration: 68. Energy -1.8801477175784709.  Energy change -3.189e-07 , Iteration dutation: 0.042894601821899414
+INFO 2021-02-22 19:51:03,041 Iteration: 69. Energy -1.88014783792595.  Energy change -1.203e-07 , Iteration dutation: 0.042971134185791016
+INFO 2021-02-22 19:51:03,084 Iteration: 70. Energy -1.8801480172892422.  Energy change -1.794e-07 , Iteration dutation: 0.04263591766357422
+INFO 2021-02-22 19:51:03,127 Iteration: 71. Energy -1.8801485625167644.  Energy change -5.452e-07 , Iteration dutation: 0.043175458908081055
+INFO 2021-02-22 19:51:03,170 Iteration: 72. Energy -1.880149789691174.  Energy change -1.227e-06 , Iteration dutation: 0.0427708625793457
+INFO 2021-02-22 19:51:03,213 Iteration: 73. Energy -1.8801517695869918.  Energy change -1.980e-06 , Iteration dutation: 0.04313540458679199
+INFO 2021-02-22 19:51:03,256 Iteration: 74. Energy -1.8801531374093212.  Energy change -1.368e-06 , Iteration dutation: 0.04278373718261719
+INFO 2021-02-22 19:51:03,299 Iteration: 75. Energy -1.8801544418921607.  Energy change -1.304e-06 , Iteration dutation: 0.042653799057006836
+INFO 2021-02-22 19:51:03,342 Iteration: 76. Energy -1.8801548944988964.  Energy change -4.526e-07 , Iteration dutation: 0.04296875
+INFO 2021-02-22 19:51:03,385 Iteration: 77. Energy -1.8801550551679902.  Energy change -1.607e-07 , Iteration dutation: 0.04356646537780762
+INFO 2021-02-22 19:51:03,428 Iteration: 78. Energy -1.8801550788577501.  Energy change -2.369e-08 , Iteration dutation: 0.0427546501159668
+INFO 2021-02-22 19:51:03,470 Iteration: 79. Energy -1.8801551126498892.  Energy change -3.379e-08 , Iteration dutation: 0.042661428451538086
+INFO 2021-02-22 19:51:03,514 Iteration: 80. Energy -1.8801551457147128.  Energy change -3.306e-08 , Iteration dutation: 0.04295849800109863
+INFO 2021-02-22 19:51:03,556 Iteration: 81. Energy -1.8801552020122654.  Energy change -5.630e-08 , Iteration dutation: 0.042853355407714844
+INFO 2021-02-22 19:51:03,599 Iteration: 82. Energy -1.8801552973849627.  Energy change -9.537e-08 , Iteration dutation: 0.04281282424926758
+INFO 2021-02-22 19:51:03,642 Iteration: 83. Energy -1.8801554476207165.  Energy change -1.502e-07 , Iteration dutation: 0.04308772087097168
+INFO 2021-02-22 19:51:03,685 Iteration: 84. Energy -1.8801556277572546.  Energy change -1.801e-07 , Iteration dutation: 0.04291415214538574
+INFO 2021-02-22 19:51:03,728 Iteration: 85. Energy -1.8801557442654562.  Energy change -1.165e-07 , Iteration dutation: 0.04309201240539551
+INFO 2021-02-22 19:51:03,771 Iteration: 86. Energy -1.8801558458706666.  Energy change -1.016e-07 , Iteration dutation: 0.04289102554321289
+INFO 2021-02-22 19:51:03,814 Iteration: 87. Energy -1.8801558638881326.  Energy change -1.802e-08 , Iteration dutation: 0.042678117752075195
+INFO 2021-02-22 19:51:03,858 Iteration: 88. Energy -1.8801558975680956.  Energy change -3.368e-08 , Iteration dutation: 0.04301333427429199
+INFO 2021-02-22 19:51:03,901 Iteration: 89. Energy -1.8801559607784872.  Energy change -6.321e-08 , Iteration dutation: 0.04377293586730957
+INFO 2021-02-22 19:51:03,944 Iteration: 90. Energy -1.8801560775215922.  Energy change -1.167e-07 , Iteration dutation: 0.04291129112243652
+INFO 2021-02-22 19:51:03,986 Iteration: 91. Energy -1.8801562855317182.  Energy change -2.080e-07 , Iteration dutation: 0.04281306266784668
+INFO 2021-02-22 19:51:04,030 Iteration: 92. Energy -1.8801566204538886.  Energy change -3.349e-07 , Iteration dutation: 0.04304242134094238
+INFO 2021-02-22 19:51:04,073 Iteration: 93. Energy -1.8801568335031948.  Energy change -2.130e-07 , Iteration dutation: 0.0432586669921875
+INFO 2021-02-22 19:51:04,116 Iteration: 94. Energy -1.8801569625499455.  Energy change -1.290e-07 , Iteration dutation: 0.042806386947631836
+INFO 2021-02-22 19:51:04,158 Iteration: 95. Energy -1.8801570328581856.  Energy change -7.031e-08 , Iteration dutation: 0.04294395446777344
+INFO 2021-02-22 19:51:04,201 Iteration: 96. Energy -1.8801570759744655.  Energy change -4.312e-08 , Iteration dutation: 0.042742013931274414
+INFO 2021-02-22 19:51:04,244 Iteration: 97. Energy -1.8801570897039719.  Energy change -1.373e-08 , Iteration dutation: 0.04266095161437988
+INFO 2021-02-22 19:51:04,286 Iteration: 98. Energy -1.8801571116126428.  Energy change -2.191e-08 , Iteration dutation: 0.04269528388977051
+INFO 2021-02-22 19:51:04,329 Iteration: 99. Energy -1.8801571254624463.  Energy change -1.385e-08 , Iteration dutation: 0.04269814491271973
+INFO 2021-02-22 19:51:04,372 Iteration: 100. Energy -1.880157127602594.  Energy change -2.140e-09 , Iteration dutation: 0.043168067932128906
+INFO 2021-02-22 19:51:04,415 Iteration: 101. Energy -1.8801571294770372.  Energy change -1.874e-09 , Iteration dutation: 0.04286837577819824
+INFO 2021-02-22 19:51:04,458 Iteration: 102. Energy -1.8801571310728624.  Energy change -1.596e-09 , Iteration dutation: 0.04264402389526367
+INFO 2021-02-22 19:51:04,501 Iteration: 103. Energy -1.8801571340067147.  Energy change -2.934e-09 , Iteration dutation: 0.04266023635864258
+INFO 2021-02-22 19:51:04,543 Iteration: 104. Energy -1.880157139470244.  Energy change -5.464e-09 , Iteration dutation: 0.04291796684265137
+INFO 2021-02-22 19:51:04,586 Iteration: 105. Energy -1.880157149602928.  Energy change -1.013e-08 , Iteration dutation: 0.042742252349853516
+INFO 2021-02-22 19:51:04,629 Iteration: 106. Energy -1.8801571680906664.  Energy change -1.849e-08 , Iteration dutation: 0.04287600517272949
+INFO 2021-02-22 19:51:04,672 Iteration: 107. Energy -1.8801572008103467.  Energy change -3.272e-08 , Iteration dutation: 0.042827606201171875
+INFO 2021-02-22 19:51:04,715 Iteration: 108. Energy -1.8801572557961816.  Energy change -5.499e-08 , Iteration dutation: 0.04282546043395996
+INFO 2021-02-22 19:51:04,758 Iteration: 109. Energy -1.8801573396076208.  Energy change -8.381e-08 , Iteration dutation: 0.042725563049316406
+INFO 2021-02-22 19:51:04,800 Iteration: 110. Energy -1.8801574284318554.  Energy change -8.882e-08 , Iteration dutation: 0.0429532527923584
+INFO 2021-02-22 19:51:04,843 Iteration: 111. Energy -1.8801575137646886.  Energy change -8.533e-08 , Iteration dutation: 0.04270815849304199
+INFO 2021-02-22 19:51:04,886 Iteration: 112. Energy -1.8801575899884237.  Energy change -7.622e-08 , Iteration dutation: 0.04341578483581543
+INFO 2021-02-22 19:51:04,929 Iteration: 113. Energy -1.8801576247703782.  Energy change -3.478e-08 , Iteration dutation: 0.04286074638366699
+INFO 2021-02-22 19:51:04,972 Iteration: 114. Energy -1.880157642589816.  Energy change -1.782e-08 , Iteration dutation: 0.04272341728210449
+INFO 2021-02-22 19:51:05,015 Iteration: 115. Energy -1.8801576668435458.  Energy change -2.425e-08 , Iteration dutation: 0.04279303550720215
+INFO 2021-02-22 19:51:05,058 Iteration: 116. Energy -1.8801576737508439.  Energy change -6.907e-09 , Iteration dutation: 0.04326367378234863
+INFO 2021-02-22 19:51:05,101 Iteration: 117. Energy -1.8801576743730521.  Energy change -6.222e-10 , Iteration dutation: 0.04267072677612305
+INFO 2021-02-22 19:51:05,144 Iteration: 118. Energy -1.8801576751749836.  Energy change -8.019e-10 , Iteration dutation: 0.04301142692565918
+INFO 2021-02-22 19:51:05,187 Iteration: 119. Energy -1.8801576758500302.  Energy change -6.750e-10 , Iteration dutation: 0.04291129112243652
+INFO 2021-02-22 19:51:05,229 Iteration: 120. Energy -1.8801576770161001.  Energy change -1.166e-09 , Iteration dutation: 0.04269528388977051
+INFO 2021-02-22 19:51:05,272 Iteration: 121. Energy -1.8801576791206875.  Energy change -2.105e-09 , Iteration dutation: 0.04274892807006836
+INFO 2021-02-22 19:51:05,315 Iteration: 122. Energy -1.880157683000983.  Energy change -3.880e-09 , Iteration dutation: 0.04278135299682617
+INFO 2021-02-22 19:51:05,358 Iteration: 123. Energy -1.880157690233861.  Energy change -7.233e-09 , Iteration dutation: 0.042879581451416016
+INFO 2021-02-22 19:51:05,401 Iteration: 124. Energy -1.8801577038537567.  Energy change -1.362e-08 , Iteration dutation: 0.043427228927612305
+INFO 2021-02-22 19:51:05,444 Iteration: 125. Energy -1.8801577300371832.  Energy change -2.618e-08 , Iteration dutation: 0.043085575103759766
+INFO 2021-02-22 19:51:05,487 Iteration: 126. Energy -1.8801578130620786.  Energy change -8.302e-08 , Iteration dutation: 0.042681217193603516
+INFO 2021-02-22 19:51:05,530 Iteration: 127. Energy -1.8801577624748411.  Energy change 5.059e-08 , Iteration dutation: 0.04301595687866211
+INFO 2021-02-22 19:51:05,573 Iteration: 128. Energy -1.880157892657488.  Energy change -1.302e-07 , Iteration dutation: 0.042772769927978516
+INFO 2021-02-22 19:51:05,616 Iteration: 129. Energy -1.880158013395605.  Energy change -1.207e-07 , Iteration dutation: 0.04273080825805664
+INFO 2021-02-22 19:51:05,659 Iteration: 130. Energy -1.8801582288865006.  Energy change -2.155e-07 , Iteration dutation: 0.0430302619934082
+INFO 2021-02-22 19:51:05,701 Iteration: 131. Energy -1.8801586251421671.  Energy change -3.963e-07 , Iteration dutation: 0.04281330108642578
+INFO 2021-02-22 19:51:05,744 Iteration: 132. Energy -1.8801593190414785.  Energy change -6.939e-07 , Iteration dutation: 0.04279780387878418
+INFO 2021-02-22 19:51:05,787 Iteration: 133. Energy -1.8801601739770455.  Energy change -8.549e-07 , Iteration dutation: 0.042868614196777344
+INFO 2021-02-22 19:51:05,830 Iteration: 134. Energy -1.8801614287207302.  Energy change -1.255e-06 , Iteration dutation: 0.042829036712646484
+INFO 2021-02-22 19:51:05,873 Iteration: 135. Energy -1.8801635875653466.  Energy change -2.159e-06 , Iteration dutation: 0.043111324310302734
+INFO 2021-02-22 19:51:05,916 Iteration: 136. Energy -1.8801673078417669.  Energy change -3.720e-06 , Iteration dutation: 0.04303240776062012
+INFO 2021-02-22 19:51:05,959 Iteration: 137. Energy -1.8801680969886632.  Energy change -7.891e-07 , Iteration dutation: 0.04278254508972168
+INFO 2021-02-22 19:51:06,002 Iteration: 138. Energy -1.880169653733638.  Energy change -1.557e-06 , Iteration dutation: 0.04263734817504883
+INFO 2021-02-22 19:51:06,045 Iteration: 139. Energy -1.8801736064713617.  Energy change -3.953e-06 , Iteration dutation: 0.04375052452087402
+INFO 2021-02-22 19:51:06,088 Iteration: 140. Energy -1.8801791840274542.  Energy change -5.578e-06 , Iteration dutation: 0.04282689094543457
+INFO 2021-02-22 19:51:06,132 Iteration: 141. Energy -1.8801783408173223.  Energy change 8.432e-07 , Iteration dutation: 0.04334831237792969
+INFO 2021-02-22 19:51:06,175 Iteration: 142. Energy -1.88018180653187.  Energy change -3.466e-06 , Iteration dutation: 0.04309201240539551
+INFO 2021-02-22 19:51:06,217 Iteration: 143. Energy -1.8801825929625544.  Energy change -7.864e-07 , Iteration dutation: 0.04283881187438965
+INFO 2021-02-22 19:51:06,260 Iteration: 144. Energy -1.8801834202800891.  Energy change -8.273e-07 , Iteration dutation: 0.042665958404541016
+INFO 2021-02-22 19:51:06,303 Iteration: 145. Energy -1.8801838017035482.  Energy change -3.814e-07 , Iteration dutation: 0.042794227600097656
+INFO 2021-02-22 19:51:06,346 Iteration: 146. Energy -1.8801844289467542.  Energy change -6.272e-07 , Iteration dutation: 0.04271197319030762
+INFO 2021-02-22 19:51:06,389 Iteration: 147. Energy -1.8801857283523926.  Energy change -1.299e-06 , Iteration dutation: 0.04313325881958008
+INFO 2021-02-22 19:51:06,431 Iteration: 148. Energy -1.8801865446669908.  Energy change -8.163e-07 , Iteration dutation: 0.042772531509399414
+INFO 2021-02-22 19:51:06,474 Iteration: 149. Energy -1.8801871510642525.  Energy change -6.064e-07 , Iteration dutation: 0.04269981384277344
+INFO 2021-02-22 19:51:06,517 Iteration: 150. Energy -1.8801878065846291.  Energy change -6.555e-07 , Iteration dutation: 0.0427403450012207
+INFO 2021-02-22 19:51:06,560 Iteration: 151. Energy -1.880188240555105.  Energy change -4.340e-07 , Iteration dutation: 0.04287433624267578
+INFO 2021-02-22 19:51:06,603 Iteration: 152. Energy -1.8801884070442747.  Energy change -1.665e-07 , Iteration dutation: 0.04287576675415039
+INFO 2021-02-22 19:51:06,646 Iteration: 153. Energy -1.8801885491954895.  Energy change -1.422e-07 , Iteration dutation: 0.04306674003601074
+INFO 2021-02-22 19:51:06,688 Iteration: 154. Energy -1.8801886118331141.  Energy change -6.264e-08 , Iteration dutation: 0.042795658111572266
+INFO 2021-02-22 19:51:06,731 Iteration: 155. Energy -1.8801886448525562.  Energy change -3.302e-08 , Iteration dutation: 0.042762041091918945
+INFO 2021-02-22 19:51:06,774 Iteration: 156. Energy -1.8801886582842327.  Energy change -1.343e-08 , Iteration dutation: 0.04280257225036621
+INFO 2021-02-22 19:51:06,817 Iteration: 157. Energy -1.8801886625520192.  Energy change -4.268e-09 , Iteration dutation: 0.04266715049743652
+INFO 2021-02-22 19:51:06,860 Iteration: 158. Energy -1.8801886632598281.  Energy change -7.078e-10 , Iteration dutation: 0.04276561737060547
+INFO 2021-02-22 19:51:06,903 Iteration: 159. Energy -1.880188663825556.  Energy change -5.657e-10 , Iteration dutation: 0.04332542419433594
+INFO 2021-02-22 19:51:06,946 Iteration: 160. Energy -1.880188663974791.  Energy change -1.492e-10 , Iteration dutation: 0.04280853271484375
+INFO 2021-02-22 19:51:06,988 Iteration: 161. Energy -1.8801886640117227.  Energy change -3.693e-11 , Iteration dutation: 0.04289054870605469
+INFO 2021-02-22 19:51:07,032 Iteration: 162. Energy -1.8801886640151193.  Energy change -3.397e-12 , Iteration dutation: 0.04285240173339844
+INFO 2021-02-22 19:51:07,074 Iteration: 163. Energy -1.880188664015619.  Energy change -4.996e-13 , Iteration dutation: 0.04286360740661621
+INFO 2021-02-22 19:51:07,117 Iteration: 164. Energy -1.8801886640156762.  Energy change -5.729e-14 , Iteration dutation: 0.04272270202636719
+INFO 2021-02-22 19:51:07,160 Iteration: 165. Energy -1.8801886640156826.  Energy change -6.439e-15 , Iteration dutation: 0.042861223220825195
+INFO 2021-02-22 19:51:07,203 Iteration: 166. Energy -1.8801886640156837.  Energy change -1.110e-15 , Iteration dutation: 0.04281449317932129
