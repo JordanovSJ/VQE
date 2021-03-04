@@ -1,0 +1,2 @@
+INFO 2021-03-03 09:33:19,831 H4, r=1.546, ansatz constructed from iqeb
+INFO 2021-03-03 09:33:19,832 n_qubits = 8, n_electrons = 4

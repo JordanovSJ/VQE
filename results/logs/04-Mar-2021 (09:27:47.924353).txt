@@ -1,0 +1,354 @@
+INFO 2021-03-04 09:27:47,937 Calculating excitation generators
+INFO 2021-03-04 09:27:47,937 Calculated excitation generator matrix [1j [X0 Y1]]
+INFO 2021-03-04 09:27:47,938 Calculated excitation generator matrix [1j [Y0 X1]]
+INFO 2021-03-04 09:27:47,939 Calculated excitation generator matrix [1j [X0 Y2]]
+INFO 2021-03-04 09:27:47,941 Calculated excitation generator matrix [1j [Y0 X2]]
+INFO 2021-03-04 09:27:47,942 Calculated excitation generator matrix [1j [X0 Y3]]
+INFO 2021-03-04 09:27:47,943 Calculated excitation generator matrix [1j [Y0 X3]]
+INFO 2021-03-04 09:27:47,944 Calculated excitation generator matrix [1j [X1 Y2]]
+INFO 2021-03-04 09:27:47,945 Calculated excitation generator matrix [1j [Y1 X2]]
+INFO 2021-03-04 09:27:47,947 Calculated excitation generator matrix [1j [X1 Y3]]
+INFO 2021-03-04 09:27:47,948 Calculated excitation generator matrix [1j [Y1 X3]]
+INFO 2021-03-04 09:27:47,949 Calculated excitation generator matrix [1j [X2 Y3]]
+INFO 2021-03-04 09:27:47,950 Calculated excitation generator matrix [1j [Y2 X3]]
+INFO 2021-03-04 09:27:47,951 Calculated excitation generator matrix [1j [X0 X1 X2 Y3]]
+INFO 2021-03-04 09:27:47,952 Calculated excitation generator matrix [1j [X0 Y1 X2 X3]]
+INFO 2021-03-04 09:27:47,954 Calculated excitation generator matrix [1j [X0 X1 Y2 X3]]
+INFO 2021-03-04 09:27:47,955 Calculated excitation generator matrix [1j [X0 Y1 Y2 Y3]]
+INFO 2021-03-04 09:27:47,956 Calculated excitation generator matrix [1j [Y0 X1 X2 X3]]
+INFO 2021-03-04 09:27:47,957 Calculated excitation generator matrix [1j [Y0 Y1 X2 Y3]]
+INFO 2021-03-04 09:27:47,958 Calculated excitation generator matrix [1j [Y0 X1 Y2 Y3]]
+INFO 2021-03-04 09:27:47,960 Calculated excitation generator matrix [1j [Y0 Y1 Y2 X3]]
+INFO 2021-03-04 09:27:47,961 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 20-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-03-04 09:27:47,974 Iteration: 1. Energy -0.7837926540830403.  Energy change 3.331e-16 , Iteration dutation: 6.079673767089844e-05
+INFO 2021-03-04 09:27:47,981 Iteration: 2. Energy -0.78379265408304.  Energy change 3.331e-16 , Iteration dutation: 0.013822078704833984
+INFO 2021-03-04 09:27:47,988 Iteration: 3. Energy -0.78379265408304.  Energy change 0.000e+00 , Iteration dutation: 0.006209373474121094
+INFO 2021-03-04 09:27:47,994 Iteration: 4. Energy -0.7837926540830402.  Energy change -2.220e-16 , Iteration dutation: 0.00702667236328125
+INFO 2021-03-04 09:27:48,001 Iteration: 5. Energy -0.7837926540830402.  Energy change 0.000e+00 , Iteration dutation: 0.006574392318725586
+INFO 2021-03-04 09:27:48,008 Iteration: 6. Energy -0.7837926540830403.  Energy change -1.110e-16 , Iteration dutation: 0.006598234176635742
+INFO 2021-03-04 09:27:48,014 Iteration: 7. Energy -0.7837926540830403.  Energy change 0.000e+00 , Iteration dutation: 0.006612062454223633
+INFO 2021-03-04 09:27:48,021 Iteration: 8. Energy -0.7837926540830403.  Energy change 0.000e+00 , Iteration dutation: 0.006651878356933594
+INFO 2021-03-04 09:27:48,028 Iteration: 9. Energy -0.7837926540830403.  Energy change 0.000e+00 , Iteration dutation: 0.006604671478271484
+INFO 2021-03-04 09:27:48,034 Iteration: 10. Energy -0.7837926540830402.  Energy change 1.110e-16 , Iteration dutation: 0.006616115570068359
+INFO 2021-03-04 09:27:48,041 Iteration: 11. Energy -0.7837926540830402.  Energy change 0.000e+00 , Iteration dutation: 0.006606340408325195
+INFO 2021-03-04 09:27:48,047 Iteration: 12. Energy -0.7837926540830401.  Energy change 1.110e-16 , Iteration dutation: 0.00661015510559082
+INFO 2021-03-04 09:27:48,054 Iteration: 13. Energy -0.7837926540830401.  Energy change 0.000e+00 , Iteration dutation: 0.006596565246582031
+INFO 2021-03-04 09:27:48,061 Iteration: 14. Energy -0.7837926618059685.  Energy change -7.723e-09 , Iteration dutation: 0.006592512130737305
+INFO 2021-03-04 09:27:48,067 Iteration: 15. Energy -0.7837926463601119.  Energy change 1.545e-08 , Iteration dutation: 0.006603240966796875
+INFO 2021-03-04 09:27:48,074 Iteration: 16. Energy -0.7837926618059685.  Energy change -1.545e-08 , Iteration dutation: 0.006614208221435547
+INFO 2021-03-04 09:27:48,080 Iteration: 17. Energy -0.7837926618059685.  Energy change 0.000e+00 , Iteration dutation: 0.006609439849853516
+INFO 2021-03-04 09:27:48,087 Iteration: 18. Energy -0.7837926463601119.  Energy change 1.545e-08 , Iteration dutation: 0.006588459014892578
+INFO 2021-03-04 09:27:48,094 Iteration: 19. Energy -0.7837926463601119.  Energy change 0.000e+00 , Iteration dutation: 0.006608724594116211
+INFO 2021-03-04 09:27:48,100 Iteration: 20. Energy -0.7837926618059685.  Energy change -1.545e-08 , Iteration dutation: 0.00658869743347168
+INFO 2021-03-04 09:27:48,107 Iteration: 21. Energy -0.7837926463601119.  Energy change 1.545e-08 , Iteration dutation: 0.006595611572265625
+INFO 2021-03-04 09:27:48,119 Iteration: 22. Energy -0.6248501221730419.  Energy change 1.589e-01 , Iteration dutation: 0.006691694259643555
+INFO 2021-03-04 09:27:48,125 Iteration: 23. Energy -0.6248501221730423.  Energy change -3.331e-16 , Iteration dutation: 0.012148141860961914
+INFO 2021-03-04 09:27:48,132 Iteration: 24. Energy -0.6248501221730423.  Energy change 0.000e+00 , Iteration dutation: 0.006245136260986328
+INFO 2021-03-04 09:27:48,138 Iteration: 25. Energy -0.6248501221730421.  Energy change 1.110e-16 , Iteration dutation: 0.006648063659667969
+INFO 2021-03-04 09:27:48,145 Iteration: 26. Energy -0.6248501221730421.  Energy change 0.000e+00 , Iteration dutation: 0.006605625152587891
+INFO 2021-03-04 09:27:48,152 Iteration: 27. Energy -0.6248501221730415.  Energy change 6.661e-16 , Iteration dutation: 0.00661778450012207
+INFO 2021-03-04 09:27:48,158 Iteration: 28. Energy -0.6248501221730415.  Energy change 0.000e+00 , Iteration dutation: 0.006601572036743164
+INFO 2021-03-04 09:27:48,165 Iteration: 29. Energy -0.6248501221730415.  Energy change 0.000e+00 , Iteration dutation: 0.006638526916503906
+INFO 2021-03-04 09:27:48,172 Iteration: 30. Energy -0.6248501221730415.  Energy change 0.000e+00 , Iteration dutation: 0.0067577362060546875
+INFO 2021-03-04 09:27:48,178 Iteration: 31. Energy -0.6248501221730421.  Energy change -6.661e-16 , Iteration dutation: 0.006621837615966797
+INFO 2021-03-04 09:27:48,185 Iteration: 32. Energy -0.6248501221730421.  Energy change 0.000e+00 , Iteration dutation: 0.006587028503417969
+INFO 2021-03-04 09:27:48,191 Iteration: 33. Energy -0.6248501221730415.  Energy change 6.661e-16 , Iteration dutation: 0.0065915584564208984
+INFO 2021-03-04 09:27:48,198 Iteration: 34. Energy -0.6248501221730415.  Energy change 0.000e+00 , Iteration dutation: 0.006574869155883789
+INFO 2021-03-04 09:27:48,205 Iteration: 35. Energy -0.6248501306253237.  Energy change -8.452e-09 , Iteration dutation: 0.006608486175537109
+INFO 2021-03-04 09:27:48,211 Iteration: 36. Energy -0.6248501137207593.  Energy change 1.690e-08 , Iteration dutation: 0.006603717803955078
+INFO 2021-03-04 09:27:48,218 Iteration: 37. Energy -0.6248501306253237.  Energy change -1.690e-08 , Iteration dutation: 0.006601810455322266
+INFO 2021-03-04 09:27:48,225 Iteration: 38. Energy -0.6248501306253235.  Energy change 2.220e-16 , Iteration dutation: 0.006581783294677734
+INFO 2021-03-04 09:27:48,231 Iteration: 39. Energy -0.6248501137207597.  Energy change 1.690e-08 , Iteration dutation: 0.0066454410552978516
+INFO 2021-03-04 09:27:48,238 Iteration: 40. Energy -0.6248501137207593.  Energy change 4.441e-16 , Iteration dutation: 0.006699562072753906
+INFO 2021-03-04 09:27:48,244 Iteration: 41. Energy -0.624850130625324.  Energy change -1.690e-08 , Iteration dutation: 0.006579160690307617
+INFO 2021-03-04 09:27:48,251 Iteration: 42. Energy -0.6248501137207597.  Energy change 1.690e-08 , Iteration dutation: 0.006585121154785156
+INFO 2021-03-04 09:27:48,263 Iteration: 43. Energy -0.9468504891359084.  Energy change -3.220e-01 , Iteration dutation: 0.006593465805053711
+INFO 2021-03-04 09:27:48,270 Iteration: 44. Energy -0.9468504891359081.  Energy change 3.331e-16 , Iteration dutation: 0.012404918670654297
+INFO 2021-03-04 09:27:48,276 Iteration: 45. Energy -0.9468504891359081.  Energy change 0.000e+00 , Iteration dutation: 0.006384372711181641
+INFO 2021-03-04 09:27:48,283 Iteration: 46. Energy -0.9468504891359082.  Energy change -1.110e-16 , Iteration dutation: 0.006566286087036133
+INFO 2021-03-04 09:27:48,290 Iteration: 47. Energy -0.9468504891359082.  Energy change 0.000e+00 , Iteration dutation: 0.006632566452026367
+INFO 2021-03-04 09:27:48,296 Iteration: 48. Energy -0.9468504891359083.  Energy change -1.110e-16 , Iteration dutation: 0.0067369937896728516
+INFO 2021-03-04 09:27:48,303 Iteration: 49. Energy -0.9468504891359083.  Energy change 0.000e+00 , Iteration dutation: 0.0066585540771484375
+INFO 2021-03-04 09:27:48,310 Iteration: 50. Energy -0.9468504891359083.  Energy change 0.000e+00 , Iteration dutation: 0.006638765335083008
+INFO 2021-03-04 09:27:48,316 Iteration: 51. Energy -0.9468504891359083.  Energy change 0.000e+00 , Iteration dutation: 0.006621360778808594
+INFO 2021-03-04 09:27:48,323 Iteration: 52. Energy -0.9468504891359082.  Energy change 1.110e-16 , Iteration dutation: 0.006615638732910156
+INFO 2021-03-04 09:27:48,330 Iteration: 53. Energy -0.9468504891359082.  Energy change 0.000e+00 , Iteration dutation: 0.0066907405853271484
+INFO 2021-03-04 09:27:48,336 Iteration: 54. Energy -0.9468504891359081.  Energy change 1.110e-16 , Iteration dutation: 0.006651639938354492
+INFO 2021-03-04 09:27:48,343 Iteration: 55. Energy -0.9468504891359081.  Energy change 0.000e+00 , Iteration dutation: 0.00658726692199707
+INFO 2021-03-04 09:27:48,349 Iteration: 56. Energy -0.9468504900883724.  Energy change -9.525e-10 , Iteration dutation: 0.0066204071044921875
+INFO 2021-03-04 09:27:48,356 Iteration: 57. Energy -0.9468504881834431.  Energy change 1.905e-09 , Iteration dutation: 0.006606578826904297
+INFO 2021-03-04 09:27:48,363 Iteration: 58. Energy -0.9468504900883727.  Energy change -1.905e-09 , Iteration dutation: 0.006623744964599609
+INFO 2021-03-04 09:27:48,369 Iteration: 59. Energy -0.946850490088373.  Energy change -2.220e-16 , Iteration dutation: 0.006643772125244141
+INFO 2021-03-04 09:27:48,376 Iteration: 60. Energy -0.9468504881834431.  Energy change 1.905e-09 , Iteration dutation: 0.006645917892456055
+INFO 2021-03-04 09:27:48,382 Iteration: 61. Energy -0.9468504881834431.  Energy change 0.000e+00 , Iteration dutation: 0.00656890869140625
+INFO 2021-03-04 09:27:48,389 Iteration: 62. Energy -0.946850490088373.  Energy change -1.905e-09 , Iteration dutation: 0.006589651107788086
+INFO 2021-03-04 09:27:48,396 Iteration: 63. Energy -0.9468504881834434.  Energy change 1.905e-09 , Iteration dutation: 0.006606578826904297
+INFO 2021-03-04 09:27:48,409 Iteration: 64. Energy -0.9484971636211934.  Energy change -1.647e-03 , Iteration dutation: 0.0066738128662109375
+INFO 2021-03-04 09:27:48,416 Iteration: 65. Energy -0.9484971636211948.  Energy change -1.443e-15 , Iteration dutation: 0.013669013977050781
+INFO 2021-03-04 09:27:48,422 Iteration: 66. Energy -0.9484971636211948.  Energy change 0.000e+00 , Iteration dutation: 0.006269931793212891
+INFO 2021-03-04 09:27:48,429 Iteration: 67. Energy -0.9484971636211931.  Energy change 1.776e-15 , Iteration dutation: 0.006570100784301758
+INFO 2021-03-04 09:27:48,435 Iteration: 68. Energy -0.9484971636211931.  Energy change 0.000e+00 , Iteration dutation: 0.006580352783203125
+INFO 2021-03-04 09:27:48,442 Iteration: 69. Energy -0.9484971636211935.  Energy change -4.441e-16 , Iteration dutation: 0.006562232971191406
+INFO 2021-03-04 09:27:48,449 Iteration: 70. Energy -0.9484971636211935.  Energy change 0.000e+00 , Iteration dutation: 0.006575345993041992
+INFO 2021-03-04 09:27:48,455 Iteration: 71. Energy -0.9484971636211935.  Energy change 0.000e+00 , Iteration dutation: 0.0065670013427734375
+INFO 2021-03-04 09:27:48,462 Iteration: 72. Energy -0.9484971636211935.  Energy change 0.000e+00 , Iteration dutation: 0.0065670013427734375
+INFO 2021-03-04 09:27:48,468 Iteration: 73. Energy -0.9484971636211931.  Energy change 4.441e-16 , Iteration dutation: 0.0065326690673828125
+INFO 2021-03-04 09:27:48,475 Iteration: 74. Energy -0.9484971636211931.  Energy change 0.000e+00 , Iteration dutation: 0.0065631866455078125
+INFO 2021-03-04 09:27:48,481 Iteration: 75. Energy -0.9484971636211945.  Energy change -1.443e-15 , Iteration dutation: 0.006601572036743164
+INFO 2021-03-04 09:27:48,488 Iteration: 76. Energy -0.9484971636211945.  Energy change 0.000e+00 , Iteration dutation: 0.0066509246826171875
+INFO 2021-03-04 09:27:48,495 Iteration: 77. Energy -0.9484971633507501.  Energy change 2.704e-10 , Iteration dutation: 0.006581783294677734
+INFO 2021-03-04 09:27:48,501 Iteration: 78. Energy -0.9484971638916366.  Energy change -5.409e-10 , Iteration dutation: 0.006536960601806641
+INFO 2021-03-04 09:27:48,508 Iteration: 79. Energy -0.94849716335075.  Energy change 5.409e-10 , Iteration dutation: 0.006581544876098633
+INFO 2021-03-04 09:27:48,515 Iteration: 80. Energy -0.9484971633507501.  Energy change -1.110e-16 , Iteration dutation: 0.006555318832397461
+INFO 2021-03-04 09:27:48,521 Iteration: 81. Energy -0.948497163891637.  Energy change -5.409e-10 , Iteration dutation: 0.006796598434448242
+INFO 2021-03-04 09:27:48,528 Iteration: 82. Energy -0.948497163891637.  Energy change 0.000e+00 , Iteration dutation: 0.006635427474975586
+INFO 2021-03-04 09:27:48,534 Iteration: 83. Energy -0.94849716335075.  Energy change 5.409e-10 , Iteration dutation: 0.0066640377044677734
+INFO 2021-03-04 09:27:48,541 Iteration: 84. Energy -0.9484971638916367.  Energy change -5.409e-10 , Iteration dutation: 0.006585121154785156
+INFO 2021-03-04 09:27:48,555 Iteration: 85. Energy -0.9486411118065737.  Energy change -1.439e-04 , Iteration dutation: 0.006711006164550781
+INFO 2021-03-04 09:27:48,561 Iteration: 86. Energy -0.94864111180657.  Energy change 3.775e-15 , Iteration dutation: 0.013680458068847656
+INFO 2021-03-04 09:27:48,568 Iteration: 87. Energy -0.94864111180657.  Energy change 0.000e+00 , Iteration dutation: 0.006165981292724609
+INFO 2021-03-04 09:27:48,574 Iteration: 88. Energy -0.9486411118065737.  Energy change -3.775e-15 , Iteration dutation: 0.006619691848754883
+INFO 2021-03-04 09:27:48,581 Iteration: 89. Energy -0.9486411118065737.  Energy change 0.000e+00 , Iteration dutation: 0.006635427474975586
+INFO 2021-03-04 09:27:48,587 Iteration: 90. Energy -0.948641111806574.  Energy change -2.220e-16 , Iteration dutation: 0.006577730178833008
+INFO 2021-03-04 09:27:48,594 Iteration: 91. Energy -0.948641111806574.  Energy change 0.000e+00 , Iteration dutation: 0.006560802459716797
+INFO 2021-03-04 09:27:48,601 Iteration: 92. Energy -0.948641111806574.  Energy change 0.000e+00 , Iteration dutation: 0.00657343864440918
+INFO 2021-03-04 09:27:48,607 Iteration: 93. Energy -0.948641111806574.  Energy change 0.000e+00 , Iteration dutation: 0.006582498550415039
+INFO 2021-03-04 09:27:48,614 Iteration: 94. Energy -0.9486411118065737.  Energy change 2.220e-16 , Iteration dutation: 0.006645917892456055
+INFO 2021-03-04 09:27:48,620 Iteration: 95. Energy -0.9486411118065737.  Energy change 0.000e+00 , Iteration dutation: 0.006577968597412109
+INFO 2021-03-04 09:27:48,627 Iteration: 96. Energy -0.948641111806572.  Energy change 1.776e-15 , Iteration dutation: 0.006566524505615234
+INFO 2021-03-04 09:27:48,634 Iteration: 97. Energy -0.948641111806572.  Energy change 0.000e+00 , Iteration dutation: 0.006584882736206055
+INFO 2021-03-04 09:27:48,640 Iteration: 98. Energy -0.9486411118069787.  Energy change -4.068e-13 , Iteration dutation: 0.006618022918701172
+INFO 2021-03-04 09:27:48,647 Iteration: 99. Energy -0.9486411118061687.  Energy change 8.100e-13 , Iteration dutation: 0.0066411495208740234
+INFO 2021-03-04 09:27:48,653 Iteration: 100. Energy -0.9486411118069792.  Energy change -8.105e-13 , Iteration dutation: 0.006613254547119141
+INFO 2021-03-04 09:27:48,660 Iteration: 101. Energy -0.9486411118069792.  Energy change 0.000e+00 , Iteration dutation: 0.006575345993041992
+INFO 2021-03-04 09:27:48,667 Iteration: 102. Energy -0.9486411118061687.  Energy change 8.105e-13 , Iteration dutation: 0.006613254547119141
+INFO 2021-03-04 09:27:48,673 Iteration: 103. Energy -0.9486411118061686.  Energy change 1.110e-16 , Iteration dutation: 0.006601572036743164
+INFO 2021-03-04 09:27:48,680 Iteration: 104. Energy -0.9486411118069794.  Energy change -8.108e-13 , Iteration dutation: 0.006632804870605469
+INFO 2021-03-04 09:27:48,686 Iteration: 105. Energy -0.9486411118061687.  Energy change 8.107e-13 , Iteration dutation: 0.006610870361328125
+INFO 2021-03-04 09:27:48,700 Iteration: 106. Energy -0.9486411121294223.  Energy change -3.233e-10 , Iteration dutation: 0.006655454635620117
+INFO 2021-03-04 09:27:48,706 Iteration: 107. Energy -0.9486411121294368.  Energy change -1.454e-14 , Iteration dutation: 0.013820171356201172
+INFO 2021-03-04 09:27:48,713 Iteration: 108. Energy -0.9486411121294368.  Energy change 0.000e+00 , Iteration dutation: 0.006207942962646484
+INFO 2021-03-04 09:27:48,720 Iteration: 109. Energy -0.9486411121294221.  Energy change 1.465e-14 , Iteration dutation: 0.006581783294677734
+INFO 2021-03-04 09:27:48,726 Iteration: 110. Energy -0.9486411121294221.  Energy change 0.000e+00 , Iteration dutation: 0.0066602230072021484
+INFO 2021-03-04 09:27:48,733 Iteration: 111. Energy -0.9486411121294225.  Energy change -3.331e-16 , Iteration dutation: 0.006590843200683594
+INFO 2021-03-04 09:27:48,740 Iteration: 112. Energy -0.9486411121294225.  Energy change 0.000e+00 , Iteration dutation: 0.006701231002807617
+INFO 2021-03-04 09:27:48,746 Iteration: 113. Energy -0.9486411121294225.  Energy change 0.000e+00 , Iteration dutation: 0.006574153900146484
+INFO 2021-03-04 09:27:48,753 Iteration: 114. Energy -0.9486411121294225.  Energy change 0.000e+00 , Iteration dutation: 0.0066187381744384766
+INFO 2021-03-04 09:27:48,759 Iteration: 115. Energy -0.9486411121294221.  Energy change 3.331e-16 , Iteration dutation: 0.006590604782104492
+INFO 2021-03-04 09:27:48,766 Iteration: 116. Energy -0.9486411121294221.  Energy change 0.000e+00 , Iteration dutation: 0.006694316864013672
+INFO 2021-03-04 09:27:48,773 Iteration: 117. Energy -0.948641112129427.  Energy change -4.885e-15 , Iteration dutation: 0.006678104400634766
+INFO 2021-03-04 09:27:48,779 Iteration: 118. Energy -0.948641112129427.  Energy change 0.000e+00 , Iteration dutation: 0.006571769714355469
+INFO 2021-03-04 09:27:48,786 Iteration: 119. Energy -0.9486411121294218.  Energy change 5.218e-15 , Iteration dutation: 0.0066034793853759766
+INFO 2021-03-04 09:27:48,793 Iteration: 120. Energy -0.9486411121294225.  Energy change -6.661e-16 , Iteration dutation: 0.0065975189208984375
+INFO 2021-03-04 09:27:48,799 Iteration: 121. Energy -0.9486411121294219.  Energy change 5.551e-16 , Iteration dutation: 0.006586790084838867
+INFO 2021-03-04 09:27:48,806 Iteration: 122. Energy -0.9486411121294218.  Energy change 1.110e-16 , Iteration dutation: 0.006932258605957031
+INFO 2021-03-04 09:27:48,813 Iteration: 123. Energy -0.9486411121294225.  Energy change -6.661e-16 , Iteration dutation: 0.006629228591918945
+INFO 2021-03-04 09:27:48,819 Iteration: 124. Energy -0.9486411121294223.  Energy change 2.220e-16 , Iteration dutation: 0.0065767765045166016
+INFO 2021-03-04 09:27:48,826 Iteration: 125. Energy -0.9486411121294221.  Energy change 1.110e-16 , Iteration dutation: 0.0065991878509521484
+INFO 2021-03-04 09:27:48,832 Iteration: 126. Energy -0.9486411121294223.  Energy change -1.110e-16 , Iteration dutation: 0.00660252571105957
+INFO 2021-03-04 09:27:48,846 Iteration: 127. Energy -0.9486411121265631.  Energy change 2.859e-12 , Iteration dutation: 0.0067102909088134766
+INFO 2021-03-04 09:27:48,852 Iteration: 128. Energy -0.9486411121265071.  Energy change 5.596e-14 , Iteration dutation: 0.013690948486328125
+INFO 2021-03-04 09:27:48,859 Iteration: 129. Energy -0.9486411121265071.  Energy change 0.000e+00 , Iteration dutation: 0.006193637847900391
+INFO 2021-03-04 09:27:48,866 Iteration: 130. Energy -0.9486411121265629.  Energy change -5.573e-14 , Iteration dutation: 0.0067141056060791016
+INFO 2021-03-04 09:27:48,872 Iteration: 131. Energy -0.9486411121265629.  Energy change 0.000e+00 , Iteration dutation: 0.0066869258880615234
+INFO 2021-03-04 09:27:48,879 Iteration: 132. Energy -0.9486411121265624.  Energy change 4.441e-16 , Iteration dutation: 0.006590843200683594
+INFO 2021-03-04 09:27:48,886 Iteration: 133. Energy -0.9486411121265624.  Energy change 0.000e+00 , Iteration dutation: 0.006648540496826172
+INFO 2021-03-04 09:27:48,892 Iteration: 134. Energy -0.9486411121265624.  Energy change 0.000e+00 , Iteration dutation: 0.00659942626953125
+INFO 2021-03-04 09:27:48,899 Iteration: 135. Energy -0.9486411121265624.  Energy change 0.000e+00 , Iteration dutation: 0.0066149234771728516
+INFO 2021-03-04 09:27:48,906 Iteration: 136. Energy -0.9486411121265629.  Energy change -4.441e-16 , Iteration dutation: 0.006715297698974609
+INFO 2021-03-04 09:27:48,912 Iteration: 137. Energy -0.9486411121265629.  Energy change 0.000e+00 , Iteration dutation: 0.0065991878509521484
+INFO 2021-03-04 09:27:48,919 Iteration: 138. Energy -0.9486411121265496.  Energy change 1.332e-14 , Iteration dutation: 0.006745576858520508
+INFO 2021-03-04 09:27:48,926 Iteration: 139. Energy -0.9486411121265496.  Energy change 0.000e+00 , Iteration dutation: 0.006676197052001953
+INFO 2021-03-04 09:27:48,932 Iteration: 140. Energy -0.9486411121265615.  Energy change -1.199e-14 , Iteration dutation: 0.006720781326293945
+INFO 2021-03-04 09:27:48,939 Iteration: 141. Energy -0.9486411121265637.  Energy change -2.109e-15 , Iteration dutation: 0.006632804870605469
+INFO 2021-03-04 09:27:48,946 Iteration: 142. Energy -0.9486411121265618.  Energy change 1.887e-15 , Iteration dutation: 0.006672382354736328
+INFO 2021-03-04 09:27:48,952 Iteration: 143. Energy -0.948641112126562.  Energy change -2.220e-16 , Iteration dutation: 0.006628274917602539
+INFO 2021-03-04 09:27:48,959 Iteration: 144. Energy -0.9486411121265639.  Energy change -1.887e-15 , Iteration dutation: 0.00661778450012207
+INFO 2021-03-04 09:27:48,966 Iteration: 145. Energy -0.948641112126564.  Energy change -1.110e-16 , Iteration dutation: 0.006617546081542969
+INFO 2021-03-04 09:27:48,972 Iteration: 146. Energy -0.9486411121265615.  Energy change 2.442e-15 , Iteration dutation: 0.006627559661865234
+INFO 2021-03-04 09:27:48,979 Iteration: 147. Energy -0.9486411121265641.  Energy change -2.554e-15 , Iteration dutation: 0.0066111087799072266
+INFO 2021-03-04 09:27:48,992 Iteration: 148. Energy -0.9486411121296479.  Energy change -3.084e-12 , Iteration dutation: 0.006655216217041016
+INFO 2021-03-04 09:27:48,999 Iteration: 149. Energy -0.9486411121296474.  Energy change 4.441e-16 , Iteration dutation: 0.013736486434936523
+INFO 2021-03-04 09:27:49,005 Iteration: 150. Energy -0.9486411121296474.  Energy change 0.000e+00 , Iteration dutation: 0.006208181381225586
+INFO 2021-03-04 09:27:49,012 Iteration: 151. Energy -0.9486411121296479.  Energy change -4.441e-16 , Iteration dutation: 0.006585597991943359
+INFO 2021-03-04 09:27:49,019 Iteration: 152. Energy -0.9486411121296479.  Energy change 0.000e+00 , Iteration dutation: 0.006653547286987305
+INFO 2021-03-04 09:27:49,025 Iteration: 153. Energy -0.9486411121296479.  Energy change 0.000e+00 , Iteration dutation: 0.006601810455322266
+INFO 2021-03-04 09:27:49,032 Iteration: 154. Energy -0.9486411121296479.  Energy change 0.000e+00 , Iteration dutation: 0.006585121154785156
+INFO 2021-03-04 09:27:49,038 Iteration: 155. Energy -0.9486411121296479.  Energy change 0.000e+00 , Iteration dutation: 0.006601810455322266
+INFO 2021-03-04 09:27:49,045 Iteration: 156. Energy -0.9486411121296479.  Energy change 0.000e+00 , Iteration dutation: 0.006597280502319336
+INFO 2021-03-04 09:27:49,052 Iteration: 157. Energy -0.9486411121296479.  Energy change 0.000e+00 , Iteration dutation: 0.00677037239074707
+INFO 2021-03-04 09:27:49,058 Iteration: 158. Energy -0.9486411121296479.  Energy change 0.000e+00 , Iteration dutation: 0.006562471389770508
+INFO 2021-03-04 09:27:49,065 Iteration: 159. Energy -0.9486411121296485.  Energy change -6.661e-16 , Iteration dutation: 0.006582498550415039
+INFO 2021-03-04 09:27:49,072 Iteration: 160. Energy -0.9486411121296485.  Energy change 0.000e+00 , Iteration dutation: 0.006620645523071289
+INFO 2021-03-04 09:27:49,078 Iteration: 161. Energy -0.9486411121296477.  Energy change 7.772e-16 , Iteration dutation: 0.006598711013793945
+INFO 2021-03-04 09:27:49,085 Iteration: 162. Energy -0.9486411121296479.  Energy change -1.110e-16 , Iteration dutation: 0.006608247756958008
+INFO 2021-03-04 09:27:49,091 Iteration: 163. Energy -0.9486411121296477.  Energy change 1.110e-16 , Iteration dutation: 0.006596088409423828
+INFO 2021-03-04 09:27:49,098 Iteration: 164. Energy -0.9486411121296474.  Energy change 3.331e-16 , Iteration dutation: 0.006648063659667969
+INFO 2021-03-04 09:27:49,105 Iteration: 165. Energy -0.9486411121296479.  Energy change -4.441e-16 , Iteration dutation: 0.006615638732910156
+INFO 2021-03-04 09:27:49,111 Iteration: 166. Energy -0.9486411121296483.  Energy change -4.441e-16 , Iteration dutation: 0.006602048873901367
+INFO 2021-03-04 09:27:49,118 Iteration: 167. Energy -0.9486411121296479.  Energy change 4.441e-16 , Iteration dutation: 0.006598949432373047
+INFO 2021-03-04 09:27:49,124 Iteration: 168. Energy -0.9486411121296485.  Energy change -6.661e-16 , Iteration dutation: 0.006591081619262695
+CRITICAL 2021-03-04 09:27:49,125       fun: -0.9486411121296479
+ hess_inv: array([[ 9.99237851e-01, -7.62149368e-04,  2.89902640e-06,
+         2.89902640e-06,  1.65870637e-05,  1.65870637e-05,
+         1.65870637e-05,  1.65870637e-05,  2.89902640e-06,
+         2.89902640e-06, -3.04368028e-04, -3.04368028e-04,
+         4.46084311e-03, -4.45503071e-03,  4.50274094e-03,
+         4.50565643e-03, -4.45501958e-03, -4.46040079e-03,
+         4.51932586e-03, -4.44920396e-03],
+       [-7.62149368e-04,  9.99237851e-01,  2.89902640e-06,
+         2.89902640e-06,  1.65870637e-05,  1.65870637e-05,
+         1.65870637e-05,  1.65870637e-05,  2.89902640e-06,
+         2.89902640e-06, -3.04368028e-04, -3.04368028e-04,
+         4.46084311e-03, -4.45503071e-03,  4.50274094e-03,
+         4.50565643e-03, -4.45501958e-03, -4.46040079e-03,
+         4.51932586e-03, -4.44920396e-03],
+       [ 2.89902640e-06,  2.89902640e-06,  1.00000000e+00,
+         1.79326450e-10, -1.71446550e-07, -1.71446550e-07,
+        -1.71446550e-07, -1.71446550e-07,  1.79326450e-10,
+         1.79326450e-10,  1.36581252e-06,  1.36581252e-06,
+        -3.40656348e-05,  3.40658837e-05, -3.44081941e-05,
+        -3.44081410e-05,  3.40657986e-05,  3.41515993e-05,
+        -3.45796243e-05,  3.40660225e-05],
+       [ 2.89902640e-06,  2.89902640e-06,  1.79326450e-10,
+         1.00000000e+00, -1.71446550e-07, -1.71446550e-07,
+        -1.71446550e-07, -1.71446550e-07,  1.79326450e-10,
+         1.79326450e-10,  1.36581252e-06,  1.36581252e-06,
+        -3.40656348e-05,  3.40658837e-05, -3.44081941e-05,
+        -3.44081410e-05,  3.40657986e-05,  3.41515993e-05,
+        -3.45796243e-05,  3.40660225e-05],
+       [ 1.65870637e-05,  1.65870637e-05, -1.71446550e-07,
+        -1.71446550e-07,  1.00000069e+00,  6.86668464e-07,
+         6.86668464e-07,  6.86668464e-07, -1.71446550e-07,
+        -1.71446550e-07,  4.61228824e-06,  4.61228824e-06,
+         6.79060441e-05, -6.82487150e-05,  6.87654521e-05,
+         6.85942596e-05, -6.82485432e-05, -6.87631185e-05,
+         6.94520873e-05, -6.85911652e-05],
+       [ 1.65870637e-05,  1.65870637e-05, -1.71446550e-07,
+        -1.71446550e-07,  6.86668464e-07,  1.00000069e+00,
+         6.86668464e-07,  6.86668464e-07, -1.71446550e-07,
+        -1.71446550e-07,  4.61228824e-06,  4.61228824e-06,
+         6.79060441e-05, -6.82487150e-05,  6.87654521e-05,
+         6.85942596e-05, -6.82485432e-05, -6.87631185e-05,
+         6.94520873e-05, -6.85911652e-05],
+       [ 1.65870637e-05,  1.65870637e-05, -1.71446550e-07,
+        -1.71446550e-07,  6.86668464e-07,  6.86668464e-07,
+         1.00000069e+00,  6.86668464e-07, -1.71446550e-07,
+        -1.71446550e-07,  4.61228824e-06,  4.61228824e-06,
+         6.79060441e-05, -6.82487150e-05,  6.87654521e-05,
+         6.85942596e-05, -6.82485432e-05, -6.87631185e-05,
+         6.94520873e-05, -6.85911652e-05],
+       [ 1.65870637e-05,  1.65870637e-05, -1.71446550e-07,
+        -1.71446550e-07,  6.86668464e-07,  6.86668464e-07,
+         6.86668464e-07,  1.00000069e+00, -1.71446550e-07,
+        -1.71446550e-07,  4.61228824e-06,  4.61228824e-06,
+         6.79060441e-05, -6.82487150e-05,  6.87654521e-05,
+         6.85942596e-05, -6.82485432e-05, -6.87631185e-05,
+         6.94520873e-05, -6.85911652e-05],
+       [ 2.89902640e-06,  2.89902640e-06,  1.79326450e-10,
+         1.79326450e-10, -1.71446550e-07, -1.71446550e-07,
+        -1.71446550e-07, -1.71446550e-07,  1.00000000e+00,
+         1.79326450e-10,  1.36581252e-06,  1.36581252e-06,
+        -3.40656348e-05,  3.40658837e-05, -3.44081941e-05,
+        -3.44081410e-05,  3.40657986e-05,  3.41515993e-05,
+        -3.45796243e-05,  3.40660225e-05],
+       [ 2.89902640e-06,  2.89902640e-06,  1.79326450e-10,
+         1.79326450e-10, -1.71446550e-07, -1.71446550e-07,
+        -1.71446550e-07, -1.71446550e-07,  1.79326450e-10,
+         1.00000000e+00,  1.36581252e-06,  1.36581252e-06,
+        -3.40656348e-05,  3.40658837e-05, -3.44081941e-05,
+        -3.44081410e-05,  3.40657986e-05,  3.41515993e-05,
+        -3.45796243e-05,  3.40660225e-05],
+       [-3.04368028e-04, -3.04368028e-04,  1.36581252e-06,
+         1.36581252e-06,  4.61228824e-06,  4.61228824e-06,
+         4.61228824e-06,  4.61228824e-06,  1.36581252e-06,
+         1.36581252e-06,  9.99882313e-01, -1.17687492e-04,
+         1.46470490e-03, -1.46196857e-03,  1.47803564e-03,
+         1.47940685e-03, -1.46196492e-03, -1.46290089e-03,
+         1.48264723e-03, -1.45922753e-03],
+       [-3.04368028e-04, -3.04368028e-04,  1.36581252e-06,
+         1.36581252e-06,  4.61228824e-06,  4.61228824e-06,
+         4.61228824e-06,  4.61228824e-06,  1.36581252e-06,
+         1.36581252e-06, -1.17687492e-04,  9.99882313e-01,
+         1.46470490e-03, -1.46196857e-03,  1.47803564e-03,
+         1.47940685e-03, -1.46196492e-03, -1.46290089e-03,
+         1.48264723e-03, -1.45922753e-03],
+       [ 4.46084311e-03,  4.46084311e-03, -3.40656348e-05,
+        -3.40656348e-05,  6.79060441e-05,  6.79060441e-05,
+         6.79060441e-05,  6.79060441e-05, -3.40656348e-05,
+        -3.40656348e-05,  1.46470490e-03,  1.46470490e-03,
+         8.88568090e-01,  1.11363822e-01, -1.11398213e-01,
+        -1.11432229e-01,  1.11363856e-01,  1.11295878e-01,
+        -1.11330314e-01,  1.11295779e-01],
+       [-4.45503071e-03, -4.45503071e-03,  3.40658837e-05,
+         3.40658837e-05, -6.82487150e-05, -6.82487150e-05,
+        -6.82487150e-05, -6.82487150e-05,  3.40658837e-05,
+         3.40658837e-05, -1.46196857e-03, -1.46196857e-03,
+         1.11363822e-01,  8.88704265e-01,  1.11329441e-01,
+         1.11363456e-01, -1.11295769e-01, -1.11227619e-01,
+         1.11261199e-01, -1.11227691e-01],
+       [ 4.50274094e-03,  4.50274094e-03, -3.44081941e-05,
+        -3.44081941e-05,  6.87654521e-05,  6.87654521e-05,
+         6.87654521e-05,  6.87654521e-05, -3.44081941e-05,
+        -3.44081941e-05,  1.47803564e-03,  1.47803564e-03,
+        -1.11398213e-01,  1.11329441e-01,  8.88636174e-01,
+        -1.11398184e-01,  1.11329475e-01,  1.11260725e-01,
+        -1.11295067e-01,  1.11260712e-01],
+       [ 4.50565643e-03,  4.50565643e-03, -3.44081410e-05,
+        -3.44081410e-05,  6.85942596e-05,  6.85942596e-05,
+         6.85942596e-05,  6.85942596e-05, -3.44081410e-05,
+        -3.44081410e-05,  1.47940685e-03,  1.47940685e-03,
+        -1.11432229e-01,  1.11363456e-01, -1.11398184e-01,
+         8.88567459e-01,  1.11363490e-01,  1.11294826e-01,
+        -1.11329596e-01,  1.11294728e-01],
+       [-4.45501958e-03, -4.45501958e-03,  3.40657986e-05,
+         3.40657986e-05, -6.82485432e-05, -6.82485432e-05,
+        -6.82485432e-05, -6.82485432e-05,  3.40657986e-05,
+         3.40657986e-05, -1.46196492e-03, -1.46196492e-03,
+         1.11363856e-01, -1.11295769e-01,  1.11329475e-01,
+         1.11363490e-01,  8.88704197e-01, -1.11227654e-01,
+         1.11261233e-01, -1.11227725e-01],
+       [-4.46040079e-03, -4.46040079e-03,  3.41515993e-05,
+         3.41515993e-05, -6.87631185e-05, -6.87631185e-05,
+        -6.87631185e-05, -6.87631185e-05,  3.41515993e-05,
+         3.41515993e-05, -1.46290089e-03, -1.46290089e-03,
+         1.11295878e-01, -1.11227619e-01,  1.11260725e-01,
+         1.11294826e-01, -1.11227654e-01,  8.88840839e-01,
+         1.11191968e-01, -1.11159405e-01],
+       [ 4.51932586e-03,  4.51932586e-03, -3.45796243e-05,
+        -3.45796243e-05,  6.94520873e-05,  6.94520873e-05,
+         6.94520873e-05,  6.94520873e-05, -3.45796243e-05,
+        -3.45796243e-05,  1.48264723e-03,  1.48264723e-03,
+        -1.11330314e-01,  1.11261199e-01, -1.11295067e-01,
+        -1.11329596e-01,  1.11261233e-01,  1.11191968e-01,
+         8.88774379e-01,  1.11192128e-01],
+       [-4.44920396e-03, -4.44920396e-03,  3.40660225e-05,
+         3.40660225e-05, -6.85911652e-05, -6.85911652e-05,
+        -6.85911652e-05, -6.85911652e-05,  3.40660225e-05,
+         3.40660225e-05, -1.45922753e-03, -1.45922753e-03,
+         1.11295779e-01, -1.11227691e-01,  1.11260712e-01,
+         1.11294728e-01, -1.11227725e-01, -1.11159405e-01,
+         1.11192128e-01,  8.88840353e-01]])
+      jac: array([ 2.98023224e-08,  2.98023224e-08,  0.00000000e+00,  0.00000000e+00,
+        0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+        0.00000000e+00,  0.00000000e+00, -4.47034836e-08, -4.47034836e-08,
+        7.45058060e-09,  0.00000000e+00,  7.45058060e-09,  2.98023224e-08,
+        0.00000000e+00, -2.98023224e-08,  0.00000000e+00, -4.47034836e-08])
+  message: 'Optimization terminated successfully.'
+  n_iters: 169
+     nfev: 168
+      nit: 5
+     njev: 8
+   status: 0
+  success: True
+        x: array([ 4.76986805e-09,  4.76986805e-09, -3.57384967e-08, -3.57384967e-08,
+        1.56001593e-08,  1.56001593e-08,  1.56001593e-08,  1.56001593e-08,
+       -3.57384967e-08, -3.57384967e-08, -1.80480160e-08, -1.80480160e-08,
+        7.08212191e-02, -7.08213277e-02,  7.08212695e-02,  7.08212902e-02,
+       -7.08213103e-02, -7.08213209e-02,  7.08213041e-02, -7.08213003e-02])

@@ -1,0 +1,26 @@
+INFO 2021-03-04 10:06:40,734 H4, r=1.546, ansatz constructed from iqeb
+INFO 2021-03-04 10:06:40,734 n_qubits = 8, n_electrons = 4
+DEBUG 2021-03-04 10:06:40,741 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-03-04 10:06:41,184 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-03-04 10:06:41,191 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-03-04 10:06:41,906 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-03-04 10:06:42,690 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-03-04 10:06:42,694 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-03-04 10:06:43,554 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-03-04 10:06:43,559 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-03-04 10:06:44,087 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+DEBUG 2021-03-04 10:06:44,705 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-03-04 10:06:45,617 
+INFO 2021-03-04 10:06:45,617 Device noise generated from ibmq_16_melbourne
+INFO 2021-03-04 10:06:46,234 
+INFO 2021-03-04 10:06:46,234 QiskitSimBackend result is -1.9824234617589276, new calculation
+INFO 2021-03-04 10:06:46,234 
+INFO 2021-03-04 10:06:46,234 IQEB VQE reference result is -1.9824234617589416
+INFO 2021-03-04 10:06:46,235 
+INFO 2021-03-04 10:06:46,235 n_shots = 100.0
+INFO 2021-03-04 10:06:46,236 
+INFO 2021-03-04 10:06:46,236 method = statevector
+INFO 2021-03-04 10:07:29,617 QasmBackend result is -0.8864624544645263, noisy, time used = 43.38095688819885s
+INFO 2021-03-04 10:07:48,962 QasmBackend result is -2.0392325975938737, noiseless, time used = 19.345333576202393s
+INFO 2021-03-04 10:07:48,966 
+INFO 2021-03-04 10:07:48,966 method = statevector_gpu

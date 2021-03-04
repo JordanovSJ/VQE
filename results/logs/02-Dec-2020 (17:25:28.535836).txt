@@ -1,0 +1,25 @@
+INFO 2020-12-02 17:25:28,538 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 3-----
+-----Statevector and energy calculated using <class 'src.backends.QiskitSimBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-12-02 17:25:28,897 Iteration: 1. Energy -1.1169989967389082.  Energy change 6.661e-16 , Iteration dutation: 0.0001556873321533203
+INFO 2020-12-02 17:25:29,008 Iteration: 2. Energy -1.1169989967389082.  Energy change 0.000e+00 , Iteration dutation: 0.3592526912689209
+INFO 2020-12-02 17:25:29,173 Iteration: 3. Energy -1.1169989967389082.  Energy change 0.000e+00 , Iteration dutation: 0.11094903945922852
+INFO 2020-12-02 17:25:29,276 Iteration: 4. Energy -1.116999002131078.  Energy change -5.392e-09 , Iteration dutation: 0.16428685188293457
+INFO 2020-12-02 17:25:29,369 Iteration: 5. Energy -1.1169989967389082.  Energy change 5.392e-09 , Iteration dutation: 0.10373377799987793
+INFO 2020-12-02 17:25:29,496 Iteration: 6. Energy -1.0373176477220487.  Energy change 7.968e-02 , Iteration dutation: 0.09261655807495117
+INFO 2020-12-02 17:25:29,647 Iteration: 7. Energy -1.0373176477220487.  Energy change 0.000e+00 , Iteration dutation: 0.12728214263916016
+INFO 2020-12-02 17:25:29,764 Iteration: 8. Energy -1.037317647722048.  Energy change 6.661e-16 , Iteration dutation: 0.15116524696350098
+INFO 2020-12-02 17:25:29,971 Iteration: 9. Energy -1.0373176477220485.  Energy change -4.441e-16 , Iteration dutation: 0.1171560287475586
+INFO 2020-12-02 17:25:30,108 Iteration: 10. Energy -1.0373176360564365.  Energy change 1.167e-08 , Iteration dutation: 0.20653152465820312
+INFO 2020-12-02 17:25:30,283 Iteration: 11. Energy -1.1373033607276304.  Energy change -9.999e-02 , Iteration dutation: 0.13719964027404785
+INFO 2020-12-02 17:25:30,434 Iteration: 12. Energy -1.1373033607276304.  Energy change 0.000e+00 , Iteration dutation: 0.17518091201782227
+INFO 2020-12-02 17:25:30,555 Iteration: 13. Energy -1.13730336072763.  Energy change 4.441e-16 , Iteration dutation: 0.15089106559753418
+INFO 2020-12-02 17:25:30,677 Iteration: 14. Energy -1.13730336072763.  Energy change 0.000e+00 , Iteration dutation: 0.12061357498168945
+INFO 2020-12-02 17:25:30,792 Iteration: 15. Energy -1.137303360789907.  Energy change -6.228e-11 , Iteration dutation: 0.1220998764038086
+INFO 2020-12-02 17:25:30,926 Iteration: 16. Energy -1.1373060355609526.  Energy change -2.675e-06 , Iteration dutation: 0.11483216285705566
+INFO 2020-12-02 17:25:31,173 Iteration: 17. Energy -1.1373060355609526.  Energy change 0.000e+00 , Iteration dutation: 0.13441705703735352
+INFO 2020-12-02 17:25:31,278 Iteration: 18. Energy -1.1373060355609526.  Energy change 0.000e+00 , Iteration dutation: 0.24627017974853516

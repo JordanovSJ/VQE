@@ -1,0 +1,16 @@
+INFO 2021-02-17 20:49:38,357 LiH, r=3.25, iqeb_vqe result
+INFO 2021-02-17 20:49:38,357 n_qubits = 12, n_electrons = 4
+DEBUG 2021-02-17 20:49:38,398 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 20:49:38,832 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-02-17 20:49:38,838 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 20:49:39,490 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-02-17 20:49:40,252 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-02-17 20:49:40,256 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 20:49:41,130 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-02-17 20:49:41,134 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 20:49:41,722 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+WARNING 2021-02-17 20:49:41,745 Remote backend "ibmq_lima" could not be instantiated due to an invalid config: "{'gates': {5: {'parameters': ['Field may not be null.'], 'qasm_def': ['Field may not be null.'], 'coupling_map': ['Shorter than minimum length 1.']}}}"
+WARNING 2021-02-17 20:49:41,746 Remote backend "ibmq_quito" could not be instantiated due to an invalid config: "{'gates': {5: {'parameters': ['Field may not be null.'], 'qasm_def': ['Field may not be null.'], 'coupling_map': ['Shorter than minimum length 1.']}}}"
+DEBUG 2021-02-17 20:49:42,467 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-02-17 20:49:42,599 Noise model generated from ibmq_16_melbourne
+INFO 2021-02-17 20:49:42,599 Running ham_expectation_value for LiH molecule, first 1 ansatz elements, 10 shots

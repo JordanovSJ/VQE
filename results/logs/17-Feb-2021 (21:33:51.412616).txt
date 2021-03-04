@@ -1,0 +1,147 @@
+INFO 2021-02-17 21:33:51,413 LiH, r=3.25, iqeb_vqe result
+INFO 2021-02-17 21:33:51,413 n_qubits = 12, n_electrons = 4
+DEBUG 2021-02-17 21:33:51,454 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 21:33:51,960 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-02-17 21:33:51,966 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 21:33:52,889 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-02-17 21:33:53,569 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-02-17 21:33:53,573 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 21:33:54,412 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-02-17 21:33:54,416 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 21:33:54,955 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+WARNING 2021-02-17 21:33:54,981 Remote backend "ibmq_lima" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.'], 'parameters': ['Field may not be null.']}}}"
+WARNING 2021-02-17 21:33:54,982 Remote backend "ibmq_quito" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'qasm_def': ['Field may not be null.'], 'parameters': ['Field may not be null.']}}}"
+DEBUG 2021-02-17 21:33:55,762 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-02-17 21:33:55,917 Noise model generated from ibmq_16_melbourne
+INFO 2021-02-17 21:33:55,917 Running ham_expectation_value for LiH molecule, first 1 ansatz elements, 10 shots
+INFO 2021-02-17 21:36:53,885 Expectation value = -6.684354049348439, time = 177.96747541427612s, Yordan result = -7.713564559916018
+INFO 2021-02-17 21:36:53,885 Running ham_expectation_value for LiH molecule, first 2 ansatz elements, 10 shots
+INFO 2021-02-17 21:41:29,394 Expectation value = -6.842412843166746, time = 275.5079860687256s, Yordan result = -7.754332431910254
+INFO 2021-02-17 21:41:29,394 Running ham_expectation_value for LiH molecule, first 3 ansatz elements, 10 shots
+INFO 2021-02-17 21:47:57,252 Expectation value = -6.3134413621171, time = 387.857723236084s, Yordan result = -7.754332431910254
+INFO 2021-02-17 21:47:57,252 Running ham_expectation_value for LiH molecule, first 4 ansatz elements, 10 shots
+INFO 2021-02-17 21:54:53,649 Expectation value = -6.5575371909439575, time = 416.3966703414917s, Yordan result = -7.785424969413032
+INFO 2021-02-17 21:54:53,649 Running ham_expectation_value for LiH molecule, first 5 ansatz elements, 10 shots
+INFO 2021-02-17 22:02:11,787 Expectation value = -6.414376357619233, time = 438.1374430656433s, Yordan result = -7.785424969413032
+INFO 2021-02-17 22:02:11,787 Running ham_expectation_value for LiH molecule, first 6 ansatz elements, 10 shots
+INFO 2021-02-17 22:09:50,297 Expectation value = -6.764358400865278, time = 458.51021099090576s, Yordan result = -7.790952025053303
+INFO 2021-02-17 22:09:50,297 Running ham_expectation_value for LiH molecule, first 7 ansatz elements, 10 shots
+INFO 2021-02-17 22:17:40,644 Expectation value = -6.455864003169003, time = 470.3465826511383s, Yordan result = -7.790952025053303
+INFO 2021-02-17 22:17:40,644 Running ham_expectation_value for LiH molecule, first 8 ansatz elements, 10 shots
+INFO 2021-02-17 22:29:33,540 Expectation value = -6.860284444456097, time = 712.8952512741089s, Yordan result = -7.791012949165362
+INFO 2021-02-17 22:29:33,540 Running ham_expectation_value for LiH molecule, first 9 ansatz elements, 10 shots
+INFO 2021-02-17 22:44:38,225 Expectation value = -4.80987589450593, time = 904.6844141483307s, Yordan result = -7.791012949165362
+INFO 2021-02-17 22:44:38,225 Running ham_expectation_value for LiH molecule, first 10 ansatz elements, 10 shots
+INFO 2021-02-17 23:00:26,084 Expectation value = -5.602176679460684, time = 947.8590652942657s, Yordan result = -7.7918033667116
+INFO 2021-02-17 23:00:26,084 Running ham_expectation_value for LiH molecule, first 11 ansatz elements, 10 shots
+INFO 2021-02-17 23:17:13,394 Expectation value = -4.8621548902620875, time = 1007.3092591762543s, Yordan result = -7.7918033667116
+INFO 2021-02-17 23:17:13,394 Running ham_expectation_value for LiH molecule, first 12 ansatz elements, 10 shots
+INFO 2021-02-17 23:38:35,032 Expectation value = -5.408983231190637, time = 1281.6378302574158s, Yordan result = -7.791853930128277
+INFO 2021-02-17 23:38:35,032 Running ham_expectation_value for LiH molecule, first 13 ansatz elements, 10 shots
+INFO 2021-02-18 00:02:58,774 Expectation value = -3.186434879528141, time = 1463.7418143749237s, Yordan result = -7.791853930128277
+INFO 2021-02-18 00:02:58,775 Running ham_expectation_value for LiH molecule, first 14 ansatz elements, 10 shots
+INFO 2021-02-18 00:30:52,575 Expectation value = -3.0674678811828384, time = 1673.80047082901s, Yordan result = -7.791897124970234
+INFO 2021-02-18 00:30:52,576 Running ham_expectation_value for LiH molecule, first 15 ansatz elements, 10 shots
+INFO 2021-02-18 01:01:58,394 Expectation value = -4.287002727624836, time = 1865.8182237148285s, Yordan result = -7.791897124970234
+INFO 2021-02-18 01:01:58,394 Running ham_expectation_value for LiH molecule, first 16 ansatz elements, 10 shots
+INFO 2021-02-18 01:35:26,058 Expectation value = -4.353703374598828, time = 2007.6630082130432s, Yordan result = -7.791936750456941
+INFO 2021-02-18 01:35:26,058 Running ham_expectation_value for LiH molecule, first 17 ansatz elements, 10 shots
+INFO 2021-02-18 02:12:35,771 Expectation value = -2.5137624982922855, time = 2229.7127146720886s, Yordan result = -7.791975348103881
+INFO 2021-02-18 02:12:35,771 Running ham_expectation_value for LiH molecule, first 18 ansatz elements, 10 shots
+INFO 2021-02-18 02:52:46,098 Expectation value = -2.584141456184274, time = 2410.3264701366425s, Yordan result = -7.791994997161423
+INFO 2021-02-18 02:52:46,098 Running ham_expectation_value for LiH molecule, first 19 ansatz elements, 10 shots
+INFO 2021-02-18 03:36:12,553 Expectation value = -3.313904413163541, time = 2606.4546432495117s, Yordan result = -7.79201447653168
+INFO 2021-02-18 03:36:12,553 Running ham_expectation_value for LiH molecule, first 20 ansatz elements, 10 shots
+INFO 2021-02-18 04:23:06,307 Expectation value = -3.2677346735144277, time = 2813.753467321396s, Yordan result = -7.792043426461959
+INFO 2021-02-18 04:23:06,307 Running ham_expectation_value for LiH molecule, first 21 ansatz elements, 10 shots
+INFO 2021-02-18 05:13:00,423 Expectation value = -2.9824821749569974, time = 2994.115252017975s, Yordan result = -7.792043426461959
+INFO 2021-02-18 05:13:00,423 Running ham_expectation_value for LiH molecule, first 22 ansatz elements, 10 shots
+INFO 2021-02-18 06:06:08,413 Expectation value = -4.159764918042607, time = 3187.989488840103s, Yordan result = -7.792062128793508
+INFO 2021-02-18 06:06:08,413 Running ham_expectation_value for LiH molecule, first 23 ansatz elements, 10 shots
+INFO 2021-02-18 07:01:44,243 Expectation value = -2.5832549456301366, time = 3335.8298573493958s, Yordan result = -7.792062128793508
+INFO 2021-02-18 07:01:44,243 Running ham_expectation_value for LiH molecule, first 24 ansatz elements, 10 shots
+INFO 2021-02-18 08:01:12,256 Expectation value = -2.8380046263587237, time = 3568.012586593628s, Yordan result = -7.792079966832121
+INFO 2021-02-18 08:01:12,256 Running ham_expectation_value for LiH molecule, first 25 ansatz elements, 10 shots
+INFO 2021-02-18 09:03:09,350 Expectation value = -2.856103498600338, time = 3717.0931298732758s, Yordan result = -7.792079966832121
+INFO 2021-02-18 09:03:09,350 Running ham_expectation_value for LiH molecule, first 26 ansatz elements, 10 shots
+INFO 2021-02-18 10:08:36,245 Expectation value = -3.2428116085574694, time = 3926.8947293758392s, Yordan result = -7.79209580522862
+INFO 2021-02-18 10:08:36,246 Running ham_expectation_value for LiH molecule, first 27 ansatz elements, 10 shots
+INFO 2021-02-18 11:16:58,110 Expectation value = -3.320238346376519, time = 4101.864221334457s, Yordan result = -7.792107357174423
+INFO 2021-02-18 11:16:58,110 Running ham_expectation_value for LiH molecule, first 28 ansatz elements, 10 shots
+INFO 2021-02-18 12:25:42,125 Expectation value = -3.514789348044063, time = 4124.01432800293s, Yordan result = -7.792124088244831
+INFO 2021-02-18 12:25:42,125 Running ham_expectation_value for LiH molecule, first 29 ansatz elements, 10 shots
+INFO 2021-02-18 13:49:46,488 Expectation value = -4.133403129114, time = 5044.36269569397s, Yordan result = -7.792124088244831
+INFO 2021-02-18 13:49:46,488 Running ham_expectation_value for LiH molecule, first 30 ansatz elements, 10 shots
+INFO 2021-02-18 15:25:40,772 Expectation value = -2.0117105404853115, time = 5754.283529281616s, Yordan result = -7.792140264614158
+INFO 2021-02-18 15:25:40,772 Running ham_expectation_value for LiH molecule, first 31 ansatz elements, 10 shots
+INFO 2021-02-18 16:49:51,005 Expectation value = -3.330618739165196, time = 5050.232722997665s, Yordan result = -7.792140264614158
+INFO 2021-02-18 16:49:51,006 Running ham_expectation_value for LiH molecule, first 32 ansatz elements, 10 shots
+INFO 2021-02-18 18:09:21,097 Expectation value = -3.674381254461227, time = 4770.091498374939s, Yordan result = -7.792151562772031
+INFO 2021-02-18 18:09:21,098 Running ham_expectation_value for LiH molecule, first 33 ansatz elements, 10 shots
+INFO 2021-02-18 19:31:39,718 Expectation value = -3.241449933296798, time = 4938.620201826096s, Yordan result = -7.792151562772031
+INFO 2021-02-18 19:31:39,718 Running ham_expectation_value for LiH molecule, first 34 ansatz elements, 10 shots
+INFO 2021-02-18 20:56:28,053 Expectation value = -2.9344430383558238, time = 5088.334926366806s, Yordan result = -7.7921632829684375
+INFO 2021-02-18 20:56:28,054 Running ham_expectation_value for LiH molecule, first 35 ansatz elements, 10 shots
+INFO 2021-02-18 22:23:20,683 Expectation value = -3.120949703143164, time = 5212.629061460495s, Yordan result = -7.7921632829684375
+INFO 2021-02-18 22:23:20,683 Running ham_expectation_value for LiH molecule, first 36 ansatz elements, 10 shots
+INFO 2021-02-18 23:51:23,089 Expectation value = -2.6740503998087912, time = 5282.4051723480225s, Yordan result = -7.792169736483464
+INFO 2021-02-18 23:51:23,089 Running ham_expectation_value for LiH molecule, first 37 ansatz elements, 10 shots
+INFO 2021-02-19 01:24:16,723 Expectation value = -2.546719369726405, time = 5573.633423566818s, Yordan result = -7.792169736483464
+INFO 2021-02-19 01:24:16,723 Running ham_expectation_value for LiH molecule, first 38 ansatz elements, 10 shots
+INFO 2021-02-19 03:00:14,041 Expectation value = -2.8121003507120674, time = 5757.31774187088s, Yordan result = -7.792175838766607
+INFO 2021-02-19 03:00:14,041 Running ham_expectation_value for LiH molecule, first 39 ansatz elements, 10 shots
+INFO 2021-02-19 04:39:46,190 Expectation value = -2.7623236124344706, time = 5972.148389816284s, Yordan result = -7.792175838766607
+INFO 2021-02-19 04:39:46,190 Running ham_expectation_value for LiH molecule, first 40 ansatz elements, 10 shots
+INFO 2021-02-19 06:19:58,904 Expectation value = -2.5176726317187814, time = 6012.713878154755s, Yordan result = -7.7921790633199155
+INFO 2021-02-19 06:19:58,904 Running ham_expectation_value for LiH molecule, first 41 ansatz elements, 10 shots
+INFO 2021-02-19 07:59:42,944 Expectation value = -4.0192732449125685, time = 5984.039347410202s, Yordan result = -7.7921790633199155
+INFO 2021-02-19 07:59:42,944 Running ham_expectation_value for LiH molecule, first 42 ansatz elements, 10 shots
+INFO 2021-02-19 09:42:58,400 Expectation value = -2.8129431077007676, time = 6195.455795049667s, Yordan result = -7.792180951592934
+INFO 2021-02-19 09:42:58,401 Running ham_expectation_value for LiH molecule, first 43 ansatz elements, 10 shots
+INFO 2021-02-19 11:29:00,232 Expectation value = -3.6227736777873885, time = 6361.83150100708s, Yordan result = -7.792183491761879
+INFO 2021-02-19 11:29:00,233 Running ham_expectation_value for LiH molecule, first 44 ansatz elements, 10 shots
+INFO 2021-02-19 13:19:33,715 Expectation value = -3.4079731954826284, time = 6633.482295036316s, Yordan result = -7.792183491761879
+INFO 2021-02-19 13:19:33,716 Running ham_expectation_value for LiH molecule, first 45 ansatz elements, 10 shots
+INFO 2021-02-19 15:11:57,644 Expectation value = -3.417421429577799, time = 6743.92847776413s, Yordan result = -7.79218441238376
+INFO 2021-02-19 15:11:57,645 Running ham_expectation_value for LiH molecule, first 46 ansatz elements, 10 shots
+INFO 2021-02-19 17:10:15,030 Expectation value = -2.722808791544611, time = 7097.385684013367s, Yordan result = -7.79218441238376
+INFO 2021-02-19 17:10:15,031 Running ham_expectation_value for LiH molecule, first 47 ansatz elements, 10 shots
+INFO 2021-02-19 19:23:58,671 Expectation value = -2.5169479949587106, time = 8023.637261629105s, Yordan result = -7.792184435049429
+INFO 2021-02-19 19:23:58,672 Running ham_expectation_value for LiH molecule, first 48 ansatz elements, 10 shots
+INFO 2021-02-19 21:26:06,256 Expectation value = -3.0766063760359135, time = 7327.584512233734s, Yordan result = -7.792184435049429
+INFO 2021-02-19 21:26:06,257 Running ham_expectation_value for LiH molecule, first 49 ansatz elements, 10 shots
+INFO 2021-02-19 23:27:56,741 Expectation value = -3.155698617676972, time = 7310.484543800354s, Yordan result = -7.792184451397746
+INFO 2021-02-19 23:27:56,742 Running ham_expectation_value for LiH molecule, first 50 ansatz elements, 10 shots
+INFO 2021-02-20 02:01:08,517 Expectation value = -3.3143932070751347, time = 9191.774606466293s, Yordan result = -7.792184451397746
+INFO 2021-02-20 02:01:08,517 Running ham_expectation_value for LiH molecule, first 51 ansatz elements, 10 shots
+INFO 2021-02-20 05:29:40,048 Expectation value = -2.7600503863805743, time = 12511.530572414398s, Yordan result = -7.792184458134423
+INFO 2021-02-20 05:29:40,048 Running ham_expectation_value for LiH molecule, first 52 ansatz elements, 10 shots
+INFO 2021-02-20 09:48:02,682 Expectation value = -2.5994709169673196, time = 15502.633778810501s, Yordan result = -7.792184458134423
+INFO 2021-02-20 09:48:02,682 Running ham_expectation_value for LiH molecule, first 53 ansatz elements, 10 shots
+INFO 2021-02-20 12:07:23,819 Expectation value = -4.611840311093064, time = 8361.137177467346s, Yordan result = -7.79218446612898
+INFO 2021-02-20 12:07:23,820 Running ham_expectation_value for LiH molecule, first 54 ansatz elements, 10 shots
+INFO 2021-02-20 14:21:02,093 Expectation value = -2.3905110222441013, time = 8018.27307510376s, Yordan result = -7.79218446612898
+INFO 2021-02-20 14:21:02,093 Running ham_expectation_value for LiH molecule, first 55 ansatz elements, 10 shots
+INFO 2021-02-20 16:38:09,002 Expectation value = -2.952522007566391, time = 8226.909042596817s, Yordan result = -7.792184468526803
+INFO 2021-02-20 16:38:09,003 Running ham_expectation_value for LiH molecule, first 56 ansatz elements, 10 shots
+INFO 2021-02-20 18:58:58,992 Expectation value = -3.1612173410580895, time = 8449.989304065704s, Yordan result = -7.792184468526803
+INFO 2021-02-20 18:58:58,992 Running ham_expectation_value for LiH molecule, first 57 ansatz elements, 10 shots
+INFO 2021-02-20 21:18:54,573 Expectation value = -3.199059023313094, time = 8395.580117702484s, Yordan result = -7.792184469708534
+INFO 2021-02-20 21:18:54,573 Running ham_expectation_value for LiH molecule, first 58 ansatz elements, 10 shots
+INFO 2021-02-20 23:47:32,121 Expectation value = -2.0370752656100937, time = 8917.54761505127s, Yordan result = -7.792184469708534
+INFO 2021-02-20 23:47:32,121 Running ham_expectation_value for LiH molecule, first 59 ansatz elements, 10 shots
+INFO 2021-02-21 02:18:20,213 Expectation value = -3.691873106834231, time = 9048.091170549393s, Yordan result = -7.792184469957181
+INFO 2021-02-21 02:18:20,213 Running ham_expectation_value for LiH molecule, first 60 ansatz elements, 10 shots
+INFO 2021-02-21 04:49:56,322 Expectation value = -2.964002696033905, time = 9096.109194040298s, Yordan result = -7.792184469957181
+INFO 2021-02-21 04:49:56,323 Running ham_expectation_value for LiH molecule, first 61 ansatz elements, 10 shots
+INFO 2021-02-21 07:26:28,808 Expectation value = -2.7640283160225105, time = 9392.484471559525s, Yordan result = -7.792184470008143
+INFO 2021-02-21 07:26:28,808 Running ham_expectation_value for LiH molecule, first 62 ansatz elements, 10 shots
+INFO 2021-02-21 10:02:29,867 Expectation value = -2.1187727764017654, time = 9361.058611869812s, Yordan result = -7.792184470008143
+INFO 2021-02-21 10:02:29,867 Running ham_expectation_value for LiH molecule, first 63 ansatz elements, 10 shots
+INFO 2021-02-21 12:46:43,864 Expectation value = -3.0347240191938014, time = 9853.996459245682s, Yordan result = -7.792184470020225
+INFO 2021-02-21 12:46:43,864 Running ham_expectation_value for LiH molecule, first 64 ansatz elements, 10 shots
+INFO 2021-02-21 15:33:29,250 Expectation value = -3.1120273479866967, time = 10005.385518789291s, Yordan result = -7.792184470020225
+INFO 2021-02-21 15:33:29,250 Running ham_expectation_value for LiH molecule, first 65 ansatz elements, 10 shots
+INFO 2021-02-21 18:19:30,825 Expectation value = -3.0101090606630994, time = 9961.57453584671s, Yordan result = -7.7921844700203335
+INFO 2021-02-21 18:19:30,825 Running ham_expectation_value for LiH molecule, first 66 ansatz elements, 10 shots
+INFO 2021-02-21 21:11:28,737 Expectation value = -3.4519291304690354, time = 10317.911989450455s, Yordan result = -7.7921844700203335

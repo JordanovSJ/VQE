@@ -1,0 +1,202 @@
+INFO 2021-02-22 14:25:56,394 H4, r=1 ,q_exc
+INFO 2021-02-22 14:25:56,693 Calculating excitation generators
+INFO 2021-02-22 14:26:02,613 Calculating commutators
+INFO 2021-02-22 14:26:06,793 ('Length of new pool', 106)
+INFO 2021-02-22 14:26:12,445 Elements with largest grads ['d_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[3, 4]_[6, 7]', 'd_q_exc_[3, 6]_[4, 7]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[4, 7]_[6, 5]', 's_q_exc_1_5', 's_q_exc_0_4', 's_q_exc_3_7', 's_q_exc_2_6', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[2, 3]_[4, 5]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.3834412782021133e-11, 1.3834442706001093e-11, -5.1529473071333654e-11, 5.152951763204294e-11, -0.09110491686841171, -0.09110491686841171, -0.10592093453327654, -0.10592093453327654, 0.19413910371439597, 0.19702585140168827, 0.19702585140168827, 0.20929055744632885, 0.21566412699494777, 0.2745656798570924]
+INFO 2021-02-22 14:26:18,231 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[2, 3]_[4, 5]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 14:26:18,243 Iteration: 1. Energy -2.0985459368299137.  Energy change -8.882e-16 , Iteration dutation: 0.010572433471679688
+INFO 2021-02-22 14:26:18,248 Iteration: 2. Energy -2.114123998931246.  Energy change -1.558e-02 , Iteration dutation: 0.0016815662384033203
+INFO 2021-02-22 14:26:18,258 Iteration: 3. Energy -2.1224993414368085.  Energy change -8.375e-03 , Iteration dutation: 0.008436918258666992
+INFO 2021-02-22 14:26:18,267 Iteration: 4. Energy -2.122499910200559.  Energy change -5.688e-07 , Iteration dutation: 0.010742425918579102
+INFO 2021-02-22 14:26:18,274 Iteration: 5. Energy -2.12249991022754.  Energy change -2.698e-11 , Iteration dutation: 0.007508516311645508
+INFO 2021-02-22 14:26:18,284 Add new element to final ansatz d_q_exc_[2, 3]_[4, 5]. Energy -2.12249991022754. Energy change 0.02395397339762706, var. parameters: [-0.17274717773389314]
+INFO 2021-02-22 14:26:24,023 Elements with largest grads ['d_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[1, 5]_[3, 7]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[0, 1]_[2, 3]', 's_q_exc_0_4', 's_q_exc_1_5', 's_q_exc_3_7', 's_q_exc_2_6', 'd_q_exc_[0, 5]_[2, 7]', 'd_q_exc_[1, 4]_[3, 6]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[0, 1]_[4, 5]', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[1, 2]_[5, 6]']. Grads [0.01855641245897873, 0.02370736368267284, 0.02370736368267284, -0.02583904310092806, -0.02721861619555433, -0.03318920679529255, 0.033189206795292595, -0.03365165757307399, 0.03365165757307404, -0.04226377614165158, -0.04226377614165158, -0.10634882818842945, -0.10634882818842945, -0.13586949269761736, -0.13586949269761736, 0.1480863804557434, 0.15599286466103487, 0.19413910371439597, 0.24221832088604683, 0.24221832088604683]
+INFO 2021-02-22 14:26:29,872 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 3-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 14:26:29,889 Iteration: 1. Energy -2.12249991022754.  Energy change 0.000e+00 , Iteration dutation: 0.015355825424194336
+INFO 2021-02-22 14:26:29,896 Iteration: 2. Energy -2.125974866549693.  Energy change -3.475e-03 , Iteration dutation: 0.0011646747589111328
+INFO 2021-02-22 14:26:29,906 Iteration: 3. Energy -2.1375322523285116.  Energy change -1.156e-02 , Iteration dutation: 0.012374401092529297
+INFO 2021-02-22 14:26:29,913 Iteration: 4. Energy -2.1455116063763544.  Energy change -7.979e-03 , Iteration dutation: 0.008458852767944336
+INFO 2021-02-22 14:26:29,920 Iteration: 5. Energy -2.149065938931046.  Energy change -3.554e-03 , Iteration dutation: 0.0070607662200927734
+INFO 2021-02-22 14:26:29,928 Iteration: 6. Energy -2.1493962831636746.  Energy change -3.303e-04 , Iteration dutation: 0.007111787796020508
+INFO 2021-02-22 14:26:29,935 Iteration: 7. Energy -2.1500927485161037.  Energy change -6.965e-04 , Iteration dutation: 0.007024526596069336
+INFO 2021-02-22 14:26:29,942 Iteration: 8. Energy -2.1501568899360204.  Energy change -6.414e-05 , Iteration dutation: 0.00707697868347168
+INFO 2021-02-22 14:26:29,949 Iteration: 9. Energy -2.1501778681889583.  Energy change -2.098e-05 , Iteration dutation: 0.007117033004760742
+INFO 2021-02-22 14:26:29,956 Iteration: 10. Energy -2.150177909606048.  Energy change -4.142e-08 , Iteration dutation: 0.007085561752319336
+INFO 2021-02-22 14:26:29,963 Iteration: 11. Energy -2.150177909698239.  Energy change -9.219e-11 , Iteration dutation: 0.007100343704223633
+INFO 2021-02-22 14:26:29,970 Iteration: 12. Energy -2.150177909698262.  Energy change -2.265e-14 , Iteration dutation: 0.0070683956146240234
+INFO 2021-02-22 14:26:29,979 Add new element to final ansatz d_q_exc_[0, 5]_[2, 7]. Energy -2.150177909698262. Energy change 0.027677999470721915, var. parameters: [-0.24360441653100637, 0.46007494047501574, 0.46007494047501574]
+INFO 2021-02-22 14:26:29,983 Add new element to final ansatz d_q_exc_[0, 5]_[2, 7]. Energy -2.150177909698262. Energy change 0.027677999470721915, var. parameters: [-0.24360441653100637, 0.46007494047501574, 0.46007494047501574]
+INFO 2021-02-22 14:26:35,516 Elements with largest grads ['d_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[1, 5]_[3, 7]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[0, 1]_[2, 3]', 's_q_exc_3_7', 's_q_exc_2_6', 's_q_exc_0_4', 's_q_exc_1_5', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[2, 3]_[6, 7]', 'd_q_exc_[0, 1]_[4, 5]']. Grads [-0.008822111214903117, -0.008822111214903144, 0.010691940740872548, 0.010691940740872548, 0.012785264919776163, 0.012933277927103136, 0.012933277927103136, -0.020852426460043857, -0.02270255345580142, -0.02636888416043742, 0.02636888416043747, -0.02743682356529699, 0.02743682356529703, 0.052065331198739066, -0.07102338902948166, -0.07102338902948166, -0.08591192674044804, -0.08591192674044805, 0.14093941737400761, 0.14838338731653652]
+INFO 2021-02-22 14:26:41,731 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 4-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 14:26:41,754 Iteration: 1. Energy -2.150177909698262.  Energy change 0.000e+00 , Iteration dutation: 0.021846771240234375
+INFO 2021-02-22 14:26:41,762 Iteration: 2. Energy -2.145267773605809.  Energy change 4.910e-03 , Iteration dutation: 0.0011029243469238281
+INFO 2021-02-22 14:26:41,784 Iteration: 3. Energy -2.154692714999346.  Energy change -9.425e-03 , Iteration dutation: 0.013441801071166992
+INFO 2021-02-22 14:26:41,801 Iteration: 4. Energy -2.154733196851086.  Energy change -4.048e-05 , Iteration dutation: 0.025806665420532227
+INFO 2021-02-22 14:26:41,811 Iteration: 5. Energy -2.1547815814178195.  Energy change -4.838e-05 , Iteration dutation: 0.01327061653137207
+INFO 2021-02-22 14:26:41,820 Iteration: 6. Energy -2.1547865906519252.  Energy change -5.009e-06 , Iteration dutation: 0.00868988037109375
+INFO 2021-02-22 14:26:41,828 Iteration: 7. Energy -2.1547910879168963.  Energy change -4.497e-06 , Iteration dutation: 0.008649349212646484
+INFO 2021-02-22 14:26:41,837 Iteration: 8. Energy -2.154794152131965.  Energy change -3.064e-06 , Iteration dutation: 0.008680582046508789
+INFO 2021-02-22 14:26:41,846 Iteration: 9. Energy -2.1547947613720355.  Energy change -6.092e-07 , Iteration dutation: 0.008648157119750977
+INFO 2021-02-22 14:26:41,854 Iteration: 10. Energy -2.154794801069252.  Energy change -3.970e-08 , Iteration dutation: 0.0086517333984375
+INFO 2021-02-22 14:26:41,863 Iteration: 11. Energy -2.1547948016650356.  Energy change -5.958e-10 , Iteration dutation: 0.00864100456237793
+INFO 2021-02-22 14:26:41,872 Iteration: 12. Energy -2.1547948016684755.  Energy change -3.440e-12 , Iteration dutation: 0.008682012557983398
+INFO 2021-02-22 14:26:41,880 Iteration: 13. Energy -2.1547948016684786.  Energy change -3.109e-15 , Iteration dutation: 0.008708953857421875
+INFO 2021-02-22 14:26:41,890 Add new element to final ansatz d_q_exc_[0, 1]_[4, 5]. Energy -2.1547948016684786. Energy change 0.004616891970216752, var. parameters: [-0.23273588514890173, 0.4709614353874487, 0.4709614353874488, -0.06198363962129025]
+INFO 2021-02-22 14:26:47,399 Elements with largest grads ['d_q_exc_[1, 6]_[4, 3]', 'd_q_exc_[0, 1]_[2, 3]', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[0, 6]_[4, 2]', 'd_q_exc_[1, 7]_[5, 3]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[1, 5]_[3, 7]', 's_q_exc_0_4', 's_q_exc_1_5', 's_q_exc_3_7', 's_q_exc_2_6', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]', 'd_q_exc_[2, 3]_[6, 7]']. Grads [-0.00641457211085384, 0.0072701596517615015, 0.008330439475409741, 0.008330439475409741, 0.008373115001969689, 0.01337105030211341, 0.01337105030211341, 0.014438572811537716, 0.014438572811537716, -0.016246904598179956, 0.016246904598179998, -0.02383638445191432, 0.023836384451914376, -0.028041942125376217, 0.03229617869637039, -0.059631753793409306, -0.059631753793409306, -0.10335558184743687, -0.10335558184743687, 0.14987107453675777]
+INFO 2021-02-22 14:26:53,588 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 5-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 14:26:53,614 Iteration: 1. Energy -2.1547948016684786.  Energy change 0.000e+00 , Iteration dutation: 0.024320125579833984
+INFO 2021-02-22 14:26:53,623 Iteration: 2. Energy -2.136076875171459.  Energy change 1.872e-02 , Iteration dutation: 0.0009000301361083984
+INFO 2021-02-22 14:26:53,634 Iteration: 3. Energy -2.157859421298532.  Energy change -2.178e-02 , Iteration dutation: 0.014644145965576172
+INFO 2021-02-22 14:26:53,645 Iteration: 4. Energy -2.1578803507618534.  Energy change -2.093e-05 , Iteration dutation: 0.010915756225585938
+INFO 2021-02-22 14:26:53,656 Iteration: 5. Energy -2.1578997435254412.  Energy change -1.939e-05 , Iteration dutation: 0.010775566101074219
+INFO 2021-02-22 14:26:53,667 Iteration: 6. Energy -2.1579017422303624.  Energy change -1.999e-06 , Iteration dutation: 0.010775566101074219
+INFO 2021-02-22 14:26:53,678 Iteration: 7. Energy -2.1579047983805033.  Energy change -3.056e-06 , Iteration dutation: 0.011010885238647461
+INFO 2021-02-22 14:26:53,688 Iteration: 8. Energy -2.1579062314715043.  Energy change -1.433e-06 , Iteration dutation: 0.010609865188598633
+INFO 2021-02-22 14:26:53,699 Iteration: 9. Energy -2.1579065690454007.  Energy change -3.376e-07 , Iteration dutation: 0.010530471801757812
+INFO 2021-02-22 14:26:53,709 Iteration: 10. Energy -2.1579065848576984.  Energy change -1.581e-08 , Iteration dutation: 0.010716676712036133
+INFO 2021-02-22 14:26:53,720 Iteration: 11. Energy -2.1579065850061596.  Energy change -1.485e-10 , Iteration dutation: 0.010723114013671875
+INFO 2021-02-22 14:26:53,731 Iteration: 12. Energy -2.1579065850080608.  Energy change -1.901e-12 , Iteration dutation: 0.01046299934387207
+INFO 2021-02-22 14:26:53,741 Iteration: 13. Energy -2.1579065850080914.  Energy change -3.064e-14 , Iteration dutation: 0.010751485824584961
+INFO 2021-02-22 14:26:53,752 Add new element to final ansatz d_q_exc_[2, 3]_[6, 7]. Energy -2.1579065850080914. Energy change 0.003111783339612817, var. parameters: [-0.22566968914776483, 0.4794623646191672, 0.4794623646191671, -0.0642681268136342, -0.04143404424879716]
+INFO 2021-02-22 14:26:59,456 Elements with largest grads ['d_q_exc_[0, 7]_[5, 2]', 'd_q_exc_[1, 6]_[4, 3]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[1, 2]_[5, 6]', 's_q_exc_0_4', 's_q_exc_1_5', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[1, 5]_[3, 7]', 's_q_exc_3_7', 's_q_exc_2_6', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]', 'd_q_exc_[0, 3]_[5, 6]', 'd_q_exc_[1, 2]_[4, 7]']. Grads [-0.0026551141863239824, -0.0026551141863239824, 0.002883003657836984, -0.0028830036578369926, 0.004354803858032497, 0.006849764050134981, 0.006849764050134981, 0.00812497136681288, 0.008124971366812964, -0.013878450631676316, 0.013878450631676366, 0.015335103546307169, 0.015335103546307169, -0.015433636001924322, 0.015433636001924385, 0.01625836668979043, -0.05165300224147679, -0.05165300224147679, -0.11563962379624941, -0.11563962379624942]
+INFO 2021-02-22 14:27:05,793 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 7-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 14:27:05,821 Iteration: 1. Energy -2.1579065850080914.  Energy change 0.000e+00 , Iteration dutation: 0.027341127395629883
+INFO 2021-02-22 14:27:05,841 Iteration: 2. Energy -2.1481513104060888.  Energy change 9.755e-03 , Iteration dutation: 0.0007412433624267578
+INFO 2021-02-22 14:27:05,864 Iteration: 3. Energy -2.162804403885081.  Energy change -1.465e-02 , Iteration dutation: 0.033756256103515625
+INFO 2021-02-22 14:27:05,879 Iteration: 4. Energy -2.1624210238770285.  Energy change 3.834e-04 , Iteration dutation: 0.016448259353637695
+INFO 2021-02-22 14:27:05,893 Iteration: 5. Energy -2.1630285083561995.  Energy change -6.075e-04 , Iteration dutation: 0.01429128646850586
+INFO 2021-02-22 14:27:05,907 Iteration: 6. Energy -2.1630097386183165.  Energy change 1.877e-05 , Iteration dutation: 0.014302253723144531
+INFO 2021-02-22 14:27:05,921 Iteration: 7. Energy -2.1630556864893125.  Energy change -4.595e-05 , Iteration dutation: 0.014168500900268555
+INFO 2021-02-22 14:27:05,936 Iteration: 8. Energy -2.1630649861161033.  Energy change -9.300e-06 , Iteration dutation: 0.01433253288269043
+INFO 2021-02-22 14:27:05,950 Iteration: 9. Energy -2.1630810932556384.  Energy change -1.611e-05 , Iteration dutation: 0.014289140701293945
+INFO 2021-02-22 14:27:05,964 Iteration: 10. Energy -2.1630976554501053.  Energy change -1.656e-05 , Iteration dutation: 0.014184951782226562
+INFO 2021-02-22 14:27:05,978 Iteration: 11. Energy -2.163097658983321.  Energy change -3.533e-09 , Iteration dutation: 0.01416635513305664
+INFO 2021-02-22 14:27:05,993 Iteration: 12. Energy -2.1630976589841966.  Energy change -8.757e-13 , Iteration dutation: 0.014263153076171875
+INFO 2021-02-22 14:27:06,007 Iteration: 13. Energy -2.163097658984197.  Energy change -4.441e-16 , Iteration dutation: 0.014159679412841797
+INFO 2021-02-22 14:27:06,020 Add new element to final ansatz d_q_exc_[1, 2]_[4, 7]. Energy -2.163097658984197. Energy change 0.005191073976105631, var. parameters: [-0.22075339328229712, 0.45888693448451745, 0.45888693448451745, -0.07474077036533307, -0.04853669139391924, 0.04486096167521424, 0.04486096167521175]
+INFO 2021-02-22 14:27:06,025 Add new element to final ansatz d_q_exc_[1, 2]_[4, 7]. Energy -2.163097658984197. Energy change 0.005191073976105631, var. parameters: [-0.22075339328229712, 0.45888693448451745, 0.45888693448451745, -0.07474077036533307, -0.04853669139391924, 0.04486096167521424, 0.04486096167521175]
+INFO 2021-02-22 14:27:11,936 Elements with largest grads ['d_q_exc_[0, 3]_[1, 6]', 'd_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[1, 6]_[5, 2]', 'd_q_exc_[0, 7]_[4, 3]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 1]_[2, 7]', 's_q_exc_3_7', 's_q_exc_2_6', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[0, 5]_[3, 6]', 'd_q_exc_[1, 4]_[2, 7]', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[0, 1]_[6, 7]', 'd_q_exc_[0, 2]_[4, 6]', 'd_q_exc_[1, 3]_[5, 7]']. Grads [-0.0009331547801755233, 0.0009331547801755452, -0.0010069543967238226, 0.0010069543967238745, -0.0018355278480278016, -0.0018355278480278255, -0.0022828196620909994, 0.002282819662091063, -0.0024324454116437812, 0.0024324454116440965, 0.003703033637553115, -0.003703033637553173, -0.006825029575420097, -0.006825029575420152, 0.009552029215563827, 0.009552029215563869, 0.010377459704045688, 0.043461161483524954, -0.06924412612732284, -0.06924412612732302]
+INFO 2021-02-22 14:27:18,843 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 9-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 14:27:18,877 Iteration: 1. Energy -2.163097658984197.  Energy change 0.000e+00 , Iteration dutation: 0.033235788345336914
+INFO 2021-02-22 14:27:18,888 Iteration: 2. Energy -2.16061621503492.  Energy change 2.481e-03 , Iteration dutation: 0.0007152557373046875
+INFO 2021-02-22 14:27:18,907 Iteration: 3. Energy -2.165002752175819.  Energy change -4.387e-03 , Iteration dutation: 0.01978278160095215
+INFO 2021-02-22 14:27:18,926 Iteration: 4. Energy -2.164675307443686.  Energy change 3.274e-04 , Iteration dutation: 0.018858671188354492
+INFO 2021-02-22 14:27:18,944 Iteration: 5. Energy -2.1650831697128026.  Energy change -4.079e-04 , Iteration dutation: 0.0187528133392334
+INFO 2021-02-22 14:27:18,963 Iteration: 6. Energy -2.165082276273572.  Energy change 8.934e-07 , Iteration dutation: 0.018932819366455078
+INFO 2021-02-22 14:27:18,982 Iteration: 7. Energy -2.165087525953943.  Energy change -5.250e-06 , Iteration dutation: 0.0187075138092041
+INFO 2021-02-22 14:27:19,001 Iteration: 8. Energy -2.1650946828751394.  Energy change -7.157e-06 , Iteration dutation: 0.018798112869262695
+INFO 2021-02-22 14:27:19,019 Iteration: 9. Energy -2.1651057692000832.  Energy change -1.109e-05 , Iteration dutation: 0.018700599670410156
+INFO 2021-02-22 14:27:19,038 Iteration: 10. Energy -2.165110231494347.  Energy change -4.462e-06 , Iteration dutation: 0.01865386962890625
+INFO 2021-02-22 14:27:19,057 Iteration: 11. Energy -2.1651102166571903.  Energy change 1.484e-08 , Iteration dutation: 0.01865553855895996
+INFO 2021-02-22 14:27:19,075 Iteration: 12. Energy -2.1651102668711073.  Energy change -5.021e-08 , Iteration dutation: 0.01857757568359375
+INFO 2021-02-22 14:27:19,094 Iteration: 13. Energy -2.165110267972075.  Energy change -1.101e-09 , Iteration dutation: 0.018514394760131836
+INFO 2021-02-22 14:27:19,112 Iteration: 14. Energy -2.165110267973851.  Energy change -1.776e-12 , Iteration dutation: 0.018605470657348633
+INFO 2021-02-22 14:27:19,131 Iteration: 15. Energy -2.165110267973858.  Energy change -7.105e-15 , Iteration dutation: 0.018712997436523438
+INFO 2021-02-22 14:27:19,146 Add new element to final ansatz d_q_exc_[0, 2]_[4, 6]. Energy -2.165110267973858. Energy change 0.0020126089896610466, var. parameters: [-0.220081410531341, 0.443921121663443, 0.443921121663443, -0.07107305946086849, -0.04606287684471642, 0.04923674601013344, 0.04923674601013477, 0.02905642788545646, 0.029056427885457148]
+INFO 2021-02-22 14:27:19,151 Add new element to final ansatz d_q_exc_[0, 2]_[4, 6]. Energy -2.165110267973858. Energy change 0.0020126089896610466, var. parameters: [-0.220081410531341, 0.443921121663443, 0.443921121663443, -0.07107305946086849, -0.04606287684471642, 0.04923674601013344, 0.04923674601013477, 0.02905642788545646, 0.029056427885457148]
+INFO 2021-02-22 14:27:24,862 Elements with largest grads ['d_q_exc_[0, 3]_[1, 6]', 'd_q_exc_[0, 7]_[2, 1]', 'd_q_exc_[2, 5]_[4, 7]', 'd_q_exc_[0, 4]_[2, 6]', 'd_q_exc_[1, 5]_[3, 7]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[0, 5]_[6, 7]', 's_q_exc_0_4', 's_q_exc_1_5', 's_q_exc_2_6', 's_q_exc_3_7', 'd_q_exc_[2, 3]_[4, 5]', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[0, 3]_[4, 7]', 'd_q_exc_[0, 1]_[6, 7]']. Grads [-0.001234981118715467, -0.0012349811187154715, -0.0012349811187154908, 0.0012695419249592714, 0.0012695419249602194, 0.0015821430100110274, -0.0015821430100110806, -0.002034768492524496, 0.0023610621073459946, -0.0023610621073460315, -0.004076794263709298, 0.004076794263709331, -0.004495640205342829, 0.004495640205343084, 0.005657371795644814, -0.0056573717956449505, 0.013803904367067077, -0.015768771712799584, -0.015768771712799612, 0.06276000605088884]
+INFO 2021-02-22 14:27:32,206 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 10-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 14:27:32,242 Iteration: 1. Energy -2.165110267973858.  Energy change 0.000e+00 , Iteration dutation: 0.0350499153137207
+INFO 2021-02-22 14:27:32,269 Iteration: 2. Energy -2.1606175853313916.  Energy change 4.493e-03 , Iteration dutation: 0.0007250308990478516
+INFO 2021-02-22 14:27:32,293 Iteration: 3. Energy -2.1655699014310574.  Energy change -4.952e-03 , Iteration dutation: 0.04085826873779297
+INFO 2021-02-22 14:27:32,314 Iteration: 4. Energy -2.165582094843688.  Energy change -1.219e-05 , Iteration dutation: 0.020463228225708008
+INFO 2021-02-22 14:27:32,334 Iteration: 5. Energy -2.1656046872053945.  Energy change -2.259e-05 , Iteration dutation: 0.02013230323791504
+INFO 2021-02-22 14:27:32,354 Iteration: 6. Energy -2.1656459863219886.  Energy change -4.130e-05 , Iteration dutation: 0.020011186599731445
+INFO 2021-02-22 14:27:32,374 Iteration: 7. Energy -2.1657176357254833.  Energy change -7.165e-05 , Iteration dutation: 0.020114421844482422
+INFO 2021-02-22 14:27:32,394 Iteration: 8. Energy -2.165815863066031.  Energy change -9.823e-05 , Iteration dutation: 0.02006840705871582
+INFO 2021-02-22 14:27:32,414 Iteration: 9. Energy -2.165836962299837.  Energy change -2.110e-05 , Iteration dutation: 0.020014524459838867
+INFO 2021-02-22 14:27:32,434 Iteration: 10. Energy -2.1658609605772865.  Energy change -2.400e-05 , Iteration dutation: 0.020175695419311523
+INFO 2021-02-22 14:27:32,454 Iteration: 11. Energy -2.1658679162668046.  Energy change -6.956e-06 , Iteration dutation: 0.020165205001831055
+INFO 2021-02-22 14:27:32,474 Iteration: 12. Energy -2.1658696388528034.  Energy change -1.723e-06 , Iteration dutation: 0.020041465759277344
+INFO 2021-02-22 14:27:32,495 Iteration: 13. Energy -2.1658697480731544.  Energy change -1.092e-07 , Iteration dutation: 0.020116329193115234
+INFO 2021-02-22 14:27:32,515 Iteration: 14. Energy -2.1658698182682787.  Energy change -7.020e-08 , Iteration dutation: 0.020003080368041992
+INFO 2021-02-22 14:27:32,535 Iteration: 15. Energy -2.165869821090627.  Energy change -2.822e-09 , Iteration dutation: 0.02013683319091797
+INFO 2021-02-22 14:27:32,555 Iteration: 16. Energy -2.165869821320068.  Energy change -2.294e-10 , Iteration dutation: 0.020045757293701172
+INFO 2021-02-22 14:27:32,575 Iteration: 17. Energy -2.1658698213203658.  Energy change -2.980e-13 , Iteration dutation: 0.020566940307617188
+INFO 2021-02-22 14:27:32,595 Iteration: 18. Energy -2.1658698213203693.  Energy change -3.553e-15 , Iteration dutation: 0.02018427848815918
+INFO 2021-02-22 14:27:32,611 Add new element to final ansatz d_q_exc_[0, 1]_[6, 7]. Energy -2.1658698213203693. Energy change 0.0007595533465112325, var. parameters: [-0.2193040094793551, 0.3887021118237882, 0.3887021118237882, -0.06761512907722454, -0.04361233317307316, 0.05214233882630069, 0.0521423388262932, 0.0320572008344543, 0.03205720083445043, -0.023356339145213536]
+INFO 2021-02-22 14:27:38,417 Elements with largest grads ['d_q_exc_[1, 5]_[3, 7]', 'd_q_exc_[4, 5]_[6, 7]', 'd_q_exc_[2, 5]_[4, 7]', 'd_q_exc_[0, 3]_[1, 6]', 'd_q_exc_[0, 7]_[2, 1]', 'd_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[0, 5]_[6, 7]', 'd_q_exc_[1, 4]_[6, 7]', 's_q_exc_1_5', 's_q_exc_0_4', 'd_q_exc_[1, 2]_[5, 6]', 'd_q_exc_[0, 3]_[4, 7]', 's_q_exc_3_7', 's_q_exc_2_6']. Grads [-0.0008206658851259568, 0.0012260658877303893, -0.0012613785796746623, -0.001261378579674728, -0.0012613785796747638, 0.0012613785796748297, -0.0019414991635009948, 0.0019414991635012728, -0.0019568502395396997, 0.0019568502395399495, -0.002404955225478424, 0.0024049552254786985, 0.003590607315329914, -0.0035906073153301236, 0.008431829346755817, -0.008431829346757055, 0.00898022448120804, 0.008980224481208166, -0.00969429671579069, 0.009694296715791861]
+INFO 2021-02-22 14:27:48,480 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 12-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-02-22 14:27:48,518 Iteration: 1. Energy -2.1658698213203693.  Energy change 0.000e+00 , Iteration dutation: 0.03713512420654297
+INFO 2021-02-22 14:27:48,532 Iteration: 2. Energy -2.165810838772731.  Energy change 5.898e-05 , Iteration dutation: 0.0006525516510009766
+INFO 2021-02-22 14:27:48,557 Iteration: 3. Energy -2.165899344542467.  Energy change -8.851e-05 , Iteration dutation: 0.02588796615600586
+INFO 2021-02-22 14:27:48,583 Iteration: 4. Energy -2.1659156175229537.  Energy change -1.627e-05 , Iteration dutation: 0.025507450103759766
+INFO 2021-02-22 14:27:48,608 Iteration: 5. Energy -2.165916707085841.  Energy change -1.090e-06 , Iteration dutation: 0.025327682495117188
+INFO 2021-02-22 14:27:48,633 Iteration: 6. Energy -2.1659188342968227.  Energy change -2.127e-06 , Iteration dutation: 0.025381803512573242
+INFO 2021-02-22 14:27:48,658 Iteration: 7. Energy -2.1659258689868826.  Energy change -7.035e-06 , Iteration dutation: 0.025151729583740234
+INFO 2021-02-22 14:27:48,683 Iteration: 8. Energy -2.1659414920577835.  Energy change -1.562e-05 , Iteration dutation: 0.02489161491394043
+INFO 2021-02-22 14:27:48,708 Iteration: 9. Energy -2.1659672553459766.  Energy change -2.576e-05 , Iteration dutation: 0.024708032608032227
+INFO 2021-02-22 14:27:48,732 Iteration: 10. Energy -2.1660062510554163.  Energy change -3.900e-05 , Iteration dutation: 0.024666309356689453
+INFO 2021-02-22 14:27:48,757 Iteration: 11. Energy -2.166059329346727.  Energy change -5.308e-05 , Iteration dutation: 0.024754762649536133
+INFO 2021-02-22 14:27:48,782 Iteration: 12. Energy -2.166104854020372.  Energy change -4.552e-05 , Iteration dutation: 0.024874448776245117
+INFO 2021-02-22 14:27:48,807 Iteration: 13. Energy -2.166161511410107.  Energy change -5.666e-05 , Iteration dutation: 0.024714231491088867
+INFO 2021-02-22 14:27:48,833 Iteration: 14. Energy -2.1661991034071835.  Energy change -3.759e-05 , Iteration dutation: 0.025328874588012695
+INFO 2021-02-22 14:27:48,860 Iteration: 15. Energy -2.1662077435744274.  Energy change -8.640e-06 , Iteration dutation: 0.026098966598510742
+INFO 2021-02-22 14:27:48,885 Iteration: 16. Energy -2.1662117171460378.  Energy change -3.974e-06 , Iteration dutation: 0.02645421028137207
+INFO 2021-02-22 14:27:48,910 Iteration: 17. Energy -2.16621368872781.  Energy change -1.972e-06 , Iteration dutation: 0.024986743927001953
+INFO 2021-02-22 14:27:48,935 Iteration: 18. Energy -2.166214769558832.  Energy change -1.081e-06 , Iteration dutation: 0.02487659454345703
+INFO 2021-02-22 14:27:48,960 Iteration: 19. Energy -2.166215056491663.  Energy change -2.869e-07 , Iteration dutation: 0.025246620178222656
+INFO 2021-02-22 14:27:48,985 Iteration: 20. Energy -2.1662150974476018.  Energy change -4.096e-08 , Iteration dutation: 0.025015830993652344
+INFO 2021-02-22 14:27:49,009 Iteration: 21. Energy -2.1662151045840483.  Energy change -7.136e-09 , Iteration dutation: 0.0247039794921875
+INFO 2021-02-22 14:27:49,033 Iteration: 22. Energy -2.166215104785428.  Energy change -2.014e-10 , Iteration dutation: 0.02413177490234375
+INFO 2021-02-22 14:27:49,057 Iteration: 23. Energy -2.166215104786097.  Energy change -6.688e-13 , Iteration dutation: 0.0236051082611084
+INFO 2021-02-22 14:27:49,080 Iteration: 24. Energy -2.166215104786111.  Energy change -1.421e-14 , Iteration dutation: 0.023702144622802734
+INFO 2021-02-22 14:27:49,098 Add new element to final ansatz d_q_exc_[1, 2]_[5, 6]. Energy -2.166215104786111. Energy change 0.000345283465741808, var. parameters: [-0.1905789098088707, 0.1300603583189882, 0.13006035831901108, -0.06730518696526133, -0.043056806004702665, 0.05024738857061242, 0.05024738859112847, 0.030763508187034924, 0.030763508194714857, -0.05018645644218395, -0.057098026569185105, -0.05709802656907439]
+INFO 2021-02-22 14:27:49,103 Add new element to final ansatz d_q_exc_[1, 2]_[5, 6]. Energy -2.166215104786111. Energy change 0.000345283465741808, var. parameters: [-0.1905789098088707, 0.1300603583189882, 0.13006035831901108, -0.06730518696526133, -0.043056806004702665, 0.05024738857061242, 0.05024738859112847, 0.030763508187034924, 0.030763508194714857, -0.05018645644218395, -0.057098026569185105, -0.05709802656907439]
+INFO 2021-02-22 14:27:54,710 Elements with largest grads ['d_q_exc_[0, 3]_[2, 5]', 'd_q_exc_[1, 6]_[4, 7]', 'd_q_exc_[0, 7]_[6, 5]', 'd_q_exc_[1, 2]_[3, 4]', 'd_q_exc_[3, 4]_[5, 6]', 'd_q_exc_[0, 7]_[2, 1]', 'd_q_exc_[0, 3]_[1, 6]', 'd_q_exc_[2, 5]_[4, 7]', 'd_q_exc_[3, 6]_[5, 4]', 'd_q_exc_[2, 7]_[5, 4]', 'd_q_exc_[0, 1]_[2, 7]', 'd_q_exc_[0, 1]_[3, 6]', 'd_q_exc_[0, 5]_[3, 2]', 'd_q_exc_[1, 4]_[3, 2]', 'd_q_exc_[1, 4]_[6, 7]', 'd_q_exc_[0, 5]_[6, 7]', 's_q_exc_0_4', 's_q_exc_1_5', 's_q_exc_2_6', 's_q_exc_3_7']. Grads [-0.0008803322278449094, -0.0008803322278953921, 0.0008803322281196329, 0.0008803322281701159, 0.0012614491601892566, -0.0012614491603992507, -0.0012614491604477217, -0.0012614491606577156, 0.0019707529640364445, -0.0019707529647257664, 0.0023056094947096414, -0.0023056094953548376, 0.0023673959295364023, -0.0023673959302347755, -0.0037603063877469306, 0.0037603063883040943, -0.008498449631046878, 0.008498449634163623, 0.009508518078380431, -0.009508518081276972]
+INFO 2021-02-22 14:28:05,591 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 14-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
