@@ -1,18 +1,14 @@
 # from openfermion.hamiltonians import MolecularData
 from openfermion.chem import MolecularData
 from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner, get_sparse_operator
-from openfermionpsi4 import run_psi4
+# from openfermionpsi4 import run_psi4
 
 import numpy
 import scipy
-import pandas
 import logging
 import time
 
 from src.utils import MatrixUtils
-from src.ansatz_elements import SQExc, DQExc
-from src.iter_vqe_utils import DataUtils
-from src.state import State
 
 
 class QSystem:
@@ -27,7 +23,9 @@ class QSystem:
         self.molecule_data = MolecularData(geometry=self.geometry, basis=basis, multiplicity=self.multiplicity,
                                            charge=self.charge)
 
-        self.molecule_psi4 = run_psi4(self.molecule_data, run_fci=True)
+        # self.molecule_psi4 = run_psi4(self.molecule_data, run_fci=True)  # old version
+        self.molecule_data.load()
+        self.molecule_psi4 = self.molecule_data
 
         # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
