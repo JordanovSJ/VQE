@@ -17,7 +17,7 @@ import numpy as np
 
 # <<<<<<<<<< MOLECULE >>>>>>>>>>>>.
 r = 1.546
-molecule = H2(r)
+molecule = H4(r)
 n_qubits = molecule.n_qubits
 n_electrons = molecule.n_electrons
 hamiltonian = molecule.jw_qubit_ham
@@ -34,10 +34,14 @@ ansatz_state = DataUtils.ansatz_from_data_frame(data_frame, molecule)
 ansatz = ansatz_state.ansatz_elements
 var_pars = ansatz_state.parameters
 reference_results = data_frame['E']
-
+cnot_count_ls = data_frame['cnot_count']
+u1_count_ls = data_frame['u1_count']
+cnot_depth_ls = data_frame['cnot_depth']
+u1_depth_ls = data_frame['u1_depth']
+ 
 # <<<<<<<<<< LOGGING >>>>>>>>>>>>.
 LogUtils.log_config()
-logging.info('{}, r={}, ansatz constructed from iqeb'.format(molecule.name, r))
+logging.info('{}, r={}, ansatz constructed from iqeb, running on server'.format(molecule.name, r))
 logging.info('n_qubits = {}, n_electrons = {}'.format(n_qubits, n_electrons))
 time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
@@ -60,9 +64,16 @@ message = 'QiskitSimBackend result is {}, new calculation'.format(qiskit_sim_res
 logging.info('')
 logging.info(message)
 
-ref_result = reference_results[len(reference_results) - 1]
+ref_size = len(reference_results)
+ref_result = reference_results[ref_size - 1]
+cnot_count = cnot_count_ls[ref_size-1]
+u1_count = u1_count_ls[ref_size-1]
+cnot_depth = cnot_depth_ls[ref_size-1]
+u1_depth = u1_depth_ls[ref_size-1]
 message = 'IQEB VQE reference result is {}'.format(ref_result)
 logging.info('')
+logging.info(message)
+message = 'cnot_count={}, u1_count={}, cnot_depth={}, u1_depth={}'.format(cnot_count, u1_count, cnot_depth, u1_depth)
 logging.info(message)
 
 # <<<<<<<<<< QasmBackend >>>>>>>>>>>>.
