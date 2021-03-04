@@ -48,11 +48,11 @@ logging.info('n_qubits = {}, n_electrons = {}'.format(n_qubits, n_electrons))
 time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # # <<<<<<<<<< NOISE MODEL >>>>>>>>>>>>.
-# IBMQ.load_account()
-# provider = IBMQ.get_provider(hub='ibm-q')
-# backend = provider.get_backend('ibmq_16_melbourne')
-# noise_model = NoiseModel.from_backend(backend)
-# coupling_map = backend.configuration().coupling_map
+IBMQ.load_account()
+provider = IBMQ.get_provider(hub='ibm-q')
+backend = provider.get_backend('ibmq_16_melbourne')
+noise_model = NoiseModel.from_backend(backend)
+coupling_map = backend.configuration().coupling_map
 # noise_model = None
 # coupling_map = None
 
