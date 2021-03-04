@@ -1,0 +1,9 @@
+INFO 2021-02-17 17:51:53,082 LiH, r=3.25, iqeb_vqe result
+INFO 2021-02-17 17:51:53,082 n_qubits = 12, n_electrons = 4
+INFO 2021-02-17 17:51:53,127 Running ham_expectation_value for LiH molecule, first 1 ansatz elements, 10 shots
+INFO 2021-02-17 17:52:37,015 Expectation value = -7.592079433580487, time = 43.888527393341064s, Yordan result = -7.713564559916018
+INFO 2021-02-17 17:52:37,015 Running ham_expectation_value for LiH molecule, first 10 ansatz elements, 10 shots
+INFO 2021-02-17 17:54:43,055 Expectation value = -7.7212799945461805, time = 126.0389199256897s, Yordan result = -7.7918033667116
+INFO 2021-02-17 17:54:43,055 Running ham_expectation_value for LiH molecule, first 30 ansatz elements, 10 shots
+INFO 2021-02-17 18:01:41,084 Expectation value = -7.747047905794927, time = 418.0296583175659s, Yordan result = -7.792140264614158
+INFO 2021-02-17 18:01:41,085 Running ham_expectation_value for LiH molecule, first 66 ansatz elements, 10 shots

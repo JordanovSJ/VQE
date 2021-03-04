@@ -1,0 +1,9 @@
+INFO 2021-03-02 11:02:34,610 H2, r=1.546 ,UCCSD ansatz
+INFO 2021-03-02 11:02:34,610 n_qubits = 4, n_electrons = 2
+INFO 2021-03-02 11:02:35,036 
+INFO 2021-03-02 11:02:35,036 QiskitSimBackend result is -0.9536627297228496
+INFO 2021-03-02 11:02:35,037 
+INFO 2021-03-02 11:02:35,037 n_shots = 1000
+INFO 2021-03-02 11:02:35,037 method = statevector
+INFO 2021-03-02 11:02:36,539 QasmBackend result is -0.9628884989692483 for manual Pauli, time used = 1.5025641918182373s
+INFO 2021-03-02 11:02:37,429 QasmBackend result is -0.9564873578548557 for built in Pauli, time used = 0.8890995979309082s

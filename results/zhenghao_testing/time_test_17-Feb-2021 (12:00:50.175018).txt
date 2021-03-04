@@ -1,0 +1,22 @@
+INFO 2021-02-17 12:00:52,154 molecule=LiH, r=1.546, n_qubits=12, n_electrons=4
+INFO 2021-02-17 12:00:52,201 UCCSD ansatz with random var_pars
+INFO 2021-02-17 12:00:52,201 Take the 10th term from the hamiltonian to test
+INFO 2021-02-17 12:00:52,201 Time to generate qasm string from operator is 5.030632019042969e-05
+INFO 2021-02-17 12:00:52,944 Time to generate circuit from qasm string is 0.7427794933319092
+
+INFO 2021-02-17 12:00:57,272 Time to load backend from IBMQ is 4.327810525894165
+
+INFO 2021-02-17 12:00:57,272 n_shots=10
+INFO 2021-02-17 12:01:14,562 result=-0.39999999999999997, time=17.28947949409485 for eval_exp_value
+INFO 2021-02-17 12:01:32,485 result = {'000000000000': 6, '000000000001': 4}, time=17.922576665878296 for noiseless_sim
+INFO 2021-02-17 12:01:41,204 job_id=602d059f2717ceb601d67a9a, time=8.719081163406372 for execute
+
+INFO 2021-02-17 12:01:41,204 n_shots=100
+INFO 2021-02-17 12:01:59,822 result=-0.18, time=18.61790132522583 for eval_exp_value
+INFO 2021-02-17 12:02:17,538 result = {'000000000000': 48, '000000000001': 52}, time=17.715945959091187 for noiseless_sim
+INFO 2021-02-17 12:02:26,686 job_id=602d05cc8436b18cfde7eed1, time=9.14755368232727 for execute
+
+INFO 2021-02-17 12:02:26,686 n_shots=1000
+INFO 2021-02-17 12:02:43,347 result=-0.064, time=16.660578966140747 for eval_exp_value
+INFO 2021-02-17 12:03:05,053 result = {'000000000000': 449, '000000000001': 551}, time=21.70497155189514 for noiseless_sim
+INFO 2021-02-17 12:03:12,919 job_id=602d05fba89ca233b50cfcc6, time=7.866531133651733 for execute

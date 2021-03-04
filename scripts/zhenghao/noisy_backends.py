@@ -26,6 +26,7 @@ class QasmBackend:
             init_state_qasm = QasmUtils.hf_state(q_system.n_electrons)
         # Generate qasm string for ansatz
         qasm_ansatz = QasmBackend.qasm_from_ansatz(ansatz, var_parameters)
+        # qasm_ansatz += QasmUtils.reverse_qubits_qasm(n_qubits)
 
         if built_in_Pauli:
             # Qasm string for psi, no classical register

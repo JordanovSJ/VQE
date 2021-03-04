@@ -1,0 +1,11 @@
+INFO 2021-02-20 19:21:45,712 H2, r=1.546 ,UCCSD ansatz
+INFO 2021-02-20 19:21:45,712 n_qubits = 4, n_electrons = 2
+INFO 2021-02-20 19:21:45,814 QiskitSimBackend result is -0.9118155556567129
+INFO 2021-02-20 19:21:47,164 QasmBackend result is -0.9542021825430974 for n_shots=10, method=statevector
+INFO 2021-02-20 19:21:47,164 Time used = 1.3500285148620605s
+INFO 2021-02-20 19:21:48,334 QasmBackend result is -0.9973365110804683 for n_shots=10, method=density_matrix
+INFO 2021-02-20 19:21:48,334 Time used = 1.1699073314666748s
+INFO 2021-02-20 19:21:50,799 QasmBackend result is -0.7631933248213667 for n_shots=10, method=matrix_product_state
+INFO 2021-02-20 19:21:50,799 Time used = 2.464176654815674s
+INFO 2021-02-20 19:21:52,065 QasmBackend result is -0.8896658822136215 for n_shots=10, method=automatic
+INFO 2021-02-20 19:21:52,065 Time used = 1.2663052082061768s

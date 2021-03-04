@@ -1,0 +1,4 @@
+INFO 2021-02-17 17:27:21,547 LiH, r=3.25, iqeb_vqe result
+INFO 2021-02-17 17:27:21,547 n_qubits = 12, n_electrons = 4
+INFO 2021-02-17 17:27:21,599 Running ham_expectation_value for LiH molecule, first 1 ansatz elements
+INFO 2021-02-17 17:28:06,155 Expectation value = -7.6837086794682055, time = 44.55597496032715

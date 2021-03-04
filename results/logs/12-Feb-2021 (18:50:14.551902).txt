@@ -1,0 +1,1 @@
+INFO 2021-02-12 18:50:14,552 LiH, r=1.546 ,UCCSD ansatz

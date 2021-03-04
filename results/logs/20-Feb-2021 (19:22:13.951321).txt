@@ -1,0 +1,27 @@
+INFO 2021-02-20 19:22:13,952 H2, r=1.546 ,UCCSD ansatz
+INFO 2021-02-20 19:22:13,952 n_qubits = 4, n_electrons = 2
+INFO 2021-02-20 19:22:14,046 QiskitSimBackend result is -0.8310753872403783
+INFO 2021-02-20 19:22:15,182 QasmBackend result is -0.925681492075613 for n_shots=10, method=statevector
+INFO 2021-02-20 19:22:15,182 Time used = 1.135526418685913s
+INFO 2021-02-20 19:22:16,724 QasmBackend result is -1.069633861198168 for n_shots=10, method=density_matrix
+INFO 2021-02-20 19:22:16,724 Time used = 1.5413298606872559s
+INFO 2021-02-20 19:22:19,594 QasmBackend result is -0.9868318936667047 for n_shots=10, method=matrix_product_state
+INFO 2021-02-20 19:22:19,594 Time used = 2.870223045349121s
+INFO 2021-02-20 19:22:20,969 QasmBackend result is -0.760980079122147 for n_shots=10, method=automatic
+INFO 2021-02-20 19:22:20,969 Time used = 1.3747973442077637s
+INFO 2021-02-20 19:22:22,168 QasmBackend result is -0.8324552932742776 for n_shots=100, method=statevector
+INFO 2021-02-20 19:22:22,168 Time used = 1.1988801956176758s
+INFO 2021-02-20 19:22:23,265 QasmBackend result is -0.7670745091366223 for n_shots=100, method=density_matrix
+INFO 2021-02-20 19:22:23,265 Time used = 1.096268892288208s
+INFO 2021-02-20 19:22:26,429 QasmBackend result is -0.8245619154827497 for n_shots=100, method=matrix_product_state
+INFO 2021-02-20 19:22:26,430 Time used = 3.164663314819336s
+INFO 2021-02-20 19:22:27,688 QasmBackend result is -0.8640113258401796 for n_shots=100, method=automatic
+INFO 2021-02-20 19:22:27,688 Time used = 1.2583184242248535s
+INFO 2021-02-20 19:22:28,858 QasmBackend result is -0.8195590895824001 for n_shots=1000, method=statevector
+INFO 2021-02-20 19:22:28,859 Time used = 1.1701805591583252s
+INFO 2021-02-20 19:22:30,034 QasmBackend result is -0.8202867141126472 for n_shots=1000, method=density_matrix
+INFO 2021-02-20 19:22:30,034 Time used = 1.1753671169281006s
+INFO 2021-02-20 19:22:33,316 QasmBackend result is -0.8517931111459359 for n_shots=1000, method=matrix_product_state
+INFO 2021-02-20 19:22:33,317 Time used = 3.282176971435547s
+INFO 2021-02-20 19:22:34,706 QasmBackend result is -0.8324861943454613 for n_shots=1000, method=automatic
+INFO 2021-02-20 19:22:34,706 Time used = 1.3888020515441895s

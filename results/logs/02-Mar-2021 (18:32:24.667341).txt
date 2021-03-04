@@ -1,0 +1,38 @@
+INFO 2021-03-02 18:32:24,669 H2, r=1.546, ansatz constructed from iqeb
+INFO 2021-03-02 18:32:24,669 n_qubits = 4, n_electrons = 2
+DEBUG 2021-03-02 18:32:24,677 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-03-02 18:32:25,342 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-03-02 18:32:25,351 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-03-02 18:32:26,264 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-03-02 18:32:26,877 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-03-02 18:32:26,881 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-03-02 18:32:28,003 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-03-02 18:32:28,009 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-03-02 18:32:28,723 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+DEBUG 2021-03-02 18:32:29,539 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-03-02 18:32:30,661 
+INFO 2021-03-02 18:32:30,661 Device noise generated from ibmq_16_melbourne
+INFO 2021-03-02 18:32:30,882 
+INFO 2021-03-02 18:32:30,882 QiskitSimBackend result is -0.9910655184972095, new calculation
+INFO 2021-03-02 18:32:30,882 
+INFO 2021-03-02 18:32:30,882 IQEB VQE reference result is -0.9910655184972104
+INFO 2021-03-02 18:32:30,884 
+INFO 2021-03-02 18:32:30,884 n_shots = 100.0
+INFO 2021-03-02 18:32:32,281 QasmBackend result is -0.7609297154590178, noisy, time used = 1.396010160446167s
+INFO 2021-03-02 18:32:32,652 QasmBackend result is -0.9946167586813647, noiseless, time used = 0.3711740970611572s
+INFO 2021-03-02 18:32:32,658 
+INFO 2021-03-02 18:32:32,658 n_shots = 1000.0
+INFO 2021-03-02 18:32:34,171 QasmBackend result is -0.7419353179357114, noisy, time used = 1.5128936767578125s
+INFO 2021-03-02 18:32:34,422 QasmBackend result is -0.9918852475573765, noiseless, time used = 0.25037336349487305s
+INFO 2021-03-02 18:32:34,426 
+INFO 2021-03-02 18:32:34,426 n_shots = 10000.0
+INFO 2021-03-02 18:32:38,646 QasmBackend result is -0.7433711513551203, noisy, time used = 4.2200376987457275s
+INFO 2021-03-02 18:32:38,965 QasmBackend result is -0.9946193692891807, noiseless, time used = 0.31876707077026367s
+INFO 2021-03-02 18:32:38,969 
+INFO 2021-03-02 18:32:38,970 n_shots = 100000.0
+INFO 2021-03-02 18:33:14,405 QasmBackend result is -0.7501083772689663, noisy, time used = 35.43512964248657s
+INFO 2021-03-02 18:33:15,802 QasmBackend result is -0.9909295979089553, noiseless, time used = 1.3966741561889648s
+INFO 2021-03-02 18:33:15,807 
+INFO 2021-03-02 18:33:15,807 n_shots = 1000000.0
+INFO 2021-03-02 18:39:18,284 QasmBackend result is -0.7493175159614694, noisy, time used = 362.4771673679352s
+INFO 2021-03-02 18:39:28,612 QasmBackend result is -0.9913028577212011, noiseless, time used = 10.327590942382812s

@@ -1,0 +1,34 @@
+INFO 2021-02-17 12:38:50,014 molecule=LiH, r=1.546, n_qubits=12, n_electrons=4
+INFO 2021-02-17 12:38:50,061 UCCSD ansatz with random var_pars
+INFO 2021-02-17 12:38:50,061 Take the 10th term from the hamiltonian to test
+INFO 2021-02-17 12:38:50,061 Time to generate qasm string from operator is 6.604194641113281e-05
+INFO 2021-02-17 12:38:50,795 Time to generate circuit from qasm string is 0.7332632541656494
+
+INFO 2021-02-17 12:38:56,003 Time to load backend from IBMQ is 5.20863676071167
+INFO 2021-02-17 12:38:56,003 Time to load backend from Aer is 1.52587890625e-05
+
+INFO 2021-02-17 12:38:56,003 n_shots=10
+
+INFO 2021-02-17 12:39:20,456 result=-0.39999999999999997, time=24.451977014541626 for eval_exp_value with IBMQ backend
+INFO 2021-02-17 12:39:44,925 result = {'000000000000': 4, '000000000001': 6}, time=24.46966814994812 for noiseless_sim with IBMQ backend
+INFO 2021-02-17 12:39:55,398 job_id=602d0e9440912c87898cdd18, time=10.472522974014282 for execute with IBMQ backend
+INFO 2021-02-17 12:39:58,909 result = {'000000000000': 4, '000000000001': 6}, time = 3.5109453201293945 for noiseless simulation with Aer backend
+INFO 2021-02-17 12:40:01,404 result status=COMPLETED, time=1.6915576457977295 for execute with Aer backend
+
+INFO 2021-02-17 12:40:01,405 n_shots=100
+
+INFO 2021-02-17 12:40:20,561 result=-0.32, time=19.155906438827515 for eval_exp_value with IBMQ backend
+INFO 2021-02-17 12:40:40,631 result = {'000000000000': 48, '000000000001': 52}, time=20.07033395767212 for noiseless_sim with IBMQ backend
+INFO 2021-02-17 12:40:56,240 job_id=602d0ecbe91414780026ab2c, time=15.607967138290405 for execute with IBMQ backend
+INFO 2021-02-17 12:40:59,710 result = {'000000000000': 47, '000000000001': 53}, time = 3.4697208404541016 for noiseless simulation with Aer backend
+INFO 2021-02-17 12:41:02,350 result status=COMPLETED, time=1.8318474292755127 for execute with Aer backend
+
+INFO 2021-02-17 12:41:02,350 n_shots=1000
+
+INFO 2021-02-17 12:41:21,009 result=-0.246, time=18.65844988822937 for eval_exp_value with IBMQ backend
+INFO 2021-02-17 12:41:42,686 result = {'000000000000': 391, '000000000001': 609}, time=21.677613973617554 for noiseless_sim with IBMQ backend
+INFO 2021-02-17 12:41:53,018 job_id=602d0f0ae9141403a626ab2f, time=10.331066846847534 for execute with IBMQ backend
+INFO 2021-02-17 12:41:56,469 result = {'000000000000': 410, '000000000001': 590}, time = 3.451233148574829 for noiseless simulation with Aer backend
+INFO 2021-02-17 12:41:59,420 result status=COMPLETED, time=2.100201368331909 for execute with Aer backend
+
+INFO 2021-02-17 12:41:59,420 For loop total time = 183.4169635772705

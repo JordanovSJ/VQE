@@ -1,0 +1,19 @@
+INFO 2021-02-17 18:52:52,518 LiH, r=3.25, iqeb_vqe result
+INFO 2021-02-17 18:52:52,519 n_qubits = 12, n_electrons = 4
+DEBUG 2021-02-17 18:52:52,573 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 18:52:53,128 https://auth.quantum-computing.ibm.com:443 "GET /api/version HTTP/1.1" 200 None
+DEBUG 2021-02-17 18:52:53,132 Starting new HTTPS connection (1): auth.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 18:52:53,944 https://auth.quantum-computing.ibm.com:443 "POST /api/users/loginWithToken HTTP/1.1" 200 None
+DEBUG 2021-02-17 18:52:54,657 https://auth.quantum-computing.ibm.com:443 "GET /api/users/me HTTP/1.1" 200 None
+DEBUG 2021-02-17 18:52:54,662 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 18:52:55,690 https://api.quantum-computing.ibm.com:443 "GET /api/Network HTTP/1.1" 200 None
+DEBUG 2021-02-17 18:52:55,695 Starting new HTTPS connection (1): api.quantum-computing.ibm.com:443
+DEBUG 2021-02-17 18:52:56,399 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/v/1 HTTP/1.1" 200 None
+WARNING 2021-02-17 18:52:56,419 Remote backend "ibmq_lima" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'parameters': ['Field may not be null.'], 'qasm_def': ['Field may not be null.']}}}"
+WARNING 2021-02-17 18:52:56,420 Remote backend "ibmq_quito" could not be instantiated due to an invalid config: "{'gates': {5: {'coupling_map': ['Shorter than minimum length 1.'], 'parameters': ['Field may not be null.'], 'qasm_def': ['Field may not be null.']}}}"
+DEBUG 2021-02-17 18:52:57,218 https://api.quantum-computing.ibm.com:443 "GET /api/Network/ibm-q/Groups/open/Projects/main/devices/ibmq_16_melbourne/properties?version=1 HTTP/1.1" 200 None
+INFO 2021-02-17 18:52:57,399 Noise model generated from ibmq_16_melbourne
+INFO 2021-02-17 18:52:57,399 Running ham_expectation_value for LiH molecule, first 1 ansatz elements, 10 shots
+INFO 2021-02-17 18:57:35,029 Expectation value = -6.072902921517037, time = 277.62853264808655s, Yordan result = -7.713564559916018
+INFO 2021-02-17 18:57:35,030 Running ham_expectation_value for LiH molecule, first 10 ansatz elements, 10 shots
+INFO 2021-02-17 19:13:49,053 Expectation value = -5.20675855271255, time = 974.0233523845673s, Yordan result = -7.7918033667116

@@ -1,0 +1,45 @@
+INFO 2020-11-26 11:38:35,802 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 3-----
+-----Statevector and energy calculated using <class 'src.backends.QiskitSimBackend'>------
+-----Optimizer BFGS------
+
+INFO 2020-11-26 11:38:35,899 Iteration: 1. Energy -1.1169989967389076.  Energy change 4.441e-16 , Iteration dutation: 0.00013589859008789062
+INFO 2020-11-26 11:38:35,981 Iteration: 2. Energy -1.1169989967389076.  Energy change 0.000e+00 , Iteration dutation: 0.09642457962036133
+INFO 2020-11-26 11:38:36,145 Iteration: 3. Energy -1.1169989967389076.  Energy change 0.000e+00 , Iteration dutation: 0.0823211669921875
+INFO 2020-11-26 11:38:36,231 Iteration: 4. Energy -1.1169990021310774.  Energy change -5.392e-09 , Iteration dutation: 0.16400527954101562
+INFO 2020-11-26 11:38:36,315 Iteration: 5. Energy -1.1169989967389076.  Energy change 5.392e-09 , Iteration dutation: 0.08585190773010254
+INFO 2020-11-26 11:38:36,401 Iteration: 6. Energy -1.0373176477220478.  Energy change 7.968e-02 , Iteration dutation: 0.08458399772644043
+INFO 2020-11-26 11:38:36,490 Iteration: 7. Energy -1.0373176477220478.  Energy change 0.000e+00 , Iteration dutation: 0.08545732498168945
+INFO 2020-11-26 11:38:36,576 Iteration: 8. Energy -1.0373176477220472.  Energy change 6.661e-16 , Iteration dutation: 0.08947277069091797
+INFO 2020-11-26 11:38:36,660 Iteration: 9. Energy -1.0373176477220476.  Energy change -4.441e-16 , Iteration dutation: 0.08551359176635742
+INFO 2020-11-26 11:38:36,752 Iteration: 10. Energy -1.0373176360564358.  Energy change 1.167e-08 , Iteration dutation: 0.08409953117370605
+INFO 2020-11-26 11:38:36,924 Iteration: 11. Energy -1.1373033607212415.  Energy change -9.999e-02 , Iteration dutation: 0.0922396183013916
+INFO 2020-11-26 11:38:37,014 Iteration: 12. Energy -1.1373033607212415.  Energy change 0.000e+00 , Iteration dutation: 0.17153477668762207
+INFO 2020-11-26 11:38:37,103 Iteration: 13. Energy -1.1373033607212415.  Energy change 0.000e+00 , Iteration dutation: 0.09059810638427734
+INFO 2020-11-26 11:38:37,193 Iteration: 14. Energy -1.1373033607212415.  Energy change 0.000e+00 , Iteration dutation: 0.08855986595153809
+INFO 2020-11-26 11:38:37,279 Iteration: 15. Energy -1.1373033607835172.  Energy change -6.228e-11 , Iteration dutation: 0.08985447883605957
+INFO 2020-11-26 11:38:37,366 Iteration: 16. Energy -1.137306035561667.  Energy change -2.675e-06 , Iteration dutation: 0.08701586723327637
+INFO 2020-11-26 11:38:37,454 Iteration: 17. Energy -1.137306035561667.  Energy change 0.000e+00 , Iteration dutation: 0.08664155006408691
+INFO 2020-11-26 11:38:37,540 Iteration: 18. Energy -1.137306035561667.  Energy change 0.000e+00 , Iteration dutation: 0.0878899097442627
+INFO 2020-11-26 11:38:37,716 Iteration: 19. Energy -1.137306035561667.  Energy change 0.000e+00 , Iteration dutation: 0.08614230155944824
+INFO 2020-11-26 11:38:37,805 Iteration: 20. Energy -1.1373060355611397.  Energy change 5.274e-13 , Iteration dutation: 0.17538189888000488
+INFO 2020-11-26 11:38:37,894 Iteration: 21. Energy -1.1373060357533389.  Energy change -1.922e-10 , Iteration dutation: 0.08901619911193848
+INFO 2020-11-26 11:38:37,986 Iteration: 22. Energy -1.1373060357533389.  Energy change 0.000e+00 , Iteration dutation: 0.0896902084350586
+INFO 2020-11-26 11:38:38,097 Iteration: 23. Energy -1.1373060357533389.  Energy change 0.000e+00 , Iteration dutation: 0.0920872688293457
+INFO 2020-11-26 11:38:38,219 Iteration: 24. Energy -1.1373060357533384.  Energy change 4.441e-16 , Iteration dutation: 0.11052513122558594
+INFO 2020-11-26 11:38:38,313 Iteration: 25. Energy -1.1373060357533382.  Energy change 2.220e-16 , Iteration dutation: 0.12164998054504395
+CRITICAL 2020-11-26 11:38:38,313       fun: -1.1373060357533389
+ hess_inv: array([[1.        , 0.        , 0.        ],
+       [0.        , 1.        , 0.        ],
+       [0.        , 0.        , 0.30630629]])
+      jac: array([0.00000000e+00, 2.98023224e-08, 4.47034836e-08])
+  message: 'Optimization terminated successfully.'
+  n_iters: 26
+     nfev: 25
+      nit: 3
+     njev: 5
+   status: 0
+  success: True
+        x: array([0.        , 0.        , 0.11176849])

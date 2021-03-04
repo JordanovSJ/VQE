@@ -1,0 +1,12 @@
+INFO 2021-02-24 09:44:08,413 molecule=H4, r=1.546, n_qubits=8, n_electrons=4
+INFO 2021-02-24 09:44:08,433 IQEB found q_exc ansatz with random var_pars. Total 24 ansatz elements
+INFO 2021-02-24 09:44:08,433 Use first 1 ansatz elements. Convert into qasm string, time used=7.43865966796875e-05s
+INFO 2021-02-24 09:44:08,434 Take the 10th term from the hamiltonian to test. Total 185 terms
+INFO 2021-02-24 09:44:08,434 Time to generate qasm string from ham term is 1.621246337890625e-05
+INFO 2021-02-24 09:44:08,464 Time to generate circuit from total qasm string is 0.030729293823242188
+INFO 2021-02-24 09:44:08,466 Time to load backend from Aer is 0.0019769668579101562. Method=automatic
+INFO 2021-02-24 09:44:08,467 
+INFO 2021-02-24 09:44:08,467 n_shots=10
+INFO 2021-02-24 09:44:21,420 Run full ham_expectation_value for first 1 ansatz elements, time used=12.953902006149292
+INFO 2021-02-24 09:44:21,478 result counts= {'00000000': 3, '00000001': 7}, time = 0.05754876136779785, noisy_sim method for test term ham and first 1 ansatz elements
+INFO 2021-02-24 09:44:21,505 result counts= {'00000000': 1, '00000001': 9}, time=0.014692544937133789, execute with Aer backend for test ham term and first 1 ansatz elements

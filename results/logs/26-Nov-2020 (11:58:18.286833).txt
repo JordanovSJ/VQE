@@ -1,0 +1,4 @@
+INFO 2020-11-26 11:58:18,287 H2, r=1.546 ,q_exc
+INFO 2020-11-26 11:58:18,307 Calculating excitation generators
+INFO 2020-11-26 11:58:23,788 Calculating commutators
+INFO 2020-11-26 11:58:26,172 ('Length of new pool', 8)

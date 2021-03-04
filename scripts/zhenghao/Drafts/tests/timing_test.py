@@ -1,4 +1,4 @@
-from src.q_systems import LiH, H4
+from src.molecules.molecules import LiH, H4
 from scripts.zhenghao.noisy_backends import QasmBackend
 from src.ansatz_element_sets import UCCSD
 from src.backends import QiskitSimBackend
@@ -7,7 +7,7 @@ from src.iter_vqe_utils import DataUtils
 
 from qiskit import QuantumCircuit, Aer, execute, IBMQ
 from qiskit.providers.aer import QasmSimulator
-from qiskit.providers.aer.noise import device, NoiseModel
+from qiskit.providers.aer.noise import NoiseModel
 
 import time
 import pandas as pd
@@ -100,7 +100,7 @@ logging.info(message)
 IBMQ.load_account()
 provider = IBMQ.get_provider(hub='ibm-q')
 backend = provider.get_backend('ibmq_16_melbourne')
-noise_model = device.basic_device_noise_model(backend.properties())
+noise_model = NoiseModel.from_backend(backend)
 coupling_map = backend.configuration().coupling_map
 basis_gates = noise_model.basis_gates
 

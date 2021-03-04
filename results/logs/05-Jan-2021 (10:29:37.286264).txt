@@ -1,0 +1,5 @@
+INFO 2021-01-05 10:29:37,287 H2, r=0.5 ,q_exc
+INFO 2021-01-05 10:29:37,308 Calculating excitation generators
+INFO 2021-01-05 10:29:43,571 Calculating commutators
+INFO 2021-01-05 10:29:46,087 ('Length of new pool', 8)
+INFO 2021-01-05 10:29:51,538 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3377404554013405]

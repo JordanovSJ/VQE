@@ -1,0 +1,3 @@
+INFO 2021-02-14 15:52:50,221 H2, r=1.546 ,UCCSD ansatz
+INFO 2021-02-14 15:52:50,221 n_qubits = 4, n_electrons = 2
+INFO 2021-02-14 15:52:50,338 QiskitSimBackend result is -0.84296124502433

@@ -1,0 +1,42 @@
+INFO 2021-01-04 12:34:07,793 H2, r=1.546 ,q_exc
+INFO 2021-01-04 12:34:07,865 Calculating excitation generators
+INFO 2021-01-04 12:34:14,904 Calculating commutators
+INFO 2021-01-04 12:34:54,948 ('Length of new pool', 8)
+INFO 2021-01-04 12:47:37,563 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4649709277377444]
+INFO 2021-01-04 12:47:44,408 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-01-04 12:47:44,427 Iteration: 1. Energy -0.897266366833343.  Energy change -3.331e-16 , Iteration dutation: 0.016218900680541992
+INFO 2021-01-04 12:47:44,436 Iteration: 2. Energy -0.9866267102460365.  Energy change -8.936e-02 , Iteration dutation: 0.0024967193603515625
+INFO 2021-01-04 12:47:44,448 Iteration: 3. Energy -0.9910361023303392.  Energy change -4.409e-03 , Iteration dutation: 0.014427423477172852
+INFO 2021-01-04 12:47:44,459 Iteration: 4. Energy -0.9910655180080924.  Energy change -2.942e-05 , Iteration dutation: 0.011420249938964844
+INFO 2021-01-04 12:47:44,471 Iteration: 5. Energy -0.9910655184972104.  Energy change -4.891e-10 , Iteration dutation: 0.011560440063476562
+INFO 2021-01-04 12:47:44,494 Add new element to final ansatz d_q_exc_[0, 1]_[2, 3]. Energy -0.9910655184972104. Energy change 0.09379915166386765, var. parameters: [-0.38348766689409614]
+INFO 2021-01-04 12:47:51,044 Elements with largest grads ['s_q_exc_0_1', 's_q_exc_0_2', 's_q_exc_0_3', 's_q_exc_1_2', 's_q_exc_1_3', 's_q_exc_2_3', 'd_q_exc_[0, 3]_[2, 1]', 'd_q_exc_[0, 1]_[2, 3]']. Grads [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0554237206417127e-09]
+INFO 2021-01-04 12:47:58,361 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 2-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-01-04 12:47:58,383 Iteration: 1. Energy -0.9910655184972104.  Energy change 0.000e+00 , Iteration dutation: 0.02050924301147461
+INFO 2021-01-04 12:47:58,384 No contribution to energy decrease. Stop adding elements to the final ansatz
+INFO 2021-01-04 12:47:58,384 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[0, 1]_[2, 3]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-01-04 12:47:58,397 Iteration: 1. Energy -0.897266366833343.  Energy change 9.380e-02 , Iteration dutation: 0.01114201545715332
+INFO 2021-01-04 12:47:58,404 Iteration: 2. Energy -0.9866267102460365.  Energy change -8.936e-02 , Iteration dutation: 0.001817941665649414
+INFO 2021-01-04 12:47:58,414 Iteration: 3. Energy -0.9910361023303392.  Energy change -4.409e-03 , Iteration dutation: 0.011163711547851562
+INFO 2021-01-04 12:47:58,425 Iteration: 4. Energy -0.9910655180080924.  Energy change -2.942e-05 , Iteration dutation: 0.010288476943969727
+INFO 2021-01-04 12:47:58,435 Iteration: 5. Energy -0.9910655184972104.  Energy change -4.891e-10 , Iteration dutation: 0.010598897933959961
