@@ -1,7 +1,8 @@
 # from openfermion.hamiltonians import MolecularData
 from openfermion.chem import MolecularData
+from openfermionpyscf import run_pyscf
 from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner, get_sparse_operator
-# from openfermionpsi4 import run_psi4
+from openfermionpsi4 import run_psi4
 
 import numpy
 import scipy
@@ -23,14 +24,15 @@ class QSystem:
         self.molecule_data = MolecularData(geometry=self.geometry, basis=basis, multiplicity=self.multiplicity,
                                            charge=self.charge)
 
-        # self.molecule_psi4 = run_psi4(self.molecule_data, run_fci=True)  # old version
-        self.molecule_data.load()
-        self.molecule_psi4 = self.molecule_data
+        # self.molecule_psi4 = run_psi4(self.molecule_data, run_fci=True)  # old version of openfermion
+        self.molecule_psi4 = run_pyscf(self.molecule_data, run_scf=True, run_cisd=True, run_fci=True)
 
         # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
-        self.hf_energy = self.molecule_psi4.hf_energy.item()
-        self.fci_energy = self.molecule_psi4.fci_energy.item()
+        # self.hf_energy = self.molecule_psi4.hf_energy.item()  # old version of openfermion
+        # self.fci_energy = self.molecule_psi4.fci_energy.item() # old version of openfermion
+        self.hf_energy = self.molecule_psi4.hf_energy
+        self.fci_energy = self.molecule_psi4.fci_energy
         self.energy_eigenvalues = None  # use this only if calculating excited states
 
         if frozen_els is None:

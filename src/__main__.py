@@ -5,7 +5,7 @@ from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
 from src.cache import *
 
-from src.molecules.molecules import H2
+from src.molecules.molecules import *
 
 import logging
 import time
@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=False,
+    vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()

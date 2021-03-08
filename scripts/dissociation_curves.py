@@ -1,6 +1,6 @@
 from src.vqe_runner import VQERunner
-from src.q_system import H2, LiH, HF, BeH2
-from src.ansatz_element_lists import *
+from src.molecules.molecules import H2, LiH, HF, BeH2
+from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend
 from src.utils import LogUtils
 
@@ -27,27 +27,26 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_config()
 
-    df = pandas.read_csv('../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
-    #
-    ansatz = []
-    for i in range(len(df)):
-        element = df.loc[i]['element']
-        element_qubits = df.loc[i]['element_qubits']
-        if element[0] == 'e' and element[4] == 's':
-            ansatz.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        elif element[0] == 'e' and element[4] == 'd':
-            ansatz.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        elif element[0] == 's' and element[2] == 'q':
-            ansatz.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        elif element[0] == 'd' and element[2] == 'q':
-            ansatz.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-        else:
-            print(element, element_qubits)
-            raise Exception('Unrecognized ansatz element.')
+    # df = pandas.read_csv('../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
+    # #
+    # ansatz = []
+    # for i in range(len(df)):
+    #     element = df.loc[i]['element']
+    #     element_qubits = df.loc[i]['element_qubits']
+    #     if element[0] == 'e' and element[4] == 's':
+    #         ansatz.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 'e' and element[4] == 'd':
+    #         ansatz.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 's' and element[2] == 'q':
+    #         ansatz.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     elif element[0] == 'd' and element[2] == 'q':
+    #         ansatz.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
+    #     else:
+    #         print(element, element_qubits)
+    #         raise Exception('Unrecognized ansatz element.')
 
     # ansatz = ansatz[:74]  # 74 for 1e-8
-    # ansatz = UCCSD(molecule.n_qubits, molecule.n_electrons).get_ansatz_elements()
-    ansatz = []
+    ansatz = UCCSDExcitations(molecule.n_qubits, molecule.n_electrons, element_type='q_exc').get_excitations()
     var_parameters = list(numpy.zeros(len(ansatz)))
 
     optimizer = 'BFGS'
