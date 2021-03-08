@@ -4,7 +4,7 @@ import sys
 sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
-from src.q_systems import *
+from src.molecules.molecules import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend
 from src.utils import *
@@ -12,7 +12,7 @@ from src.iter_vqe_utils import *
 from src.cache import *
 
 
-def iqeb_litest(input_r, input_molecule):
+def iqeb_litest(input_r, input_molecule, ansatz_element_type, delta_e_threshold):
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
@@ -23,12 +23,13 @@ def iqeb_litest(input_r, input_molecule):
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
-    ansatz_element_type = 'q_exc'
+    # ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'f_exc'
     # ansatz_element_type = 'pauli_str_exc'
+    assert ansatz_element_type in ['eff_f_exc', 'q_exc', 'f_exc', 'pauli_str_exc']
 
     # <<<<<<<<<< IQEB-VQE PARAMETERS >>>>>>>>>>>>>>>>>
-    delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
+    assert delta_e_threshold < 1e-3  # 1e-3 for chemical accuracy
     max_ansatz_size = 250
     n_largest_grads = 20
 
