@@ -4,6 +4,7 @@ from qiskit.providers.aer.noise import NoiseModel, errors, pauli_error
 from src.utils import *
 from src.iter_vqe_utils import *
 from scripts.zhenghao.noisy_backends import QasmBackend
+from src.molecules.molecules import H4
 
 import time
 from functools import partial
@@ -42,6 +43,7 @@ class NoiseUtils:
 
         return noise_model, coupling_map
 
+
 # STILL UNDER CONSTRUCTION
 class TestUtils:
 
@@ -51,46 +53,37 @@ class TestUtils:
                          .format(molecule.name, r))
         return df
 
-    # STILL UNDER CONSTRUCTION
     @staticmethod
-    def iqeb_result_noisy_compare(molecule, r, threshold, noise_model=None,
-                                  coupling_map=None, methods=None,
-                                  n_shots=1024):
-        if methods is None:
-            methods = ['automatic']
-
-        # READ CSV
+    def h4_depth_count_from_csv(r):
+        molecule = H4(r=r)
         data_frame = TestUtils.df_from_csv(molecule, r)
+
         reference_results = data_frame['E']
-        dE_list = data_frame['dE']
-        iteration_number = data_frame['n']
+        ref_size = len(reference_results)
+        ref_result = reference_results[ref_size - 1]
+
+        cnot_count = data_frame['cnot_count'][ref_size - 1]
+        u1_count = data_frame['u1_count'][ref_size - 1]
+        cnot_depth = data_frame['cnot_depth'][ref_size - 1]
+        u1_depth = data_frame['u1_depth'][ref_size - 1]
+
+        return ref_result, cnot_count, u1_count, cnot_depth, u1_depth
+
+    @staticmethod
+    def h4_noisy_iqeb_ansatz_evaluation(r, noise_model, n_shots, method):
+        molecule = H4(r=r)
+        data_frame = TestUtils.df_from_csv(molecule, r)
         ansatz_state = DataUtils.ansatz_from_data_frame(data_frame, molecule)
 
-        # ANSATZ
         ansatz = ansatz_state.ansatz_elements
-        var_parameters = ansatz_state.parameters
+        var_pars = ansatz_state.parameters
 
-        iter_index = 0
+        t0 = time.time()
+        expectation_value = QasmBackend.ham_expectation_value(var_pars, ansatz,
+                                                              molecule, n_shots=n_shots,
+                                                              noise_model=noise_model,
+                                                              method=method,
+                                                              built_in_Pauli=True)
+        t1 = time.time()
 
-        while dE_list[iter_index] > threshold:
-            ansatz_index = iter_index + 1
-            noiseless_result = reference_results[iter_index]
-            iter_n = iteration_number[iter_index]
-
-            message = 'Running QasmBackend.ham_expectation_value for {} molecule, ' \
-                      'first {} ansatz elements, noiseless value={}, {} shots' \
-                .format(molecule.name, ansatz_index, noiseless_result, n_shots)
-            logging.info(message)
-
-            ham_expectation_value = partial(QasmBackend.ham_expectation_value,
-                                            var_parameters=var_parameters[0:ansatz_index],
-                                            ansatz=ansatz[0:ansatz_index],
-                                            q_system=molecule, n_shots=n_shots,
-                                            noise_model=noise_model, coupling_map=coupling_map)
-
-            for method_str in methods:
-                t0 = time.time()
-                exp_value = ham_expectation_value(method=method_str)
-                t1 = time.time()
-
-            iter_index += 1
+        return expectation_value, t1 - t0
