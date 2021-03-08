@@ -2,7 +2,7 @@
 from openfermion.chem import MolecularData
 from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner, get_sparse_operator
 
-# from openfermionpsi4 import run_psi4
+#from openfermionpsi4 import run_psi4
 
 import numpy
 import scipy
