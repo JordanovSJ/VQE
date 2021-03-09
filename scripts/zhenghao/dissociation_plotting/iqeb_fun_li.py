@@ -152,7 +152,7 @@ def iqeb_litest(input_r, input_molecule, ansatz_element_type, delta_e_threshold)
                 # save data
                 # DataUtils.save_data(results_data_frame, molecule, time_stamp, ansatz_element_type=ansatz_element_type,
                 #                    frozen_els=frozen_els, iter_vqe_type='iqeb')
-                results_data_frame.to_csv('../../../results/iter_vqe_results/{}_iqeb_{}_r={}_{}'.format(molecule.name, ansatz_element_type, r, time_stamp))
+                results_data_frame.to_csv('../../results/iter_vqe_results/{}_iqeb_{}_r={}_{}.csv'.format(molecule.name, ansatz_element_type, r, time_stamp))
 
                 message = 'Add new element to final ansatz {}. Energy {}. Energy change {}, var. parameters: {}' \
                     .format(element_to_add.element, current_energy, delta_e, ansatz_parameters)

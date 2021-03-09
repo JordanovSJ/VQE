@@ -24,7 +24,7 @@ for r in r_list:
 
     data_frame.loc[idx] = {'r': r, 'fci': molecule.fci_energy, 'hf': molecule.hf_energy,
                            'iqeb': vqe_energy}
-    data_frame.to_csv('../results/zhenghao_testing/'
+    data_frame.to_csv('../../results/zhenghao_testing/'
                       '{}_{}_dissociation_curve_{}.csv'.format(molecule.name,
                                                                ansatz_element_type, time_stamp))
 
