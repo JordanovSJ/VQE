@@ -20,11 +20,11 @@ if __name__ == "__main__":
     r = 2
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2(r=r)  # (frozen_els=frozen_els)
+    molecule = H4(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
-    ansatz_element_type = 'q_exc'
+    ansatz_element_type = 'f_exc'
     # ansatz_element_type = 'f_exc'
     # ansatz_element_type = 'pauli_str_exc'
 
@@ -104,8 +104,11 @@ if __name__ == "__main__":
         element_to_add, result =\
             EnergyUtils.largest_full_vqe_energy_reduction_element(vqe_runner, elements, ansatz_parameters=ansatz_parameters,
                                                                   ansatz=ansatz, global_cache=global_cache)
+        print('!!!!', element_to_add.element, element_to_add.qubits)
 
         compl_element_to_add = element_to_add.get_spin_comp_exc()
+        print('!!!!' , compl_element_to_add.element, compl_element_to_add.qubits)
+        print(compl_element_to_add.excitations_generators)
 
         # TODO check the if condition
         comp_qubits = compl_element_to_add.qubits

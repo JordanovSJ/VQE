@@ -17,16 +17,16 @@ import qiskit
 
 if __name__ == "__main__":
 
-    r = 0.735
+    r = 1.546
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
+    q_system = LiH(r=r) #(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_config()
 
     # uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
     # ansatz = uccsd
-    ansatz = GSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'pauli_str_exc').get_excitations()
+    ansatz = UCCSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'q_exc').get_excitations()
     print(len(ansatz))
     backend = MatrixCacheBackend
     global_cache = GlobalCache(q_system)

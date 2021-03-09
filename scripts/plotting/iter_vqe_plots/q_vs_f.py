@@ -32,8 +32,8 @@ if __name__ == "__main__":
     linewidth = 0.4
     marker = '_'
 
-    ax.plot(db_qe_lih[df_col], db_qe_lih['error'], label='LiH, qubit excitations', marker=marker, linewidth=linewidth, color='navy')
-    ax.plot(db_fe_lih[df_col], db_fe_lih['error'], label='LiH, fermionic excitations', marker=marker, linewidth=linewidth, color='darkred')
+    # ax.plot(db_qe_lih[df_col], db_qe_lih['error'], label='LiH, qubit excitations', marker=marker, linewidth=linewidth, color='navy')
+    # ax.plot(db_fe_lih[df_col], db_fe_lih['error'], label='LiH, fermionic excitations', marker=marker, linewidth=linewidth, color='darkred')
 
     ax.plot(db_qe_beh2[df_col], db_qe_beh2['error'], label='BeH2, qubit excitations', marker=marker, linewidth=linewidth, color='royalblue')
     ax.plot(db_fe_beh2[df_col], db_fe_beh2['error'], label='BeH2, fermionic excitations', marker=marker, linewidth=linewidth, color='indianred')

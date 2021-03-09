@@ -24,15 +24,21 @@ class QSystem:
         self.molecule_data = MolecularData(geometry=self.geometry, basis=basis, multiplicity=self.multiplicity,
                                            charge=self.charge)
 
-        # self.molecule_psi4 = run_psi4(self.molecule_data, run_fci=True)  # old version of openfermion
-        self.molecule_psi4 = run_pyscf(self.molecule_data, run_scf=True, run_cisd=True, run_fci=True)
+        self.molecule_psi4 = run_psi4(self.molecule_data, run_fci=True)  # old version of openfermion
 
         # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
-        # self.hf_energy = self.molecule_psi4.hf_energy.item()  # old version of openfermion
-        # self.fci_energy = self.molecule_psi4.fci_energy.item() # old version of openfermion
-        self.hf_energy = self.molecule_psi4.hf_energy
-        self.fci_energy = self.molecule_psi4.fci_energy
+        self.hf_energy = self.molecule_psi4.hf_energy.item()  # old version of openfermion
+        self.fci_energy = self.molecule_psi4.fci_energy.item() # old version of openfermion
+
+        # TODO: the code below corresponds to the most recent version in the opefermion documentation.
+        #  However it has problems with ray???
+        # calculate_molecule_psi4 = run_pyscf(self.molecule_data, run_scf=True, run_cisd=True, run_fci=True)
+        # self.molecule_ham = calculate_molecule_psi4.get_molecular_hamiltonian()
+        # self.hf_energy = calculate_molecule_psi4.hf_energy
+        # self.fci_energy = float(calculate_molecule_psi4.fci_energy)
+        # del calculate_molecule_psi4
+
         self.energy_eigenvalues = None  # use this only if calculating excited states
 
         if frozen_els is None:
