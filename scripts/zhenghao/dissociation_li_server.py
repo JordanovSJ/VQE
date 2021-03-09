@@ -8,9 +8,9 @@ from src.molecules.molecules import *
 from src.utils import *
 from scripts.zhenghao.dissociation_plotting.iqeb_fun_li import iqeb_litest
 
-r_list = [1.546, 2, 2.5, 3, 3.5]
+r_list = [1, 1.5, 2, 2.5, 3, 3.5]
 
-molecule_type = H4
+molecule_type = H2
 ansatz_element_type = 'eff_f_exc'
 
 data_frame = pd.DataFrame(columns=['r', 'fci', 'hf', 'iqeb'])
@@ -24,7 +24,11 @@ for r in r_list:
 
     data_frame.loc[idx] = {'r': r, 'fci': molecule.fci_energy, 'hf': molecule.hf_energy,
                            'iqeb': vqe_energy}
+<<<<<<< HEAD
     data_frame.to_csv('../results/zhenghao_testing/'
+=======
+    data_frame.to_csv('../../results/zhenghao_testing/'
+>>>>>>> feb942cf1d80767aac36d2bfb72b933919395739
                       '{}_{}_dissociation_curve_{}.csv'.format(molecule.name,
                                                                ansatz_element_type, time_stamp))
 
