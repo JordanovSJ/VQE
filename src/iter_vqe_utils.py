@@ -197,8 +197,8 @@ class GradientUtils:
         else:
             elements_results = [
                 [
-                    element, backend.ansatz_element_gradient(ansatz_element=element, var_parameters= ansatz_parameters,
-                                                             ansatz=ansatz, q_system=q_system,
+                    element, backend.ansatz_element_gradient(ansatz_element=element, q_system=q_system, ansatz=ansatz,
+                                                             var_parameters=ansatz_parameters,
                                                              cache=global_cache, excited_state=excited_state)]
                 for element in elements
             ]

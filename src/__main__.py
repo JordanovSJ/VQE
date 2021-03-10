@@ -5,7 +5,7 @@ from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
 from src.cache import *
 
-from src.molecules.molecules import H2
+from src.molecules.molecules import *
 
 import logging
 import time
@@ -17,16 +17,16 @@ import qiskit
 
 if __name__ == "__main__":
 
-    r = 0.735
+    r = 1.546
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
+    q_system = LiH(r=r) #(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_config()
 
     # uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
     # ansatz = uccsd
-    ansatz = GSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'pauli_str_exc').get_excitations()
+    ansatz = UCCSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'q_exc').get_excitations()
     print(len(ansatz))
     backend = MatrixCacheBackend
     global_cache = GlobalCache(q_system)
@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=False,
+    vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()

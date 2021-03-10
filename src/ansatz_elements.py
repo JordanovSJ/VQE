@@ -113,6 +113,9 @@ class DFExc(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
         self.spin_complement = False
 
+        qubit_pair_1.sort()
+        qubit_pair_2.sort()
+
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
         self.qubits = [qubit_pair_1, qubit_pair_2]
@@ -163,6 +166,9 @@ class DQExc(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
         self.spin_complement = False
 
+        qubit_pair_1.sort()
+        qubit_pair_2.sort()
+
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2
         self.qubits = [qubit_pair_1, qubit_pair_2]
@@ -208,6 +214,9 @@ class EffSFExc(AnsatzElement):
 class EffDFExc(AnsatzElement):
     def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
         self.spin_complement = False
+
+        qubit_pair_1.sort()
+        qubit_pair_2.sort()
 
         assert len(qubit_pair_1) == 2
         assert len(qubit_pair_2) == 2

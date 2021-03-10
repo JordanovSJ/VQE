@@ -24,16 +24,16 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.316
+    r = 1
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2(r=r)  # (frozen_els=frozen_els)
+    molecule = H4(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
     # ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'f_exc'
-    ansatz_element_type = 'pauli_str_exc'
+    ansatz_element_type = 'q_exc'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
     # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
