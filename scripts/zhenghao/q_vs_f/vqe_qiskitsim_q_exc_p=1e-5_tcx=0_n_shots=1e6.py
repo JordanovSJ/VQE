@@ -97,7 +97,7 @@ vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=True,
 t0 = time.time()
 result = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_pars, cache=global_cache,
                             n_shots=n_shots, noise_model=noise_model, coupling_map=coupling_map,
-                            method=method)
+                            method=method, results_df=results_df, filename=filename)
 t = time.time()
 
 logging.critical(result)
