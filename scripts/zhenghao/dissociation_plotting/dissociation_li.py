@@ -3,7 +3,7 @@ sys.path.append('../../')
 
 import matplotlib.pyplot as plt
 import numpy as np
-from src.q_systems import *
+from src.molecules.molecules import *
 
 from scripts.zhenghao.dissociation_plotting.iqeb_fun_li import iqeb_litest
 
@@ -23,8 +23,8 @@ for r in r_list:
     molecule = molecule_type(r)
     fci_energy[i] = molecule.fci_energy
     hf_energy[i] = molecule.hf_energy
-    vqe_result = iqeb_litest(r, molecule)
-    vqe_energy[i] = vqe_result.fun
+    # vqe_result = iqeb_litest(r, molecule)
+    # vqe_energy[i] = vqe_result.fun
     i = i +1
 
 
