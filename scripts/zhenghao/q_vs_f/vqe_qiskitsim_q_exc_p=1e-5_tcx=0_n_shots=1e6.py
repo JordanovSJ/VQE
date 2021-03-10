@@ -45,7 +45,7 @@ n_shots = 1e6
 method = 'automatic'
 
 optimizer = 'BFGS'
-gtol = 10e-8
+gtol = 10e-4
 optimizer_options = {'gtol': gtol}
 
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}, gtol={}'\
@@ -85,7 +85,7 @@ logging.info(message)
 
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
-filename = '../../../results/zhenghao_testing/{}_vqe_qiskitsim_gtol={}_{}_p={}_tcx={}_shots={}_{}.csv' \
+filename = '../../../results/zhenghao_testing/{}_vqe_{}_qiskitsim_gtol={}_p={}_tcx={}_shots={}_{}.csv' \
     .format(q_system.name, ansatz_element_type, gtol, prob_2, time_cx, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
