@@ -71,13 +71,13 @@ message = 'Backend is {}, n_shots={}, method={}'.format(backend, n_shots, method
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
 optimizer = 'BFGS'
-optimizer_options = {'gtol': 10e-8}
+optimizer_options = {'gtol': 10e-3}
 vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=True,
                        use_ansatz_gradient=False,
                        optimizer=optimizer, optimizer_options=optimizer_options)
 
 t0 = time.time()
-result = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=var_pars, cache=global_cache,
+result = vqe_runner.vqe_run(ansatz=ansatz, init_guess_parameters=None, cache=global_cache,
                             n_shots=n_shots, noise_model=noise_model, coupling_map=coupling_map,
                             method=method)
 t = time.time()
