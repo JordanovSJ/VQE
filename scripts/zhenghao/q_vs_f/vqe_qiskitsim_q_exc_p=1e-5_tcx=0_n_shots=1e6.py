@@ -17,9 +17,25 @@ import pandas as pd
 import datetime
 import qiskit
 
+
+# <<<<<<<<<<<< MOLECULE >>>>>>>>>>>>>>>>>
+r = 1
+frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
+q_system = H4(r=r) #(r=r, frozen_els=frozen_els)
+
+# <<<<<<<<<<<< LOGGING >>>>>>>>>>>>>>>>>
+# logging
+LogUtils.log_config()
+message = 'H4 molecule, running single VQE optimisation for q_exc and f_exc based ansatz readily constructed by adapat vqe'
+time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+
 # <<<<<<<<<<<< TUNABLE PARAMETERS >>>>>>>>>>>>>>>>>
 ansatz_element_type = 'q_exc'
+
 df_input = pd.read_csv('../../../results/iter_vqe_results/H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
+ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
+ansatz = ansatz_state.ansatz_elements
+var_pars = None  # ansatz_state.parameters
 
 prob_2 = 1e-5
 time_cx = 0  # Gate time for cx gate
@@ -35,25 +51,11 @@ optimizer_options = {'gtol': gtol}
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}, gtol={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer, gtol)
 logging.info(message)
-# <<<<<<<<<<<< MOLECULE >>>>>>>>>>>>>>>>>
-r = 1
-frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-q_system = H4(r=r) #(r=r, frozen_els=frozen_els)
-
-# <<<<<<<<<<<< LOGGING >>>>>>>>>>>>>>>>>
-# logging
-LogUtils.log_config()
-message = 'H4 molecule, running single VQE optimisation for q_exc and f_exc based ansatz readily constructed by adapat vqe'
-time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # <<<<<<<<<<<< READING CSV FILES >>>>>>>>>>>>>>>>>
-ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
-ansatz = ansatz_state.ansatz_elements
-var_pars = ansatz_state.parameters
 
 message = 'Length of {} based ansatz is {}'.format(ansatz_element_type, len(ansatz))
 logging.info(message)
-
 
 # <<<<<<<<<<<< Noise Model >>>>>>>>>>>>>>>>>
 # Noise model
