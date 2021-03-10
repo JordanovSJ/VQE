@@ -237,7 +237,8 @@ class DataUtils:
             element = data_frame.loc[i]['element']
             element_qubits = data_frame.loc[i]['element_qubits']
             if element[0] == 'e' and element[4] == 's':
-                ansatz_elements.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements.\
+                    append(EffSFExc(ast.literal_eval(element_qubits)[0][0], ast.literal_eval(element_qubits)[1][0], system_n_qubits=q_system.n_qubits))
             elif element[0] == 'e' and element[4] == 'd':
                 ansatz_elements.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[0:3] == 's_f':
