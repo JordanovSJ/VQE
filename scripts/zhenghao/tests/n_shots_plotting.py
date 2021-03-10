@@ -6,7 +6,7 @@ plt.close('all')
 
 molecule = H2()
 
-data = pd.read_csv('../../csv_folder/H2_different_nshots_14-Feb-2021 (16:20:43.774108).csv')
+data = pd.read_csv('../csv_folder/H2_different_nshots_14-Feb-2021 (16:20:43.774108).csv')
 
 plt.figure(1)
 plt.plot(data['n_shots'], data['expectation_value'], 'rx')
