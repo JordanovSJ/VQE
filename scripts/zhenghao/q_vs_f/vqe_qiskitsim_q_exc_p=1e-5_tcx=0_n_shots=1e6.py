@@ -24,7 +24,7 @@ df_input = pd.read_csv('../../../results/iter_vqe_results/H4_adapt_vqe_q_exc_r=1
 prob_2 = 1e-5
 time_cx = 0  # Gate time for cx gate
 
-backend = QasmBackend
+backend = QiskitSimBackend
 n_shots = 1e6
 method = 'automatic'
 
@@ -51,7 +51,7 @@ ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
 ansatz = ansatz_state.ansatz_elements
 var_pars = ansatz_state.parameters
 
-message = 'Length of {}} based ansatz is {}'.format(ansatz_element_type, len(ansatz))
+message = 'Length of {} based ansatz is {}'.format(ansatz_element_type, len(ansatz))
 logging.info(message)
 
 
@@ -83,8 +83,8 @@ logging.info(message)
 
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
-filename = '../../../results/zhenghao_testing/{}_vqe_{}}_p={}_tcx={}_shots={}_{}.csv' \
-    .format(q_system.name, ansatz_element_type, prob_2, time_cx, n_shots, time_stamp)
+filename = '../../../results/zhenghao_testing/{}_vqe_qiskitsim_gtol={}_{}_p={}_tcx={}_shots={}_{}.csv' \
+    .format(q_system.name, ansatz_element_type, gtol, prob_2, time_cx, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
 
