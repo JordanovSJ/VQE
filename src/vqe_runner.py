@@ -11,6 +11,7 @@ import time
 from functools import partial
 import logging
 import ray
+import pandas as pd
 
 
 # TODO make this class entirely static?
@@ -36,7 +37,8 @@ class VQERunner:
     # TODO split this into a proper callback function!!!!!!
     def get_energy(self, var_parameters, ansatz, backend, multithread=False, multithread_iteration=None,
                    init_state_qasm=None, cache=None, excited_state=0,
-                   n_shots=1024, noise_model=None, coupling_map=None, method='automatic'):
+                   n_shots=1024, noise_model=None, coupling_map=None, method='automatic',
+                   results_df=None, filename=None):
 
         if multithread is False:
             iteration_duration = time.time() - self.time_previous_iter
@@ -68,12 +70,21 @@ class VQERunner:
                 message += ' Params: ' + str(var_parameters)
             logging.info(message)
 
+            if results_df is not None:
+                results_df.loc[self.iteration-1] = {'iteration': self.iteration,
+                                                    'energy': self.new_energy,
+                                                    'energy change': delta_e,
+                                                    'iteration duration': iteration_duration,
+                                                    'params': var_parameters}
+                results_df.to_csv(filename)
+
             self.iteration += 1
 
         return energy
 
     def vqe_run(self, ansatz, init_guess_parameters=None, init_state_qasm=None, excited_state=0, cache=None,
-                n_shots=1024, noise_model=None, coupling_map=None, method='automatic', ):
+                n_shots=1024, noise_model=None, coupling_map=None, method='automatic',
+                results_df=None, filename=None):
 
         assert len(ansatz) > 0
         if init_guess_parameters is None:
@@ -90,7 +101,8 @@ class VQERunner:
         # functions to be called by the optimizer
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=self.backend, init_state_qasm=init_state_qasm,
                              excited_state=excited_state, cache=cache,
-                             n_shots=n_shots, noise_model=noise_model, coupling_map=coupling_map, method=method)
+                             n_shots=n_shots, noise_model=noise_model, coupling_map=coupling_map, method=method,
+                             results_df=results_df, filename=filename)
 
         # get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
         #                        init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)

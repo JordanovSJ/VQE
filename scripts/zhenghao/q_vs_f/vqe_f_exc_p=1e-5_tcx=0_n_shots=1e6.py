@@ -17,6 +17,25 @@ import pandas as pd
 import datetime
 import qiskit
 
+# <<<<<<<<<<<< TUNABLE PARAMETERS >>>>>>>>>>>>>>>>>
+ansatz_element_type = 'q_exc'
+df_input = pd.read_csv('../../../results/iter_vqe_results/'
+                       'H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
+
+prob_2 = 1e-5
+time_cx = 0  # Gate time for cx gate
+
+backend = QiskitSimBackend
+n_shots = 1e6
+method = 'automatic'
+
+optimizer = 'BFGS'
+gtol = 10e-8
+optimizer_options = {'gtol': gtol}
+
+message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}, gtol={}'\
+    .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer, gtol)
+logging.info(message)
 # <<<<<<<<<<<< MOLECULE >>>>>>>>>>>>>>>>>
 r = 1
 frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
@@ -26,25 +45,22 @@ q_system = H4(r=r) #(r=r, frozen_els=frozen_els)
 # logging
 LogUtils.log_config()
 message = 'H4 molecule, running single VQE optimisation for q_exc and f_exc based ansatz readily constructed by adapat vqe'
+time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # <<<<<<<<<<<< READING CSV FILES >>>>>>>>>>>>>>>>>
-df_q_exc = pd.read_csv('../../../results/iter_vqe_results/'
-                       'H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
-ansatz_state_q_exc = DataUtils.ansatz_from_data_frame(df_q_exc, q_system)
-ansatz = ansatz_state_q_exc.ansatz_elements
-var_pars = ansatz_state_q_exc.parameters
+ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
+ansatz = ansatz_state.ansatz_elements
+var_pars = ansatz_state.parameters
 
-message = 'Length of q_exc based ansatz is {}'.format(len(ansatz))
+message = 'Length of {}} based ansatz is {}'.format(ansatz_element_type, len(ansatz))
 logging.info(message)
 
 
 # <<<<<<<<<<<< Noise Model >>>>>>>>>>>>>>>>>
 # Noise model
 prob_1 = 0  # Single qubit gate depolarizing error prob
-prob_2 = 1e-5
 prob_meas = prob_2
 time_single_gate = 0  # Gate time for single qubit gate
-time_cx = 0  # Gate time for cx gate
 time_meas = 0
 t1 = 50e3  # T1 in nanoseconds
 t2 = 50e3  # T2 in nanoseconds
@@ -61,17 +77,18 @@ logging.info(message)
 
 # <<<<<<<<<<<< BACKEND >>>>>>>>>>>>>>>>>
 # backend = QasmBackend
-backend = QiskitSimBackend
 global_cache = None
 
-n_shots = 1e6
-method = 'automatic'
-
 message = 'Backend is {}, n_shots={}, method={}'.format(backend, n_shots, method)
+logging.info(message)
+
+# <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
+results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
+filename = '../../../results/zhenghao_testing/{}_vqe_{}}_p={}_tcx={}_shots={}_{}.csv' \
+    .format(q_system.name, ansatz_element_type, prob_2, time_cx, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
-optimizer = 'BFGS'
-optimizer_options = {'gtol': 10e-8}
+
 vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=True,
                        use_ansatz_gradient=False,
                        optimizer=optimizer, optimizer_options=optimizer_options)
