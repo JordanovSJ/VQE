@@ -1,4 +1,5 @@
 from src.backends import QiskitSimBackend
+from scripts.zhenghao.noisy_backends import QasmBackend
 from src.utils import LogUtils
 from src import config
 
@@ -34,14 +35,21 @@ class VQERunner:
 
     # TODO split this into a proper callback function!!!!!!
     def get_energy(self, var_parameters, ansatz, backend, multithread=False, multithread_iteration=None,
-                   init_state_qasm=None, cache=None, excited_state=0):
+                   init_state_qasm=None, cache=None, excited_state=0,
+                   n_shots=1024, noise_model=None, coupling_map=None, method='automatic'):
 
         if multithread is False:
             iteration_duration = time.time() - self.time_previous_iter
             self.time_previous_iter = time.time()
 
-        energy = backend.ham_expectation_value(var_parameters, ansatz, self.q_system, cache=cache,
-                                               init_state_qasm=init_state_qasm, excited_state=excited_state)
+        if backend is QasmBackend:
+            energy = backend.ham_expectation_value(var_parameters=var_parameters, ansatz=ansatz,
+                                                   q_system=self.q_system, init_state_qasm=init_state_qasm,
+                                                   n_shots=n_shots, noise_model=noise_model,
+                                                   coupling_map=coupling_map, method=method)
+        else:
+            energy = backend.ham_expectation_value(var_parameters, ansatz, self.q_system, cache=cache,
+                                                   init_state_qasm=init_state_qasm, excited_state=excited_state)
 
         if multithread:
             if multithread_iteration is not None:
@@ -54,7 +62,7 @@ class VQERunner:
             delta_e = self.new_energy - self.previous_energy
             self.previous_energy = self.new_energy
 
-            message = 'Iteration: {}. Energy {}.  Energy change {} , Iteration dutation: {}' \
+            message = 'Iteration: {}. Energy {}.  Energy change {} , Iteration duration: {}' \
                 .format(self.iteration, self.new_energy, '{:.3e}'.format(delta_e), iteration_duration)
             if self.print_var_parameters:
                 message += ' Params: ' + str(var_parameters)
@@ -64,7 +72,8 @@ class VQERunner:
 
         return energy
 
-    def vqe_run(self, ansatz, init_guess_parameters=None, init_state_qasm=None, excited_state=0, cache=None):
+    def vqe_run(self, ansatz, init_guess_parameters=None, init_state_qasm=None, excited_state=0, cache=None,
+                n_shots=1024, noise_model=None, coupling_map=None, method='automatic', ):
 
         assert len(ansatz) > 0
         if init_guess_parameters is None:
@@ -80,15 +89,17 @@ class VQERunner:
 
         # functions to be called by the optimizer
         get_energy = partial(self.get_energy, ansatz=ansatz, backend=self.backend, init_state_qasm=init_state_qasm,
-                             excited_state=excited_state, cache=cache)
+                             excited_state=excited_state, cache=cache,
+                             n_shots=n_shots, noise_model=noise_model, coupling_map=coupling_map, method=method)
 
-        get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
-                               init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)
+        # get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
+        #                        init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)
 
         if self.use_ansatz_gradient:
-            result = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,
-                                             options=self.optimizer_options, tol=config.optimizer_tol,
-                                             bounds=config.optimizer_bounds)
+            # result = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,
+            #                                  options=self.optimizer_options, tol=config.optimizer_tol,
+            #                                  bounds=config.optimizer_bounds)
+            raise Exception('Ansatz gradient not supported yet.')
         else:
 
             result = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
@@ -100,7 +111,8 @@ class VQERunner:
         return result
 
     @ray.remote
-    def vqe_run_multithread(self, ansatz, init_guess_parameters=None, init_state_qasm=None, excited_state=0, cache=None):
+    def vqe_run_multithread(self, ansatz, init_guess_parameters=None, init_state_qasm=None, excited_state=0,
+                            cache=None):
 
         assert len(ansatz) > 0
 
@@ -144,4 +156,3 @@ class VQERunner:
         result['n_iters'] = local_thread_iteration[0]  # cheating
 
         return result
-
