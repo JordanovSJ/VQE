@@ -55,15 +55,21 @@ class LogUtils:
         stdout_handler = logging.StreamHandler(sys.stdout)
 
         try:
-            logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
+            logging.basicConfig(filename='../../../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
                                 format='%(levelname)s %(asctime)s %(message)s')
         except FileNotFoundError:
             try:
-                logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
+                logging.basicConfig(filename='../../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
                                     format='%(levelname)s %(asctime)s %(message)s')
             except FileNotFoundError:
-                logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
-                                    format='%(levelname)s %(asctime)s %(message)s')
+                try:
+                    logging.basicConfig(filename='../results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
+                                        format='%(levelname)s %(asctime)s %(message)s')
+                except FileNotFoundError:
+                    logging.basicConfig(filename='results/logs/{}.txt'.format(logging_filename), level=logging.DEBUG,
+                                        format='%(levelname)s %(asctime)s %(message)s')
+
+
 
         # make logger print to console (it will not if multithreaded)
         logging.getLogger().addHandler(stdout_handler)
