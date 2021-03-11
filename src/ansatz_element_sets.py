@@ -19,6 +19,7 @@ class UCCSDExcitations:
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
+                # if i % 2 == j % 2:
                 if self.element_type == 'f_exc':
                     single_excitations.append(SFExc(i, j, system_n_qubits=self.n_orbitals))
                 elif self.element_type == 'q_exc':
@@ -40,6 +41,7 @@ class UCCSDExcitations:
             for j in range(i + 1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
+                        # if i % 2 + j % 2 == k % 2 + l % 2:
                         if self.element_type == 'f_exc':
                             double_excitations.append(DFExc([i, j], [k, l],
                                                             system_n_qubits=self.n_orbitals))

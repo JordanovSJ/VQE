@@ -20,7 +20,7 @@ import ast
 
 if __name__ == "__main__":
 
-    molecule = LiH()
+    molecule = BeH2()
 
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
     df_data = pandas.DataFrame(columns=['r', 'E', 'fci_E', 'error', 'n_iters'])
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     #         raise Exception('Unrecognized ansatz element.')
 
     # ansatz = ansatz[:74]  # 74 for 1e-8
-    ansatz = UCCSDExcitations(molecule.n_qubits, molecule.n_electrons, element_type='q_exc').get_excitations()
+    ansatz = SpinCompGSDExcitations(molecule.n_qubits, molecule.n_electrons, element_type='eff_f_exc').get_excitations()
     var_parameters = list(numpy.zeros(len(ansatz)))
 
     optimizer = 'BFGS'
@@ -55,11 +55,11 @@ if __name__ == "__main__":
 
     energies = []
     fci_energies = []
-    rs = [1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5]
+    rs = [0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25]
     df_count = 0
 
     for r in rs:
-        molecule = LiH(r=r)
+        molecule = BeH2(r=r)
 
         vqe_runner = VQERunner(molecule, backend=MatrixCacheBackend, use_ansatz_gradient=True, optimizer=optimizer,
                                optimizer_options=optimizer_options)
