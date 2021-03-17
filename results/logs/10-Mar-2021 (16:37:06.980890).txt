@@ -1,0 +1,9 @@
+INFO 2021-03-10 16:37:06,981 H4, test noise levels for 5 hamiltonian terms
+INFO 2021-03-10 16:37:06,982 n_qubits = 8, n_electrons = 4
+INFO 2021-03-10 16:37:06,982 Hamiltonian is molecule.jw_qubit_ham
+INFO 2021-03-10 16:37:06,982 Noise models: None
+INFO 2021-03-10 16:37:08,357 QiskitSimBackend values are, for q_exc=-2.166387448527459, for f_exc=-2.1663874485274657
+INFO 2021-03-10 16:37:08,359 n_shots=1000000.0, method=automatic
+INFO 2021-03-10 16:37:08,359 
+INFO 2021-03-10 16:37:08,359 Noise model is None
+INFO 2021-03-10 16:44:24,276 exp_value_q_exc=-2.166258007224833, time_q_exc=212.9365587234497, exp_value_f_exc=-2.1660461961443946, time_f_exc=222.97494673728943

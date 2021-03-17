@@ -1,0 +1,42 @@
+INFO 2021-03-10 15:15:41,150 H4, test noise levels for 5 hamiltonian terms
+INFO 2021-03-10 15:15:41,150 n_qubits = 8, n_electrons = 4
+INFO 2021-03-10 15:15:41,150 Hamiltonian is molecule.jw_qubit_ham
+INFO 2021-03-10 15:15:41,150 prob_1 = 0, time_single_gate=0, time_cx=10, time_meas=0, t1=50000.0, t2=50000.0
+INFO 2021-03-10 15:15:41,153 Noise models generated for prob_2 = [0.01, 0.001, 0.0001, 1e-05, 0], prob_meas = [0.01, 0.001, 0.0001, 1e-05, 0]
+INFO 2021-03-10 15:15:42,521 QiskitSimBackend values are, for q_exc=-2.166387448527459, for f_exc=-2.1663874485274657
+INFO 2021-03-10 15:15:42,523 n_shots=100000.0, method=automatic
+INFO 2021-03-10 15:15:42,523 
+INFO 2021-03-10 15:15:42,523 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 15:15:42,523 prob_2 = 0.01, prob_meas = 0.01
+INFO 2021-03-10 15:17:21,677 exp_value_q_exc=-0.9769458840154805, time_q_exc=47.84565186500549, exp_value_f_exc=-0.8244981472893046, time_f_exc=51.30234169960022
+INFO 2021-03-10 15:17:21,678 
+INFO 2021-03-10 15:17:21,678 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 15:17:21,678 prob_2 = 0.001, prob_meas = 0.001
+INFO 2021-03-10 15:19:07,911 exp_value_q_exc=-1.9219253313752205, time_q_exc=50.148812770843506, exp_value_f_exc=-1.866911427339435, time_f_exc=56.07884764671326
+INFO 2021-03-10 15:19:07,912 
+INFO 2021-03-10 15:19:07,912 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 15:19:07,912 prob_2 = 0.0001, prob_meas = 0.0001
+INFO 2021-03-10 15:20:54,323 exp_value_q_exc=-2.077341014884093, time_q_exc=48.093592405319214, exp_value_f_exc=-2.0596419116552274, time_f_exc=58.31173634529114
+INFO 2021-03-10 15:20:54,323 
+INFO 2021-03-10 15:20:54,323 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 15:20:54,323 prob_2 = 1e-05, prob_meas = 1e-05
+INFO 2021-03-10 15:22:35,662 exp_value_q_exc=-2.093390769360727, time_q_exc=49.24128079414368, exp_value_f_exc=-2.0795742088622986, time_f_exc=52.09209847450256
+INFO 2021-03-10 15:22:35,662 
+INFO 2021-03-10 15:22:35,662 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['cx']
+  All-qubits errors: ['cx']
+INFO 2021-03-10 15:22:35,662 prob_2 = 0, prob_meas = 0
+INFO 2021-03-10 15:24:16,235 exp_value_q_exc=-2.0984571450188705, time_q_exc=47.1941282749176, exp_value_f_exc=-2.0799785938809703, time_f_exc=53.37222170829773
