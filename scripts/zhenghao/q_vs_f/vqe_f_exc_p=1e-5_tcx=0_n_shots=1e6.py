@@ -44,12 +44,12 @@ backend = QasmBackend
 n_shots = 1e6
 method = 'automatic'
 
-optimizer = 'BFGS'
-gtol = 10e-4
-optimizer_options = {'gtol': gtol}
+optimizer = 'Nelder-Mead'
+# gtol = 10e-4
+optimizer_options = None #{'gtol': gtol}
 
-message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}, gtol={}'\
-    .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer, gtol)
+message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
+    .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
 logging.info(message)
 
 # <<<<<<<<<<<< READING CSV FILES >>>>>>>>>>>>>>>>>
@@ -77,7 +77,6 @@ logging.info(message)
 
 
 # <<<<<<<<<<<< BACKEND >>>>>>>>>>>>>>>>>
-# backend = QasmBackend
 global_cache = None
 
 message = 'Backend is {}, n_shots={}, method={}'.format(backend, n_shots, method)
@@ -85,8 +84,8 @@ logging.info(message)
 
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
-filename = '../../../results/zhenghao_testing/{}_vqe_{}_p={}_tcx={}_shots={}_{}.csv' \
-    .format(q_system.name, ansatz_element_type, prob_2, time_cx, n_shots, time_stamp)
+filename = '../../../results/zhenghao_testing/{}_vqe_{}_{}_p={}_tcx={}_shots={}_{}.csv' \
+    .format(q_system.name, ansatz_element_type, optimizer, prob_2, time_cx, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
 
