@@ -290,7 +290,7 @@ class SpinCompGSDExcitations:
     def get_excitations(self):
         return self.get_single_excitations() + self.get_double_excitations()
 
-
+# Preserves spin symmetry, and only f_exc
 class UCCSD:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
@@ -310,7 +310,7 @@ class UCCSD:
             for j in range(i+1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals-1):
                     for l in range(k+1, self.n_orbitals):
-                        if i % 2 + j % 2 == k % 2 + l % 2:
+                        if i % 2 + j % 2 == k % 2 + l % 2:  # Go to orbitals of the same spin
                             double_excitations.append(EffDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
         return double_excitations
 
