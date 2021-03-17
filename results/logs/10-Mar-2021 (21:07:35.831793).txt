@@ -1,0 +1,65 @@
+INFO 2021-03-10 21:07:35,848 Calculating excitation generators
+DEBUG 2021-03-10 21:07:35,848 Automatically increasing RLIMIT_NOFILE to max value of 524288
+INFO 2021-03-10 21:07:41,273 -----Running VQE for: H2-----
+-----Number of electrons: 2-----
+-----Number of orbitals: 4-----
+-----Numeber of ansatz elements: 20-----
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-03-10 21:07:41,309 Iteration: 1. Energy -1.1169989967389087.  Energy change 2.220e-16 , Iteration dutation: 0.0004382133483886719
+INFO 2021-03-10 21:07:41,316 Iteration: 2. Energy -1.116998996738908.  Energy change 6.661e-16 , Iteration dutation: 0.03537774085998535
+INFO 2021-03-10 21:07:41,323 Iteration: 3. Energy -1.116998996738908.  Energy change 0.000e+00 , Iteration dutation: 0.006683826446533203
+INFO 2021-03-10 21:07:41,330 Iteration: 4. Energy -1.1169989967389082.  Energy change -2.220e-16 , Iteration dutation: 0.006984710693359375
+INFO 2021-03-10 21:07:41,337 Iteration: 5. Energy -1.1169989967389082.  Energy change 0.000e+00 , Iteration dutation: 0.006865501403808594
+INFO 2021-03-10 21:07:41,344 Iteration: 6. Energy -1.1169989967389085.  Energy change -2.220e-16 , Iteration dutation: 0.006884574890136719
+INFO 2021-03-10 21:07:41,351 Iteration: 7. Energy -1.1169989967389085.  Energy change 0.000e+00 , Iteration dutation: 0.006870269775390625
+INFO 2021-03-10 21:07:41,358 Iteration: 8. Energy -1.1169989967389085.  Energy change 0.000e+00 , Iteration dutation: 0.0068852901458740234
+INFO 2021-03-10 21:07:41,365 Iteration: 9. Energy -1.1169989967389085.  Energy change 0.000e+00 , Iteration dutation: 0.0068972110748291016
+INFO 2021-03-10 21:07:41,371 Iteration: 10. Energy -1.1169989967389082.  Energy change 2.220e-16 , Iteration dutation: 0.006933450698852539
+INFO 2021-03-10 21:07:41,378 Iteration: 11. Energy -1.1169989967389082.  Energy change 0.000e+00 , Iteration dutation: 0.006914377212524414
+INFO 2021-03-10 21:07:41,385 Iteration: 12. Energy -1.116998996738908.  Energy change 2.220e-16 , Iteration dutation: 0.006871223449707031
+INFO 2021-03-10 21:07:41,392 Iteration: 13. Energy -1.116998996738908.  Energy change 0.000e+00 , Iteration dutation: 0.006869077682495117
+INFO 2021-03-10 21:07:41,399 Iteration: 14. Energy -1.116999002131078.  Energy change -5.392e-09 , Iteration dutation: 0.006833314895629883
+INFO 2021-03-10 21:07:41,406 Iteration: 15. Energy -1.1169989913467382.  Energy change 1.078e-08 , Iteration dutation: 0.006848573684692383
+INFO 2021-03-10 21:07:41,413 Iteration: 16. Energy -1.116999002131078.  Energy change -1.078e-08 , Iteration dutation: 0.006823539733886719
+INFO 2021-03-10 21:07:41,419 Iteration: 17. Energy -1.116999002131078.  Energy change 0.000e+00 , Iteration dutation: 0.0068416595458984375
+INFO 2021-03-10 21:07:41,426 Iteration: 18. Energy -1.1169989913467382.  Energy change 1.078e-08 , Iteration dutation: 0.00687861442565918
+INFO 2021-03-10 21:07:41,433 Iteration: 19. Energy -1.1169989913467382.  Energy change 0.000e+00 , Iteration dutation: 0.0068438053131103516
+INFO 2021-03-10 21:07:41,440 Iteration: 20. Energy -1.116999002131078.  Energy change -1.078e-08 , Iteration dutation: 0.0068590641021728516
+INFO 2021-03-10 21:07:41,447 Iteration: 21. Energy -1.1169989913467382.  Energy change 1.078e-08 , Iteration dutation: 0.006937742233276367
+CRITICAL 2021-03-10 21:07:41,447       fun: -1.1169989967389087
+ hess_inv: array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]])
+      jac: array([ 4.47034836e-08,  4.47034836e-08,  2.98023224e-08,  2.98023224e-08,
+        1.49011612e-08,  1.49011612e-08,  1.49011612e-08,  1.49011612e-08,
+        2.98023224e-08,  2.98023224e-08,  4.47034836e-08,  4.47034836e-08,
+       -3.61862361e-01,  3.61862436e-01, -3.61862361e-01, -3.61862361e-01,
+        3.61862436e-01,  3.61862436e-01, -3.61862361e-01,  3.61862436e-01])
+  message: 'Optimization terminated successfully.'
+  n_iters: 22
+     nfev: 21
+      nit: 0
+     njev: 1
+   status: 0
+  success: True
+        x: array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0.])
