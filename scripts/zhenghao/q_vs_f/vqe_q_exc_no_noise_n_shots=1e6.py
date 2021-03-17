@@ -37,15 +37,16 @@ ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
 ansatz = ansatz_state.ansatz_elements
 var_pars = None  # ansatz_state.parameters
 
-prob_2 = 1e-5
+prob_2 = 0
 time_cx = 0  # Gate time for cx gate
 
-backend = QiskitSimBackend
+backend = QasmBackend
 n_shots = 1e6
 method = 'automatic'
 
 optimizer = 'Nelder-Mead'
 optimizer_options = None
+
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
 logging.info(message)
@@ -57,22 +58,26 @@ logging.info(message)
 
 # <<<<<<<<<<<< Noise Model >>>>>>>>>>>>>>>>>
 # Noise model
-prob_1 = 0  # Single qubit gate depolarizing error prob
-prob_meas = prob_2
-time_single_gate = 0  # Gate time for single qubit gate
-time_meas = 0
-t1 = 50e3  # T1 in nanoseconds
-t2 = 50e3  # T2 in nanoseconds
-noise_model = NoiseUtils.unified_noise(prob_1=prob_1, prob_2=prob_2, prob_meas=prob_meas,
-                                       time_single_gate=time_single_gate, time_cx = time_cx,
-                                       time_measure=time_meas, t1=t1, t2=t2)
+# prob_1 = 0  # Single qubit gate depolarizing error prob
+# prob_meas = prob_2
+# time_single_gate = 0  # Gate time for single qubit gate
+# time_meas = 0
+# t1 = 50e3  # T1 in nanoseconds
+# t2 = 50e3  # T2 in nanoseconds
+# noise_model = NoiseUtils.unified_noise(prob_1=prob_1, prob_2=prob_2, prob_meas=prob_meas,
+#                                        time_single_gate=time_single_gate, time_cx = time_cx,
+#                                        time_measure=time_meas, t1=t1, t2=t2)
+# coupling_map = None
+#
+# message = 'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
+#           'time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}. No coupling map.' \
+#     .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
+# logging.info(message)
+
+noise_model = None
 coupling_map = None
-
-message = 'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
-          'time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}. No coupling map.' \
-    .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
+message = 'Noise model = None'
 logging.info(message)
-
 
 # <<<<<<<<<<<< BACKEND >>>>>>>>>>>>>>>>>
 global_cache = None
@@ -82,7 +87,7 @@ logging.info(message)
 
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
-filename = '../../../results/zhenghao_testing/{}_vqe_{}_qiskitsim_{}_shots={}_{}.csv' \
+filename = '../../../results/zhenghao_testing/{}_vqe_{}_{}_no_noise_shots={}_{}.csv' \
     .format(q_system.name, ansatz_element_type, optimizer, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
