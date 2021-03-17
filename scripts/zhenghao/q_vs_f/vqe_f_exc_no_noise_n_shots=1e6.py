@@ -47,7 +47,7 @@ method = 'automatic'
 
 optimizer = 'Nelder-Mead'
 # gtol = 10e-4
-optimizer_options = None
+optimizer_options = {'adaptive': True}
 
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)

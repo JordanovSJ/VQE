@@ -1,0 +1,23 @@
+INFO 2021-03-10 16:59:26,633 H4, test noise levels for chem accuracy
+INFO 2021-03-10 16:59:26,634 n_qubits = 8, n_electrons = 4
+INFO 2021-03-10 16:59:26,634 Hamiltonian is molecule.jw_qubit_ham
+INFO 2021-03-10 16:59:26,634 prob_1 = 0, time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0
+INFO 2021-03-10 16:59:26,635 Noise models generated for prob_2 = [1e-05, 1e-06], prob_meas = [1e-05, 1e-06]
+INFO 2021-03-10 16:59:28,037 QiskitSimBackend values are, for q_exc=-2.166387448527458, for f_exc=-2.166387448527465
+INFO 2021-03-10 16:59:28,039 n_shots=1000000.0, method=automatic
+INFO 2021-03-10 16:59:28,039 
+INFO 2021-03-10 16:59:28,040 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 16:59:28,040 prob_2 = 1e-05, prob_meas = 1e-05
+INFO 2021-03-10 17:06:20,559 exp_value_q_exc=-2.1649578016932156, time_q_exc=412.5190405845642
+INFO 2021-03-10 17:14:54,264 exp_value_f_exc=-2.1641665804095367, time_f_exc=513.7048585414886
+INFO 2021-03-10 17:14:54,270 
+INFO 2021-03-10 17:14:54,270 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 17:14:54,270 prob_2 = 1e-06, prob_meas = 1e-06
+INFO 2021-03-10 17:21:59,931 exp_value_q_exc=-2.166115955476383, time_q_exc=425.66097831726074
+INFO 2021-03-10 17:25:41,682 exp_value_f_exc=-2.1664017974461607, time_f_exc=221.75060296058655

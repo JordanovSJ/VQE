@@ -1,0 +1,16 @@
+INFO 2021-03-17 14:54:24,131 q_exc type, prob_2=0, time_cx=0, backend=<class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method =automatic, optimizer=Nelder-Mead
+INFO 2021-03-17 14:54:24,131 Length of q_exc based ansatz is 11
+INFO 2021-03-17 14:54:24,131 Noise model = None
+INFO 2021-03-17 14:54:24,132 Backend is <class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method=automatic
+INFO 2021-03-17 14:54:24,133 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 11-----
+-----Statevector and energy calculated using <class 'scripts.zhenghao.noisy_backends.QasmBackend'>------
+-----Optimizer Nelder-Mead------
+
+INFO 2021-03-17 14:57:51,243 Iteration: 1. Energy -2.09828084762463.  Energy change 2.651e-04 , Iteration duration: 9.942054748535156e-05 Params: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+INFO 2021-03-17 15:01:22,681 Iteration: 2. Energy -2.0990984604057954.  Energy change -8.176e-04 , Iteration duration: 207.11700296401978 Params: [0.00025 0.      0.      0.      0.      0.      0.      0.      0.
+ 0.      0.     ]
+INFO 2021-03-17 15:04:57,410 Iteration: 3. Energy -2.0989309789521644.  Energy change 1.675e-04 , Iteration duration: 211.43586826324463 Params: [0.      0.00025 0.      0.      0.      0.      0.      0.      0.
+ 0.      0.     ]
