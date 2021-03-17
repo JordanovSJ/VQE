@@ -45,8 +45,8 @@ backend = QiskitSimBackend
 n_shots = 1e6
 method = 'automatic'
 
-optimizer = 'Nelder-Mead'
-optimizer_options = None
+optimizer = 'BFGS'
+optimizer_options = {'gtol': 10e-4}  # {'adaptive': True}
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
 logging.info(message)
