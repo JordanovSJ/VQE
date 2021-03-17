@@ -1,0 +1,39 @@
+INFO 2021-03-10 11:07:27,072 H4, test noise levels for 5 hamiltonian terms
+INFO 2021-03-10 11:07:27,072 n_qubits = 8, n_electrons = 4
+INFO 2021-03-10 11:07:27,072 Hamiltonian is 0.012709132884803409 [Y0 Z1 Y2 X4 Z5 X6] +
+0.02318657944505642 [Y0 Z1 Z2 X3 X4 Z5 Z6 Y7] +
+0.14266723882946233 [Z0 Z1] +
+-0.026485313086317092 [Y1 Y2 X3 X4] +
+0.028916993734486442 [Y3 Z4 Z5 Y7]
+INFO 2021-03-10 11:07:27,072 prob_1 = 0, time_single_gate=0, time_cx=900, time_meas=900, t1=50000.0, t2=50000.0
+INFO 2021-03-10 11:07:27,078 Noise models generated for prob_2 = [0.01, 0.001, 0.0001, 1e-05, 0], prob_meas = [0.01, 0.001, 0.0001, 1e-05, 0]
+INFO 2021-03-10 11:07:27,150 
+INFO 2021-03-10 11:07:31,955 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 11:07:31,956 prob_2 = 0.01, prob_meas = 0.01
+INFO 2021-03-10 11:07:31,956 
+INFO 2021-03-10 11:07:36,212 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 11:07:36,212 prob_2 = 0.001, prob_meas = 0.001
+INFO 2021-03-10 11:07:36,212 
+INFO 2021-03-10 11:07:40,918 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 11:07:40,918 prob_2 = 0.0001, prob_meas = 0.0001
+INFO 2021-03-10 11:07:40,918 
+INFO 2021-03-10 11:07:45,767 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 11:07:45,767 prob_2 = 1e-05, prob_meas = 1e-05
+INFO 2021-03-10 11:07:45,767 
+INFO 2021-03-10 11:07:51,554 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-03-10 11:07:51,554 prob_2 = 0, prob_meas = 0
