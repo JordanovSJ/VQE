@@ -9,3 +9,15 @@ INFO 2021-03-18 19:13:52,903 -----Running VQE for: H4-----
 -----Statevector and energy calculated using <class 'scripts.zhenghao.noisy_backends.QasmBackend'>------
 -----Optimizer COBYLA------
 
+INFO 2021-03-18 19:23:45,330 Iteration: 1. Energy -1.8058790424923759.  Energy change 2.927e-01 , Iteration duration: 0.00011086463928222656 Params: [-0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1]
+INFO 2021-03-18 19:33:41,271 Iteration: 2. Energy -1.6644554010722543.  Energy change 1.414e-01 , Iteration duration: 592.43226146698 Params: [ 0.9 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1]
+INFO 2021-03-18 19:43:33,958 Iteration: 3. Energy -1.1530693564618173.  Energy change 5.114e-01 , Iteration duration: 595.9396367073059 Params: [-0.1  0.9 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1]
+INFO 2021-03-18 19:53:28,949 Iteration: 4. Energy -1.1430394640367816.  Energy change 1.003e-02 , Iteration duration: 592.6873846054077 Params: [-0.1 -0.1  0.9 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1]
+INFO 2021-03-18 20:03:18,651 Iteration: 5. Energy -0.760324476746153.  Energy change 3.827e-01 , Iteration duration: 594.9918155670166 Params: [-0.1 -0.1 -0.1  0.9 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1]
+INFO 2021-03-18 20:13:08,513 Iteration: 6. Energy -1.3811890343636375.  Energy change -6.209e-01 , Iteration duration: 589.7014863491058 Params: [-0.1 -0.1 -0.1 -0.1  0.9 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1]
+INFO 2021-03-18 20:22:53,671 Iteration: 7. Energy -0.9935822021421294.  Energy change 3.876e-01 , Iteration duration: 589.8627166748047 Params: [-0.1 -0.1 -0.1 -0.1 -0.1  0.9 -0.1 -0.1 -0.1 -0.1 -0.1]
+INFO 2021-03-18 20:32:31,470 Iteration: 8. Energy -1.0922732396813482.  Energy change -9.869e-02 , Iteration duration: 585.1639804840088 Params: [-0.1 -0.1 -0.1 -0.1 -0.1 -0.1  0.9 -0.1 -0.1 -0.1 -0.1]
+INFO 2021-03-18 20:42:09,195 Iteration: 9. Energy -1.0853320380071694.  Energy change 6.941e-03 , Iteration duration: 577.7919683456421 Params: [-0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1  0.9 -0.1 -0.1 -0.1]
+INFO 2021-03-18 20:51:47,283 Iteration: 10. Energy -1.257391627391264.  Energy change -1.721e-01 , Iteration duration: 577.7250528335571 Params: [-0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1  0.9 -0.1 -0.1]
+INFO 2021-03-18 21:01:28,014 Iteration: 11. Energy -1.2519039080603545.  Energy change 5.488e-03 , Iteration duration: 578.0879499912262 Params: [-0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1  0.9 -0.1]
+INFO 2021-03-18 21:11:10,962 Iteration: 12. Energy -1.4256016342416975.  Energy change -1.737e-01 , Iteration duration: 580.7313890457153 Params: [-0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1  0.9]
