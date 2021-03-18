@@ -18,6 +18,7 @@ LogUtils.log_config()
 message = 'H4 molecule, ' \
           'how does the run time for ham_expectation_value varies ' \
           'with number of ansatz elements? Run time is calculated on server.git '
+logging.info(message)
 time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # <<<<<<<<<<<< ANSATZ >>>>>>>>>>>>>>>>>
