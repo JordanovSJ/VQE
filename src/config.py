@@ -1,6 +1,6 @@
 import scipy
 from scipy import optimize
-import numpy
+import numpy as np
 
 # multithreading
 multithread = True
@@ -18,7 +18,7 @@ matrix_size_threshold = 1e7  # in bytes
 # use_cache = True
 
 # <<<<<<<CLASSICAL OPTIMIZER>>>>>>>>>>>>
-optimizer = 'BFGS'
+optimizer = 'COBYLA'
 optimizer_tol = 1e-5
 # optimizer_bounds_val = numpy.pi/10
 # optimizer_bounds = scipy.optimize.Bounds(-optimizer_bounds_val, optimizer_bounds_val)
@@ -31,3 +31,5 @@ optimizer_bounds = None
 optimizer_options = {'maxcor': 13, 'ftol': 1e-07, 'gtol': 1e-05, 'eps': 1e-04, 'maxfun': 1500, 'maxiter': 1000,
                      'iprint': -1, 'maxls': 7}
 
+optimizer_constraints = {'type': 'ineq',
+                         'fun': lambda x: np.array([0.5-y for y in x])}

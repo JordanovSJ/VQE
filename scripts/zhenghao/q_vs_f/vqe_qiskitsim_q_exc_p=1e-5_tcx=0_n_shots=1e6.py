@@ -31,7 +31,7 @@ time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # <<<<<<<<<<<< TUNABLE PARAMETERS >>>>>>>>>>>>>>>>>
 ansatz_element_type = 'q_exc'
-num_ansatz_element = 11  # Take only the first x ansatz elements
+num_ansatz_element = 2  # Take only the first x ansatz elements
 
 df_input = pd.read_csv('../../../results/iter_vqe_results/H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
 ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
@@ -45,10 +45,14 @@ backend = QiskitSimBackend
 n_shots = 1e6
 method = 'automatic'
 
-optimizer = 'BFGS'
-optimizer_options = {'gtol': 10e-4}  # {'adaptive': True}
+optimizer = 'Nelder-Mead'
+adaptive_bool = False
+optimizer_options = {'adaptive': adaptive_bool}# {'gtol': 10e-4}  # {'adaptive': True}
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
+logging.info(message)
+
+message = 'Adaptive = {}'.format(adaptive_bool)
 logging.info(message)
 
 # <<<<<<<<<<<< READING CSV FILES >>>>>>>>>>>>>>>>>

@@ -17,11 +17,12 @@ import pandas as pd
 # TODO make this class entirely static?
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, q_system, backend=QiskitSimBackend, optimizer=config.optimizer,
+    def __init__(self, q_system, backend=QiskitSimBackend, optimizer=config.optimizer, constraints = config.optimizer_constraints,
                  optimizer_options=config.optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
 
         self.backend = backend
         self.optimizer = optimizer
+        self.constraints = constraints  # Only useful for COBYLA optimizer.
         self.optimizer_options = optimizer_options
         self.use_ansatz_gradient = use_ansatz_gradient
         self.print_var_parameters = print_var_parameters
@@ -113,8 +114,14 @@ class VQERunner:
             #                                  bounds=config.optimizer_bounds)
             raise Exception('Ansatz gradient not supported yet.')
         else:
-
-            result = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
+            if self.optimizer == 'COBYLA':
+                # The constraint only applies to COBYLA optimizer
+                result = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
+                                                 options=self.optimizer_options, tol=config.optimizer_tol,
+                                                 constraints= self.constraints,
+                                                 bounds=config.optimizer_bounds)
+            else:
+                result = scipy.optimize.minimize(get_energy, var_parameters, method=self.optimizer,
                                              options=self.optimizer_options, tol=config.optimizer_tol,
                                              bounds=config.optimizer_bounds)
 
