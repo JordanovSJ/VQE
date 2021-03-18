@@ -1,0 +1,18 @@
+INFO 2021-03-17 19:51:37,312 H4 molecule, how does the run time for ham_expectation_value varies with number of ansatz elements? Run time is calculated on server.git 
+INFO 2021-03-17 19:51:37,326 Noise model generated for prob_1 = 0, prob_2=1e-05, prob_meas=1e-05 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0. No coupling map.
+INFO 2021-03-17 19:51:37,328 
+INFO 2021-03-17 19:51:37,328 1 ansatz elements
+INFO 2021-03-17 19:55:28,469 Noisy, exp_value=-2.0636792786731344, time=231.1413586139679
+INFO 2021-03-17 19:58:49,121 Noiseless, exp_value=-2.063751340810401, time=200.65158700942993
+INFO 2021-03-17 19:58:49,127 
+INFO 2021-03-17 19:58:49,127 3 ansatz elements
+INFO 2021-03-17 20:03:36,278 Noisy, exp_value=-2.002835443775807, time=287.15081548690796
+INFO 2021-03-17 20:07:00,134 Noiseless, exp_value=-2.0028338401337433, time=203.85578608512878
+INFO 2021-03-17 20:07:00,139 
+INFO 2021-03-17 20:07:00,139 5 ansatz elements
+INFO 2021-03-17 20:12:06,156 Noisy, exp_value=-1.9318402859562358, time=306.0168058872223
+INFO 2021-03-17 20:15:07,259 Noiseless, exp_value=-1.932331053866449, time=181.1031506061554
+INFO 2021-03-17 20:15:07,263 
+INFO 2021-03-17 20:15:07,263 10 ansatz elements
+INFO 2021-03-17 20:21:37,037 Noisy, exp_value=-1.886373462014829, time=389.7739453315735
+INFO 2021-03-17 20:24:42,851 Noiseless, exp_value=-1.887241393494398, time=185.81417989730835
