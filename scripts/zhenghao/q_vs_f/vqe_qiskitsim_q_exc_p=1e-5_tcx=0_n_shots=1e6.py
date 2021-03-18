@@ -31,12 +31,12 @@ time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # <<<<<<<<<<<< TUNABLE PARAMETERS >>>>>>>>>>>>>>>>>
 ansatz_element_type = 'q_exc'
-num_ansatz_element = 11  # Take only the first x ansatz elements
+num_ansatz_element = 1  # Take only the first x ansatz elements
 
 df_input = pd.read_csv('../../../results/iter_vqe_results/H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
 ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
 ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
-var_pars = [-0.1]*len(ansatz)  # ansatz_state.parameters
+var_pars = [0.1]*len(ansatz)  # ansatz_state.parameters
 
 prob_2 = 1e-5
 time_cx = 0  # Gate time for cx gate
