@@ -1,0 +1,4 @@
+INFO 2021-03-18 19:03:46,274 eff_f_exc type, prob_2=0, time_cx=0, backend=<class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method =automatic, optimizer=COBYLA
+INFO 2021-03-18 19:03:46,274 Length of eff_f_exc based ansatz is 11
+INFO 2021-03-18 19:03:46,275 Noise model = None
+INFO 2021-03-18 19:03:46,275 Backend is <class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method=automatic
