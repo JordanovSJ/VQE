@@ -17,10 +17,10 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = HF(r=r)  # (frozen_els=frozen_els)
+    molecule = LiH(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     # <<<<<<<<<< IQEB-VQE PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_size = 250
-    n_largest_grads = 1
+    n_largest_grads = 10
 
     # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
     backend = backends.MatrixCacheBackend
@@ -106,32 +106,13 @@ if __name__ == "__main__":
                                                                   ansatz=ansatz, global_cache=global_cache)
         print('!!!!', element_to_add.element, element_to_add.qubits)
 
-        compl_element_to_add = element_to_add.get_spin_comp_exc()
-        print('!!!!' , compl_element_to_add.element, compl_element_to_add.qubits)
-        print(compl_element_to_add.excitations_generators)
-
-        # TODO check the if condition
-        comp_qubits = compl_element_to_add.qubits
-        qubits = element_to_add.qubits
-        if [set(qubits[0]), set(qubits[1])] == [set(comp_qubits[0]), set(comp_qubits[1])] or \
-           [set(qubits[0]), set(qubits[1])] == [set(comp_qubits[1]), set(comp_qubits[0])]:
-            result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add],
-                                        init_guess_parameters=ansatz_parameters + [0], cache=global_cache)
-            current_energy = result.fun
-            delta_e = previous_energy - current_energy
-            if delta_e > 0:
-                ansatz.append(element_to_add)
-                new_ansatz_elements = [element_to_add]
-        else:
-            result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add, compl_element_to_add],
-                                        init_guess_parameters=ansatz_parameters + [0, 0], cache=global_cache)
-            current_energy = result.fun
-            delta_e = previous_energy - current_energy
-            if delta_e > 0:
-                ansatz.append(element_to_add)
-                ansatz.append(compl_element_to_add)
-                print('Add complement element: ', compl_element_to_add.element)
-                new_ansatz_elements = [element_to_add, compl_element_to_add]
+        # result = vqe_runner.vqe_run(ansatz=ansatz + [element_to_add],
+        #                             init_guess_parameters=ansatz_parameters + [0], cache=global_cache)
+        current_energy = result.fun
+        delta_e = previous_energy - current_energy
+        if delta_e > 0:
+            ansatz.append(element_to_add)
+            new_ansatz_elements = [element_to_add]
 
         # get initial guess for the var. params. for the next iteration
         ansatz_parameters = list(result.x)

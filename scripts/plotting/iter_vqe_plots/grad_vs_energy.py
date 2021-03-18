@@ -13,14 +13,22 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 if __name__ == "__main__":
 
     db_n_1_bh2 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=1_gsdqe_r=3_05-Dec-2020.csv')
+    db_n_5_bh2 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_q_exc_n=5_r=3_17-Mar-2021.csv')
     db_n_10_bh2 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
     # db_n_10_bh2 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=10_gsdqe_r=3_02-Dec-2020.csv')
     db_n_20_bh2 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=20_gsdqe_r=3_02-Dec-2020.csv')
     db_n_30_bh2 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=30_gsdqe_r=3_02-Dec-2020.csv')
 
     db_n_1_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_n=1_gsdqe_r=3_03-Dec-2020.csv')
-    db_n_10_lih = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
+    db_n_5_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_q_exc_n=5_r=3_17-Mar-2021.csv')
+    # db_n_10_lih = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
+    db_n_10_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_q_exc_n=10_r=3_17-Mar-2021.csv')
     db_n_30_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_n=30_gsdqe_r=3-03-Dec-2020.csv')
+    # db_n_30_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_q_exc_n=30_r=3_17-Mar-2021.csv')
+
+    db_n_1_h4 = pandas.read_csv('../../../results/iter_vqe_results/H4_iqeb_q_exc_n=1_r=0735_16-Mar-2021.csv.csv')
+    db_n_10_h4 = pandas.read_csv('../../../results/iter_vqe_results/H4_iqeb_q_exc_n=10_r=0735_16-Mar-2021.csv.csv')
+    db_n_30_h4 = pandas.read_csv('../../../results/iter_vqe_results/H4_iqeb_q_exc_n=30_r=0735_16-Mar-2021.csv.csv')
 
     fig, ax = plt.subplots()
 
@@ -28,21 +36,29 @@ if __name__ == "__main__":
     linewidth = 0.4
     marker = '_'
 
-    ax.plot(db_n_1_bh2[df_col], db_n_1_bh2['error'], label=r'BeH$_2$, n=1', marker=marker, linewidth=linewidth, color='tomato')
-    ax.plot(db_n_10_bh2[df_col], db_n_10_bh2['error'], label=r'BeH$_2$, n=10', marker=marker, linewidth=linewidth, color='dodgerblue')
-    # ax.plot(db_n_20_bh2[df_col], db_n_20_bh2['error'], label='n=20', marker=marker, linewidth=linewidth, color='cornflowerblue')
-    ax.plot(db_n_30_bh2[df_col], db_n_30_bh2['error'], label=r'BeH$_2$, n=30', marker=marker, linewidth=linewidth, color='limegreen')
+    # ax.plot(db_n_1_bh2[df_col], db_n_1_bh2['error'], label=r'BeH$_2$, $n_{QE}$=1', marker=marker, linewidth=linewidth, color='red')
+    # ax.plot(db_n_5_bh2[df_col], db_n_5_bh2['error'], label=r'BeH$_2$, $n_{QE}$=5', marker=marker, linewidth=linewidth, color='yellow')
+    # ax.plot(db_n_10_bh2[df_col], db_n_10_bh2['error'], label=r'BeH$_2$, $n_{QE}$=10', marker=marker, linewidth=linewidth, color='blue')
+    # # ax.plot(db_n_20_bh2[df_col], db_n_20_bh2['error'], label='n=20', marker=marker, linewidth=linewidth, color='cornflowerblue')
+    # ax.plot(db_n_30_bh2[df_col], db_n_30_bh2['error'], label=r'BeH$_2$, $n_{QE}$=30', marker=marker, linewidth=linewidth, color='green')
 
-    ax.plot(db_n_1_lih[df_col], db_n_1_lih['error'], label='LiH, n=1', marker=marker, linewidth=linewidth, color='red')
-    ax.plot(db_n_10_lih[df_col], db_n_10_lih['error'], label='LiH, n=10', marker=marker, linewidth=linewidth, color='blue')
-    ax.plot(db_n_30_lih[df_col], db_n_30_lih['error'], label='LiH, n=30', marker=marker, linewidth=linewidth, color='green')
+    ax.plot(db_n_1_lih[df_col], db_n_1_lih['error'], label='LiH, $n_{QE}$=1', marker=marker, linewidth=linewidth, color='red')
+    ax.plot(db_n_5_lih[df_col], db_n_5_lih['error'], label='LiH, $n_{QE}$=5', marker=marker, linewidth=linewidth, color='yellow')
+    ax.plot(db_n_10_lih[df_col], db_n_10_lih['error'], label='LiH, $n_{QE}$=10', marker=marker, linewidth=linewidth, color='blue')
+    ax.plot(db_n_30_lih[df_col], db_n_30_lih['error'], label='LiH, $n_{QE}$=30', marker=marker, linewidth=linewidth, color='green')
+
+    # ax.plot(db_n_1_h4[df_col], db_n_1_h4['error'], label='H4, n=1', marker=marker, linewidth=linewidth, color='red')
+    # ax.plot(db_n_10_h4[df_col], db_n_10_h4['error'], label='H4, n=10', marker=marker, linewidth=linewidth, color='blue')
+    # ax.plot(db_n_30_h4[df_col], db_n_30_h4['error'], label='H4, n=30', marker=marker, linewidth=linewidth, color='green')
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chemical accuracy')
 
     ax.set_xlabel('Number of CNOTs')
     ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
     ax.set_ylim(1e-9, 1e-0)
-    ax.set_xlim(0, 1750)
+    # ax.set_xlim(0, 250)
+    # ax.set_xlim(0, 800)
+    ax.set_xlim(0, 1800)
     ax.set_yscale('log')
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
 
