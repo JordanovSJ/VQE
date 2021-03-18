@@ -29,7 +29,8 @@ n_shots = 1e6
 # logging
 LogUtils.log_config()
 message = 'H4 molecule, ' \
-          'investigate how the landscape should change with noise for first two ansatz elements of H4(r=1)'
+          'investigate how the landscape should change with noise for first two ansatz elements of H4(r=1), {} shots'.format(n_shots)
+
 logging.info(message)
 time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 # <<<<<<<<<<<< ANSATZ >>>>>>>>>>>>>>>>>
@@ -62,12 +63,14 @@ message = 'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
 logging.info(message)
 
 # <<<<<<<<<<<< TIME STEP >>>>>>>>>>>>>>>>>
-xlim = 0.3
-ylim = 0.3
+xlim = 0.25
+ylim = 0.1
 
-pixel_num = 100
+pixel_num_x = 50
+pixel_num_y = 20
 
-message = 'xlim={}, ylim={}, pixel number = {} x {}'.format(xlim, ylim, pixel_num, pixel_num)
+message = 'xlim={}, ylim={}, pixel number = {} x {}'.format(xlim, ylim, pixel_num_x, pixel_num_y)
+
 logging.info(message)
 # <<<<<<<<<<<< INTIALIZE DATAFRAME>>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['pars_1', 'pars_2', 'qiskitsim_energy', 'qiskitsim_time',
@@ -75,8 +78,8 @@ results_df = pd.DataFrame(columns=['pars_1', 'pars_2', 'qiskitsim_energy', 'qisk
 file_name = '../../../results/zhenghao_testing/h4_landscape_qiskit_sim_backend.csv'
 
 idx = 0
-for pars_1 in np.linspace(0, xlim, num=pixel_num):
-    for pars_2 in np.linspace(0, ylim, num=pixel_num):
+for pars_1 in np.linspace(-xlim, xlim, num=pixel_num_x):
+    for pars_2 in np.linspace(-ylim, ylim, num=pixel_num_y):
         var_pars=[pars_1, pars_2]
 
         time_1 = time.time()

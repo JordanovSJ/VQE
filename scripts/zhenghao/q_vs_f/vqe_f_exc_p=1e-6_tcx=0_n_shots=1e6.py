@@ -47,10 +47,14 @@ method = 'automatic'
 
 optimizer = 'Nelder-Mead'
 # gtol = 10e-4
-optimizer_options = None  # {'gtol': gtol}
+adaptive_bool = True
+optimizer_options = {'adaptive': adaptive_bool}  # {'gtol': gtol}
 
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
+logging.info(message)
+
+message = 'Adaptive is {}'.format(adaptive_bool)
 logging.info(message)
 
 # <<<<<<<<<<<< READING CSV FILES >>>>>>>>>>>>>>>>>

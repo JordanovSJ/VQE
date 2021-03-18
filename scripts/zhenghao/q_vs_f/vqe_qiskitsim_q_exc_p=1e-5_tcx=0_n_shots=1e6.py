@@ -46,8 +46,9 @@ n_shots = 1e6
 method = 'automatic'
 
 optimizer = 'Nelder-Mead'
-adaptive_bool = False
-optimizer_options = {'adaptive': adaptive_bool}# {'gtol': 10e-4}  # {'adaptive': True}
+# optimizer_options = {'gtol': 10e-4}
+adaptive_bool=True
+optimizer_options = {'adaptive': adaptive_bool}
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
 logging.info(message)
