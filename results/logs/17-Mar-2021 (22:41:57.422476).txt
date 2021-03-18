@@ -1,0 +1,31 @@
+INFO 2021-03-17 22:41:57,441 q_exc type, prob_2=1e-05, time_cx=0, backend=<class 'src.backends.QiskitSimBackend'>, n_shots=1000000.0, method =automatic, optimizer=BFGS
+INFO 2021-03-17 22:41:57,442 Length of q_exc based ansatz is 1
+INFO 2021-03-17 22:41:57,442 Noise model generated for prob_1 = 0, prob_2=1e-05, prob_meas=1e-05 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0. No coupling map.
+INFO 2021-03-17 22:41:57,442 Backend is <class 'src.backends.QiskitSimBackend'>, n_shots=1000000.0, method=automatic
+INFO 2021-03-17 22:41:57,444 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[2, 3]_[4, 5]------
+-----Statevector and energy calculated using <class 'src.backends.QiskitSimBackend'>------
+-----Optimizer BFGS------
+
+INFO 2021-03-17 22:41:58,071 Iteration: 1. Energy -2.0985459368299133.  Energy change 0.000e+00 , Iteration duration: 0.00011658668518066406 Params: [0.]
+INFO 2021-03-17 22:41:58,521 Iteration: 2. Energy -2.098545932738566.  Energy change 4.091e-09 , Iteration duration: 0.6328125 Params: [1.49011612e-08]
+INFO 2021-03-17 22:41:58,952 Iteration: 3. Energy -2.114124001053363.  Energy change -1.558e-02 , Iteration duration: 0.44782114028930664 Params: [-0.27456567]
+INFO 2021-03-17 22:41:59,360 Iteration: 4. Energy -2.114124003496519.  Energy change -2.443e-09 , Iteration duration: 0.4317295551300049 Params: [-0.27456565]
+INFO 2021-03-17 22:41:59,757 Iteration: 5. Energy -2.1224993413964635.  Energy change -8.375e-03 , Iteration duration: 0.407334566116333 Params: [-0.17190955]
+INFO 2021-03-17 22:42:00,176 Iteration: 6. Energy -2.122499341376225.  Energy change 2.024e-11 , Iteration duration: 0.3965263366699219 Params: [-0.17190953]
+INFO 2021-03-17 22:42:00,581 Iteration: 7. Energy -2.122499910200629.  Energy change -5.688e-07 , Iteration duration: 0.41922450065612793 Params: [-0.17275294]
+INFO 2021-03-17 22:42:01,016 Iteration: 8. Energy -2.1224999102007667.  Energy change -1.377e-13 , Iteration duration: 0.40535998344421387 Params: [-0.17275292]
+CRITICAL 2021-03-17 22:42:01,020       fun: -2.122499910200629
+ hess_inv: array([[0.62097055]])
+      jac: array([-9.23871994e-06])
+  message: 'Optimization terminated successfully.'
+  n_iters: 9
+     nfev: 8
+      nit: 3
+     njev: 4
+   status: 0
+  success: True
+        x: array([-0.17275294])
