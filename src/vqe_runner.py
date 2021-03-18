@@ -76,7 +76,7 @@ class VQERunner:
                                                     'energy': self.new_energy,
                                                     'energy change': delta_e,
                                                     'iteration duration': iteration_duration,
-                                                    'params': var_parameters}
+                                                    'params': str(var_parameters)}
                 results_df.to_csv(filename)
 
             self.iteration += 1
