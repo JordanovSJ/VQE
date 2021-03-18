@@ -83,3 +83,18 @@ INFO 2021-03-18 18:04:03,563 Iteration: 69. Energy -2.122290673078842.  Energy c
 INFO 2021-03-18 18:07:09,416 Iteration: 70. Energy -2.122128403265755.  Energy change 1.623e-04 , Iteration duration: 185.9342381954193 Params: [-0.1812487]
 INFO 2021-03-18 18:10:15,731 Iteration: 71. Energy -2.1224818130152454.  Energy change -3.534e-04 , Iteration duration: 185.8529269695282 Params: [-0.18124882]
 INFO 2021-03-18 18:13:21,683 Iteration: 72. Energy -2.1228869011606846.  Energy change -4.051e-04 , Iteration duration: 186.31320786476135 Params: [-0.18124874]
+INFO 2021-03-18 18:16:27,739 Iteration: 73. Energy -2.1220739673192703.  Energy change 8.129e-04 , Iteration duration: 185.9519281387329 Params: [-0.18124876]
+INFO 2021-03-18 18:19:33,713 Iteration: 74. Energy -2.1230544086034504.  Energy change -9.804e-04 , Iteration duration: 186.05676102638245 Params: [-0.1812488]
+INFO 2021-03-18 18:22:39,971 Iteration: 75. Energy -2.122671448750202.  Energy change 3.830e-04 , Iteration duration: 185.97336649894714 Params: [-0.18124882]
+INFO 2021-03-18 18:25:46,051 Iteration: 76. Energy -2.122460817746634.  Energy change 2.106e-04 , Iteration duration: 186.25825428962708 Params: [-0.18124879]
+INFO 2021-03-18 18:28:51,998 Iteration: 77. Energy -2.1230452030689957.  Energy change -5.844e-04 , Iteration duration: 186.080397605896 Params: [-0.18124879]
+CRITICAL 2021-03-18 18:28:52,007  final_simplex: (array([[-0.1812488 ],
+       [-0.18124879]]), array([-2.12305441, -2.1230452 ]))
+           fun: -2.1230544086034504
+       message: 'Optimization terminated successfully.'
+       n_iters: 78
+          nfev: 77
+           nit: 32
+        status: 0
+       success: True
+             x: array([-0.1812488])
