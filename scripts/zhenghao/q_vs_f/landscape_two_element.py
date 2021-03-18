@@ -30,6 +30,7 @@ n_shots = 1e6
 LogUtils.log_config()
 message = 'H4 molecule, ' \
           'investigate how the landscape should change with noise for first two ansatz elements of H4(r=1), {} shots'.format(n_shots)
+
 logging.info(message)
 time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 # <<<<<<<<<<<< ANSATZ >>>>>>>>>>>>>>>>>
@@ -69,6 +70,7 @@ pixel_num_x = 50
 pixel_num_y = 20
 
 message = 'xlim={}, ylim={}, pixel number = {} x {}'.format(xlim, ylim, pixel_num_x, pixel_num_y)
+
 logging.info(message)
 # <<<<<<<<<<<< INTIALIZE DATAFRAME>>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['pars_1', 'pars_2', 'qiskitsim_energy', 'qiskitsim_time',
