@@ -31,11 +31,12 @@ time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # <<<<<<<<<<<< TUNABLE PARAMETERS >>>>>>>>>>>>>>>>>
 ansatz_element_type = 'q_exc'
+num_ansatz_element = 1
 
 df_input = pd.read_csv('../../../results/iter_vqe_results/H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
 ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
-ansatz = ansatz_state.ansatz_elements
-var_pars = None  # ansatz_state.parameters
+ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
+var_pars = [-0.1]*len(ansatz)  # ansatz_state.parameters
 
 prob_2 = 1e-4
 time_cx = 0  # Gate time for cx gate
@@ -44,12 +45,12 @@ backend = QasmBackend
 n_shots = 1e6
 method = 'automatic'
 
-optimizer = 'BFGS'
-gtol = 10e-4
-optimizer_options = {'gtol': gtol}
+optimizer = 'COBYLA'
+# gtol = 10e-4
+optimizer_options = None # {'gtol': gtol}
 
-message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}, gtol={}'\
-    .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer, gtol)
+message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
+    .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
 logging.info(message)
 
 # <<<<<<<<<<<< READING CSV FILES >>>>>>>>>>>>>>>>>
@@ -85,8 +86,8 @@ logging.info(message)
 
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
-filename = '../../../results/zhenghao_testing/{}_vqe_{}_p={}_tcx={}_shots={}_{}.csv' \
-    .format(q_system.name, ansatz_element_type, prob_2, time_cx, n_shots, time_stamp)
+filename = '../../../results/zhenghao_testing/{}_vqe_{}_{}_p={}_tcx={}_{}_elements_shots={}_{}.csv' \
+    .format(q_system.name, ansatz_element_type, optimizer, prob_2, time_cx, num_ansatz_element, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
 
