@@ -28,3 +28,18 @@ INFO 2021-03-19 14:40:17,869 Iteration: 15. Energy -2.122034435159784.  Energy c
 INFO 2021-03-19 14:47:07,765 Iteration: 16. Energy -2.1221753472103138.  Energy change -1.409e-04 , Iteration duration: 409.58709740638733 Params: [-0.15810313]
 INFO 2021-03-19 14:53:58,544 Iteration: 17. Energy -2.1229033497490413.  Energy change -7.280e-04 , Iteration duration: 409.89521288871765 Params: [-0.15517344]
 INFO 2021-03-19 15:00:42,709 Iteration: 18. Energy -2.1227461806725305.  Energy change 1.572e-04 , Iteration duration: 410.77977442741394 Params: [-0.15419688]
+INFO 2021-03-19 15:07:25,110 Iteration: 19. Energy -2.1221554863487793.  Energy change 5.907e-04 , Iteration duration: 404.1829605102539 Params: [-0.15468516]
+INFO 2021-03-19 15:14:08,960 Iteration: 20. Energy -2.122397738442751.  Energy change -2.423e-04 , Iteration duration: 402.3844373226166 Params: [-0.15541758]
+INFO 2021-03-19 15:20:47,670 Iteration: 21. Energy -2.1220617022523385.  Energy change 3.360e-04 , Iteration duration: 403.84844994544983 Params: [-0.15505137]
+INFO 2021-03-19 15:27:25,010 Iteration: 22. Energy -2.121904321351937.  Energy change 1.574e-04 , Iteration duration: 398.71639800071716 Params: [-0.15523447]
+INFO 2021-03-19 15:33:42,512 Iteration: 23. Energy -2.1222620204303655.  Energy change -3.577e-04 , Iteration duration: 397.34281826019287 Params: [-0.15514292]
+INFO 2021-03-19 15:39:59,988 Iteration: 24. Energy -2.122335654756025.  Energy change -7.363e-05 , Iteration duration: 377.4926793575287 Params: [-0.1551887]
+INFO 2021-03-19 15:46:23,873 Iteration: 25. Energy -2.1217203655676187.  Energy change 6.153e-04 , Iteration duration: 377.4760150909424 Params: [-0.15516344]
+CRITICAL 2021-03-19 15:46:23,884      fun: -2.1217203655676187
+   maxcv: 0.0
+ message: 'Optimization terminated successfully.'
+ n_iters: 26
+    nfev: 25
+  status: 1
+ success: True
+       x: array([-0.15516344])
