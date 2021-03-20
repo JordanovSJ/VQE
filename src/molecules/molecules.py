@@ -111,3 +111,18 @@ class H2O(QSystem):
         ]
 
 
+class NH3(QSystem):
+
+    def __init__(self, r=1.0703, theta=(100.107/180) * numpy.pi, basis='sto-3g', frozen_els=None):
+        super(NH3, self).__init__(name='NH3', geometry=self.get_geometry(r, theta), multiplicity=1, charge=0, n_orbitals=16,
+                                  n_electrons=10, basis=basis, frozen_els=frozen_els,)
+
+    @staticmethod
+    def get_geometry(r=1.0703, theta=(100.107/180) * numpy.pi):
+        return [
+            ['N', [0, 0, 0]],
+            ['H', [0, 2*(numpy.sin(theta/2)/numpy.sqrt(3))*r, numpy.sqrt(1-4*numpy.sin(theta/2)**2/3)*r]],
+            ['H', [numpy.sin(theta/2)*r, -numpy.sin(theta/2)/numpy.sqrt(3)*r, numpy.sqrt(1-4*numpy.sin(theta/2)**2/3)*r]],
+            ['H', [-numpy.sin(theta/2)*r, -numpy.sin(theta/2)/numpy.sqrt(3)*r,  numpy.sqrt(1-4*numpy.sin(theta/2)**2/3)*r]]
+        ]
+

@@ -17,9 +17,9 @@ import qiskit
 
 if __name__ == "__main__":
 
-    r = 1.546
+    r = 0.735
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = LiH(r=r) #(r=r, frozen_els=frozen_els)
+    q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_config()
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     # backend = QiskitSimBackend
     # global_cache = None
 
-    optimizer = 'BFGS'
+    optimizer = 'COBYLA'
     optimizer_options = {'gtol': 10e-8}
     vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
                            optimizer=optimizer, optimizer_options=optimizer_options)
