@@ -1,0 +1,11 @@
+INFO 2021-03-21 17:40:16,636 eff_f_exc type, prob_2=0.0001, time_cx=0, backend=<class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method =automatic, optimizer=COBYLA
+INFO 2021-03-21 17:40:16,636 Length of eff_f_exc based ansatz is 5
+INFO 2021-03-21 17:40:16,637 Noise model generated for prob_1 = 0, prob_2=0.0001, prob_meas=0.0001 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0. No coupling map.
+INFO 2021-03-21 17:40:16,637 Backend is <class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method=automatic
+INFO 2021-03-21 17:40:16,638 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 5-----
+-----Statevector and energy calculated using <class 'scripts.zhenghao.noisy_backends.QasmBackend'>------
+-----Optimizer COBYLA------
+
