@@ -10,3 +10,35 @@ INFO 2021-03-21 17:39:40,999 -----Running VQE for: H4-----
 -----Statevector and energy calculated using <class 'scripts.zhenghao.noisy_backends.QasmBackend'>------
 -----Optimizer COBYLA------
 
+INFO 2021-03-21 17:43:35,495 Iteration: 1. Energy -2.0970193436978377.  Energy change 1.527e-03 , Iteration duration: 7.581710815429688e-05 Params: [0.0001]
+INFO 2021-03-21 17:47:38,935 Iteration: 2. Energy -1.6825748133670915.  Energy change 4.144e-01 , Iteration duration: 234.50218439102173 Params: [1.0001]
+INFO 2021-03-21 17:51:40,440 Iteration: 3. Energy -1.4339699537096928.  Energy change 2.486e-01 , Iteration duration: 243.4381618499756 Params: [-0.9999]
+INFO 2021-03-21 17:55:44,553 Iteration: 4. Energy -1.807603610905402.  Energy change -3.736e-01 , Iteration duration: 241.50529789924622 Params: [-0.4999]
+INFO 2021-03-21 17:59:47,533 Iteration: 5. Energy -2.1163412748972585.  Energy change -3.087e-01 , Iteration duration: 244.11944341659546 Params: [0.2501]
+INFO 2021-03-21 18:03:50,368 Iteration: 6. Energy -2.037446402251873.  Energy change 7.889e-02 , Iteration duration: 242.97393465042114 Params: [0.5]
+INFO 2021-03-21 18:07:53,510 Iteration: 7. Energy -2.0887417268249253.  Energy change -5.130e-02 , Iteration duration: 242.83495926856995 Params: [0.3751]
+INFO 2021-03-21 18:11:53,348 Iteration: 8. Energy -2.1207247991421605.  Energy change -3.198e-02 , Iteration duration: 243.14238333702087 Params: [0.1876]
+INFO 2021-03-21 18:15:54,349 Iteration: 9. Energy -2.1194553198804233.  Energy change 1.269e-03 , Iteration duration: 239.8370702266693 Params: [0.1251]
+INFO 2021-03-21 18:19:53,819 Iteration: 10. Energy -2.121027936363303.  Energy change -1.573e-03 , Iteration duration: 241.0006341934204 Params: [0.15635]
+INFO 2021-03-21 18:23:56,174 Iteration: 11. Energy -2.119678162223246.  Energy change 1.350e-03 , Iteration duration: 239.470712184906 Params: [0.1251]
+INFO 2021-03-21 18:27:59,109 Iteration: 12. Energy -2.120381147233103.  Energy change -7.030e-04 , Iteration duration: 242.35504627227783 Params: [0.140725]
+INFO 2021-03-21 18:32:00,320 Iteration: 13. Energy -2.1208278374800176.  Energy change -4.467e-04 , Iteration duration: 242.935693025589 Params: [0.1641625]
+INFO 2021-03-21 18:36:02,227 Iteration: 14. Energy -2.121588451126314.  Energy change -7.606e-04 , Iteration duration: 241.21082878112793 Params: [0.15244375]
+INFO 2021-03-21 18:40:03,383 Iteration: 15. Energy -2.120573220882478.  Energy change 1.015e-03 , Iteration duration: 241.90645575523376 Params: [0.1485375]
+INFO 2021-03-21 18:44:03,840 Iteration: 16. Energy -2.1207374380459365.  Energy change -1.642e-04 , Iteration duration: 241.1571934223175 Params: [0.15049062]
+INFO 2021-03-21 18:48:03,756 Iteration: 17. Energy -2.120843658787382.  Energy change -1.062e-04 , Iteration duration: 240.45623755455017 Params: [0.15342031]
+INFO 2021-03-21 18:52:05,851 Iteration: 18. Energy -2.1211876249757364.  Energy change -3.440e-04 , Iteration duration: 239.9153733253479 Params: [0.15195547]
+INFO 2021-03-21 18:56:07,214 Iteration: 19. Energy -2.120837990109843.  Energy change 3.496e-04 , Iteration duration: 242.09502148628235 Params: [0.15268789]
+INFO 2021-03-21 19:00:08,404 Iteration: 20. Energy -2.121136701121811.  Energy change -2.987e-04 , Iteration duration: 241.36279225349426 Params: [0.15232168]
+INFO 2021-03-21 19:04:10,730 Iteration: 21. Energy -2.121240282428259.  Energy change -1.036e-04 , Iteration duration: 241.19058632850647 Params: [0.15250479]
+INFO 2021-03-21 19:08:12,130 Iteration: 22. Energy -2.1207243099790536.  Energy change 5.160e-04 , Iteration duration: 242.32577419281006 Params: [0.15241323]
+INFO 2021-03-21 19:12:14,067 Iteration: 23. Energy -2.1208624197988466.  Energy change -1.381e-04 , Iteration duration: 241.39977145195007 Params: [0.15245901]
+INFO 2021-03-21 19:16:14,456 Iteration: 24. Energy -2.120898833903806.  Energy change -3.641e-05 , Iteration duration: 241.93682146072388 Params: [0.15243375]
+CRITICAL 2021-03-21 19:16:14,461      fun: -2.120898833903806
+   maxcv: 0.0
+ message: 'Optimization terminated successfully.'
+ n_iters: 25
+    nfev: 24
+  status: 1
+ success: True
+       x: array([0.15243375])
