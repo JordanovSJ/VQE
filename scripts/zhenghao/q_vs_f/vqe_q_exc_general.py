@@ -38,7 +38,7 @@ ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
 ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
 var_pars = [1e-4]*len(ansatz)  # ansatz_state.parameters
 
-prob_2 = 1e-6
+prob_2 = 1e-4
 time_cx = 0  # Gate time for cx gate
 
 backend = QasmBackend
@@ -91,7 +91,7 @@ logging.info(message)
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
 filename = '../../../results/zhenghao_testing/{}_vqe_{}_{}_p={}_tcx={}_{}_elements_shots={}_{}.csv' \
-    .format(q_system.name, ansatz_element_type, optimizer, num_ansatz_element, prob_2, time_cx, n_shots, time_stamp)
+    .format(q_system.name, ansatz_element_type, optimizer, prob_2, time_cx, num_ansatz_element, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
 
