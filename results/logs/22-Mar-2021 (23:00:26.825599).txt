@@ -1,0 +1,2 @@
+INFO 2021-03-22 23:00:26,854 q_exc type, prob_2=1e-06, time_cx=0, backend=<class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method =automatic, optimizer=COBYLA
+INFO 2021-03-22 23:00:26,864 Length of q_exc based ansatz is 15
