@@ -1,0 +1,11 @@
+INFO 2021-03-24 10:37:17,556 q_exc type, prob_2=0.0001, time_cx=10, backend=<class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method =automatic, optimizer=COBYLA
+INFO 2021-03-24 10:37:17,556 Length of q_exc based ansatz is 11
+INFO 2021-03-24 10:37:17,557 Noise model generated for prob_1 = 0, prob_2=0.0001, prob_meas=0.0001 time_single_gate=0, time_cx=10, time_meas=0, t1=50000.0, t2=50000.0. No coupling map.
+INFO 2021-03-24 10:37:17,557 Backend is <class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method=automatic
+INFO 2021-03-24 10:37:17,558 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 11-----
+-----Statevector and energy calculated using <class 'scripts.zhenghao.noisy_backends.QasmBackend'>------
+-----Optimizer COBYLA------
+
