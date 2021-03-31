@@ -31,12 +31,21 @@ time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # <<<<<<<<<<<< TUNABLE PARAMETERS >>>>>>>>>>>>>>>>>
 ansatz_element_type = 'q_exc'
-num_ansatz_element = 1  # Take only the first x ansatz elements
+num_ansatz_element = 19 # Take only the first x ansatz elements
 
 df_input = pd.read_csv('../../../results/iter_vqe_results/H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
 ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
 ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
-var_pars = [0.1]*len(ansatz)  # ansatz_state.parameters
+#var_pars = [1e-4]*len(ansatz)  # ansatz_state.parameters
+# var_pars = [-0.20577359, -0.10015582, -0.08567858, -0.04775389, -0.05337564, -0.04962204, 0.06654893, 0.05192668,
+#             0.03866926, 0.03087172, 0.01216689, 0.01,0.01,0.01,0.01]
+var_pars = [-0.1999472,  -0.07384335, -0.0902148,  -0.04832507, -0.05559297,
+            -0.06442965, 0.05356275, 0.05492386, 0.03965827,  0.03441598,  0.01388335,
+            0.01047669, 0.01256415,  0.00931359,  0.00909889, 0.01, 0.01, 0.01, 0.01]
+assert len(var_pars) == len(ansatz)
+
+message = 'init_pars = {}'.format(var_pars)
+logging.info(message)
 
 prob_2 = 1e-5
 time_cx = 0  # Gate time for cx gate
@@ -48,7 +57,7 @@ method = 'automatic'
 optimizer = 'COBYLA'
 # optimizer_options = {'gtol': 10e-4}
 # adaptive_bool=True
-optimizer_options = None
+optimizer_options = {'maxiter': 500}
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
 logging.info(message)

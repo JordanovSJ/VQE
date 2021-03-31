@@ -64,11 +64,7 @@ logging.info(message)
 
 assert prob_2 == 1e-6  # for now no data for 1e-4
 if prob_2 == 1e-6:
-    # ref pars from '../../../results/zhenghao_testing/H4_vqe_q_exc_COBYLA_p=1e-06_tcx=0_shots=1000000.0_18-Mar-2021 (19:12:16.969257).csv')
-    # ref_pars = [
-    #     -0.20577359, -0.10015582, -0.08567858, -0.04775389, -0.05337564,
-    #     -0.04962204, 0.06654893,  0.05192668,  0.03866926,  0.03087172,
-    #     0.01216689]
+    # ref pars from '../../../results/zhenghao_testing/H4_vqe_eff_f_exc_COBYLA_p=1e-06_tcx=0_shots=1000000.0_18-Mar-2021 (19:13:52.870310).csv'
     ref_pars = [0.18558055, 0.083717, 0.06773141, 0.04806205, 0.05149392,
                 0.0383456, -0.0445593, -0.03448649, 0.02921194, 0.03233799, -0.02597971]
 
