@@ -90,8 +90,8 @@ logging.info(message)
 
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
-filename = '../../../results/zhenghao_testing/{}_vqe_{}_{}_p={}_tcx={}_shots={}_{}.csv' \
-    .format(q_system.name, ansatz_element_type, optimizer, prob_2, time_cx, n_shots, time_stamp)
+filename = '../../../results/zhenghao_testing/{}_vqe_{}_{}_p={}_tcx={}_{}_elements_shots={}_{}.csv' \
+    .format(q_system.name, ansatz_element_type, optimizer, prob_2, time_cx, num_ansatz_element, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
 

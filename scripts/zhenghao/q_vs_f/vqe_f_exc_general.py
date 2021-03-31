@@ -38,8 +38,8 @@ ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
 ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
 var_pars = [1e-4]*len(ansatz)  # ansatz_state.parameters
 
-prob_2 = 0
-time_cx = 0  # Gate time for cx gate
+prob_2 = 1e-4
+time_cx = 10  # Gate time for cx gate
 
 backend = QasmBackend
 n_shots = 1e6
@@ -47,14 +47,16 @@ method = 'automatic'
 
 optimizer = 'COBYLA'
 # gtol = 10e-4
-optimizer_options = None #{'adaptive': False}
+# adaptive_bool = True
+optimizer_options = None  #{'adaptive': adaptive_bool}  # {'gtol': gtol}
 
 message = '{} type, prob_2={}, time_cx={}, backend={}, n_shots={}, method ={}, optimizer={}'\
     .format(ansatz_element_type, prob_2, time_cx, backend, n_shots, method, optimizer)
 logging.info(message)
 
-#message = 'Not adaptive'
-#logging.info(message)
+# message = 'Adaptive is {}'.format(adaptive_bool)
+# logging.info(message)
+
 # <<<<<<<<<<<< READING CSV FILES >>>>>>>>>>>>>>>>>
 
 message = 'Length of {} based ansatz is {}'.format(ansatz_element_type, len(ansatz))
@@ -62,26 +64,25 @@ logging.info(message)
 
 # <<<<<<<<<<<< Noise Model >>>>>>>>>>>>>>>>>
 # Noise model
-# prob_1 = 0  # Single qubit gate depolarizing error prob
-# prob_meas = prob_2
-# time_single_gate = 0  # Gate time for single qubit gate
-# time_meas = 0
-# t1 = 50e3  # T1 in nanoseconds
-# t2 = 50e3  # T2 in nanoseconds
-# noise_model = NoiseUtils.unified_noise(prob_1=prob_1, prob_2=prob_2, prob_meas=prob_meas,
-#                                        time_single_gate=time_single_gate, time_cx = time_cx,
-#                                        time_measure=time_meas, t1=t1, t2=t2)
-noise_model = None
+prob_1 = 0  # Single qubit gate depolarizing error prob
+prob_meas = prob_2
+time_single_gate = 0  # Gate time for single qubit gate
+time_meas = 0
+t1 = 50e3  # T1 in nanoseconds
+t2 = 50e3  # T2 in nanoseconds
+noise_model = NoiseUtils.unified_noise(prob_1=prob_1, prob_2=prob_2, prob_meas=prob_meas,
+                                       time_single_gate=time_single_gate, time_cx = time_cx,
+                                       time_measure=time_meas, t1=t1, t2=t2)
 coupling_map = None
 
-# message = 'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
-#           'time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}. No coupling map.' \
-#     .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
-message = 'Noise model = None'
+message = 'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
+          'time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}. No coupling map.' \
+    .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
 logging.info(message)
 
 
 # <<<<<<<<<<<< BACKEND >>>>>>>>>>>>>>>>>
+# backend = QasmBackend
 global_cache = None
 
 message = 'Backend is {}, n_shots={}, method={}'.format(backend, n_shots, method)
@@ -89,8 +90,8 @@ logging.info(message)
 
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['iteration', 'energy', 'energy change', 'iteration duration', 'params'])
-filename = '../../../results/zhenghao_testing/{}_vqe_{}_{}_no_noise_shots={}_{}.csv' \
-    .format(q_system.name, ansatz_element_type, optimizer, n_shots, time_stamp)
+filename = '../../../results/zhenghao_testing/{}_vqe_{}_{}_p={}_tcx={}_{}_elements_shots={}_{}.csv' \
+    .format(q_system.name, ansatz_element_type, optimizer, prob_2, time_cx, num_ansatz_element, n_shots, time_stamp)
 
 # <<<<<<<<<<<< VQE RUNNER >>>>>>>>>>>>>>>>>
 
