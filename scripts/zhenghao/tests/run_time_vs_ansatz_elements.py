@@ -52,11 +52,11 @@ logging.info(message)
 # <<<<<<<<<<<< INITIALIZE DATA FRAME >>>>>>>>>>>>>>>>>
 results_df = pd.DataFrame(columns=['element_num', 'noisy_energy',
                                    'noisy_time', 'noiseless_energy', 'noiseless_time'])
-filename = '../../../results/zhenghao_testing/{}_run_time_vs_ansatz_elements_shots={}.csv' \
-    .format(molecule.name, n_shots)
+filename = '../../../results/zhenghao_testing/{}_run_time_vs_ansatz_elements_shots={}_{}.csv' \
+    .format(molecule.name, n_shots, time_stamp)
 
 # <<<<<<<<<<<< EVALUATE EXPECTATION VALUE >>>>>>>>>>>>>>>>>
-element_num_list = [1, 3, 5, 10]
+element_num_list = [13, 15, len(ansatz)]
 
 idx = 0
 for element_num in element_num_list:

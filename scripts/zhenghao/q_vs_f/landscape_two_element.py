@@ -44,8 +44,8 @@ logging.info(message)
 
 # <<<<<<<<<<<< Noise Model >>>>>>>>>>>>>>>>>
 # Noise model
-prob_2 = 1e-6
-time_cx = 0  # Gate time for cx gate
+prob_2 = 1e-4
+time_cx = 10  # Gate time for cx gate
 prob_1 = 0  # Single qubit gate depolarizing error prob
 prob_meas = prob_2
 time_single_gate = 0  # Gate time for single qubit gate
@@ -66,8 +66,8 @@ logging.info(message)
 xlim = 0.25
 ylim = 0.1
 
-pixel_num_x = 50
-pixel_num_y = 20
+pixel_num_x = 25
+pixel_num_y = 10
 
 message = 'xlim={}, ylim={}, pixel number = {} x {}'.format(xlim, ylim, pixel_num_x, pixel_num_y)
 
@@ -78,8 +78,8 @@ results_df = pd.DataFrame(columns=['pars_1', 'pars_2', 'qiskitsim_energy', 'qisk
 file_name = '../../../results/zhenghao_testing/h4_landscape_qiskit_sim_backend_{}.csv'.format(time_stamp)
 
 idx = 0
-for pars_1 in np.linspace(-xlim, xlim, num=pixel_num_x):
-    for pars_2 in np.linspace(-ylim, ylim, num=pixel_num_y):
+for pars_1 in np.linspace(-xlim, 0, num=pixel_num_x):
+    for pars_2 in np.linspace(-ylim, 0, num=pixel_num_y):
         var_pars=[pars_1, pars_2]
 
         time_1 = time.time()

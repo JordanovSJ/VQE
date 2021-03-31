@@ -39,7 +39,7 @@ ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
 # var_pars = [1e-4]*len(ansatz)  # ansatz_state.parameters
 rest_pars = 0.01
 
-prob_2 = 1e-6
+prob_2 = 1e-4
 time_cx = 0  # Gate time for cx gate
 
 backend = QasmBackend
@@ -63,16 +63,20 @@ logging.info(message)
 message = 'Length of {} based ansatz is {}'.format(ansatz_element_type, len(ansatz))
 logging.info(message)
 
-assert prob_2==1e-6  # for now no data for 1e-4
-if prob_2==1e-6:
+assert prob_2==1e-4  # for now no data for 1e-4
+#if prob_2==1e-6:
     # ref pars from '../../../results/zhenghao_testing/H4_vqe_q_exc_COBYLA_p=1e-06_tcx=0_shots=1000000.0_18-Mar-2021 (19:12:16.969257).csv')
-    ref_pars = [
-        -0.20577359, -0.10015582, -0.08567858, -0.04775389, -0.05337564,
-        -0.04962204, 0.06654893,  0.05192668,  0.03866926,  0.03087172,
-        0.01216689]
+    #ref_pars = [
+    #    -0.20577359, -0.10015582, -0.08567858, -0.04775389, -0.05337564,
+    #    -0.04962204, 0.06654893,  0.05192668,  0.03866926,  0.03087172,
+    #    0.01216689]
+if prob_2==1e-4:
+    # ref pars from '../../../results/zhenghao_testing/H4_vqe_q_exc_COBYLA_p=0.0001_tcx=0_11_elements_shots=1000000.0_21-Mar-2021 (22:53:09.328452).csv'
+    ref_pars = [-0.16519892, -0.07905504, -0.06978401, -0.05069927, -0.07547865, -0.05126468, 0.05469542,  0.05741101,  0.02559102,  0.03083365, -0.0097433]
 
     var_pars = ref_pars + [rest_pars]*(len(ansatz)-len(ref_pars))
-
+#else:
+#    raise Exception('No init par data for prob_2={}'.format(prob_2))
 
 # <<<<<<<<<<<< Noise Model >>>>>>>>>>>>>>>>>
 # Noise model
