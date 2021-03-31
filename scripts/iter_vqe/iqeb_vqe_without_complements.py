@@ -23,8 +23,8 @@ if __name__ == "__main__":
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
-    # ansatz_element_type = 'eff_f_exc'
-    ansatz_element_type = 'q_exc'
+    ansatz_element_type = 'eff_f_exc'
+    # ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'f_exc'
     # ansatz_element_type = 'pauli_str_exc'
 

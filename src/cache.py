@@ -141,24 +141,22 @@ class Cache:
 
 
 class GlobalCache(Cache):
-    def __init__(self, q_system, excited_state=0):
+    def __init__(self, q_system, excited_state=0, init_sparse_statevector=None):
         self.q_system = q_system
 
-        H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+        # H_sparse_matrix = backend. ham_sparse_matrix(q_system, excited_state=excited_state)
+        H_sparse_matrix = get_sparse_operator(q_system.qubit_ham)
         if excited_state > 0:
-            # H_sparse_matrix = backend. ham_sparse_matrix(q_system, excited_state=excited_state)
-            H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
-            if excited_state > 0:
-                H_lower_state_terms = q_system.H_lower_state_terms
-                assert H_lower_state_terms is not None
-                assert len(H_lower_state_terms) >= excited_state
-                for i in range(excited_state):
-                    term = H_lower_state_terms[i]
-                    state = term[1]
-                    statevector = QiskitSimBackend.statevector_from_ansatz(state.ansatz_elements, state.parameters, state.n_qubits,
-                                                                           state.n_electrons, init_state_qasm=state.init_state_qasm)
-                    # add the outer product of the lower lying state to the Hamiltonian
-                    H_sparse_matrix += scipy.sparse.csr_matrix(term[0] * numpy.outer(statevector, statevector))
+            H_lower_state_terms = q_system.H_lower_state_terms
+            assert H_lower_state_terms is not None
+            assert len(H_lower_state_terms) >= excited_state
+            for i in range(excited_state):
+                term = H_lower_state_terms[i]
+                state = term[1]
+                statevector = QiskitSimBackend.statevector_from_ansatz(state.ansatz_elements, state.parameters, state.n_qubits,
+                                                                       state.n_electrons, init_state_qasm=state.init_state_qasm)
+                # add the outer product of the lower lying state to the Hamiltonian
+                H_sparse_matrix += scipy.sparse.csr_matrix(term[0] * numpy.outer(statevector, statevector.conj().transpose()))
 
         if H_sparse_matrix.data.nbytes > config.matrix_size_threshold:
             # decrease the size of the matrix. Typically it will have a lot of insignificant very small (~1e-19)
@@ -167,7 +165,8 @@ class GlobalCache(Cache):
             H_sparse_matrix = scipy.sparse.csr_matrix(H_sparse_matrix.todense().round(config.floating_point_accuracy_digits))
 
         super(GlobalCache, self).__init__(H_sparse_matrix=H_sparse_matrix, n_qubits=q_system.n_qubits,
-                                          n_electrons=q_system.n_electrons, commutators_sparse_matrices_dict=None)
+                                          n_electrons=q_system.n_electrons, commutators_sparse_matrices_dict=None,
+                                          init_sparse_statevector=init_sparse_statevector)
 
     def get_grad_thread_cache(self, ansatz_element, sparse_statevector):
         # TODO check if copy is necessary

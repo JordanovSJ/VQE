@@ -54,6 +54,7 @@ class LiH(QSystem):
 
     def default_states(self):
         df = pandas.read_csv('src/molecules/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+        # df = pandas.read_csv('../../src/molecules/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
         ground = DataUtils.ansatz_from_data_frame(df, self)
         del df
         self.H_lower_state_terms = [[abs(self.hf_energy)*2, ground]]

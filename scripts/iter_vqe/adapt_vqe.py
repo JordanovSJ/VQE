@@ -24,16 +24,17 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 3
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    molecule = H2(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
     # ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'f_exc'
-    ansatz_element_type = 'q_exc'
+    ansatz_element_type = 'f_exc'
+    q_encoding = 'bk'
     spin_complement = True  # only for fermionic and qubit excitations (not for PWEs)
 
     # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
@@ -59,10 +60,10 @@ if __name__ == "__main__":
     # create the pool of ansatz elements
     if spin_complement:
         ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                     element_type=ansatz_element_type).get_excitations()
+                                                     element_type=ansatz_element_type, encoding=q_encoding).get_excitations()
     else:
         ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                            ansatz_element_type=ansatz_element_type).get_excitations()
+                                            ansatz_element_type=ansatz_element_type, encoding=q_encoding).get_excitations()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:

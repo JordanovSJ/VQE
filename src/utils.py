@@ -1,7 +1,7 @@
 # from openfermion.transforms import get_sparse_operator
 from openfermion.linalg import get_sparse_operator
 
-from openfermion import QubitOperator
+from openfermion import QubitOperator, FermionOperator, bravyi_kitaev
 
 import sys
 import qiskit
@@ -44,6 +44,20 @@ class MatrixUtils:
                     return False
 
         return hw
+
+    # @staticmethod
+    # def hf_sparse_statevector_bk_encoding(n_orbitals, n_electrons):
+    #     assert n_electrons <= n_orbitals
+    #     fermi_op = FermionOperator('[]')
+    #     for i in range(n_electrons):
+    #         fermi_op *= FermionOperator('{}^'.format(i))
+    #
+    #     qubit_op = bravyi_kitaev(fermi_op, n_orbitals)
+    #     hf_sparse_statevector = numpy.zeros(2**n_orbitals)
+    #     hf_sparse_statevector[0] = 1
+    #     hf_sparse_statevector = scipy.sparse.csr_matrix(hf_sparse_statevector)
+    #     hf_sparse_statevector = hf_sparse_statevector.dot(get_sparse_operator(qubit_op, n_orbitals))
+    #     return hf_sparse_statevector
 
 
 class LogUtils:

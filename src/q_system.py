@@ -1,7 +1,7 @@
 # from openfermion.hamiltonians import MolecularData
 from openfermion.chem import MolecularData
 from openfermionpyscf import run_pyscf
-from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner, get_sparse_operator
+from openfermion import get_fermion_operator, freeze_orbitals, jordan_wigner, get_sparse_operator, bravyi_kitaev
 from openfermionpsi4 import run_psi4
 
 import numpy
@@ -14,7 +14,8 @@ from src.utils import MatrixUtils
 
 class QSystem:
 
-    def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None):
+    def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None,
+                 encoding='jw'):
         self.name = name
         self.multiplicity = multiplicity
         self.charge = charge
@@ -52,7 +53,12 @@ class QSystem:
             self.n_qubits = self.n_orbitals
             self.fermion_ham = freeze_orbitals(get_fermion_operator(self.molecule_ham), occupied=frozen_els['occupied'],
                                                unoccupied=frozen_els['unoccupied'], prune=True)
-        self.jw_qubit_ham = jordan_wigner(self.fermion_ham)
+
+        if encoding == 'jw':
+            self.qubit_ham = jordan_wigner(self.fermion_ham)
+        else:
+            assert encoding == 'bk'
+            self.qubit_ham = bravyi_kitaev(self.fermion_ham)
 
         # this is used only for calculating excited states. list of [term_index, term_state]
         self.H_lower_state_terms = None
@@ -61,7 +67,7 @@ class QSystem:
     def calculate_energy_eigenvalues(self, k):
         logging.info('Calculating excited states exact eigenvalues.')
         t0 = time.time()
-        H_sparse_matrix = get_sparse_operator(self.jw_qubit_ham)
+        H_sparse_matrix = get_sparse_operator(self.qubit_ham)
 
         # do not calculate all eigenvectors of H, since this is very slow
         calculate_first_n = k + 1

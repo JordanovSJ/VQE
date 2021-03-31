@@ -17,28 +17,30 @@ import qiskit
 
 if __name__ == "__main__":
 
-    r = 0.735
+    r = 1.316
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
+    q_system = BeH2(r=r) #(r=r, frozen_els=frozen_els)
 
     # logging
     LogUtils.log_config()
 
     # uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
     # ansatz = uccsd
-    ansatz = UCCSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'q_exc').get_excitations()
+    ansatz = SDExcitations(q_system.n_orbitals, q_system.n_electrons, 'f_exc', encoding='bk').get_excitations()
     print(len(ansatz))
     backend = MatrixCacheBackend
+    # global_cache = None
+
     global_cache = GlobalCache(q_system)
     global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
-    # global_cache.calculate_commutators_sparse_matrices_dict()
+    global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
 
     # backend = QiskitSimBackend
     # global_cache = None
 
-    optimizer = 'COBYLA'
+    optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
-    vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
+    vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=False,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()

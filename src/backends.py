@@ -69,7 +69,7 @@ class QiskitSimBackend:
 
     @staticmethod
     def ham_sparse_matrix(q_system, excited_state=0):
-        H_sparse_matrix = get_sparse_operator(q_system.jw_qubit_ham)
+        H_sparse_matrix = get_sparse_operator(q_system.qubit_ham)
         if excited_state > 0:
             H_lower_state_terms = q_system.H_lower_state_terms
             assert H_lower_state_terms is not None

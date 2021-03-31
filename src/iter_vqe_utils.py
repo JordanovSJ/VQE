@@ -107,19 +107,28 @@ class EnergyUtils:
                 return None
 
         if config.multithread:
-            ray.init(num_cpus=config.ray_options['n_cpus'])
-            elements_ray_ids = [
-                [element,
-                 vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=[element], init_state_qasm=ansatz_qasm,
-                                                       init_guess_parameters=[elements_parameters[i]],
-                                                       excited_state=excited_state, cache=get_thread_cache(element))
-                 ]
-                # TODO this will work only if the ansatz element has 1 var. par.
-                for i, element in enumerate(ansatz_elements)
-            ]
-            elements_results = [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
-                                elements_ray_ids]
-            ray.shutdown()
+            elements_results = []
+            chunk_size = config.multithread_chunk_size
+            if chunk_size is None:
+                chunk_size = len(ansatz_elements)
+            n_chunks = int(len(ansatz_elements) / chunk_size) + 1
+            for i in range(n_chunks):
+                # logging.info('Calculating commutators, patch No: {}'.format(i))
+                ansatz_elements_chunk = ansatz_elements[i * chunk_size:][:chunk_size]
+
+                ray.init(num_cpus=config.ray_options['n_cpus'], object_store_memory=config.ray_options['object_store_memory'])
+                elements_ray_ids = [
+                    [element,
+                     vqe_runner.vqe_run_multithread.remote(self=vqe_runner, ansatz=[element], init_state_qasm=ansatz_qasm,
+                                                           init_guess_parameters=[elements_parameters[i]],
+                                                           excited_state=excited_state, cache=get_thread_cache(element))
+                     ]
+                    # TODO this will work only if the ansatz element has 1 var. par.
+                    for i, element in enumerate(ansatz_elements_chunk)
+                ]
+                elements_results += [[element_ray_id[0], ray.get(element_ray_id[1])] for element_ray_id in
+                                     elements_ray_ids]
+                ray.shutdown()
         else:
             # use thread cache even if not multithreading since it contains the precalculated init_sparse_statevector
             elements_results = [
@@ -246,8 +255,7 @@ class DataUtils:
                 ansatz_elements.append(DFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[0] == 's' and element[2] == 'q':
                 # ansatz_elements.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
-                ansatz_elements\
-                    .append(SQExc(ast.literal_eval(element_qubits)[0][0], ast.literal_eval(element_qubits)[1][0], system_n_qubits=q_system.n_qubits))
+                ansatz_elements.append(SQExc(ast.literal_eval(element_qubits)[0][0], ast.literal_eval(element_qubits)[1][0], system_n_qubits=q_system.n_qubits))
             elif element[0] == 'd' and element[2] == 'q':
                 ansatz_elements.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
             elif element[:2] == '1j':
