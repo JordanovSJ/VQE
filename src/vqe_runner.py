@@ -1,4 +1,4 @@
-from src.backends import QiskitSimBackend
+from src.backends import QiskitSimBackend, MatrixCacheBackend
 from scripts.zhenghao.noisy_backends import QasmBackend
 from src.utils import LogUtils
 from src import config
@@ -105,14 +105,17 @@ class VQERunner:
                              n_shots=n_shots, noise_model=noise_model, coupling_map=coupling_map, method=method,
                              results_df=results_df, filename=filename)
 
-        # get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
-        #                        init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)
+        get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
+                               init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)
 
         if self.use_ansatz_gradient:
-            # result = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,
-            #                                  options=self.optimizer_options, tol=config.optimizer_tol,
-            #                                  bounds=config.optimizer_bounds)
-            raise Exception('Ansatz gradient not supported yet.')
+            if self.backend is QasmBackend:
+                raise Exception('Ansatz gradient not supported yet.')
+            else:
+                result = scipy.optimize.minimize(get_energy, var_parameters, jac=get_gradient, method=self.optimizer,
+                                                 options=self.optimizer_options, tol=config.optimizer_tol,
+                                                 bounds=config.optimizer_bounds)
+
         else:
             if self.optimizer == 'COBYLA':
                 # The constraint only applies to COBYLA optimizer
