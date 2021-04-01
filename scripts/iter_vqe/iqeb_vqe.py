@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 0.735
+    r = 2
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = H2(r=r)  # (frozen_els=frozen_els)
