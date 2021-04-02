@@ -1,0 +1,15 @@
+INFO 2021-03-31 11:38:13,784 LiH, r=1.25 ,eff_f_exc
+INFO 2021-03-31 11:38:15,595 Calculating excitation generators
+DEBUG 2021-03-31 11:38:15,595 Automatically increasing RLIMIT_NOFILE to max value of 524288
+INFO 2021-03-31 11:38:28,500 Calculating commutators
+INFO 2021-03-31 11:38:28,501 Calculating commutators, patch No: 0
+INFO 2021-03-31 11:38:34,633 ('Length of new pool', 606)
+INFO 2021-03-31 11:38:47,017 Elements with largest grads ['eff_d_f_exc_[1, 2]_[8, 9]', 'eff_d_f_exc_[0, 1]_[6, 7]', 'eff_d_f_exc_[0, 1]_[8, 9]', 'eff_d_f_exc_[2, 3]_[4, 5]', 'eff_d_f_exc_[0, 1]_[4, 5]', 'eff_d_f_exc_[2, 3]_[6, 7]', 'eff_d_f_exc_[2, 3]_[8, 9]', 'eff_d_f_exc_[2, 3]_[4, 11]', 'eff_d_f_exc_[2, 3]_[5, 10]', 'eff_d_f_exc_[2, 3]_[10, 11]']. Grads [-0.0157374527190938, -0.019663180875631407, -0.019663180875631407, -0.02086932699677784, -0.04178137044493813, -0.05099701623018033, -0.05099701623018033, -0.06251494807473587, 0.06251494807473587, -0.24362619599651367]
+INFO 2021-03-31 11:38:53,078 -----Running VQE for: LiH-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 12-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type eff_d_f_exc_[2, 3]_[10, 11]------
+-----Statevector and energy calculated using <class 'src.backends.MatrixCacheBackend'>------
+-----Optimizer BFGS------
+
