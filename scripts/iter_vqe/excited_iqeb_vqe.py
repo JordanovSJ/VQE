@@ -33,8 +33,11 @@ if __name__ == "__main__":
     # df = pandas.read_csv('../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
     # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv')
 
+    df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
+
     ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
-    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]]
+    exc_state_1  = DataUtils.ansatz_from_data_frame(df1, molecule)
+    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state], [abs(molecule.hf_energy)*2, exc_state_1]]
 
     n_largest_grads = 10
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
