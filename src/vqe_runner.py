@@ -105,10 +105,10 @@ class VQERunner:
                              n_shots=n_shots, noise_model=noise_model, coupling_map=coupling_map, method=method,
                              results_df=results_df, filename=filename)
 
-        get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
-                               init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)
-
         if self.use_ansatz_gradient:
+            get_gradient = partial(self.backend.ansatz_gradient, ansatz=ansatz, q_system=self.q_system,
+                                   init_state_qasm=init_state_qasm, cache=cache, excited_state=excited_state)
+
             if self.backend is QasmBackend:
                 raise Exception('Ansatz gradient not supported yet.')
             else:
