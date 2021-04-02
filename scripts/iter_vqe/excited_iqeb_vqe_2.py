@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
-    df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
+    df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1546_15-Mar-2021.csv')
     # df = pandas.read_csv('../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
     # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv')
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     # vqe_runner_2 = VQERunner(molecule, backend=backend, optimizer='BFGS', optimizer_options={'gtol': 1e-08},
     #                          use_ansatz_gradient=use_grad)
-    vqe_runner_2 = VQERunner(molecule, backend=backend, optimizer='Nelder-Mead', optimizer_options=None)
+    # vqe_runner_2 = VQERunner(molecule, backend=backend, optimizer='Nelder-Mead', optimizer_options=None)
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -119,20 +119,32 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
-        elements_energies = EnergyUtils.\
-            largest_individual_vqe_energy_reduction_elements(vqe_runner_2, ansatz_element_pool, ansatz=ansatz,
-                                                             ansatz_parameters=ansatz_parameters, excited_state=excited_state,
-                                                             n=n_largest_grads, global_cache=global_cache)
-        elements = [e_g[0] for e_g in elements_energies]
-        elements_keys = [str(el.excitations_generators) for el in elements]
-        elements_parameters = [e_g[1].x[0] for e_g in elements_energies]
-        dEs = [e_g[1].fun - current_energy for e_g in elements_energies]
+        # elements_energies = EnergyUtils.\
+        #     largest_individual_vqe_energy_reduction_elements(vqe_runner_2, ansatz_element_pool, ansatz=ansatz,
+        #                                                      ansatz_parameters=ansatz_parameters, excited_state=excited_state,
+        #                                                      n=n_largest_grads, global_cache=global_cache)
+        # elements = [e_g[0] for e_g in elements_energies]
+        # elements_keys = [str(el.excitations_generators) for el in elements]
+        # elements_parameters = [e_g[1].x[0] for e_g in elements_energies]
+        # dEs = [e_g[1].fun - current_energy for e_g in elements_energies]
+        #
+        # message = 'Elements with largest individual energy reductions {}. dEs {}'.format([el.element for el in elements], dEs)
+        # logging.info(message)
 
-        message = 'Elements with largest individual energy reductions {}. dEs {}'.format([el.element for el in elements], dEs)
+        # get the n elements with largest gradients
+        elements_grads = GradientUtils. \
+            get_largest_gradient_elements(ansatz_element_pool, molecule, backend=backend, n=n_largest_grads,
+                                          ansatz_parameters=ansatz_parameters, ansatz=ansatz, global_cache=global_cache)
+
+        elements = [e_g[0] for e_g in elements_grads]
+        elements_keys = [str(el.excitations_generators) for el in elements]
+        grads = [e_g[1] for e_g in elements_grads]
+
+        message = 'Elements with largest grads {}. Grads {}'.format([el.element for el in elements], grads)
         logging.info(message)
 
         element_to_add, intermediate_result = \
-            EnergyUtils.largest_full_vqe_energy_reduction_element(vqe_runner, elements, elements_parameters=elements_parameters,
+            EnergyUtils.largest_full_vqe_energy_reduction_element(vqe_runner, elements, # elements_parameters=elements_parameters,
                                                                   ansatz=ansatz, ansatz_parameters=ansatz_parameters,
                                                                   global_cache=global_cache,
                                                                   excited_state=excited_state)
