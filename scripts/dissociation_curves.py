@@ -28,24 +28,6 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_config()
 
-    # df = pandas.read_csv('../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_13-Aug-2020.csv')
-    # #
-    # ansatz = []
-    # for i in range(len(df)):
-    #     element = df.loc[i]['element']
-    #     element_qubits = df.loc[i]['element_qubits']
-    #     if element[0] == 'e' and element[4] == 's':
-    #         ansatz.append(EffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    #     elif element[0] == 'e' and element[4] == 'd':
-    #         ansatz.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    #     elif element[0] == 's' and element[2] == 'q':
-    #         ansatz.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    #     elif element[0] == 'd' and element[2] == 'q':
-    #         ansatz.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=molecule.n_qubits))
-    #     else:
-    #         print(element, element_qubits)
-    #         raise Exception('Unrecognized ansatz element.')
-
     # ansatz = ansatz[:74]  # 74 for 1e-8
     ansatz = SpinCompGSDExcitations(molecule.n_qubits, molecule.n_electrons, element_type='eff_f_exc').get_excitations()
     var_parameters = list(numpy.zeros(len(ansatz)))

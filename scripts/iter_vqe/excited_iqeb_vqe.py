@@ -25,7 +25,7 @@ if __name__ == "__main__":
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
-    excited_state = 1
+    excited_state = 2
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
