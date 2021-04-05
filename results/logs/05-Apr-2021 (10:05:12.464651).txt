@@ -1,0 +1,17 @@
+INFO 2021-04-05 10:05:12,481 eff_f_exc type, prob_2=0.0001, time_cx=0, backend=<class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method =automatic, optimizer=COBYLA
+INFO 2021-04-05 10:05:12,481 Length of eff_f_exc based ansatz is 13
+INFO 2021-04-05 10:05:12,481 Noise model generated for prob_1 = 0, prob_2=0.0001, prob_meas=0.0001 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0. No coupling map.
+INFO 2021-04-05 10:05:12,481 Backend is <class 'scripts.zhenghao.noisy_backends.QasmBackend'>, n_shots=1000000.0, method=automatic
+INFO 2021-04-05 10:05:12,483 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 13-----
+-----Statevector and energy calculated using <class 'scripts.zhenghao.noisy_backends.QasmBackend'>------
+-----Optimizer COBYLA------
+
+INFO 2021-04-05 10:07:58,642 Iteration: 1. Energy -2.149013650071931.  Energy change -5.047e-02 , Iteration duration: 7.677078247070312e-05 Params: [ 0.18247941  0.10199824  0.06463495  0.05079814  0.07627187  0.05919886
+ -0.037509   -0.06268901  0.03498629  0.03352449  0.0060891   0.01
+  0.01      ]
+INFO 2021-04-05 10:10:46,448 Iteration: 2. Energy -1.551802125503058.  Energy change 5.972e-01 , Iteration duration: 166.16424584388733 Params: [ 1.18247941  0.10199824  0.06463495  0.05079814  0.07627187  0.05919886
+ -0.037509   -0.06268901  0.03498629  0.03352449  0.0060891   0.01
+  0.01      ]
