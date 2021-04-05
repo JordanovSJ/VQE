@@ -30,7 +30,7 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     # ansatz = ansatz[:74]  # 74 for 1e-8
-    ansatz = SDExcitations(molecule.n_qubits, molecule.n_electrons, ansatz_element_type='f_exc').get_excitations()
+    ansatz = UCCSDExcitations(molecule.n_qubits, molecule.n_electrons, ansatz_element_type='eff_f_exc').get_excitations()
     var_parameters = list(numpy.zeros(len(ansatz)))
 
     optimizer = 'BFGS'
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         energies.append(E)
 
         df_data.loc[df_count] = {'r': r, 'E': E, 'fci_E': exact_E, 'error': E - exact_E, 'n_iters': n_iters}
-        df_data.to_csv('../results/dissociation_curves/{}_exc_{}_guccsd_{}.csv'.format(molecule.name,excited_state, time_stamp))
+        df_data.to_csv('../results/dissociation_curves/{}_exc_{}_uccsd_{}.csv'.format(molecule.name,excited_state, time_stamp))
         df_count += 1
 
     # df_data = pandas.DataFrame({'r': rs, 'E': energies, 'fci_E': fci_energies, 'error': errors})

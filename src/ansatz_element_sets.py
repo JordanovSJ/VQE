@@ -10,10 +10,10 @@ import numpy
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Lists of ansatz elements>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class UCCSDExcitations:
-    def __init__(self, n_orbitals, n_electrons, element_type='f_exc'):
+    def __init__(self, n_orbitals, n_electrons, ansatz_element_type='f_exc'):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
-        self.element_type = element_type
+        self.element_type = ansatz_element_type
 
     def get_single_excitations(self):
         single_excitations = []

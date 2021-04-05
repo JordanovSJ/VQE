@@ -21,23 +21,23 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1
+    r = 1.5
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH(r=r)  # (frozen_els=frozen_els)
-    excited_state = 2
+    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
+    excited_state = 1
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
-    df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
+    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
     # df = pandas.read_csv('../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
-    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv')
+    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=15_19-Nov-2020.csv')
 
-    df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
+    # df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
 
     ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
-    exc_state_1  = DataUtils.ansatz_from_data_frame(df1, molecule)
-    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state], [abs(molecule.hf_energy)*2, exc_state_1]]
+    # exc_state_1  = DataUtils.ansatz_from_data_frame(df1, molecule)
+    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]] #, [abs(molecule.hf_energy)*2, exc_state_1]]
 
     n_largest_grads = 10
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
@@ -119,10 +119,16 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
+        # TODO: check
+        # NEW: init random guess for the parameters... better search of good ansatz elements... (exc. states)
+        init_elements_parameters = list((0.5 - numpy.random.rand(len(ansatz_element_pool)))*numpy.pi)
+
         elements_energies = EnergyUtils.\
             largest_individual_vqe_energy_reduction_elements(vqe_runner_2, ansatz_element_pool, ansatz=ansatz,
+                                                             elements_parameters=init_elements_parameters,
                                                              ansatz_parameters=ansatz_parameters, excited_state=excited_state,
                                                              n=n_largest_grads, global_cache=global_cache)
+
         elements = [e_g[0] for e_g in elements_energies]
         elements_keys = [str(el.excitations_generators) for el in elements]
         elements_parameters = [e_g[1].x[0] for e_g in elements_energies]
