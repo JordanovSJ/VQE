@@ -21,23 +21,28 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.5
+    r = 1
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
-    excited_state = 1
+    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    excited_state = 3
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
-    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
-    # df = pandas.read_csv('../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
-    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=15_19-Nov-2020.csv')
+    df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
+    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv')
+    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=1_r=1546_29-Mar-2021.csv')
+    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=10_r=3_17-Mar-2021.csv')
 
-    # df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
+    df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
+    df2 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_2_iqeb_q_exc_n=10_r=1_02-Apr-2021.csv')
 
     ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
-    # exc_state_1  = DataUtils.ansatz_from_data_frame(df1, molecule)
-    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]] #, [abs(molecule.hf_energy)*2, exc_state_1]]
+    exc_state_1 = DataUtils.ansatz_from_data_frame(df1, molecule)
+    exc_state_2 = DataUtils.ansatz_from_data_frame(df2, molecule)
+
+    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state], [abs(molecule.hf_energy)*2, exc_state_1],
+                                    [abs(molecule.hf_energy)*2, exc_state_2]]
 
     n_largest_grads = 10
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
@@ -89,7 +94,7 @@ if __name__ == "__main__":
         # precompute commutator matrices, that are use in excitation gradient calculation
         global_cache = GlobalCache(molecule, excited_state=excited_state)
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz_element_pool)
-        global_cache.calculate_commutators_sparse_matrices_dict(ansatz_element_pool)
+        # global_cache.calculate_commutators_sparse_matrices_dict(ansatz_element_pool)
     else:
         global_cache = None
 

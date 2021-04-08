@@ -194,9 +194,9 @@ class GlobalCache(Cache):
         sqr_excitations_generators_matrices = self.sqr_exc_gen_sparse_matrices_dict[key].copy()
         sqr_excitations_generators_matrices_copy = self.get_sparse_matrices_list_copy(sqr_excitations_generators_matrices)
 
-        commutator_matrix = self.commutators_sparse_matrices_dict[key].copy()
+        # commutator_matrix = self.commutators_sparse_matrices_dict[key].copy()
         thread_cache = VQEThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
-                                      commutators_sparse_matrices_dict={key: commutator_matrix},
+                                      # commutators_sparse_matrices_dict={key: commutator_matrix},
                                       init_sparse_statevector=init_sparse_statevector.copy(),
                                       n_qubits=self.q_system.n_qubits, n_electrons=self.q_system.n_electrons,
                                       exc_gen_sparse_matrices_dict={key: excitations_generators_matrices_copy},

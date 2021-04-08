@@ -16,8 +16,8 @@ if __name__ == "__main__":
     exc_guccsd_df = pandas.read_csv('../../../../results/dissociation_curves/BeH2_exc_1_guccsd_04-Apr-2021.csv')
     exc_uccsd_df = pandas.read_csv('../../../../results/dissociation_curves/BeH2_exc_1_uccsd_04-Apr-2021.csv')
 
-    plt.hlines([468], xmax=0.75, xmin=3, linewidth=0.75, color='red', label=r'$1^{st}$ excited, UCCSD')
-    plt.hlines([1183], xmax=0.75, xmin=3, linewidth=0.75, color='magenta', label=r'$1^{st}$ excited, GUCCSD')
+    plt.hlines([205], xmax=0.75, xmin=3, linewidth=0.75, color='red', label=r'$1^{st}$ excited, UCCSD')
+    plt.hlines([3094], xmax=0.75, xmin=3, linewidth=0.75, color='magenta', label=r'$1^{st}$ excited, GUCCSD')
 
     col = 'n_iters'
     plt.plot(exc_06_df['r'], exc_06_df[col], label=r'$1^{st}$ excited, IQEB-VQE $\epsilon=10^{-6}$ Hartree', marker='+', linewidth=0.75, color='green')
@@ -31,8 +31,10 @@ if __name__ == "__main__":
     plt.xlabel(r'Be-H bond distance, $\AA$')
     plt.ylabel('Number of parameters')
     # plt.ylim(-7.9, -7.65)
-    plt.ylim(10, 10000)
+    plt.ylim(10, 2500)
     plt.yscale('symlog')
+
+    plt.yticks([10,25,50,100,250, 500, 1000,2500, 5000], [10,25,50,100,250, 500, 1000,2500, 5000])
 
     plt.xlim(0.5, 3.25)
     plt.grid(b=True, which='major', color='grey', linestyle='--', linewidth=0.5)

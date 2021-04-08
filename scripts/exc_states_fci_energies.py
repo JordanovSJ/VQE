@@ -7,7 +7,7 @@ import pandas
 
 if __name__ == "__main__":
 
-    exc_state = 9
+    exc_state = 10
 
     r_max = 3
     r_min = 0.75

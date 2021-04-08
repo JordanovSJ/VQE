@@ -19,23 +19,25 @@ if __name__ == "__main__":
 
     col = 'n_iters'
 
-    plt.hlines([200], xmax=1, xmin=3.5, linewidth=0.75, color='red', label=r'$1^{st}$ excited, UCCSD')
-    plt.hlines([606], xmax=1, xmin=3.5, linewidth=0.75, color='magenta', label=r'$1^{st}$ excited, GUCCSD')
+    plt.hlines([92], xmax=1, xmin=3.5, linewidth=0.75, color='red', label=r'$1^{st}$ excited, UCCSD')
+    plt.hlines([1521], xmax=1, xmin=3.5, linewidth=0.75, color='magenta', label=r'$1^{st}$ excited, GUCCSD')
 
     plt.plot(lih_exc_06_df['r'], lih_exc_06_df[col], label=r'$1^{st}$ excited, IQEB-VQE $\epsilon=10^{-6}$ Hartree', marker='+', linewidth=0.5, color='green')
     plt.plot(lih_exc_08_df['r'], lih_exc_08_df[col], label=r'$1^{st}$ excited, IQEB-VQE $\epsilon=10^{-8}$ Hartree', marker='+', linewidth=0.2, color='orange')
 
-    plt.vlines([1.546], ymax=2000, ymin=-100, linewidth=0.75, color='black', label='Equilibrium configuration')
+    plt.vlines([1.546], ymax=2500, ymin=-100, linewidth=0.75, color='black', label='Equilibrium configuration')
     plt.fill_between([0.5, 3.75], 1e-12, 1e-3, color='lavender', label='chemical accuracy')
 
     plt.xlabel(r'Li-H bond distance, $\AA$')
     plt.ylabel('Number of parameters')
     # plt.ylim(-7.9, -7.65)
-    plt.ylim(10, 1000)
+    plt.ylim(10, 1600)
     plt.yscale('symlog')
 
     plt.xlim(0.75, 3.75)
     plt.grid(b=True, which='major', color='grey', linestyle='--', linewidth=0.5)
+
+    plt.yticks([10,25,50,100,250, 500, 1000, 2500], [10,25,50,100,250, 500, 1000, 2500])
 
     # plt.legend()
     plt.show()
