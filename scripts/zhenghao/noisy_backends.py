@@ -6,6 +6,7 @@ from qiskit.aqua.operators import X, Y, Z, I, SummedOp, CircuitStateFn, StateFn,
 from qiskit.aqua import QuantumInstance
 
 from openfermion.ops.operators.qubit_operator import QubitOperator
+from openfermion import commutator
 
 from functools import partial
 
@@ -53,6 +54,29 @@ class QasmBackend:
             exp_value = sum(weighted_exp_value).real
 
         return exp_value
+
+    # Find ansatz element gradient as outlined in step 2 of iqeb_vqe in iqeb_vqe paper
+    @staticmethod
+    def ansatz_element_gradient(ansatz_element, var_parameters, ansatz, q_system, init_state_qasm=None,
+                                n_shots=1024, noise_model=None, coupling_map=None, method='automatic'):
+        if init_state_qasm is None:
+            init_state_qasm = QasmUtils.hf_state(q_system.n_electrons)
+        # Generate qasm string for ansatz
+        qasm_ansatz = QasmBackend.qasm_from_ansatz(ansatz, var_parameters)
+        qasm_psi = init_state_qasm + qasm_ansatz
+
+        # calculate the commutator of hamiltonian and excitation generator
+        T_generator = ansatz_element.excitations_generators[0]
+        hamiltonian = q_system.jw_qubit_ham
+        ham_T_commutator = commutator(hamiltonian, T_generator)
+
+        noisy_gradient = QasmBackend.built_in_pauli(qasm_psi=qasm_psi, hamiltonian=ham_T_commutator,
+                                                    n_qubits=q_system.n_qubits, n_shots=n_shots,
+                                                    noise_model=noise_model, coupling_map=coupling_map, method=method)
+
+        return noisy_gradient
+
+
 
     # Runs the built in PauliExpectation method for evaluating expectation value
     @staticmethod

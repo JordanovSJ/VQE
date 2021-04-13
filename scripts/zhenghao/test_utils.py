@@ -110,6 +110,22 @@ class TestUtils:
 
         return exp_value
 
+    # string looks like '[0.18348522 0.09088563 0.09690296 0.0510609  0.06823648]'
+    @staticmethod
+    def param_from_string(input_string: str):
+
+        param_string = input_string.replace('[', '').replace(']', '')
+        param_str_list = param_string.split(' ')
+        param_list = []
+        for elem in param_str_list:
+            if '.' in elem:
+                param_list.append(float(elem))
+
+        return param_list
+
+
+
+
 
     # @staticmethod
     # def h4_depth_count_from_csv(r):
@@ -145,3 +161,5 @@ class TestUtils:
     #     t1 = time.time()
     #
     #     return expectation_value, t1 - t0
+
+
