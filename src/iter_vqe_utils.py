@@ -321,3 +321,52 @@ class DataUtils:
         var_pars = list(data_frame['var_parameters'])
 
         return State(ansatz_elements, var_pars, q_system.n_qubits, q_system.n_electrons)
+
+    @staticmethod
+    def ansatz_elements_from_data_frame(data_frame, q_system):
+        ansatz_elements = []
+        for i in range(len(data_frame)):
+            element = data_frame.loc[i]['element']
+            element_qubits = data_frame.loc[i]['element_qubits']
+            if element[0] == 'e' and element[4] == 's':
+                ansatz_elements. \
+                    append(EffSFExc(ast.literal_eval(element_qubits)[0][0], ast.literal_eval(element_qubits)[1][0],
+                                    system_n_qubits=q_system.n_qubits))
+            elif element[0] == 'e' and element[4] == 'd':
+                ansatz_elements.append(EffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[0:3] == 's_f':
+                ansatz_elements.append(SFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[0:3] == 'd_f':
+                ansatz_elements.append(DFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[0] == 's' and element[2] == 'q':
+                # ansatz_elements.append(SQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                ansatz_elements \
+                    .append(SQExc(ast.literal_eval(element_qubits)[0][0], ast.literal_eval(element_qubits)[1][0],
+                                  system_n_qubits=q_system.n_qubits))
+            elif element[0] == 'd' and element[2] == 'q':
+                ansatz_elements.append(DQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[:2] == '1j':
+                ansatz_elements.append(PauliStringExc(QubitOperator(element), system_n_qubits=q_system.n_qubits))
+            elif element[:8] == 'spin_s_f':
+                try:
+                    ansatz_elements.append(
+                        SpinCompEffSFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+                except TypeError:
+                    # new format
+                    ansatz_elements.append(SpinCompEffSFExc(ast.literal_eval(element_qubits)[0][0],
+                                                            ast.literal_eval(element_qubits)[1][0],
+                                                            system_n_qubits=q_system.n_qubits))
+            elif element[:8] == 'spin_d_f':
+                ansatz_elements.append(
+                    SpinCompEffDFExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[:8] == 'spin_s_q':
+                ansatz_elements.append(
+                    SpinCompSQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            elif element[:8] == 'spin_d_q':
+                ansatz_elements.append(
+                    SpinCompDQExc(*ast.literal_eval(element_qubits), system_n_qubits=q_system.n_qubits))
+            else:
+                print(element, element_qubits)
+                raise Exception('Unrecognized ansatz element.')
+
+        return ansatz_elements

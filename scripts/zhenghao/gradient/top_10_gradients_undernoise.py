@@ -23,52 +23,35 @@ q_system = H4(r=1)
 # logging
 LogUtils.log_config()
 message = '{} molecule, Find ansatz element gradient'.format(q_system.name)
-time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
+time_stamp = datetime.datetime.now().strftime("%d-%b-%Y")
+logging.info(message)
+# <<<<<<<<<<<< QasmBackend >>>>>>>>>>>>>>>>>
+backend = QasmBackend
+n_shots = 1e-6
+method = 'automatic'
 
-# # <<<<<<<<<<<< QasmBackend >>>>>>>>>>>>>>>>>
-# backend = QasmBackend
-# n_shots = 1e-6
-# method = 'automatic'
-#
-# message = 'Backend is {}, n_shots={}, method={}'.format(backend.__name__, n_shots, method)
-# logging.info(message)
-
-# <<<<<<<<<<<< QiskitSimBackend >>>>>>>>>>>>>>>>>
-backend = QiskitSimBackend
-n_shots = 1e-6 # placeholder
-method = 'automatic' #placeholder
-
-message = 'Backend is {}'.format(backend.__name__)
+message = 'Backend is {}, n_shots={}, method={}'.format(backend.__name__, n_shots, method)
 logging.info(message)
 
 # <<<<<<<<<<<< NOISE >>>>>>>>>>>>>>>>>
-prob_2 = 1e-4
+prob_2 = 1e-6
 time_cx = 0
 
-if backend is QasmBackend:
+prob_1 = 0  # Single qubit gate depolarizing error prob
+prob_meas = prob_2
+time_single_gate = 0  # Gate time for single qubit gate
+time_meas = 0
+t1 = 50e3  # T1 in nanoseconds
+t2 = 50e3  # T2 in nanoseconds
+noise_model = NoiseUtils.unified_noise(prob_1=prob_1, prob_2=prob_2, prob_meas=prob_meas,
+                                       time_single_gate=time_single_gate, time_cx=time_cx,
+                                       time_measure=time_meas, t1=t1, t2=t2)
+coupling_map = None
 
-    prob_1 = 0  # Single qubit gate depolarizing error prob
-    prob_meas = prob_2
-    time_single_gate = 0  # Gate time for single qubit gate
-    time_meas = 0
-    t1 = 50e3  # T1 in nanoseconds
-    t2 = 50e3  # T2 in nanoseconds
-    noise_model = NoiseUtils.unified_noise(prob_1=prob_1, prob_2=prob_2, prob_meas=prob_meas,
-                                           time_single_gate=time_single_gate, time_cx=time_cx,
-                                           time_measure=time_meas, t1=t1, t2=t2)
-    coupling_map = None
-
-    message = 'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
-              'time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}. No coupling map.' \
-        .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
-    logging.info(message)
-else:
-    noise_model = None #placeholder
-    coupling_map = None #placeholder
-
-    message = 'No noise model. No coupling map.'
-    logging.info(message)
-
+message = 'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
+          'time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}. No coupling map.' \
+    .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
+logging.info(message)
 
 # <<<<<<<<<<<< ANSATZ >>>>>>>>>>>>>>>>>
 df_q_input = pd.read_csv('../../../results/iter_vqe_results/H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
@@ -96,10 +79,6 @@ else:
 # <<<<<<<<<<<< ITERATION >>>>>>>>>>>>>>>>>
 ansatz_element_type_list = ['q_exc', 'eff_f_exc']
 num_element_list = [0, 5, 9, 12]
-
-n_largest_grads = 10
-message = 'Take {} largest grads'.format(n_largest_grads)
-logging.info(message)
 
 for num_element in num_element_list:
 
@@ -130,50 +109,44 @@ for num_element in num_element_list:
 
         # <<<<<<<<<<<< Ansatz element pool >>>>>>>>>>>>>>>>>
         # create the pool of ansatz elements
-        ansatz_element_pool = SDExcitations(q_system.n_orbitals, q_system.n_electrons,
-                                            ansatz_element_type=ansatz_element_type).get_excitations()
+        qiskitsim_filename = '../../../results/zhenghao_testing/ansatz_element_gradient/' \
+                             '{}_{}_QiskitSim_p2={}_{}th_elem_13-Apr-2021.csv'\
+            .format(q_system.name, ansatz_element_type, prob_2, num_element+1)
+
+        qiskitsim_df = pd.read_csv(qiskitsim_filename)
+
+        ansatz_element_pool = DataUtils.ansatz_elements_from_data_frame(qiskitsim_df, q_system)
+
         message = 'Length of Ansatz element pool is {}'.format(len(ansatz_element_pool))
         logging.info(message)
 
-        # <<<<<<<<<<<< Getting the n largest elements >>>>>>>>>>>>>>>>>
+        # <<<<<<<<<<<< INITIALIZE DATAFRAME >>>>>>>>>>>>>>>>>
+        results_df = pd.DataFrame(columns=['element', 'element_qubits', 'gradient'])
+        filename = '../../../results/zhenghao_testing/ansatz_element_gradient/' \
+                    '{}_{}_Qasm_p2={}_{}th_element_{}.csv'. \
+            format(q_system.name, ansatz_element_type, prob_2, num_element + 1, time_stamp)
 
-        # get the n elements with largest gradients
-        elements_grads = GradientUtils.\
-                get_largest_gradient_elements(ansatz_element_pool, q_system,
-                                              backend=backend, n=n_largest_grads,
-                                              ansatz_parameters=var_pars,
-                                              ansatz=ansatz,
-                                              global_cache=None, excited_state=0,
-                                              n_shots=n_shots, noise_model=noise_model,
-                                              coupling_map=coupling_map, method=method)
+        # <<<<<<<<<<<< Recalculating the gradients under noise >>>>>>>>>>>>>>>>>
+        idx = 0
+        for ansatz_element in ansatz_element_pool:
+            t0 = time.time()
+            gradient = backend.ansatz_element_gradient(ansatz_element, var_pars, ansatz,
+                                                       q_system, n_shots=n_shots,noise_model=noise_model,
+                                                       coupling_map=coupling_map, method=method)
+            t1 = time.time()
 
-        elements = [e_g[0] for e_g in elements_grads]
-        grads = [e_g[1] for e_g in elements_grads]
+            element_name = ansatz_element.element
+            element_qubit = ansatz_element.qubits
 
-        elements_names = [el.element for el in elements]
+            message = 'Element {}, gradient {}, time {}'.format(element_name, gradient, t1-t0)
+            logging.info(message)
 
-        message = 'Elements with largest grads {}. Grads {}'.format(elements_names, grads)
-        logging.info(message)
+            results_df.loc[idx] = {'element': element_name, 'element_qubits': element_qubit,
+                                   'gradient': gradient}
 
-        # <<<<<<<<<<<< SAVING TO CSV FILE >>>>>>>>>>>>>>>>>
-        results_df = pd.DataFrame(columns=['rank', 'ansatz_element', 'gradient'])
+            results_df.to_csv(filename)
 
-        if backend is QiskitSimBackend:
-            file_name = '../../../results/zhenghao_testing/ansatz_element_gradient/' \
-                    '{}_{}_QiskitSim_p2={}_{}th_elem_{}.csv'.\
-            format(q_system.name, ansatz_element_type, prob_2, num_element+1, time_stamp)
-        else:
-            file_name = '../../../results/zhenghao_testing/ansatz_element_gradient/' \
-                        '{}_{}_p2={}_{}th_element_{}.csv'.\
-                format(q_system.name, ansatz_element_type, prob_2, num_element+1, time_stamp)
-
-        rank = np.flip(np.arange(1, n_largest_grads+1, 1))
-
-        results_df['rank'] = rank
-        results_df['ansatz_element'] = elements_names
-        results_df['gradient'] = grads
-
-        results_df.to_csv(file_name)
+            idx +=1
 
 
 
