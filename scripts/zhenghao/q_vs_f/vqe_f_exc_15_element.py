@@ -30,7 +30,7 @@ time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
 # <<<<<<<<<<<< TUNABLE PARAMETERS >>>>>>>>>>>>>>>>>
 ansatz_element_type = 'eff_f_exc'
-num_ansatz_element = 15  # Take only the first x ansatz elements
+num_ansatz_element = 13  # Take only the first x ansatz elements
 
 df_input = pd.read_csv('../../../results/iter_vqe_results/H4_adapt_vqe_eff_f_exc_r=1_09-Mar-2021.csv')
 ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
@@ -38,7 +38,7 @@ ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
 # var_pars = [1e-4]*len(ansatz)  # ansatz_state.parameters
 rest_pars = 0.01
 
-prob_2 = 1e-4
+prob_2 = 1e-6
 time_cx = 0  # Gate time for cx gate
 
 backend = QasmBackend
@@ -62,16 +62,17 @@ logging.info(message)
 message = 'Length of {} based ansatz is {}'.format(ansatz_element_type, len(ansatz))
 logging.info(message)
 
-assert prob_2 == 1e-4 
-#if prob_2 == 1e-6:
+assert prob_2 == 1e-6
+if prob_2 == 1e-6:
     # ref pars from '../../../results/zhenghao_testing/H4_vqe_eff_f_exc_COBYLA_p=1e-06_tcx=0_shots=1000000.0_18-Mar-2021 (19:13:52.870310).csv'
-#    ref_pars = [0.18558055, 0.083717, 0.06773141, 0.04806205, 0.05149392,
-#                0.0383456, -0.0445593, -0.03448649, 0.02921194, 0.03233799, -0.02597971]
-if prob_2 == 1e-4:
+    ref_pars = [0.18558055, 0.083717, 0.06773141, 0.04806205, 0.05149392, 0.0383456, -0.0445593, -0.03448649, 0.02921194, 0.03233799, -0.02597971]
+elif prob_2 == 1e-4:
     # ref pars from '../../../results/zhenghao_testing/H4_vqe_eff_f_exc_COBYLA_p=0.0001_tcx=0_11_elements_shots=1000000.0_22-Mar-2021 (22:47:33.008108).csv'
     ref_pars = [0.18247941, 0.10199824, 0.06463495, 0.05079814, 0.07627187, 0.05919886, -0.037509,  -0.06268901, 0.03498629, 0.03352449, 0.0060891]
+else: 
+    raise Exception('No init data for prob_2={}'.format(prob_2))
 
-    var_pars = ref_pars + [rest_pars] * (len(ansatz) - len(ref_pars))
+var_pars = ref_pars + [rest_pars] * (len(ansatz) - len(ref_pars))
 
 # <<<<<<<<<<<< Noise Model >>>>>>>>>>>>>>>>>
 # Noise model

@@ -27,7 +27,7 @@ time_stamp = datetime.datetime.now().strftime("%d-%b-%Y")
 logging.info(message)
 # <<<<<<<<<<<< QasmBackend >>>>>>>>>>>>>>>>>
 backend = QasmBackend
-n_shots = 1e-6
+n_shots = 1e6
 method = 'automatic'
 
 message = 'Backend is {}, n_shots={}, method={}'.format(backend.__name__, n_shots, method)

@@ -1,0 +1,9 @@
+INFO 2021-04-13 21:24:06,292 H4 molecule, Find ansatz element gradient
+INFO 2021-04-13 21:24:06,292 Backend is QasmBackend, n_shots=1e-06, method=automatic
+INFO 2021-04-13 21:24:06,293 Noise model generated for prob_1 = 0, prob_2=0.0001, prob_meas=0.0001 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0. No coupling map.
+INFO 2021-04-13 21:24:06,322 
+INFO 2021-04-13 21:24:06,322 Existing 0 elements, find gradient for 1th element
+INFO 2021-04-13 21:24:06,322 
+INFO 2021-04-13 21:24:06,322 ansatz element type
+INFO 2021-04-13 21:24:06,322 var pars = [0]
+INFO 2021-04-13 21:24:06,329 Length of Ansatz element pool is 10
