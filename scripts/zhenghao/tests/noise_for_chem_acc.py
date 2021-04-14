@@ -55,8 +55,8 @@ unified_noise = partial(NoiseUtils.unified_noise, prob_1=prob_1,
                         t1=t1, t2=t2)
 
 noise_model_list = []
-prob_2_list = [1e-5, 1e-6]
-prob_meas_list = [1e-5, 1e-6]
+prob_2_list = [1e-4]
+prob_meas_list = [1e-4]
 for prob_2, prob_meas in zip(prob_2_list, prob_meas_list):
     noise_model_list.append(unified_noise(prob_2=prob_2, prob_meas=prob_meas))
 
@@ -97,7 +97,7 @@ results_df = pd.DataFrame(columns=['prob_1', 'prob_2', 'prob_meas',
                                    'exact_q_exc', 'exact_f_exc',
                                    'exp_value_q_exc', 'exp_value_f_exc',
                                    'time_q_exc', 'time_f_exc'])
-filename = '../../../results/zhenghao_testing/{}_noise_for_chem_acc_{}.csv' \
+filename = '../../../results/zhenghao_testing/noise_for_chem_acc/{}_noise_for_chem_acc_{}.csv' \
     .format(molecule.name, time_stamp)
 
 # <<<<<<<<<<<< EXPECTATION VALUE FUNCTION CONFIGURATIONS>>>>>>>>>>>>>>>>>

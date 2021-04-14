@@ -262,6 +262,16 @@ plt.ylabel('Energy (Hartree)')
 plt.legend()
 plt.title('Fermionic vs Qubit excitation based iterative VQE with H4(r=1)')
 
+plt.figure(0)
+plt.plot(df_adapt_f_input['n'], df_adapt_f_input['cnot_count'], label='F Ansatz')
+plt.plot(df_adapt_q_input['n'], df_adapt_q_input['cnot_count'], label='Q Ansatz')
+plt.xlabel('Number of elements')
+plt.ylabel('CNOT count')
+plt.legend()
+xint = range(0, 20)
+plt.xticks(xint)
+plt.title('CNOT count vs number of elements')
+
 diff_cnot = df_adapt_f_input['cnot_count']-df_adapt_q_input['cnot_count']
 diff_cnot_noisy = [diff_cnot[i-1] for i in num_element_list]
 diff_cnot_tcx = [diff_cnot[i-1] for i in tcx_num_elem_list]
@@ -361,3 +371,6 @@ plt.xlabel('Number of Ansatz elements')
 plt.ylabel('Energy difference from qiskitsim (Hartree)')
 plt.legend()
 plt.title('Fermionic vs Qubit excitation based iterative VQE with H4(r=1)')
+
+
+
