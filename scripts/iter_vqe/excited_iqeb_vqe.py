@@ -25,7 +25,7 @@ if __name__ == "__main__":
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
-    excited_state = 3
+    excited_state = 4
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
@@ -36,13 +36,15 @@ if __name__ == "__main__":
 
     df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
     df2 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_2_iqeb_q_exc_n=10_r=1_02-Apr-2021.csv')
+    df3 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_3_iqeb_q_exc_n=10_r=1_08-Apr-2021.csv')
 
     ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
     exc_state_1 = DataUtils.ansatz_from_data_frame(df1, molecule)
     exc_state_2 = DataUtils.ansatz_from_data_frame(df2, molecule)
+    exc_state_3 = DataUtils.ansatz_from_data_frame(df3, molecule)
 
     molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state], [abs(molecule.hf_energy)*2, exc_state_1],
-                                    [abs(molecule.hf_energy)*2, exc_state_2]]
+                                    [abs(molecule.hf_energy)*2, exc_state_2], [abs(molecule.hf_energy)*2, exc_state_3]]
 
     n_largest_grads = 10
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
