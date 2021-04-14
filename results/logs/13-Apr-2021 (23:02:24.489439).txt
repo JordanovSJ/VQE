@@ -1,0 +1,10 @@
+INFO 2021-04-13 23:02:24,490 H4, finding standard deviation of measurements
+INFO 2021-04-13 23:02:24,490 n_qubits = 8, n_electrons = 4
+INFO 2021-04-13 23:02:24,490 Hamiltonian is molecule.jw_qubit_ham
+INFO 2021-04-13 23:02:24,490 prob_1 = 0, prob_2=1e-06, prob_meas=1e-06 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0
+INFO 2021-04-13 23:02:24,529 n_shots=1, method=automatic
+INFO 2021-04-13 23:02:24,531 Repeat measurements for 1 times
+INFO 2021-04-13 23:02:24,531 
+INFO 2021-04-13 23:02:24,531 i=1
+INFO 2021-04-13 23:02:45,170 exp_value_q_exc=-2.174502489746906, time_q_exc=20.639078855514526
+INFO 2021-04-13 23:03:09,719 exp_value_f_exc=-2.1987290448468393, time_f_exc=24.548977613449097

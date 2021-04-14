@@ -1,0 +1,2 @@
+,prob_1,prob_2,prob_meas,time_single_gate,time_cx,time_meas,t1,t2,exact_q_exc,exact_f_exc,exp_value_q_exc,exp_value_f_exc,time_q_exc,time_f_exc
+0,0,1e-05,1e-05,0,0,0,50000.0,50000.0,-2.166387448527459,-2.1663874485274657,-2.1645587088989098,-2.1642056828067453,258.3888201713562,250.2489492893219

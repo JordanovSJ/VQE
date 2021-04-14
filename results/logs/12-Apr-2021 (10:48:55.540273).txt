@@ -1,0 +1,15 @@
+INFO 2021-04-12 10:48:55,541 H4, test noise levels for chem accuracy
+INFO 2021-04-12 10:48:55,541 n_qubits = 8, n_electrons = 4
+INFO 2021-04-12 10:48:55,541 Hamiltonian is molecule.jw_qubit_ham
+INFO 2021-04-12 10:48:55,541 prob_1 = 0, time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0
+INFO 2021-04-12 10:48:55,542 Noise models generated for prob_2 = [0.0001], prob_meas = [0.0001]
+INFO 2021-04-12 10:48:57,049 QiskitSimBackend values are, for q_exc=-2.166387448527459, for f_exc=-2.1663874485274657
+INFO 2021-04-12 10:48:57,051 n_shots=1000000.0, method=automatic
+INFO 2021-04-12 10:48:57,051 
+INFO 2021-04-12 10:48:57,051 Noise model is NoiseModel:
+  Basis gates: ['cx', 'id', 'u3']
+  Instructions with noise: ['measure', 'cx']
+  All-qubits errors: ['cx', 'measure']
+INFO 2021-04-12 10:48:57,051 prob_2 = 0.0001, prob_meas = 0.0001
+INFO 2021-04-12 10:52:52,757 exp_value_q_exc=-2.14742541909676, time_q_exc=235.70571422576904
+INFO 2021-04-12 10:56:51,912 exp_value_f_exc=-2.142836049755664, time_f_exc=239.15539979934692

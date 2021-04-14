@@ -1,0 +1,14 @@
+INFO 2021-03-18 21:57:35,785 q_exc type, prob_2=1e-05, time_cx=0, backend=<class 'src.backends.QiskitSimBackend'>, n_shots=1000000.0, method =automatic, optimizer=COBYLA
+INFO 2021-03-18 21:57:35,786 Length of q_exc based ansatz is 1
+INFO 2021-03-18 21:57:35,789 Noise model generated for prob_1 = 0, prob_2=1e-05, prob_meas=1e-05 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0. No coupling map.
+INFO 2021-03-18 21:57:35,790 Backend is <class 'src.backends.QiskitSimBackend'>, n_shots=1000000.0, method=automatic
+INFO 2021-03-18 21:58:53,984 -----Running VQE for: H4-----
+-----Number of electrons: 4-----
+-----Number of orbitals: 8-----
+-----Numeber of ansatz elements: 1-----
+-----Ansatz type d_q_exc_[2, 3]_[4, 5]------
+-----Statevector and energy calculated using <class 'src.backends.QiskitSimBackend'>------
+-----Optimizer COBYLA------
+
+INFO 2021-03-18 22:02:46,777 Iteration: 1. Energy -2.0636691507603753.  Energy change 3.488e-02 , Iteration duration: 124.50774145126343 Params: [0.1]
+INFO 2021-03-18 22:06:04,695 Iteration: 2. Energy -1.3816759041931619.  Energy change 6.820e-01 , Iteration duration: 278.1683461666107 Params: [1.1]
