@@ -131,7 +131,7 @@ for num_element in num_element_list:
         for ansatz_element in ansatz_element_pool:
             t0 = time.time()
             gradient = backend.ansatz_element_gradient(ansatz_element, var_pars, ansatz,
-                                                       q_system, n_shots=n_shots,noise_model=noise_model,
+                                                       q_system, n_shots=n_shots, noise_model=noise_model,
                                                        coupling_map=coupling_map, method=method)
             t1 = time.time()
 
