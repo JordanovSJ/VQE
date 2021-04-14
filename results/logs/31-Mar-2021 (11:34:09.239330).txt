@@ -1,0 +1,2 @@
+INFO 2021-03-31 11:34:09,240 LiH, r=1.25 ,eff_f_exc
+INFO 2021-03-31 11:34:11,373 Calculating excitation generators

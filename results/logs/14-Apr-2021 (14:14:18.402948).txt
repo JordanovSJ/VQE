@@ -1,0 +1,15 @@
+INFO 2021-04-14 14:14:18,404 H4, finding standard deviation of measurements
+INFO 2021-04-14 14:14:18,404 n_qubits = 8, n_electrons = 4
+INFO 2021-04-14 14:14:18,404 Hamiltonian is molecule.jw_qubit_ham
+INFO 2021-04-14 14:14:18,404 prob_1 = 0, prob_2=1e-06, prob_meas=1e-06 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0
+INFO 2021-04-14 14:14:18,446 n_shots=100, method=automatic
+INFO 2021-04-14 14:14:18,448 Repeat measurements for 1 times
+INFO 2021-04-14 14:14:18,448 Measure std dev for [10] elements
+INFO 2021-04-14 14:14:18,448 
+INFO 2021-04-14 14:14:18,448 num_elem = 10
+INFO 2021-04-14 14:14:18,448 var pars for q exc is [-0.15700251, -0.05939121, -0.06131015, -0.05507249, -0.07076441, -0.05149099, 0.05505472, 0.04616273, 0.04622932, 0.02731324]
+INFO 2021-04-14 14:14:18,449 var pars for f exc is [0.18853252, 0.09384958, 0.10047294, 0.05347304, 0.06961271, 0.04686002, -0.0503981, -0.03238111, 0.02981449, 0.02145587]
+INFO 2021-04-14 14:14:18,449 
+INFO 2021-04-14 14:14:18,449 i=1
+INFO 2021-04-14 14:14:35,496 exp_value_q_exc=-2.1206719085488093, time_q_exc=17.046802759170532
+INFO 2021-04-14 14:14:53,915 exp_value_f_exc=-2.232746296086625, time_f_exc=18.418453693389893

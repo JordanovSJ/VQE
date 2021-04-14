@@ -1,0 +1,6 @@
+INFO 2021-04-07 23:36:37,466 ansatz element type
+INFO 2021-04-07 23:36:37,485 Take first 5 ansatz elements found by adapt vqe as ansatz, test the gradient for the 6th element
+INFO 2021-04-07 23:36:37,530 ('Length of new pool', 106)
+INFO 2021-04-07 23:36:37,530 backend is QiskitSimBackend
+INFO 2021-04-07 23:36:37,531 take 10 largest grads
+INFO 2021-04-07 23:37:03,228 Elements with largest grads ['eff_d_f_exc_[1, 3]_[5, 7]', 'eff_d_f_exc_[0, 2]_[4, 6]', 'eff_d_f_exc_[0, 3]_[5, 6]', 'eff_d_f_exc_[1, 2]_[4, 7]', 'eff_d_f_exc_[0, 1]_[6, 7]', 'eff_d_f_exc_[1, 2]_[5, 6]', 'eff_d_f_exc_[0, 3]_[4, 7]', 'eff_d_f_exc_[0, 1]_[4, 5]', 'eff_d_f_exc_[2, 3]_[6, 7]', 'eff_d_f_exc_[2, 3]_[4, 5]']. Grads [-0.08696079327153074, -0.08696079327153075, 0.10638924465793714, 0.10638924465793714, -0.1536498383000225, -0.17567070446380934, -0.17567070446380936, -0.18642544132490538, -0.20498532036164505, -0.2620523157813099]

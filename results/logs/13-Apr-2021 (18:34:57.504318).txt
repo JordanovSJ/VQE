@@ -1,0 +1,2 @@
+INFO 2021-04-13 18:34:57,505 Backend is QiskitSimBackend
+INFO 2021-04-13 18:34:57,505 No noise model. No coupling map.
