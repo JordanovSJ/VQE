@@ -23,8 +23,8 @@ r = 1
 frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
 q_system = H4(r=r) #(r=r, frozen_els=frozen_els)
 
-num_elem_list = [7, 9]
-ansatz_type_list = ['eff_f_exc', 'q_exc']
+num_elem_list = [8]
+ansatz_type_list = ['q_exc', 'eff_f_exc']
 
 for ansatz_element_type in ansatz_type_list:
     for num_ansatz_element in num_elem_list:
@@ -47,8 +47,8 @@ for ansatz_element_type in ansatz_type_list:
         ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
         var_pars = [1e-4] * len(ansatz)  # ansatz_state.parameters
 
-        prob_2 = 1e-6
-        time_cx = 0  # Gate time for cx gate
+        prob_2 = 1e-4
+        time_cx = 10  # Gate time for cx gate
 
         backend = QasmBackend
         n_shots = 1e6
