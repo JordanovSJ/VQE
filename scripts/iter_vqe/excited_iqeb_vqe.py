@@ -21,15 +21,16 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.546
+    r = 1.5
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH(r=r)  # (frozen_els=frozen_els)
-    excited_state = 0
+    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
+    excited_state = 1
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
-    df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
+    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=15_19-Nov-2020.csv')
+    #df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
     # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv')
     # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=1_r=1546_29-Mar-2021.csv')
     # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=10_r=3_17-Mar-2021.csv')
@@ -46,7 +47,14 @@ if __name__ == "__main__":
     molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state], [abs(molecule.hf_energy)*2, exc_state_1],
                                     [abs(molecule.hf_energy)*2, exc_state_2], [abs(molecule.hf_energy)*2, exc_state_3]]
 
+    # <<<<<<<<<<<<< IQEB-VQE params>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
     n_largest_grads = 10
+
+    # <<<<<<<<<<<<<<< INIT REF STATE >>>>>>>>>>>>>>>>>>>>>>>>>>>.
+    init_state_qasm = QasmUtils.hf_state(molecule.n_electrons)
+    init_state_qasm += SQExc(molecule.n_electrons-1, molecule.n_electrons).get_qasm(numpy.pi/2)
+
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
     ansatz_element_type = 'q_exc'
@@ -96,6 +104,10 @@ if __name__ == "__main__":
         # precompute commutator matrices, that are use in excitation gradient calculation
         global_cache = GlobalCache(molecule, excited_state=excited_state)
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz_element_pool)
+
+        init_statevector = QiskitSimBackend.statevector_from_qasm(init_state_qasm)  #TODO: change. this is lazy
+        init_sparse_statevector = scipy.sparse.csr_matrix(init_statevector).transpose().conj()
+        global_cache.init_sparse_statevector = init_sparse_statevector
         # global_cache.calculate_commutators_sparse_matrices_dict(ansatz_element_pool)
     else:
         global_cache = None

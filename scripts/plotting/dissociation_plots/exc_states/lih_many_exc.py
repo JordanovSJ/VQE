@@ -20,7 +20,7 @@ if __name__ == "__main__":
     # lih_exc_guccsd_df = pandas.read_csv('../../../../results/dissociation_curves/LiH_exc_1_guccsd_03-Apr-2021 (13:40:01.204422).csv')
     # lih_exc_uccsd_df = pandas.read_csv('../../../../results/dissociation_curves/LiH_exc_1_uccsd_04-Apr-2021 (12:20:22.358678).csv')
 
-    col = 'error'
+    col = 'tot_error'
 
     plt.plot(lih_g_08_df['r'], lih_g_08_df[col], label=r'Ground', marker='+', linewidth=0.5, color='blue')
     plt.plot(lih_exc_1_08['r'], lih_exc_1_08[col], label=r'$1^{st}$ excited', marker='+', linewidth=0.5, color='red')
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     plt.ylabel(r'$E-E_{FCI}$, Hartree')
 
     # plt.ylim(-7.9, -7.55)
-    plt.ylim(1e-13, 1e-6)
+    plt.ylim(1e-9, 1e-6)
     plt.yscale('log')
 
     plt.xlim(0.75, 3.75)

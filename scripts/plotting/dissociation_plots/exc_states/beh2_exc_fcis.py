@@ -94,6 +94,8 @@ if __name__ == "__main__":
     axins.set_xlim(x1, x2)
     axins.xaxis.tick_top()
     axins.set_ylim(y1, y2)
+    axins.set_yscale('log')
+
     ax.fill_between([0.5, 3.75], 1e-9, 1e-3, color='lavender', label='chem. accuracy')
     mark_inset(ax, axins, loc1=4, loc2=3, fc="none", ec="0", linewidth=.5)
 
