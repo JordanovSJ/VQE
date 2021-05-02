@@ -1,0 +1,11 @@
+INFO 2021-05-01 17:46:44,812 H4, test shot noise against shot number
+INFO 2021-05-01 17:46:44,812 n_qubits = 8, n_electrons = 4
+INFO 2021-05-01 17:46:44,812 Hamiltonian is molecule.jw_qubit_ham
+INFO 2021-05-01 17:46:44,812 No quantum noise
+INFO 2021-05-01 17:46:44,861 Entire Ansatz for both q and f
+INFO 2021-05-01 17:46:45,887 QiskitSimBackend values are, for q_exc=-2.166387448527458, for f_exc=-2.166387448527465
+INFO 2021-05-01 17:46:45,889 n_shots=[100, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0], method=automatic
+INFO 2021-05-01 17:46:45,889 
+INFO 2021-05-01 17:46:45,889 n_shots=100
+INFO 2021-05-01 17:46:59,331 exp_value_q_exc=-2.064828475631528, time_q_exc=13.442201614379883
+INFO 2021-05-01 17:47:14,133 exp_value_f_exc=-2.2116176417793914, time_f_exc=14.801808595657349
