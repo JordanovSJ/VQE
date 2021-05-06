@@ -23,7 +23,8 @@ r = 1
 frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
 q_system = H4(r=r) #(r=r, frozen_els=frozen_els)
 
-num_elem_list = [8]
+num_elem_list = [5, 6, 7, 8, 9]
+# ansatz_type_list = ['eff_f_exc']
 ansatz_type_list = ['q_exc', 'eff_f_exc']
 
 for ansatz_element_type in ansatz_type_list:
@@ -47,8 +48,8 @@ for ansatz_element_type in ansatz_type_list:
         ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
         var_pars = [1e-4] * len(ansatz)  # ansatz_state.parameters
 
-        prob_2 = 1e-4
-        time_cx = 10  # Gate time for cx gate
+        prob_2 = 0
+        time_cx = 0  # Gate time for cx gate
 
         backend = QasmBackend
         n_shots = 1e6
@@ -79,14 +80,17 @@ for ansatz_element_type in ansatz_type_list:
         time_meas = 0
         t1 = 50e3  # T1 in nanoseconds
         t2 = 50e3  # T2 in nanoseconds
-        noise_model = NoiseUtils.unified_noise(prob_1=prob_1, prob_2=prob_2, prob_meas=prob_meas,
-                                               time_single_gate=time_single_gate, time_cx=time_cx,
-                                               time_measure=time_meas, t1=t1, t2=t2)
+        noise_model = None 
+        #               NoiseUtils.unified_noise(prob_1=prob_1, prob_2=prob_2, prob_meas=prob_meas,
+        #                                       time_single_gate=time_single_gate, time_cx=time_cx,
+        #                                       time_measure=time_meas, t1=t1, t2=t2)
         coupling_map = None
 
-        message = 'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
-                  'time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}. No coupling map.' \
-            .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
+
+        message = 'Noise model and coupling map is None'
+        #          'Noise model generated for prob_1 = {}, prob_2={}, prob_meas={} ' \
+        #          'time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}. No coupling map.' \
+        #    .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
         logging.info(message)
 
         # <<<<<<<<<<<< BACKEND >>>>>>>>>>>>>>>>>
