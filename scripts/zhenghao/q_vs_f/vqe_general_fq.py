@@ -23,9 +23,9 @@ r = 1
 frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
 q_system = H4(r=r) #(r=r, frozen_els=frozen_els)
 
-num_elem_list = [5, 6, 7, 8, 9]
+num_elem_list = [12, 13, 14, 15, 16]
 # ansatz_type_list = ['eff_f_exc']
-ansatz_type_list = ['q_exc', 'eff_f_exc']
+ansatz_type_list = ['q_exc']
 
 for ansatz_element_type in ansatz_type_list:
     for num_ansatz_element in num_elem_list:
@@ -46,7 +46,22 @@ for ansatz_element_type in ansatz_type_list:
 
         ansatz_state = DataUtils.ansatz_from_data_frame(df_input, q_system)
         ansatz = ansatz_state.ansatz_elements[0:num_ansatz_element]
-        var_pars = [1e-4] * len(ansatz)  # ansatz_state.parameters
+
+        if num_ansatz_element <= 11:
+            var_pars = [1e-4] * len(ansatz)  # ansatz_state.parameters
+        else:
+            if ansatz_element_type == 'q_exc':
+                var_11elem = [-0.16113051, -0.07216184, -0.08116888, -0.04973681, -0.08341565, -0.06251243,
+                          0.04904151,  0.05637961,  0.01231428,  0.02673042, -0.02864552]
+
+            elif ansatz_element_type == 'eff_f_exc':
+                var_11elem = [ 0.18973401,  0.08493783,  0.09261623,  0.03932642,  0.05916681,  0.03622804,
+                                -0.05035632, -0.04037079,  0.0297803,   0.02653783, -0.00189867]
+            else:
+                raise Exception('{} not supported'.format(ansatz_element_type))
+
+            var_pars = var_11elem + [1e-2] * (len(ansatz) - len(var_11elem))
+
 
         prob_2 = 0
         time_cx = 0  # Gate time for cx gate
