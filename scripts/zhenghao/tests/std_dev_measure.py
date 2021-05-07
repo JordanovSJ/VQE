@@ -31,7 +31,7 @@ logging.info(message)
 
 # <<<<<<<<<<<< Noise Model >>>>>>>>>>>>>>>>>
 # Noise model
-prob_2 = 1e-4
+prob_2 = 1e-6
 prob_meas = prob_2
 
 prob_1 = 0  # Single qubit gate depolarizing error prob
@@ -86,18 +86,14 @@ method = 'automatic'
 message = 'n_shots={}, method={}'.format(n_shots, method)
 logging.info(message)
 
-# <<<<<<<<<< INITIALISE DATAFRAME TO COLLECT RESULTS >>>>>>>>>>>>.
-results_df = pd.DataFrame(columns=['i', 'q_energy', 'q_time', 'f_energy', 'f_time'])
-filename = '../../../results/zhenghao_testing/std_dev/{}_p2={}_shots={}_{}.csv' \
-    .format(molecule.name, prob_2, n_shots, time_stamp)
-
 # <<<<<<<<<<<< Repeat measurements to find std dev >>>>>>>>>>>>>>>>>
-num_repeat = 100
+num_repeat = 0
 
 message = 'Repeat measurements for {} times'.format(num_repeat)
 logging.info(message)
 
 num_element_list = [10]
+assert len(num_element_list) == 1 #it does not make sense to save data for different elements in the same file
 message = 'Measure std dev for {} elements'.format(num_element_list)
 logging.info(message)
 
@@ -108,6 +104,12 @@ for num_elem in num_element_list:
     message = 'num_elem = {}'.format(num_elem)
     logging.info('')
     logging.info(message)
+
+    # <<<<<<<<<< INITIALISE DATAFRAME TO COLLECT RESULTS >>>>>>>>>>>>.
+    results_df = pd.DataFrame(columns=['i', 'q_exact', 'q_energy', 'q_time',
+                                       'f_exact', 'f_energy', 'f_time'])
+    filename = '../../../results/zhenghao_testing/std_dev/{}_p2={}_shots={}_{}elem_{}.csv' \
+        .format(molecule.name, prob_2, n_shots, num_elem, time_stamp)
 
     # <<<<<<<<<<<< PARAMETERS >>>>>>>>>>>>>>>>>
     param_q_df = param_dict['q_exc']
@@ -122,6 +124,17 @@ for num_elem in num_element_list:
     message = 'var pars for f exc is {}'.format(var_pars_f_exc)
     logging.info(message)
 
+    exact_q = QiskitSimBackend.ham_expectation_value(var_parameters=var_pars_q_exc,
+                                                     ansatz=ansatz_q_exc[:num_elem],
+                                                     q_system=molecule)
+    message = 'q_exact = {}'.format(exact_q)
+    logging.info(message)
+
+    exact_f = QiskitSimBackend.ham_expectation_value(var_parameters=var_pars_f_exc,
+                                                     ansatz=ansatz_f_exc[:num_elem],
+                                                     q_system=molecule)
+    message = 'f_exact = {}'.format(exact_f)
+    logging.info(message)
 
     for idx in range(1, num_repeat+1):
 
@@ -149,7 +162,7 @@ for num_elem in num_element_list:
         logging.info(message)
 
         results_df.loc[idx-1] = {
-            'i': idx, 'q_energy': exp_value_q, 'q_time': time_q,
-            'f_energy': exp_value_f, 'f_time': time_f
+            'i': idx, 'q_exact': exact_q,'q_energy': exp_value_q, 'q_time': time_q,
+            'f_exact': exact_f,'f_energy': exp_value_f, 'f_time': time_f
         }
         results_df.to_csv(filename)
