@@ -41,19 +41,23 @@ time_meas = 0
 t1 = 50e3  # T1 in nanoseconds
 t2 = 50e3  # T2 in nanoseconds
 
-message = 'prob_1 = {}, prob_2={}, prob_meas={} time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}' \
+message = 'The parameters are the results of VQE run under ' \
+          'prob_1 = {}, prob_2={}, prob_meas={} time_single_gate={}, time_cx={}, time_meas={}, t1={}, t2={}' \
     .format(prob_1, prob_2, prob_meas, time_single_gate, time_cx, time_meas, t1, t2)
 logging.info(message)
 
 
-unified_noise = partial(NoiseUtils.unified_noise, prob_1=prob_1,
-                        time_single_gate=time_single_gate,
-                        time_cx=time_cx, time_measure=time_meas,
-                        t1=t1, t2=t2)
+# unified_noise = partial(NoiseUtils.unified_noise, prob_1=prob_1,
+#                         time_single_gate=time_single_gate,
+#                         time_cx=time_cx, time_measure=time_meas,
+#                         t1=t1, t2=t2)
 
-noise_model = unified_noise(prob_2=prob_2, prob_meas=prob_meas)
+# noise_model = unified_noise(prob_2=prob_2, prob_meas=prob_meas)
 
-
+noise_model = None
+message = 'Noise model = None. We evaluate the expectation value under shot noise only, with parameters defined by ' \
+          'previously run VQE under aforementioned noise level.'
+logging.info(message)
 # <<<<<<<<<<<< INPUT ANSATZ >>>>>>>>>>>>>>>>>
 df_q_exc = pd.read_csv('../../../results/iter_vqe_results/'
                        'H4_adapt_vqe_q_exc_r=1_08-Mar-2021.csv')
@@ -93,7 +97,6 @@ message = 'Repeat measurements for {} times'.format(num_repeat)
 logging.info(message)
 
 num_element_list = [10]
-assert len(num_element_list) == 1 #it does not make sense to save data for different elements in the same file
 message = 'Measure std dev for {} elements'.format(num_element_list)
 logging.info(message)
 
@@ -108,8 +111,8 @@ for num_elem in num_element_list:
     # <<<<<<<<<< INITIALISE DATAFRAME TO COLLECT RESULTS >>>>>>>>>>>>.
     results_df = pd.DataFrame(columns=['i', 'q_exact', 'q_energy', 'q_time',
                                        'f_exact', 'f_energy', 'f_time'])
-    filename = '../../../results/zhenghao_testing/std_dev/{}_p2={}_shots={}_{}elem_{}.csv' \
-        .format(molecule.name, prob_2, n_shots, num_elem, time_stamp)
+    filename = '../../../results/zhenghao_testing/std_dev/shot_noise_only/{}_{}shots_{}elem_params_for_p2={}_{}.csv' \
+        .format(molecule.name, n_shots, num_elem, prob_2, time_stamp)
 
     # <<<<<<<<<<<< PARAMETERS >>>>>>>>>>>>>>>>>
     param_q_df = param_dict['q_exc']
