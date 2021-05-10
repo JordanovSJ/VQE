@@ -1,0 +1,25 @@
+INFO 2021-05-07 14:54:50,850 H4, finding standard deviation of measurements
+INFO 2021-05-07 14:54:50,850 n_qubits = 8, n_electrons = 4
+INFO 2021-05-07 14:54:50,850 Hamiltonian is molecule.jw_qubit_ham
+INFO 2021-05-07 14:54:50,850 The parameters are the results of VQE run under prob_1 = 0, prob_2=1e-06, prob_meas=1e-06 time_single_gate=0, time_cx=0, time_meas=0, t1=50000.0, t2=50000.0
+INFO 2021-05-07 14:54:50,850 Noise model = None. We evaluate the expectation value under shot noise only, with parameters defined by previously run VQE under aforementioned noise level.
+INFO 2021-05-07 14:54:50,884 n_shots=1000, method=automatic
+INFO 2021-05-07 14:54:50,884 Repeat measurements for 100 times
+INFO 2021-05-07 14:54:50,884 Measure std dev for [10] elements
+INFO 2021-05-07 14:54:50,884 
+INFO 2021-05-07 14:54:50,884 num_elem = 10
+INFO 2021-05-07 14:54:50,886 var pars for q exc is [-0.15700251, -0.05939121, -0.06131015, -0.05507249, -0.07076441, -0.05149099, 0.05505472, 0.04616273, 0.04622932, 0.02731324]
+INFO 2021-05-07 14:54:50,886 var pars for f exc is [0.18853252, 0.09384958, 0.10047294, 0.05347304, 0.06961271, 0.04686002, -0.0503981, -0.03238111, 0.02981449, 0.02145587]
+INFO 2021-05-07 14:54:51,341 q_exact = -2.1641790513805517
+INFO 2021-05-07 14:54:51,821 f_exact = -2.1650602381709065
+INFO 2021-05-07 14:54:51,821 
+INFO 2021-05-07 14:54:51,821 i=1
+INFO 2021-05-07 14:55:01,219 exp_value_q_exc=-2.170643538936302, time_q_exc=9.39806318283081
+INFO 2021-05-07 14:55:11,201 exp_value_f_exc=-2.152102353113056, time_f_exc=9.981689929962158
+INFO 2021-05-07 14:55:11,207 
+INFO 2021-05-07 14:55:11,207 i=2
+INFO 2021-05-07 14:55:21,078 exp_value_q_exc=-2.165672635363276, time_q_exc=9.871295690536499
+INFO 2021-05-07 14:55:31,180 exp_value_f_exc=-2.166381439631283, time_f_exc=10.101302146911621
+INFO 2021-05-07 14:55:31,184 
+INFO 2021-05-07 14:55:31,184 i=3
+INFO 2021-05-07 14:55:40,705 exp_value_q_exc=-2.164613275562992, time_q_exc=9.520375490188599
