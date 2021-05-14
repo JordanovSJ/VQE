@@ -9,7 +9,7 @@ from src.iter_vqe_utils import *
 from src.ansatz_elements import *
 from src.ansatz_element_sets import *
 from src.vqe_runner import *
-from src.q_system import *
+from src.molecular_system import *
 from src.backends import  *
 import numpy, math
 

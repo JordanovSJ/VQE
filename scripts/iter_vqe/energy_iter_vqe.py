@@ -10,7 +10,7 @@ import sys
 sys.path.append('../')
 
 from src.vqe_runner import VQERunner
-from src.q_system import *
+from src.molecular_system import *
 from src.ansatz_element_lists import *
 from src.backends import QiskitSimBackend
 from src.utils import LogUtils

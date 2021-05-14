@@ -1,5 +1,5 @@
 from src.vqe_runner import VQERunner
-from src.q_system import *
+from src.molecular_system import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
@@ -19,12 +19,12 @@ if __name__ == "__main__":
 
     r = 0.75
     frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = BeH2(r=r) #(r=r, frozen_els=frozen_els)
+    q_system = H2(r=r) #(r=r, frozen_els=frozen_els)
 
-    excited_state = 1
-    gs_df = pandas.read_csv('../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=075_09-Oct-2020.csv')
-    ground_state = DataUtils.ansatz_from_data_frame(gs_df, q_system)
-    q_system.H_lower_state_terms = [[abs(q_system.hf_energy) * 2, ground_state]]
+    excited_state = 0
+    # gs_df = pandas.read_csv('../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=075_09-Oct-2020.csv')
+    # ground_state = DataUtils.ansatz_from_data_frame(gs_df, q_system)
+    # q_system.H_lower_state_terms = [[abs(q_system.hf_energy) * 2, ground_state]]
 
     # logging
     LogUtils.log_config()
@@ -33,12 +33,12 @@ if __name__ == "__main__":
     # ansatz = uccsd
     ansatz = UCCSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'f_exc').get_excitations()
     print(len(ansatz))
-    backend = MatrixCacheBackend
-    # global_cache = None
-
-    global_cache = GlobalCache(q_system, excited_state=excited_state)
-    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
-    # global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
+    backend = QiskitSimBackend
+    global_cache = None
+    #
+    # global_cache = GlobalCache(q_system, excited_state=excited_state)
+    # global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+    # # global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
 
     # backend = QiskitSimBackend
     # global_cache = None

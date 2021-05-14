@@ -12,7 +12,7 @@ import time
 from src.utils import MatrixUtils
 
 
-class QSystem:
+class MolecularSystem:
 
     def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None,
                  encoding='jw'):

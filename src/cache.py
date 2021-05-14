@@ -1,5 +1,6 @@
 from src.backends import QiskitSimBackend
 from src import config
+from src.utils import QasmUtils
 
 from openfermion import get_sparse_operator
 
@@ -45,8 +46,6 @@ class Cache:
         return statevector
 
     def get_statevector(self, ansatz, var_parameters, init_state_qasm=None):
-        # print('yolo')
-        # TODO add single parameter functionality with init_statevector
         assert len(var_parameters) == len(ansatz)
         if self.var_parameters is not None and var_parameters == self.var_parameters:  # this condition is not neccessarily sufficient
             assert self.sparse_statevector is not None
@@ -54,7 +53,12 @@ class Cache:
             if self.init_sparse_statevector is not None:
                 sparse_statevector = self.init_sparse_statevector.transpose().conj()
             else:
-                statevector = self.hf_statevector()
+                if init_state_qasm is not None:
+                    # TODO check
+                    qasm = QasmUtils.qasm_header(self.n_qubits) + init_state_qasm
+                    statevector = QiskitSimBackend.statevector_from_qasm(qasm)
+                else:
+                    statevector = self.hf_statevector()
                 sparse_statevector = scipy.sparse.csr_matrix(statevector).transpose().conj()
 
             for i, excitation in enumerate(ansatz):
