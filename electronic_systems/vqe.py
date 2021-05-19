@@ -7,32 +7,6 @@ from src.utils import LogUtils
 from src.cache import *
 
 
-class Gen2QubitAnsatzElement(AnsatzElement):
-    def __init__(self, qubit_1, qubit_2):
-        self.qubits = [qubit_1, qubit_2]
-        super(Gen2QubitAnsatzElement, self).\
-            __init__(element='gen_2_qubit_{}_{}'.format(qubit_1, qubit_2), n_var_parameters=3)
-
-    def get_qasm(self, var_parameters):
-        qasm = ['']
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi/2, self.qubits[0]))
-        qasm.append('rz({}) q[{}];\n'.format(numpy.pi/2, self.qubits[1]))
-        qasm.append('ry({}) q[{}];\n'.format(numpy.pi/2, self.qubits[1]))
-        qasm.append('cx q[{}], q[{}];\n'.format(self.qubits[1], self.qubits[0]))
-
-        # general qubits 1 and 2 rotations
-        qasm.append('ry({}) q[{}];\n'.format(var_parameters[0], self.qubits[0]))
-        qasm.append('rz({}) q[{}];\n'.format(var_parameters[1], self.qubits[0]))
-        qasm.append('ry({}) q[{}];\n'.format(var_parameters[2], self.qubits[1]))
-
-        qasm.append('cx q[{}], q[{}];\n'.format(self.qubits[1], self.qubits[0]))
-        qasm.append('ry({}) q[{}];\n'.format(-numpy.pi/2, self.qubits[1]))
-        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi/2, self.qubits[0]))
-        qasm.append('rz({}) q[{}];\n'.format(-numpy.pi/2, self.qubits[1]))
-
-        return ''.join(qasm)
-
-
 def ansatz_1():
     n_orbitals = 14
     ansatz = []
@@ -53,18 +27,6 @@ def ansatz_1():
     return ansatz
 
 
-def ansatz_2():
-    n_bath = 5
-    n_orbitals = 14
-    ansatz = []
-    ansatz.append(Gen2QubitAnsatzElement(0, 1))
-
-    for i in range(n_bath):
-        ansatz.append(EffSFExc(2*i + 4, 2*i + 5, system_n_qubits=n_orbitals))
-
-    return ansatz
-
-
 if __name__ == "__main__":
     n_orbitals = 14
     n_electrons = 10
@@ -74,24 +36,13 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     ansatz = ansatz_1()
-    # initial_parameter_values = numpy.zeros(len(ansatz) + 2)
 
-    # initial state with 10 electrons occupying the 10 lowest (spin-)sites
-    init_qasm = ''
-    for i in range(n_electrons):
-        init_qasm += 'x q[{}];\n'.format(i)
-    # init_qasm += 'x q[{}];\n'.format(0)
-    # init_qasm += 'x q[{}];\n'.format(1)
-
-    # init_qasm = None
+    init_qasm = None
 
     global_cache = GlobalCache(e_system, excited_state=0)
     global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
 
     backend = MatrixCacheBackend
-
-    # vqe_runner = VQERunner(q_system=e_system, backend=QiskitSimBackend, optimizer='Nelder-Mead',
-    #                        optimizer_options=None, use_ansatz_gradient=False)
 
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}

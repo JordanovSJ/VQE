@@ -89,16 +89,8 @@ def ham_14_qubits():
             term_even = FO('[{0}^ {1}]'.format(2 * (d1 + n_impurity), 2 * (d2 + n_impurity)))
             # spin down
             term_odd = FO('[{0}^ {1}]'.format(2 * (d1 + n_impurity) + 1, 2 * (d2 + n_impurity) + 1))
-            # else:
-            #
-            #     # spin up
-            #     term_even = 0.5*FO('[{0}^ {1}] + [{1}^ {0}]'.format(2 * (d1 + n_impurity), 2 * (d2 + n_impurity)))
-            #     # spin down
-            #     term_odd = 0.5*FO('[{0}^ {1}] + [{1}^ {0}]'.format(2 * (d1 + n_impurity) + 1, 2 * (d2 + n_impurity) + 1))
 
             H += factor * (term_odd + term_even)
-
-    print(len(H.terms))
 
     return H
 
