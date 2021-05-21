@@ -1,3 +1,5 @@
+import openfermion
+
 from electronic_systems import ElectronicSystem, ham_14_qubits, ham_16_qubits
 import numpy
 from src.vqe_runner import VQERunner
@@ -45,13 +47,23 @@ if __name__ == "__main__":
     backend = MatrixCacheBackend
 
     optimizer = 'BFGS'
-    optimizer_options = {'gtol': 10e-8}
+    optimizer_options = {'gtol': 10e-8, 'maxiter': 100}
     vqe_runner = VQERunner(e_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     result = vqe_runner.vqe_run(ansatz=ansatz,  cache=global_cache, init_state_qasm=init_qasm)
 
-    print(result)
+    parameters = result.x
+    statevector = global_cache.get_statevector(ansatz, parameters, init_state_qasm=init_qasm)
+    statevector = statevector.todense()
+
+    operator = 'elenaananana'   # TODO: TOVA trqbva da e klas openfermion.FermionicOperator
+    operator = openfermion.jordan_wigner(operator)
+    operator = openfermion.get_sparse_operator(operator, n_orbitals)
+
+    expectation_value = statevector.dot(operator).dot(statevector.conj().transpose())
+
+    print(expectation_value)
 
     print('yolo')
 
