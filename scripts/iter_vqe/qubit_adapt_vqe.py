@@ -11,11 +11,11 @@ import ast
 sys.path.append('../')
 
 from src.vqe_runner import VQERunner
-from src.molecular_system import *
-from src.ansatz_element_lists import *
+from src.molecules.molecules import *
+from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend
 from src.utils import LogUtils
-from src.adapt_utils import GradAdaptUtils
+from src.iter_vqe_utils import GradientUtils
 
 
 def save_data(df_data, molecule, time_stamp, ansatz_element_type=None, frozen_els=None):
@@ -72,12 +72,12 @@ def get_ansatz_from_csv(db, molecule, ansatz_element_type=None, spin_complement=
 if __name__ == "__main__":
     # <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>
     # <<<<<<<<<,simulation parameters>>>>>>>>>>>>>>>>>>>>
-    r = 1.546
+    r = 1.316
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H2() #(frozen_els=frozen_els)
+    molecule = BeH2() #(frozen_els=frozen_els)
 
-    ansatz_element_type = 'pauli_word_excitation'
+    ansatz_element_type = 'pauli_str_exc'
     spin_complement = False  # do not change
 
     accuracy = 1e-12  # 1e-3 for chemical accuracy
@@ -87,7 +87,6 @@ if __name__ == "__main__":
     multithread = True
     use_grad = True  # for optimizer
     precompute_commutators = True
-    size_patch_commutators = 500
     do_precompute_statevector = True  # for gradients
 
     init_db = None  # pandas.read_csv("../../results/adapt_vqe_results/LiH_g_adapt_spin_gsdefe_26-Aug-2020.csv")
