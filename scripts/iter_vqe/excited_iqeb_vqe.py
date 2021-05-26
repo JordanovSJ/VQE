@@ -21,39 +21,38 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.5
+    r = 0.735
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
-    excited_state = 1
+    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    excited_state = 0
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
-    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=15_19-Nov-2020.csv')
-    #df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
-    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv')
-    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=1_r=1546_29-Mar-2021.csv')
-    # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=10_r=3_17-Mar-2021.csv')
-
-    df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
-    df2 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_2_iqeb_q_exc_n=10_r=1_02-Apr-2021.csv')
-    df3 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_3_iqeb_q_exc_n=10_r=1_08-Apr-2021.csv')
-
-    ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
-    exc_state_1 = DataUtils.ansatz_from_data_frame(df1, molecule)
-    exc_state_2 = DataUtils.ansatz_from_data_frame(df2, molecule)
-    exc_state_3 = DataUtils.ansatz_from_data_frame(df3, molecule)
-
-    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state], [abs(molecule.hf_energy)*2, exc_state_1],
-                                    [abs(molecule.hf_energy)*2, exc_state_2], [abs(molecule.hf_energy)*2, exc_state_3]]
+    # df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=15_19-Nov-2020.csv')
+    # #df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
+    # # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv')
+    # # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=1_r=1546_29-Mar-2021.csv')
+    # # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=10_r=3_17-Mar-2021.csv')
+    #
+    # df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
+    # df2 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_2_iqeb_q_exc_n=10_r=1_02-Apr-2021.csv')
+    # df3 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_3_iqeb_q_exc_n=10_r=1_08-Apr-2021.csv')
+    #
+    # ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
+    # exc_state_1 = DataUtils.ansatz_from_data_frame(df1, molecule)
+    # exc_state_2 = DataUtils.ansatz_from_data_frame(df2, molecule)
+    # exc_state_3 = DataUtils.ansatz_from_data_frame(df3, molecule)
+    #
+    # molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state], [abs(molecule.hf_energy)*2, exc_state_1],
+    #                                 [abs(molecule.hf_energy)*2, exc_state_2], [abs(molecule.hf_energy)*2, exc_state_3]]
 
     # <<<<<<<<<<<<< IQEB-VQE params>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
     n_largest_grads = 10
 
     # <<<<<<<<<<<<<<< INIT REF STATE >>>>>>>>>>>>>>>>>>>>>>>>>>>.
-    init_state_qasm = QasmUtils.hf_state(molecule.n_electrons)
-    init_state_qasm += SQExc(molecule.n_electrons-1, molecule.n_electrons).get_qasm(numpy.pi/2)
+    init_state_qasm = None # QasmUtils.hf_state(molecule.n_electrons)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
@@ -105,10 +104,6 @@ if __name__ == "__main__":
         global_cache = GlobalCache(molecule, excited_state=excited_state)
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz_element_pool)
 
-        init_statevector = QiskitSimBackend.statevector_from_qasm(init_state_qasm)  #TODO: change. this is lazy
-        init_sparse_statevector = scipy.sparse.csr_matrix(init_statevector).transpose().conj()
-        global_cache.init_sparse_statevector = init_sparse_statevector
-        # global_cache.calculate_commutators_sparse_matrices_dict(ansatz_element_pool)
     else:
         global_cache = None
 

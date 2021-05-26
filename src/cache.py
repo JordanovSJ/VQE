@@ -109,8 +109,17 @@ class Cache:
         return self.sqr_exc_gen_sparse_matrices_dict[key]
 
     def get_commutator_matrix(self, ansatz_element):
-        key = str(ansatz_element.excitations_generators)
-        return self.commutators_sparse_matrices_dict[key]
+
+        # key = str(ansatz_element.excitations_generators)
+        # return self.commutators_sparse_matrices_dict[key]
+
+        # TODO: not tested. used if we do not want to precompute the commutators
+        if self.commutators_sparse_matrices_dict is not None:
+            key = str(ansatz_element.excitations_generators)
+            return self.commutators_sparse_matrices_dict[key]
+        else:
+            exc_gen_matrices_sum = sum(self.exc_gen_sparse_matrices_dict[str(ansatz_element.excitations_generators)])
+            return self.H_sparse_matrix * exc_gen_matrices_sum - exc_gen_matrices_sum * self.H_sparse_matrix
 
     def get_h_sparse_matrix(self):
         return self.H_sparse_matrix
@@ -169,16 +178,17 @@ class GlobalCache(Cache):
                                           init_sparse_statevector=init_sparse_statevector)
 
     def get_grad_thread_cache(self, ansatz_element, sparse_statevector):
-        # TODO check if copy is necessary
         key = str(ansatz_element.excitations_generators)
-        commutator_sparse_matrix = self.commutators_sparse_matrices_dict[key].copy()
+        # commutator_sparse_matrix = self.commutators_sparse_matrices_dict[key].copy()
+        # TODO not properly tested
+        commutator_sparse_matrix = self.get_commutator_matrix(ansatz_element).copy()
+
         thread_cache = GradThreadCache(commutators_sparse_matrices_dict={key: commutator_sparse_matrix},
                                        sparse_statevector=sparse_statevector.copy(), n_qubits=self.q_system.n_qubits,
                                        n_electrons=self.q_system.n_electrons)
         return thread_cache
 
     def get_vqe_thread_cache(self):
-        # TODO check if copy is necessary
         thread_cache = VQEThreadCache(H_sparse_matrix=self.H_sparse_matrix.copy(),
                                       exc_gen_sparse_matrices_dict=self.get_exc_gen_sparse_matrices_dict_copy(),
                                       sqr_exc_gen_sparse_matrices_dict=self.get_sqr_exc_gen_sparse_matrices_dict_copy(),
@@ -186,7 +196,6 @@ class GlobalCache(Cache):
         return thread_cache
 
     def single_par_vqe_thread_cache(self, ansatz_element, init_sparse_statevector):
-        # TODO check if copy is necessary
         key = str(ansatz_element.excitations_generators)
 
         excitations_generators_matrices = self.exc_gen_sparse_matrices_dict[key].copy()
