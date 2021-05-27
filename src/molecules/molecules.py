@@ -46,6 +46,24 @@ class H4(QSystem):
           ]
 
 
+class H6(QSystem):
+
+    def __init__(self, r=0.735, basis='sto-3g', frozen_els=None):
+        super(H6, self).__init__(name='H4', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
+                                 n_electrons=6, basis=basis, frozen_els=frozen_els)
+
+    @staticmethod
+    def get_geometry(distance=0.735):
+        return [
+            ['H', [0, 0, 0]],
+            ['H', [0, 0, distance]],
+            ['H', [0, 0, 2 * distance]],
+            ['H', [0, 0, 3 * distance]],
+            ['H', [0, 0, 4 * distance]],
+            ['H', [0, 0, 5 * distance]]
+          ]
+
+
 class LiH(QSystem):
     # frozen_els = {'occupied': [0,1], 'unoccupied': []}
     def __init__(self, r=1.546, basis='sto-3g', frozen_els=None):
