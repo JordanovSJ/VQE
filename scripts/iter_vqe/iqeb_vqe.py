@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 0.5
+    r = 1
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = H6(r=r)  # (frozen_els=frozen_els)
@@ -50,8 +50,8 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create the pool of ansatz elements
-    ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                        ansatz_element_type=ansatz_element_type).get_excitations()
+    ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                         ansatz_element_type=ansatz_element_type).get_excitations()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:

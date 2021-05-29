@@ -17,21 +17,21 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 3
+    r = 1
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    molecule = H6(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
-    ansatz_element_type = 'eff_f_exc'
-    # ansatz_element_type = 'q_exc'
+    #ansatz_element_type = 'eff_f_exc'
+    ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'f_exc'
     # ansatz_element_type = 'pauli_str_exc'
 
     # <<<<<<<<<< IQEB-VQE PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
     max_ansatz_size = 250
-    n_largest_grads = 1
+    n_largest_grads = 10
 
     # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
     backend = backends.MatrixCacheBackend

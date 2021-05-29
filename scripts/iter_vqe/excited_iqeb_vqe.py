@@ -21,10 +21,10 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 0.735
+    r = 1
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    molecule = H6(r=r)  # (frozen_els=frozen_els)
     excited_state = 0
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                                      element_type=ansatz_element_type).get_excitations()
     else:
-        ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
+        ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                              ansatz_element_type=ansatz_element_type).get_excitations()
 
     message = 'Length of new pool', len(ansatz_element_pool)
