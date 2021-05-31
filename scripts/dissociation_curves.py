@@ -1,5 +1,5 @@
 from src.vqe_runner import VQERunner
-from src.molecules.molecules import H2, LiH, HF, BeH2
+from src.molecules.molecules import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
@@ -20,7 +20,7 @@ import ast
 
 if __name__ == "__main__":
 
-    molecule = BeH2()
+    molecule = H6()
 
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
     df_data = pandas.DataFrame(columns=['r', 'E', 'fci_E', 'error', 'n_iters'])
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     # ansatz = ansatz[:74]  # 74 for 1e-8
-    ansatz = SpinCompGSDExcitations(molecule.n_qubits, molecule.n_electrons, element_type='eff_f_exc').get_excitations()
+    ansatz = UCCSDExcitations(molecule.n_qubits, molecule.n_electrons, ansatz_element_type='eff_f_exc').get_excitations()
     var_parameters = list(numpy.zeros(len(ansatz)))
 
     optimizer = 'BFGS'
@@ -37,11 +37,11 @@ if __name__ == "__main__":
 
     energies = []
     fci_energies = []
-    rs = [0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25]
+    rs = [0.55, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3]
     df_count = 0
 
     for r in rs:
-        molecule = BeH2(r=r)
+        molecule = H6(r=r)
 
         vqe_runner = VQERunner(molecule, backend=MatrixCacheBackend, use_ansatz_gradient=True, optimizer=optimizer,
                                optimizer_options=optimizer_options)
