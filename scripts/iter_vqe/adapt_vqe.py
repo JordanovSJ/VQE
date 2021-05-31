@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.0
+    r = 1.5
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = H6(r=r)  # (frozen_els=frozen_els)
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
-    max_ansatz_elements = 350
+    max_ansatz_elements = 600
 
     # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
     backend = backends.MatrixCacheBackend
@@ -82,7 +82,7 @@ if __name__ == "__main__":
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
                                                    'var_parameters'])
     # <<<<<<<<<<<< LOAD PAUSED SIMULATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    init_db = None # pandas.read_csv("../../results/iter_vqe_results/H6_q_adapt_r=15_uncomplete_27-May-2021.csv")
+    init_db = pandas.read_csv("../../results/iter_vqe_results/H6_q_adapt_r=15_complete_27-May-2021.csv")
 
     if init_db is None:
         ansatz_elements = []

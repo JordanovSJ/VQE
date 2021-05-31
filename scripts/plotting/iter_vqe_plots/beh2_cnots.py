@@ -14,10 +14,10 @@ if __name__ == "__main__":
 
     # db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
     db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_q_exc_n=1_r=1316_17-Mar-2021.csv')
-
     db_iqeb_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=1_25-Sep-2020.csv')
     # db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
-    db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=1_gsdqe_r=3_05-Dec-2020.csv')
+    # db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=1_gsdqe_r=3_05-Dec-2020.csv')
+    db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_q_exc_n=1_r=3_31-May-2021.csv')
 
     db_adapt = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_06-Nov-2020.csv')
     db_adapt_1 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_r=1_05-Oct-2020.csv')

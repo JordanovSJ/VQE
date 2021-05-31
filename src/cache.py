@@ -86,8 +86,22 @@ class Cache:
                 return self.excitations_sparse_matrices_dict[key]['matrices']
 
         # otherwise update the excitations_sparse_matrices_dict
-        excitations_generators_matrices = self.exc_gen_sparse_matrices_dict[key]
-        sqr_excitations_generators_matrices = self.sqr_exc_gen_sparse_matrices_dict[key]
+        try:
+            excitations_generators_matrices = self.exc_gen_sparse_matrices_dict[key]
+            sqr_excitations_generators_matrices = self.sqr_exc_gen_sparse_matrices_dict[key]
+
+        # TODO not checked !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # this exception is triggered when we add a spin-complement ansatz element to the ansatz, for which we have not
+        # precomputed the excitation generator matrices
+        except KeyError:
+            excitations_generators_matrices = []
+            sqr_excitations_generators_matrices = []
+            for term in ansatz_element.excitations_generators:
+                excitations_generators_matrices.append(get_sparse_operator(term, n_qubits=self.n_qubits))
+                sqr_excitations_generators_matrices.append(excitations_generators_matrices[-1] * excitations_generators_matrices[-1])
+            self.exc_gen_sparse_matrices_dict[key] = excitations_generators_matrices
+            self.sqr_exc_gen_sparse_matrices_dict[key] = sqr_excitations_generators_matrices
+
         excitations_matrices = []
         # calculate each excitation matrix using an efficient decomposition: exp(t*A) = I + sin(t)A + (1-cos(t))A^2
         for i in range(len(excitations_generators_matrices)):
