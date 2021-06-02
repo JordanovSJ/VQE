@@ -20,7 +20,7 @@ if __name__ == "__main__":
     db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_adapt_r=3_complete_30-May-2021.csv')
 
     db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/H6_q_adapt_r=15_complete_27-May-2021.csv')
-    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_q_adapt_r=3_SDEexc_27-May-2021.csv')
+    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_q_adapt_r=3_27-May-2021.csv')
 
     fig, ax = plt.subplots()
 
@@ -28,21 +28,21 @@ if __name__ == "__main__":
     linewidth = 0.5
     marker = '_'
     #
-    ax.plot(db_iqeb[df_col], db_iqeb['error'], label=r'IQEB, $1.546\AA$', marker=marker, linewidth=linewidth, color='blue')
-    # ax.plot(db_iqeb_3[df_col], db_iqeb_3['error'], label=r'IQEB, $3\AA$', marker=marker, linewidth=linewidth, color='midnightblue')
+    # ax.plot(db_iqeb[df_col], db_iqeb['error'], label=r'IQEB, $1.546\AA$', marker=marker, linewidth=linewidth, color='blue')
+    ax.plot(db_iqeb_3[df_col], db_iqeb_3['error'], label=r'IQEB, $3\AA$', marker=marker, linewidth=linewidth, color='midnightblue')
 
-    ax.plot(db_q_adapt[df_col], db_q_adapt['error'], label=r'q-ADAPT, $1.546\AA$', marker=marker, linewidth=linewidth, color='green')
-    # ax.plot(db_q_adapt_3[df_col], db_q_adapt_3['error'], label=r'q-ADAPT, $3\AA$', marker=marker, linewidth=linewidth, color='darkolivegreen')
+    # ax.plot(db_q_adapt[df_col], db_q_adapt['error'], label=r'q-ADAPT, $1.546\AA$', marker=marker, linewidth=linewidth, color='green')
+    ax.plot(db_q_adapt_3[df_col], db_q_adapt_3['error'], label=r'q-ADAPT, $3\AA$', marker=marker, linewidth=linewidth, color='darkolivegreen')
 
-    ax.plot(db_adapt[df_col], db_adapt['error'], label=r'ADAPT, $1.546\AA$', marker=marker, linewidth=linewidth, color='red')
-    # ax.plot(db_adapt_3[df_col], db_adapt_3['error'], label=r'ADAPT, $r=3\AA$', marker=marker, linewidth=linewidth, color='darkred')
+    # ax.plot(db_adapt[df_col], db_adapt['error'], label=r'ADAPT, $1.546\AA$', marker=marker, linewidth=linewidth, color='red')
+    ax.plot(db_adapt_3[df_col], db_adapt_3['error'], label=r'ADAPT, $r=3\AA$', marker=marker, linewidth=linewidth, color='darkred')
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chem. accuracy')
 
     # ax.set_xlabel('Number of CNOTs')
     # ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
     ax.set_ylim(1e-12, 1)
-    ax.set_xlim(0, 5000)
+    ax.set_xlim(0, 6000)
     ax.set_yscale('log')
     # ax.yaxis.set_ticklabels([])
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)

@@ -70,10 +70,22 @@ if __name__ == "__main__":
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
                                                    'var_parameters'])
 
+    # <<<<<<<<<<<< LOAD PAUSED SIMULATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    init_db = pandas.read_csv("../../results/iter_vqe_results/H6_iqeb_q_exc_n=10_r=075_27-May-2021.csv")
+    # init_db = pandas.read_csv("../../results/iter_vqe_results/H6_iqeb_q_exc_n=10_r=1_27-May-2021.csv")
+
+    if init_db is None:
+        ansatz = []
+        ansatz_parameters = []
+    else:
+        state = DataUtils.ansatz_from_data_frame(init_db, molecule)
+        ansatz = state.ansatz_elements
+        ansatz_parameters = state.parameters
+
     # <<<<<<<<<<<<<< INITIALIZE ITERATIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    ansatz = []
-    ansatz_parameters = []
+    # ansatz = []
+    # ansatz_parameters = []
 
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy

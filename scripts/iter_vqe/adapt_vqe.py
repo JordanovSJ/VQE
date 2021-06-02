@@ -35,7 +35,7 @@ if __name__ == "__main__":
     # ansatz_element_type = 'f_exc'
     # ansatz_element_type = 'pauli_str_exc'
     q_encoding = 'jw'
-    spin_complement = True  # only for fermionic and qubit excitations (not for PWEs)
+    spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
     # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
@@ -63,7 +63,7 @@ if __name__ == "__main__":
                                                      element_type=ansatz_element_type, encoding=q_encoding).get_excitations()
     else:
         ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                            ansatz_element_type=ansatz_element_type, encoding=q_encoding).get_excitations()
+                                            ansatz_element_type=ansatz_element_type).get_excitations()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:
@@ -82,7 +82,7 @@ if __name__ == "__main__":
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
                                                    'var_parameters'])
     # <<<<<<<<<<<< LOAD PAUSED SIMULATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    init_db = pandas.read_csv("../../results/iter_vqe_results/H6_adapt_r=15_27-May-2021.csv")
+    init_db = pandas.read_csv("../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=15_no_comps_02-June-2021.csv")
 
     if init_db is None:
         ansatz_elements = []

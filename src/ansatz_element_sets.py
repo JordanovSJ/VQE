@@ -305,28 +305,22 @@ class SpinCompGSDExcitations:
         return self.get_single_excitations() + self.get_double_excitations()
 
 
-class UCCSD:
+class MinPSExcPool:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
 
-    def get_single_excitations(self):
-        single_excitations = []
-        for i in range(self.n_electrons):
-            for j in range(self.n_electrons, self.n_orbitals):
-                if i % 2 == j % 2:
-                    single_excitations.append(EffSFExc(i, j, system_n_qubits=self.n_orbitals))
-        return single_excitations
+    def get_s_p_str_excitations(self):
+        s_p_str_excitations = []
+        for i in range(1, self.n_orbitals):
+            s_p_str_excitations.append(PauliStringExc(1j*QubitOperator('Y{}'.format(i)), system_n_qubits=self.n_orbitals))
+        return s_p_str_excitations
 
-    def get_double_excitations(self):
-        double_excitations = []
-        for i in range(self.n_electrons-1):
-            for j in range(i+1, self.n_electrons):
-                for k in range(self.n_electrons, self.n_orbitals-1):
-                    for l in range(k+1, self.n_orbitals):
-                        if i % 2 + j % 2 == k % 2 + l % 2:
-                            double_excitations.append(EffDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
-        return double_excitations
+    def get_d_p_str_excitations(self):
+        d_p_str_excitations = []
+        for i in range(self.n_orbitals-1):
+            d_p_str_excitations.append(PauliStringExc(1j*QubitOperator('Z{} Y{}'.format(i + 1, i)), system_n_qubits=self.n_orbitals))
+        return d_p_str_excitations
 
     def get_excitations(self):
-        return self.get_single_excitations() + self.get_double_excitations()
+        return self.get_s_p_str_excitations() + self.get_d_p_str_excitations()

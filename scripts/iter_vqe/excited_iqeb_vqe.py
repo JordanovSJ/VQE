@@ -21,10 +21,10 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1
+    r = 0.995
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H6(r=r)  # (frozen_els=frozen_els)
+    molecule = HF(r=r)  # (frozen_els=frozen_els)
     excited_state = 0
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     # <<<<<<<<<<<<< IQEB-VQE params>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
-    n_largest_grads = 10
+    n_largest_grads = 2
 
     # <<<<<<<<<<<<<<< INIT REF STATE >>>>>>>>>>>>>>>>>>>>>>>>>>>.
     init_state_qasm = None # QasmUtils.hf_state(molecule.n_electrons)
@@ -94,6 +94,7 @@ if __name__ == "__main__":
     else:
         ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                              ansatz_element_type=ansatz_element_type).get_excitations()
+        # ansatz_element_pool = MinPSExcPool(molecule.n_orbitals, molecule.n_electrons).get_excitations()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
