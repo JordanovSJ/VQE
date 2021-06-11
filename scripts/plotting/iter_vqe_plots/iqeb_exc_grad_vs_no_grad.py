@@ -26,25 +26,25 @@ if __name__ == "__main__":
     linewidth = 0.4
     marker = '_'
 
-    # ax.plot(lih_no_grad_df[df_col], lih_no_grad_df['error'], label='exc-IQEB-VQE', marker=marker, linewidth=linewidth, color='orange')
-    # ax.plot(lih_grad_df[df_col], lih_grad_df['error'], label='IQEB-VQE', marker=marker, linewidth=linewidth, color='blue')
+    ax.plot(lih_no_grad_df[df_col], lih_no_grad_df['error'], label='exc-QEB-ADAPT', marker=marker, linewidth=linewidth, color='orange')
+    ax.plot(lih_grad_df[df_col], lih_grad_df['error'], label='QEB-ADAPT', marker=marker, linewidth=linewidth, color='blue')
 
-    ax.plot(beh2_no_grad_df[df_col], beh2_no_grad_df['error'], label='exc-IQEB-VQE', marker=marker, linewidth=linewidth, color='orange')
-    ax.plot(beh2_grad_df[df_col], beh2_grad_df['error'], label='IQEB-VQE', marker=marker, linewidth=linewidth, color='blue')
+    # ax.plot(beh2_no_grad_df[df_col], beh2_no_grad_df['error'], label='exc-IQEB-VQE', marker=marker, linewidth=linewidth, color='orange')
+    # ax.plot(beh2_grad_df[df_col], beh2_grad_df['error'], label='IQEB-VQE', marker=marker, linewidth=linewidth, color='blue')
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chemical accuracy')
 
     # ax.set_xlabel('Number of CNOTs')
-    ax.set_xlabel('Number of qubit evolutions')
-    ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
+    ax.set_xlabel('Number of qubit evolutions', fontsize=15)
+    ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree', fontsize=15)
     # ax.set_ylim(1e-9, 1e-1)
-    ax.set_ylim(1e-9, 1e-0)
+    ax.set_ylim(1e-12, 1e-1)
     # ax.set_xlim(0, 1200)
-    ax.set_xlim(0, 100)
+    ax.set_xlim(0, 70)
     ax.set_yscale('log')
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
 
-    # ax.legend(loc=1)#, bbox_to_anchor=(1,0.4))
+    ax.legend(loc=1, fontsize=15)#, bbox_to_anchor=(1,0.4))
 
     plt.show()
 

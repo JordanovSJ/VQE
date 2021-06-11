@@ -15,6 +15,7 @@ if __name__ == "__main__":
     # db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=10_r=15_27-May-2021.csv')
     db_iqeb = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=15_27-May-2021.csv')
     db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=3_30-May-2021.csv')
+    # db_iqeb_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=5_r=3_03-Jun-2021.csv')
 
     db_adapt = pandas.read_csv('../../../results/iter_vqe_results/H6_adapt_r=15_27-May-2021.csv')
     db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_adapt_r=3_complete_30-May-2021.csv')

@@ -43,10 +43,15 @@ if __name__ == "__main__":
     db_fe_beh2_r3 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_eff_f_exc_no_comps_n=1_r=3_29-Mar-2021.csv')
     db_fe_beh2_r3['n_pars'] = numpy.arange(len(db_fe_beh2_r3)) + 1
 
-    db_qe_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=15_27-May-2021.csv')
+    db_qe_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=15_no_comps_02-June-2021.csv')
     db_qe_h6['n_pars'] = numpy.arange(len(db_qe_h6)) + 1
     db_fe_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_adapt_no_comp_r=15_01-Jun-2021.csv')
     db_fe_h6['n_pars'] = numpy.arange(len(db_fe_h6)) + 1
+
+    db_qe_h6_r3 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=3_no_comps_04-Jun-2021.csv')
+    db_qe_h6_r3['n_pars'] = numpy.arange(len(db_qe_h6_r3)) + 1
+    db_fe_h6_r3 = pandas.read_csv('../../../results/iter_vqe_results/H6_adapt_r=3_no_comps_04-Jun-2021.csv')
+    db_fe_h6_r3['n_pars'] = numpy.arange(len(db_fe_h6_r3)) + 1
 
     fig, ax = plt.subplots()
 
@@ -57,28 +62,31 @@ if __name__ == "__main__":
     # ax.plot(db_qe_lih[df_col], db_qe_lih['error'], label=r'LiH, qubit excitations', marker=marker, linewidth=linewidth, color='blue')
     # ax.plot(db_fe_lih[df_col], db_fe_lih['error'], label=r'LiH, fermionic excitations', marker=marker, linewidth=linewidth, color='red', alpha=0.6)
 
-    # ax.plot(db_qe_lih_r3[df_col], db_qe_lih_r3['error'], label='Qubit evolutions, $r_{Li-H}=3 \AA$', marker=marker, linewidth=linewidth, color='darkblue')
-    # ax.plot(db_fe_lih_r3[df_col], db_fe_lih_r3['error'], label='Fermionic evolutions, $r_{Li-H}=3 \AA$', marker=marker, linewidth=linewidth, color='darkred')
+    # ax.plot(db_qe_lih_r3[df_col], db_qe_lih_r3['error'], label='LiH, Qubit evolutions', marker=marker, linewidth=linewidth, color='darkblue')
+    # ax.plot(db_fe_lih_r3[df_col], db_fe_lih_r3['error'], label='LiH, Fermionic evolutions', marker=marker, linewidth=linewidth, color='darkred')
 
-    # ax.plot(db_qe_beh2[df_col], db_qe_beh2['error'], label=r'BeH$_2$, qubit excitations', marker=marker, linewidth=linewidth, color='green')
-    # ax.plot(db_fe_beh2[df_col], db_fe_beh2['error'], label=r'BeH$_2$, fermionic excitations', marker=marker, linewidth=linewidth, color='orange', alpha=0.6)
+    # ax.plot(db_qe_beh2[df_col], db_qe_beh2['error'], label=r'BeH$_2$, qubit excitations', marker=marker, linewidth=linewidth, color='blue')
+    # ax.plot(db_fe_beh2[df_col], db_fe_beh2['error'], label=r'BeH$_2$, fermionic excitations', marker=marker, linewidth=linewidth, color='red', alpha=0.6)
     #
-    # ax.plot(db_qe_beh2_r3[df_col], db_qe_beh2_r3['error'], label='Qubit evolutions, $r_{Be-H}=3 \AA$', marker=marker, linewidth=linewidth, color='darkblue')
-    # ax.plot(db_fe_beh2_r3[df_col], db_fe_beh2_r3['error'], label='Fermionic evolutions, $r_{Be-H}=3 \AA$', marker=marker, linewidth=linewidth, color='darkred')
+    ax.plot(db_qe_beh2_r3[df_col], db_qe_beh2_r3['error'], label='BeH$_2$, Qubit evolutions', marker=marker, linewidth=linewidth, color='darkblue')
+    ax.plot(db_fe_beh2_r3[df_col], db_fe_beh2_r3['error'], label='Fermionic evolutions', marker=marker, linewidth=linewidth, color='darkred')
 
-    ax.plot(db_qe_h6[df_col], db_qe_h6['error'], label=r'H$_6$, qubit evolutions', marker=marker, linewidth=linewidth, color='green')
-    ax.plot(db_fe_h6[df_col], db_fe_h6['error'], label=r'H$_6$, fermionic evolutions', marker=marker, linewidth=linewidth, color='orange', alpha=0.6)
+    # ax.plot(db_qe_h6[df_col], db_qe_h6['error'], label=r'H$_6$, qubit excitations', marker=marker, linewidth=linewidth, color='blue')
+    # ax.plot(db_fe_h6[df_col], db_fe_h6['error'], label=r'H$_6$, fermionic excitations', marker=marker, linewidth=linewidth, color='red', alpha=0.6)
+
+    # ax.plot(db_qe_h6_r3[df_col], db_qe_h6_r3['error'], label=r'H$_6$, Qubit excitations', marker=marker, linewidth=linewidth, color='darkblue')
+    # ax.plot(db_fe_h6_r3[df_col], db_fe_h6_r3['error'], label=r'H$_6$, Fermionic excitations', marker=marker, linewidth=linewidth, color='darkred', alpha=0.6)
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chemical accuracy')
 
-    ax.set_xlabel('Number of qubit/fermionic excitations')
-    ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
-    ax.set_ylim(1e-9, 1e-1)
-    ax.set_xlim(0, 500)
+    # ax.set_xlabel('Number of qubit/fermionic evolutions', fontsize=17)
+    ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree', fontsize=17)
+    ax.set_ylim(1e-10, 1e-0)
+    ax.set_xlim(0, 130)
     ax.set_yscale('log')
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
 
-    ax.legend(loc=1)#, bbox_to_anchor=(1,0.4))
+    ax.legend(loc=1, fontsize=15)#, bbox_to_anchor=(1,0.4))
 
     plt.show()
 

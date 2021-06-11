@@ -32,19 +32,19 @@ if __name__ == "__main__":
     linewidth = 0.4
     marker = '_'
 
-    # ax.plot(lih_exc_1_qe[df_col], lih_exc_1_qe['error'], label=r'Qubit evolutions', marker=marker, linewidth=linewidth, color='blue')
-    # ax.plot(lih_exc_1_fe[df_col], lih_exc_1_fe['error'], label=r'Fermionic evolutions', marker=marker, linewidth=linewidth, color='red', alpha=0.6)
+    # ax.plot(lih_exc_1_qe[df_col], lih_exc_1_qe['error'], label=r'Qubit exc', marker=marker, linewidth=linewidth, color='blue')
+    # ax.plot(lih_exc_1_fe[df_col], lih_exc_1_fe['error'], label=r'Fermionic exc.', marker=marker, linewidth=linewidth, color='red', alpha=0.6)
 
     ax.plot(beh2_exc_1_qe[df_col], beh2_exc_1_qe['error'], label=r'BeH$_2$, qubit excitations', marker=marker, linewidth=linewidth, color='blue')
     ax.plot(beh2_exc_1_fe[df_col], beh2_exc_1_fe['error'], label=r'BeH$_2$, fermionic excitations', marker=marker, linewidth=linewidth, color='red', alpha=0.6)
 
-    # ax.plot(beh2_exc_1_qe_r3[df_col], beh2_exc_1_qe_r3['error'], label=r'BeH$_2$, qubit excitations', marker=marker, linewidth=linewidth, color='red')
-    # ax.plot(beh2_exc_1_fe_r3[df_col], beh2_exc_1_fe_r3['error'], label=r'BeH$_2$, fermionic excitations', marker=marker, linewidth=linewidth, color='blue', alpha=0.6)
+    # ax.plot(beh2_exc_1_qe_r3[df_col], beh2_exc_1_qe_r3['error'], label=r'BeH$_2$, qubit exc.', marker=marker, linewidth=linewidth, color='red')
+    # ax.plot(beh2_exc_1_fe_r3[df_col], beh2_exc_1_fe_r3['error'], label=r'BeH$_2$, fermionic exc.', marker=marker, linewidth=linewidth, color='blue', alpha=0.6)
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chemical accuracy')
 
-    ax.set_xlabel('Number of qubit/fermionic evolutions (parameters)')
-    ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree')
+    ax.set_xlabel('Number of qubit/fermionic excitation evolutions', fontsize=15)
+    ax.set_ylabel(r'$E(\theta) - E_{FCI}$, Hartree', fontsize=15)
     ax.set_ylim(1e-10, 1e-1)
     ax.set_xlim(0, 100)
     # ax.set_xlim(0, 35)
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     ax.set_yscale('log')
     ax.grid(b=True, which='major', color='grey', linestyle='--',linewidth=0.5)
 
-    # ax.legend(loc=1)#, bbox_to_anchor=(1,0.4))
+    # ax.legend(loc=1, fontsize=15)#, bbox_to_anchor=(1,0.4))
 
     plt.show()
 

@@ -17,12 +17,15 @@ if __name__ == "__main__":
     fci_Es = db_06['fci_E']
     db_hf['error'] = list(numpy.array(db_hf['E']) - numpy.array(fci_Es))
     db_08 = pandas.read_csv('../../../results/dissociation_curves/H6_iqeb_08.csv')
+    db_04 = pandas.read_csv('../../../results/dissociation_curves/H6_iqeb_04.csv')
+
     db_uccsd = pandas.read_csv('../../../results/dissociation_curves/H6_uccsd_31-May-2021.csv')
 
     plt.plot(db_hf['r'], db_hf['error'], label='HF', marker='+', linewidth=0.5, color='orange')
-    plt.plot(db_uccsd['r'], db_uccsd['error'], label=r'UCCSD', marker='+', linewidth=0.5, color='blue')
+    plt.plot(db_uccsd['r'], db_uccsd['error'], label=r'UCCSD', marker='+', linewidth=0.5, color='tab:brown')
     plt.plot(db_06['r'], db_06['error'], label=r'QEB-ADAPT-VQE $\epsilon=10^{-6}$', marker='+', linewidth=0.5, color='green')
     plt.plot(db_08['r'], db_08['error'], label=r'QEB-ADAPT-VQE $\epsilon=10^{-8}$', marker='+', linewidth=0.5, color='red')
+    plt.plot(db_04['r'], db_04['error'], label=r'QEB-ADAPT-VQE $\epsilon=10^{-8}$', marker='+', linewidth=0.5, color='blue')
 
     # plt.vlines([1.546], ymax=200, ymin=-100, linewidth=0.75, color='black', label='ground configuration')
     plt.fill_between([0.25, 3.75], 1e-14, 1e-3, color='lavender', label='chemical accuracy')

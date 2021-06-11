@@ -29,7 +29,7 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     # ansatz = ansatz[:74]  # 74 for 1e-8
-    ansatz = UCCSDExcitations(molecule.n_qubits, molecule.n_electrons, ansatz_element_type='eff_f_exc').get_excitations()
+    ansatz = UCCSDExcitations(molecule.n_qubits, molecule.n_electrons, ansatz_element_type='q_exc').get_excitations()
     var_parameters = list(numpy.zeros(len(ansatz)))
 
     optimizer = 'BFGS'
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     energies = []
     fci_energies = []
-    rs = [0.5, 0.75] # 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3]
+    rs = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3]
     df_count = 0
 
     for r in rs:
@@ -48,7 +48,8 @@ if __name__ == "__main__":
         global_cache = GlobalCache(molecule)
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
 
-        result = vqe_runner.vqe_run(ansatz, var_parameters, cache=global_cache)
+        # result = vqe_runner.vqe_run(ansatz, var_parameters, cache=global_cache)
+        result = vqe_runner.vqe_run(ansatz, cache=global_cache)
 
         del global_cache
 

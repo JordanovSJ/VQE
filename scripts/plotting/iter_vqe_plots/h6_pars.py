@@ -20,33 +20,33 @@ if __name__ == "__main__":
     db_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_adapt_r=3_complete_30-May-2021.csv')
 
     db_q_adapt = pandas.read_csv('../../../results/iter_vqe_results/H6_q_adapt_r=15_complete_27-May-2021.csv')
-    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_q_adapt_r=3_SDEexc_27-May-2021.csv')
+    db_q_adapt_3 = pandas.read_csv('../../../results/iter_vqe_results/H6_q_adapt_r=3_27-May-2021.csv')
 
     indices_iqeb = numpy.arange(len(db_iqeb))
-    # indices_iqeb_3 = numpy.arange(len(db_iqeb_3))
+    indices_iqeb_3 = numpy.arange(len(db_iqeb_3))
 
     indices_adapt = numpy.arange(len(db_adapt))
-    # indices_adapt_3 = numpy.arange(len(db_adapt_3))
+    indices_adapt_3 = numpy.arange(len(db_adapt_3))
 
     indices_q_adapt = numpy.arange(len(db_q_adapt))
-    # indices_q_adapt_3 = numpy.arange(len(db_q_adapt_3))
+    indices_q_adapt_3 = numpy.arange(len(db_q_adapt_3))
 
     fig, ax = plt.subplots()
 
     linewidth = 0.4
     marker = '_'
     #
-    ax.plot(indices_iqeb, db_iqeb['error'], label='IQEB, r=1.546', marker=marker, linewidth=linewidth, color='blue')
+    # ax.plot(indices_iqeb, db_iqeb['error'], label='IQEB, r=1.546', marker=marker, linewidth=linewidth, color='blue')
     # ax.plot(indices_iqeb_1, db_iqeb_1['error'], label='IQEB, r=1', marker=marker, linewidth=linewidth, color='dodgerblue')
-    # ax.plot(indices_iqeb_3, db_iqeb_3['error'], label='IQEB, r=3', marker=marker, linewidth=linewidth, color='midnightblue')
+    ax.plot(indices_iqeb_3, db_iqeb_3['error'], label='IQEB, r=3', marker=marker, linewidth=linewidth, color='midnightblue')
 
-    ax.plot(indices_q_adapt, db_q_adapt['error'], label='q-ADAPT, r=1.546', marker=marker, linewidth=linewidth, color='green')
+    # ax.plot(indices_q_adapt, db_q_adapt['error'], label='q-ADAPT, r=1.546', marker=marker, linewidth=linewidth, color='green')
     # ax.plot(indices_q_adapt_1, db_q_adapt_1['error'], label='q-ADAPT, r=1', marker=marker, linewidth=linewidth, color='limegreen')
-    # ax.plot(indices_q_adapt_3, db_q_adapt_3['error'], label='q-ADAPT, r=3', marker=marker, linewidth=linewidth, color='darkolivegreen')
+    ax.plot(indices_q_adapt_3, db_q_adapt_3['error'], label='q-ADAPT, r=3', marker=marker, linewidth=linewidth, color='darkolivegreen')
 
-    ax.plot(indices_adapt, db_adapt['error'], label='ADAPT, r=1.546', marker=marker, linewidth=linewidth, color='red')
+    # ax.plot(indices_adapt, db_adapt['error'], label='ADAPT, r=1.546', marker=marker, linewidth=linewidth, color='red')
     # ax.plot(indices_adapt_1, db_adapt_1['error'], label='ADAPT, r=1', marker=marker, linewidth=linewidth, color='orangered')
-    # ax.plot(indices_adapt_3, db_adapt_3['error'], label='ADAPT, r=3', marker=marker, linewidth=linewidth, color='darkred')
+    ax.plot(indices_adapt_3, db_adapt_3['error'], label='ADAPT, r=3', marker=marker, linewidth=linewidth, color='darkred')
 
     ax.fill_between([0, 11000], 1e-15, 1e-3, color='lavender', label='chem. accuracy')
 

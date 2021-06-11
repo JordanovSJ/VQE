@@ -18,18 +18,22 @@ if __name__ == "__main__":
     fci_Es = db_06['fci_E']
     db_hf['error'] = list(numpy.array(db_hf['E']) - numpy.array(fci_Es))
     db_08 = pandas.read_csv('../../../results/dissociation_curves/H6_iqeb_08.csv')
+    db_04 = pandas.read_csv('../../../results/dissociation_curves/H6_iqeb_04.csv')
+
     db_uccsd = pandas.read_csv('../../../results/dissociation_curves/H6_uccsd_31-May-2021.csv')
 
     plt.plot(db_06['r'], db_06['n_iters'], label=r'IQEB-VQE $\epsilon=10^{-6}$', marker='+', linewidth=0.5, color='green')
     plt.plot(db_08['r'], db_08['n_iters'], label=r'IQEB-VQE $\epsilon=10^{-8}$', marker='+', linewidth=0.5, color='red')
-    plt.hlines([117] ,xmin=0.5, xmax=3, color='blue', linewidth=1)
+    plt.plot(db_04['r'], db_04['n_iters'], label=r'IQEB-VQE $\epsilon=10^{-8}$', marker='+', linewidth=0.5, color='blue')
+
+    plt.hlines([117] ,xmin=0.5, xmax=3, color='tab:brown', linewidth=1)
 
     # plt.vlines([1.546], ymax=200, ymin=-100, linewidth=0.75, color='black', label='ground configuration')
     plt.fill_between([0.25, 3.75], 1e-9, 1e-3, color='lavender', label='chemical accuracy')
 
-    plt.xlabel(r'H-H bond distance, $\AA$')
+    plt.xlabel(r'H-H bond distance, $\AA$', fontsize=15)
     # plt.ylabel(r'Number of ansatz parameters')
-    plt.ylim(40, 200)
+    plt.ylim(0, 200)
     plt.xlim(0.25, 3.25)
     plt.grid(b=True, which='major', color='grey', linestyle='--', linewidth=0.5)
 

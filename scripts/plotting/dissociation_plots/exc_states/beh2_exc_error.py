@@ -28,8 +28,8 @@ if __name__ == "__main__":
     plt.vlines([1.316], ymax=200, ymin=-100, linewidth=0.75, color='black', label='Equilibrium configuration')
     plt.fill_between([0.5, 3.75], 1e-12, 1e-3, color='lavender', label='chemical accuracy')
 
-    plt.xlabel(r'Be-H bond distance, $\AA$')
-    plt.ylabel(r'$E-E_{FCI}$, Hartree')
+    # plt.xlabel(r'Be-H bond distance, $\AA$')
+    # plt.ylabel(r'$E-E_{FCI}$, Hartree')
     # plt.ylim(-15.6, -14.7)
     plt.ylim(1e-8, 1e-0)
     plt.yscale('log')

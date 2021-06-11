@@ -21,35 +21,32 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 0.995
+    r = 1.316
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = HF(r=r)  # (frozen_els=frozen_els)
-    excited_state = 0
+    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
+    excited_state = 1
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
-    # df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=15_19-Nov-2020.csv')
-    # #df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv')
-    # # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv')
-    # # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=1_r=1546_29-Mar-2021.csv')
-    # # df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=10_r=3_17-Mar-2021.csv')
+
+    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_q_exc_n=1_r=1316_17-Mar-2021.csv')
     #
     # df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
     # df2 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_2_iqeb_q_exc_n=10_r=1_02-Apr-2021.csv')
     # df3 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_3_iqeb_q_exc_n=10_r=1_08-Apr-2021.csv')
     #
-    # ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
+    ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
     # exc_state_1 = DataUtils.ansatz_from_data_frame(df1, molecule)
     # exc_state_2 = DataUtils.ansatz_from_data_frame(df2, molecule)
     # exc_state_3 = DataUtils.ansatz_from_data_frame(df3, molecule)
     #
-    # molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state], [abs(molecule.hf_energy)*2, exc_state_1],
+    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]] #, [abs(molecule.hf_energy)*2, exc_state_1],
     #                                 [abs(molecule.hf_energy)*2, exc_state_2], [abs(molecule.hf_energy)*2, exc_state_3]]
 
     # <<<<<<<<<<<<< IQEB-VQE params>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
-    n_largest_grads = 2
+    n_largest_grads = 1
 
     # <<<<<<<<<<<<<<< INIT REF STATE >>>>>>>>>>>>>>>>>>>>>>>>>>>.
     init_state_qasm = None # QasmUtils.hf_state(molecule.n_electrons)
@@ -92,7 +89,7 @@ if __name__ == "__main__":
         ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                                      element_type=ansatz_element_type).get_excitations()
     else:
-        ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
+        ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                              ansatz_element_type=ansatz_element_type).get_excitations()
         # ansatz_element_pool = MinPSExcPool(molecule.n_orbitals, molecule.n_electrons).get_excitations()
 
