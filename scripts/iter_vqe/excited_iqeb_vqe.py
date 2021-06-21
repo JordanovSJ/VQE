@@ -21,16 +21,16 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.316
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
+    molecule = LiH(r=r)  # (frozen_els=frozen_els)
     excited_state = 1
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
 
-    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_q_exc_n=1_r=1316_17-Mar-2021.csv')
+    df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=1_r=1546_29-Mar-2021.csv')
     #
     # df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
     # df2 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_2_iqeb_q_exc_n=10_r=1_02-Apr-2021.csv')

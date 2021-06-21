@@ -12,22 +12,16 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 
 if __name__ == "__main__":
 
-    db_n_1_bh2 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=1_gsdqe_r=3_05-Dec-2020.csv')
-    db_n_5_bh2 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_q_exc_n=5_r=3_17-Mar-2021.csv')
-    db_n_10_bh2 = pandas.read_csv('../../../results/iter_vqe_results/vip/BeH2_h_adapt_gsdqe_comp_pair_r=3_06-Oct-2020.csv')
-    db_n_30_bh2 = pandas.read_csv('../../../results/iter_vqe_results/BeH2_iqeb_n=30_gsdqe_r=3_02-Dec-2020.csv')
 
-    db_n_1_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_n=1_gsdqe_r=3_03-Dec-2020.csv')
-    db_n_5_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_q_exc_n=5_r=3_17-Mar-2021.csv')
-    # db_n_10_lih = pandas.read_csv('../../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_comp_pair_r=3_24-Sep-2020.csv')
-    db_n_10_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_q_exc_n=10_r=3_17-Mar-2021.csv')
-    db_n_30_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_n=30_gsdqe_r=3-03-Dec-2020.csv')
-    # db_n_30_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_q_exc_n=30_r=3_17-Mar-2021.csv')
+    db_n_1_bh2 = pandas.read_csv('../../../../results/iter_vqe_results/exc_states/BeH2_exc_1_iqeb_q_exc_n=1_r=1316_11-Jun-2021.csv')
+    db_n_5_bh2 = pandas.read_csv('../../../../results/iter_vqe_results/exc_states/BeH2_exc_1_iqeb_q_exc_n=5_r=1316_09-Jun-2021.csv')
+    db_n_10_bh2 = pandas.read_csv('../../../../results/iter_vqe_results/exc_states/BeH2_exc_1_iqeb_n=10_vqe_gsdqe_r=1316_25-Nov-2020.csv')
+    db_n_20_bh2 = pandas.read_csv('../../../../results/iter_vqe_results/exc_states/BeH2_exc_1_iqeb_vqe_n=20_gsdqe_r=1316_26-Nov-2020.csv')
 
-    db_n_1_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=3_30-May-2021.csv')
-    db_n_10_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=10_r=3_SDEexc_27-May-2021.csv')
-    db_n_5_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=5_r=3_03-Jun-2021.csv')
-    db_n_30_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=30_r=3_03-Jun-2021.csv')
+    db_n_1_lih = pandas.read_csv('../../../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=1_r=1546_11-Jun-2021.csv')
+    db_n_5_lih = pandas.read_csv('../../../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=5_r=1546_09-Jun-2021.csv')
+    db_n_10_lih = pandas.read_csv('../../../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1546_01-Apr-2021.csv')
+    db_n_20_lih = pandas.read_csv('../../../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=20_r=1546_09-Jun-2021.csv')
 
     df_col = 'cnot_count'
 
@@ -35,17 +29,12 @@ if __name__ == "__main__":
     interp_bh2_1 = numpy.interp(dEs, numpy.flip(db_n_1_bh2['error'].values), numpy.flip(db_n_1_bh2[df_col].values))
     interp_bh2_5 = numpy.interp(dEs, numpy.flip(db_n_5_bh2['error'].values), numpy.flip(db_n_5_bh2[df_col].values))
     interp_bh2_10 = numpy.interp(dEs, numpy.flip(db_n_10_bh2['error'].values), numpy.flip(db_n_10_bh2[df_col].values))
-    interp_bh2_30 = numpy.interp(dEs, numpy.flip(db_n_30_bh2['error'].values), numpy.flip(db_n_30_bh2[df_col].values))
+    interp_bh2_30 = numpy.interp(dEs, numpy.flip(db_n_20_bh2['error'].values), numpy.flip(db_n_20_bh2[df_col].values))
 
     interp_lih_1 = numpy.interp(dEs, numpy.flip(db_n_1_lih['error'].values), numpy.flip(db_n_1_lih[df_col].values))
     interp_lih_5 = numpy.interp(dEs, numpy.flip(db_n_5_lih['error'].values), numpy.flip(db_n_5_lih[df_col].values))
     interp_lih_10 = numpy.interp(dEs, numpy.flip(db_n_10_lih['error'].values), numpy.flip(db_n_10_lih[df_col].values))
-    interp_lih_30 = numpy.interp(dEs, numpy.flip(db_n_30_lih['error'].values), numpy.flip(db_n_30_lih[df_col].values))
-
-    interp_h6_1 = numpy.interp(dEs, numpy.flip(db_n_1_h6['error'].values), numpy.flip(db_n_1_h6[df_col].values))
-    interp_h6_5 = numpy.interp(dEs, numpy.flip(db_n_5_h6['error'].values), numpy.flip(db_n_5_h6[df_col].values))
-    interp_h6_10 = numpy.interp(dEs, numpy.flip(db_n_10_h6['error'].values), numpy.flip(db_n_10_h6[df_col].values))
-    interp_h6_30 = numpy.interp(dEs, numpy.flip(db_n_30_h6['error'].values), numpy.flip(db_n_30_h6[df_col].values))
+    interp_lih_30 = numpy.interp(dEs, numpy.flip(db_n_20_lih['error'].values), numpy.flip(db_n_20_lih[df_col].values))
 
     fig, ax = plt.subplots()
 
@@ -60,9 +49,14 @@ if __name__ == "__main__":
     print(sum(1 - interp_bh2_10 / interp_bh2_1) / len(1 - interp_bh2_10 / interp_bh2_1))
     print(sum(1 - interp_bh2_30 / interp_bh2_1) / len(1 - interp_bh2_30 / interp_bh2_1))
 
-    print(sum(1 - interp_h6_5 / interp_h6_1) / len(1 - interp_h6_5 / interp_h6_1))
-    print(sum(1 - interp_h6_10 / interp_h6_1) / len(1 - interp_h6_10 / interp_bh2_1))
-    print(sum(1 - interp_h6_30 / interp_h6_1) / len(1 - interp_h6_30 / interp_h6_1))
+    print(max(1 - interp_lih_5 / interp_lih_1))
+    print(max(1 - interp_lih_10 / interp_lih_1))
+    print(max(1 - interp_lih_30 / interp_lih_1))
+
+    print(max(1 - interp_bh2_5 / interp_bh2_1))
+    print(max(1 - interp_bh2_10 / interp_bh2_1))
+    print(max(1 - interp_bh2_30 / interp_bh2_1))
+
 
     ax.plot(dEs, 1 - interp_bh2_10/interp_bh2_1, label=r'BeH$_2$, n=10', linewidth=linewidth, color='dodgerblue')
     ax.plot(dEs, 1 - interp_bh2_30/interp_bh2_1, label=r'BeH$_2$, n=30', linewidth=linewidth, color='tomato')
