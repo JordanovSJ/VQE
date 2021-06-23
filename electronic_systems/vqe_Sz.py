@@ -59,9 +59,9 @@ if __name__ == "__main__":
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
 
         optimizer = 'BFGS'
-        optimizer_options = {'gtol': 10e-8}
+        optimizer_options = {'gtol': 10e-8, 'maxiter': 500}
         vqe_runner = VQERunner(e_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
-                           optimizer=optimizer, optimizer_options=optimizer_options)
+                               optimizer=optimizer, optimizer_options=optimizer_options)
 
         result = vqe_runner.vqe_run(ansatz=ansatz,  cache=global_cache, init_state_qasm=init_qasm)
 
