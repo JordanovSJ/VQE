@@ -7,6 +7,7 @@ from src.ansatz_elements import *
 from src.backends import *
 from src.utils import LogUtils
 from src.cache import *
+from pylab import *
 
 
 def ansatz_1():
@@ -34,20 +35,20 @@ if __name__ == "__main__":
     n_orbitals = 14
     n_electrons = 10
 
-    for U in numpy.linspace(0.1,0.4,3):
+    LogUtils.log_config()
+    backend = MatrixCacheBackend
+
+    S_values, U_values = [], []
+
+    for U in numpy.linspace(0.1,0.4,30):
         H = ham_14_qubits(U)
         e_system = ElectronicSystem(H, n_orbitals, n_electrons)
 
-        LogUtils.log_config()
-
         ansatz = ansatz_1()
-
         init_qasm = None
 
         global_cache = GlobalCache(e_system, excited_state=0)
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
-
-        backend = MatrixCacheBackend
 
         optimizer = 'BFGS'
         optimizer_options = {'gtol': 10e-8, 'maxiter': 10}
@@ -66,7 +67,13 @@ if __name__ == "__main__":
 
         expectation_value = statevector.dot(operator.todense()).dot(statevector.conj().transpose())
 
-        print(expectation_value[0,0]/4)
-        print(U)
+        S_values.append(expectation_value[0,0]/4)
+        U_values.append(U)
+        del global_cache
+
+    plt.plot(S_values, U_values, 'rx')
+    plt.show()
+
+
 
 
