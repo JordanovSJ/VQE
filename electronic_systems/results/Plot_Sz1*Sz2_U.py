@@ -34,7 +34,7 @@ if __name__ == "__main__":
     n_orbitals = 14
     n_electrons = 10
 
-    for U in numpy.linspace(0.1,0.4,3):
+    for U in numpy.linspace(0.1, 0.4, 50):
         H = ham_14_qubits(U)
         e_system = ElectronicSystem(H, n_orbitals, n_electrons)
 
@@ -56,17 +56,17 @@ if __name__ == "__main__":
 
         result = vqe_runner.vqe_run(ansatz=ansatz,  cache=global_cache, init_state_qasm=init_qasm)
 
-        parameters = list(result.x)
+        parameters = result.x
         statevector = global_cache.get_statevector(ansatz, parameters, init_state_qasm=init_qasm)
         statevector = statevector.todense()
 
-        operator = openfermion.FermionOperator('[0^ 0 2^ 2]-[0^ 0 3^ 3]-[1^ 1 2^ 2]+[1^ 1 3^ 3]')
+        operator = openfermion.FermionOperator('([0^ 0 2^ 2]-[0^ 0 3^ 3]-[1^ 1 2^ 2]+[1^ 1 3^ 3])/4')
         operator = openfermion.jordan_wigner(operator)
         operator = openfermion.get_sparse_operator(operator, n_orbitals)
 
-        expectation_value = statevector.dot(operator.todense()).dot(statevector.conj().transpose())
+        expectation_value = statevector.dot(operator).dot(statevector.conj().transpose())
 
-        print(expectation_value[0,0]/4)
+        print(expectation_value)
         print(U)
 
 

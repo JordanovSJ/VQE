@@ -32,7 +32,7 @@ def ansatz_1():
 if __name__ == "__main__":
     n_orbitals = 14
     n_electrons = 10
-    H = ham_14_qubits()
+    H = ham_14_qubits(0.294)
     e_system = ElectronicSystem(H, n_orbitals, n_electrons)
 
     LogUtils.log_config()
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     backend = MatrixCacheBackend
 
     optimizer = 'BFGS'
-    optimizer_options = {'gtol': 10e-8, 'maxiter': 100}
+    optimizer_options = {'gtol': 10e-8, 'maxiter': 10}
     vqe_runner = VQERunner(e_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
