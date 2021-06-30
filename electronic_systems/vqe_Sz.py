@@ -37,12 +37,12 @@ if __name__ == "__main__":
     n_electrons = 10
 
     LogUtils.log_config()
-    backend = MatrixCacheBackend
+    backend = QiskitSimBackend
 
     S_values, U_values = [], []
 
     count = 0
-    for U in numpy.linspace(0.1,0.4,30):
+    for U in numpy.linspace(0.1, 0.4, 30):
         print(count)
         count += 1
         H = ham_14_qubits(U)
@@ -54,16 +54,17 @@ if __name__ == "__main__":
         # init_qasm = SFExc(1, 12).get_qasm(numpy.pi/2)
 
         init_qasm = None
-
-        global_cache = GlobalCache(e_system, excited_state=0)
-        global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+        #
+        # global_cache = GlobalCache(e_system, excited_state=0)
+        # global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
 
         optimizer = 'BFGS'
-        optimizer_options = {'gtol': 10e-8, 'maxiter': 500}
+        optimizer_options = {'gtol': 10e-8, 'maxiter': 10}
         vqe_runner = VQERunner(e_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
                                optimizer=optimizer, optimizer_options=optimizer_options)
 
-        result = vqe_runner.vqe_run(ansatz=ansatz,  cache=global_cache, init_state_qasm=init_qasm)
+        # result = vqe_runner.vqe_run(ansatz=ansatz,  cache=global_cache, init_state_qasm=init_qasm)
+        result = vqe_runner.vqe_run(ansatz=ansatz, init_state_qasm=init_qasm)
 
         parameters = list(result.x)
         statevector = global_cache.get_statevector(ansatz, parameters, init_state_qasm=init_qasm)
@@ -95,8 +96,8 @@ if __name__ == "__main__":
     df['S'] = S_values
     df.to_csv('S_vs_U.csv')
 
-    # plt.plot(S_values, U_values, 'rx')
-    # plt.show()
+    plt.plot(S_values, U_values, 'rx')
+    plt.show()
 
 
 
