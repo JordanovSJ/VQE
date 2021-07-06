@@ -30,7 +30,6 @@ def vn_entropy(statevector, qubits_A):
         for j in range(2**n_qubits_A):
             # MAGIC
             for k in k_s:
-                print(i, j, k)
                 rho_A[i, j] += statevector[i + k]*statevector[j + k].conjugate()
 
     entropy = - rho_A.dot(scipy.linalg.logm(rho_A)).trace()
@@ -56,7 +55,7 @@ if __name__ == "__main__":
         H_sparse_matrix = get_sparse_operator(system.qubit_ham)
         eigvv = scipy.sparse.linalg.eigs(H_sparse_matrix.todense(), k=10, which='SR')
         eigvectors = eigvv[1].T
-        entropy = vn_entropy(eigvectors, system_A)[0]
+        entropy = vn_entropy(eigvectors[0], system_A)[0]
 
         Us.append(U)
         entropies.append(entropy)
