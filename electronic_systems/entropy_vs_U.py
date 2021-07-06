@@ -9,7 +9,7 @@ from src.cache import *
 from src.molecules.molecules import *
 
 
-def v_n_entropy(statevector, qubits_A):
+def vn_entropy(statevector, qubits_A):
     qubits_A = set(qubits_A)
     n_qubits = numpy.log2(len(statevector))
     n_qubits_A = len(qubits_A)
@@ -39,14 +39,31 @@ def v_n_entropy(statevector, qubits_A):
 
 
 if __name__ == "__main__":
-    system = H2()
-    H_sparse_matrix = get_sparse_operator(system.qubit_ham)
-    eigvv = scipy.sparse.linalg.eigs(H_sparse_matrix.todense(), k=10, which='SR')
+    n_orbitals = 14
+    n_electrons = 10
 
-    eigvectors = eigvv[1].T
+    # define system as the first 4 qubits corresponding to the impurity
+    system_A = [0, 1, 2, 4]
 
-    vector = [1/2**0.5, 0, 0, 1/2**0.5]
+    Us = []
+    entropies = []
 
-    print(v_n_entropy(vector, [0])[0])
+    for U in numpy.linspace(0.1, 0.4, 30):
+        print(U)
 
-    print('emi sasho')
+        H = ham_14_qubits(U)
+        system = ElectronicSystem(H, n_orbitals, n_electrons)
+        H_sparse_matrix = get_sparse_operator(system.qubit_ham)
+        eigvv = scipy.sparse.linalg.eigs(H_sparse_matrix.todense(), k=10, which='SR')
+        eigvectors = eigvv[1].T
+        entropy = vn_entropy(eigvectors, system_A)[0]
+
+        Us.append(U)
+        entropies.append(entropy)
+
+        df = pandas.DataFrame(columns=['U', 'S'])
+        df['U'] = Us
+        df['S'] = entropies
+        df.to_csv('Entropy_vs_U.csv')
+
+    print('Child of the desert')
