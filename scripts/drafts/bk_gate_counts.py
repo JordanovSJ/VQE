@@ -25,7 +25,7 @@ if __name__ == "__main__":
     r = 1.316
     molecule = BeH2(r=r)  #frozen_els={'occupied': [0, 1], 'unoccupied': []})
 
-    df = pandas.read_csv('../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_06-Nov-2020.csv')
+    df = pandas.read_csv('../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdfe_comp_exc_06-Nov-2020.csv')
 
     state = DataUtils.ansatz_from_data_frame(df, molecule)
     ansatz = state.ansatz_elements

@@ -1,11 +1,5 @@
-from openfermion import QubitOperator, FermionOperator
-from openfermion.transforms import jordan_wigner
-
-from src.utils import QasmUtils, MatrixUtils
 from src.ansatz_elements import*
-
 import itertools
-import numpy
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Lists of ansatz elements>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

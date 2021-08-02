@@ -1,1 +1,9 @@
-ALL done
+Urgent:
+
+* create a Jupyter notebook tutorial !!!
+
+Not urgent:
+
+* integrate the shot-simulator backend
+* modify the shot-simulator to work with IBM's devices
+* ------------- || ---------- Rigetti's devices

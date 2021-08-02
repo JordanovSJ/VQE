@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     molecule = LiH()
 
-    df = pandas.read_csv("../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
+    df = pandas.read_csv("../../results/iter_vqe_results/vip/LiH_h_adapt_gsdqe_27-Jul-2020.csv")
 
     init_ansatz_elements = []
     for i in range(len(df)):

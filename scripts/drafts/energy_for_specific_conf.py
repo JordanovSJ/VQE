@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # logging
     LogUtils.log_config()
 
-    df = pandas.read_csv("../results/iter_vqe_results/BeH2_iqeb_vqe_r=15_19-Nov-2020.csv")
+    df = pandas.read_csv("../../results/iter_vqe_results/BeH2_iqeb_vqe_r=15_19-Nov-2020.csv")
     # df = pandas.read_csv("../x_sdfsd.csv")
 
     state = DataUtils.ansatz_from_data_frame(df, molecule)

@@ -6,5 +6,5 @@ setup(
     scripts=['scripts'],
     author='Jordan',
     author_email='jordanovsj@gmail.com',
-    install_requires=['ray', 'openfermion', 'openfermionpsi4', 'numpy', 'scipy', 'qiskit']
+    install_requires=['ray', 'openfermion', 'openfermionpsi4', 'numpy', 'scipy', 'qiskit', 'pandas']
 )

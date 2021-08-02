@@ -40,17 +40,17 @@ if __name__ == "__main__":
     exact_energies = []
     rs = [1, 1.25, 1.546, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5]
     gs_dfs = []
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1546_15-Mar-2021.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.75_19-Nov-2020.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_adapt_f_exc_r=2_01-Apr-2021.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_q_exc_r=2.25_19-Nov-2020.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_q_exc_r=2.5_19-Nov-2020.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_q_exc_r=2.75_19-Nov-2020.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_q_exc_no_comps_n=1_r=3_18-Mar-2021.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_q_exc_r=3.25_19-Nov-2020.csv'))
-    gs_dfs.append(pandas.read_csv('../results/iter_vqe_results/LiH_iqeb_q_exc_r=3.5_19-Nov-2020.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1_15-Mar-2021.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.25_19-Nov-2020.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_eff_f_exc_r=1546_15-Mar-2021.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=1.75_19-Nov-2020.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_adapt_f_exc_r=2_01-Apr-2021.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=2.25_19-Nov-2020.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=2.5_19-Nov-2020.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=2.75_19-Nov-2020.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_no_comps_n=1_r=3_18-Mar-2021.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=3.25_19-Nov-2020.csv'))
+    gs_dfs.append(pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_r=3.5_19-Nov-2020.csv'))
 
     # rs = [0.75, 1, 1.316, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3]
     # gs_dfs = []
