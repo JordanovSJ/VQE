@@ -17,10 +17,17 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
+<<<<<<< HEAD
     r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = LiH(r=r)  # (frozen_els=frozen_els)
+=======
+    r = 1
+    # theta = 0.538*numpy.pi # for H20
+    frozen_els = {'occupied': [], 'unoccupied': []}
+    molecule = H6(r=r)  # (frozen_els=frozen_els)
+>>>>>>> work_branch
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
@@ -50,8 +57,8 @@ if __name__ == "__main__":
     time_stamp = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)")
 
     # create the pool of ansatz elements
-    ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                        ansatz_element_type=ansatz_element_type).get_excitations()
+    ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
+                                         ansatz_element_type=ansatz_element_type).get_excitations()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:
@@ -70,10 +77,22 @@ if __name__ == "__main__":
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
                                                    'var_parameters'])
 
+    # <<<<<<<<<<<< LOAD PAUSED SIMULATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    init_db = pandas.read_csv("../../results/iter_vqe_results/H6_iqeb_q_exc_n=10_r=075_27-May-2021.csv")
+    # init_db = pandas.read_csv("../../results/iter_vqe_results/H6_iqeb_q_exc_n=10_r=1_27-May-2021.csv")
+
+    if init_db is None:
+        ansatz = []
+        ansatz_parameters = []
+    else:
+        state = DataUtils.ansatz_from_data_frame(init_db, molecule)
+        ansatz = state.ansatz_elements
+        ansatz_parameters = state.parameters
+
     # <<<<<<<<<<<<<< INITIALIZE ITERATIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    ansatz = []
-    ansatz_parameters = []
+    # ansatz = []
+    # ansatz_parameters = []
 
     hf_energy = molecule.hf_energy
     fci_energy = molecule.fci_energy

@@ -17,32 +17,36 @@ import qiskit
 
 if __name__ == "__main__":
 
-    r = 1.546
-    frozen_els = None #{'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = LiH(r=r) #(r=r, frozen_els=frozen_els)
+    # Define molecular system
 
-    # logging
+    # bond distance in angstroms
+    r = 0.75
+    # frozen electronic orbitals
+    frozen_els = None  # {'occupied': [0, 1], 'unoccupied': [6, 7]}
+    q_system = BeH2(r=r, frozen_els=frozen_els)
+
+    # init logging
     LogUtils.log_config()
 
-    # uccsd = UCCSD(q_system.n_orbitals, q_system.n_electrons)
-    # ansatz = uccsd
-    ansatz = UCCSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'q_exc').get_excitations()
-    print(len(ansatz))
+    # Create a UCCSD ansatz for the specified molecule
+    ansatz = UCCSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'f_exc').get_excitations()
+
+    # choose a backend to calculate expectation values
     backend = MatrixCacheBackend
+
+    # create a cache of precomputed values to accelerate the simulation (optional)
     global_cache = GlobalCache(q_system)
     global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
-    # global_cache.calculate_commutators_sparse_matrices_dict()
+    # global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
 
-    # backend = QiskitSimBackend
-    # global_cache = None
-
+    # Create a VQE runner, and specify the minimizer
     optimizer = 'BFGS'
     optimizer_options = {'gtol': 10e-8}
     vqe_runner = VQERunner(q_system, backend=backend, print_var_parameters=False, use_ansatz_gradient=True,
                            optimizer=optimizer, optimizer_options=optimizer_options)
 
     t0 = time.time()
-    result = vqe_runner.vqe_run(ansatz=ansatz, cache=global_cache)#, initial_var_parameters=var_parameters)
+    result = vqe_runner.vqe_run(ansatz=ansatz, cache=global_cache)  # initial_var_parameters=var_parameters)
     t = time.time()
 
     logging.critical(result)

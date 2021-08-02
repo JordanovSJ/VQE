@@ -21,19 +21,36 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1.75
+    r = 1.546
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
-    excited_state = 1
+    molecule = LiH(r=r)  # (frozen_els=frozen_els)
+    excited_state = 0
 
     # <<<<<<<<<<,get lower energy states>>>>>>>>>>>>>
     # molecule.default_states()
-    df = pandas.read_csv('../../results/iter_vqe_results/BeH2_iqeb_vqe_r=175_19-Nov-2020.csv')
-    ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
-    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]]
 
-    n_largest_grads = 10
+    df = pandas.read_csv('../../results/iter_vqe_results/LiH_iqeb_q_exc_n=1_r=1546_29-Mar-2021.csv')
+    #
+    # df1 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_1_iqeb_q_exc_n=10_r=1_01-Apr-2021.csv')
+    # df2 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_2_iqeb_q_exc_n=10_r=1_02-Apr-2021.csv')
+    # df3 = pandas.read_csv('../../results/iter_vqe_results/exc_states/LiH_exc_3_iqeb_q_exc_n=10_r=1_08-Apr-2021.csv')
+    #
+    ground_state = DataUtils.ansatz_from_data_frame(df, molecule)
+    # exc_state_1 = DataUtils.ansatz_from_data_frame(df1, molecule)
+    # exc_state_2 = DataUtils.ansatz_from_data_frame(df2, molecule)
+    # exc_state_3 = DataUtils.ansatz_from_data_frame(df3, molecule)
+    #
+    molecule.H_lower_state_terms = [[abs(molecule.hf_energy)*2, ground_state]] #, [abs(molecule.hf_energy)*2, exc_state_1],
+    #                                 [abs(molecule.hf_energy)*2, exc_state_2], [abs(molecule.hf_energy)*2, exc_state_3]]
+
+    # <<<<<<<<<<<<< IQEB-VQE params>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+    n_largest_grads = 1
+
+    # <<<<<<<<<<<<<<< INIT REF STATE >>>>>>>>>>>>>>>>>>>>>>>>>>>.
+    init_state_qasm = None # QasmUtils.hf_state(molecule.n_electrons)
+
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
     ansatz_element_type = 'q_exc'
@@ -74,6 +91,7 @@ if __name__ == "__main__":
     else:
         ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                              ansatz_element_type=ansatz_element_type).get_excitations()
+        # ansatz_element_pool = MinPSExcPool(molecule.n_orbitals, molecule.n_electrons).get_excitations()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
@@ -83,7 +101,7 @@ if __name__ == "__main__":
         # precompute commutator matrices, that are use in excitation gradient calculation
         global_cache = GlobalCache(molecule, excited_state=excited_state)
         global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz_element_pool)
-        global_cache.calculate_commutators_sparse_matrices_dict(ansatz_element_pool)
+
     else:
         global_cache = None
 
@@ -113,10 +131,16 @@ if __name__ == "__main__":
 
         previous_energy = current_energy
 
+        # TODO: check
+        # NEW: init random guess for the parameters... better search of good ansatz elements... (exc. states)
+        init_elements_parameters = list((0.5 - numpy.random.rand(len(ansatz_element_pool)))*numpy.pi)
+
         elements_energies = EnergyUtils.\
             largest_individual_vqe_energy_reduction_elements(vqe_runner_2, ansatz_element_pool, ansatz=ansatz,
+                                                             elements_parameters=init_elements_parameters,
                                                              ansatz_parameters=ansatz_parameters, excited_state=excited_state,
                                                              n=n_largest_grads, global_cache=global_cache)
+
         elements = [e_g[0] for e_g in elements_energies]
         elements_keys = [str(el.excitations_generators) for el in elements]
         elements_parameters = [e_g[1].x[0] for e_g in elements_energies]

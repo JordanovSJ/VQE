@@ -1,3 +1,4 @@
+
 import numpy
 import pandas
 
@@ -46,6 +47,24 @@ class H4(QSystem):
           ]
 
 
+class H6(QSystem):
+
+    def __init__(self, r=0.735, basis='sto-3g', frozen_els=None):
+        super(H6, self).__init__(name='H6', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
+                                 n_electrons=6, basis=basis, frozen_els=frozen_els)
+
+    @staticmethod
+    def get_geometry(distance=0.735):
+        return [
+            ['H', [0, 0, 0]],
+            ['H', [0, 0, distance]],
+            ['H', [0, 0, 2 * distance]],
+            ['H', [0, 0, 3 * distance]],
+            ['H', [0, 0, 4 * distance]],
+            ['H', [0, 0, 5 * distance]]
+          ]
+
+
 class LiH(QSystem):
     # frozen_els = {'occupied': [0,1], 'unoccupied': []}
     def __init__(self, r=1.546, basis='sto-3g', frozen_els=None):
@@ -54,6 +73,7 @@ class LiH(QSystem):
 
     def default_states(self):
         df = pandas.read_csv('src/molecules/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
+        # df = pandas.read_csv('../../src/molecules/LiH_h_adapt_gsdqe_comp_pairs_15-Sep-2020.csv')
         ground = DataUtils.ansatz_from_data_frame(df, self)
         del df
         self.H_lower_state_terms = [[abs(self.hf_energy)*2, ground]]
@@ -110,4 +130,19 @@ class H2O(QSystem):
             ['H', [0, r*numpy.sin(numpy.pi - theta), r*numpy.cos(numpy.pi - theta)]]
         ]
 
+
+class NH3(QSystem):
+
+    def __init__(self, r=1.0703, theta=(100.107/180) * numpy.pi, basis='sto-3g', frozen_els=None):
+        super(NH3, self).__init__(name='NH3', geometry=self.get_geometry(r, theta), multiplicity=1, charge=0, n_orbitals=16,
+                                  n_electrons=10, basis=basis, frozen_els=frozen_els,)
+
+    @staticmethod
+    def get_geometry(r=1.0703, theta=(100.107/180) * numpy.pi):
+        return [
+            ['N', [0, 0, 0]],
+            ['H', [0, 2*(numpy.sin(theta/2)/numpy.sqrt(3))*r, numpy.sqrt(1-4*numpy.sin(theta/2)**2/3)*r]],
+            ['H', [numpy.sin(theta/2)*r, -numpy.sin(theta/2)/numpy.sqrt(3)*r, numpy.sqrt(1-4*numpy.sin(theta/2)**2/3)*r]],
+            ['H', [-numpy.sin(theta/2)*r, -numpy.sin(theta/2)/numpy.sqrt(3)*r,  numpy.sqrt(1-4*numpy.sin(theta/2)**2/3)*r]]
+        ]
 

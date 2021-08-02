@@ -1,5 +1,5 @@
 from openfermion import QubitOperator, FermionOperator
-from openfermion.transforms import jordan_wigner
+from openfermion.transforms import jordan_wigner, bravyi_kitaev
 from openfermion.utils import hermitian_conjugated
 
 from src.utils import QasmUtils, MatrixUtils
@@ -85,13 +85,17 @@ class PauliStringExc(AnsatzElement):
 
 
 class SFExc(AnsatzElement):
-    def __init__(self, qubit_1, qubit_2, system_n_qubits=None):
+    def __init__(self, qubit_1, qubit_2, system_n_qubits=None, encoding='jw'):
         self.spin_complement = False
 
         self.qubits = [[qubit_1], [qubit_2]]
 
         fermi_operator = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.qubits[1][0], self.qubits[0][0]))
-        excitation_generator = jordan_wigner(fermi_operator)
+        if encoding == 'jw':
+            excitation_generator = jordan_wigner(fermi_operator)
+        else:
+            assert encoding == 'bk'
+            excitation_generator = bravyi_kitaev(fermi_operator)
 
         super(SFExc, self).\
             __init__(element='s_f_exc_{}_{}'.format(qubit_1, qubit_2), order=1, n_var_parameters=1,
@@ -110,7 +114,7 @@ class SFExc(AnsatzElement):
 
 
 class DFExc(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
+    def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None, encoding='jw'):
         self.spin_complement = False
 
         qubit_pair_1.sort()
@@ -123,7 +127,11 @@ class DFExc(AnsatzElement):
         fermi_operator = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
                                          .format(self.qubits[0][0], self.qubits[0][1],
                                                  self.qubits[1][0], self.qubits[1][1]))
-        excitation_generator = jordan_wigner(fermi_operator)
+        if encoding == 'jw':
+            excitation_generator = jordan_wigner(fermi_operator)
+        else:
+            assert encoding == 'bk'
+            excitation_generator = bravyi_kitaev(fermi_operator)
 
         super(DFExc, self).\
             __init__(element='d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), order=2, n_var_parameters=1,
@@ -243,20 +251,30 @@ class EffDFExc(AnsatzElement):
 
 
 class SpinCompSFExc(AnsatzElement):
-    def __init__(self, qubit_1, qubit_2, system_n_qubits=None):
+    def __init__(self, qubit_1, qubit_2, system_n_qubits=None, encoding='jw'):
         self.spin_complement = True
 
         self.qubits = [[qubit_1], [qubit_2]]
         self.complement_qubits = [self.spin_complement_orbitals([qubit_1]), self.spin_complement_orbitals([qubit_2])]
 
         fermi_operator_1 = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(qubit_2, qubit_1))
-        excitations_generators = [jordan_wigner(fermi_operator_1)]
+
+        if encoding == 'jw':
+            excitations_generators = [jordan_wigner(fermi_operator_1)]
+        else:
+            assert encoding == 'bk'
+            excitations_generators = [bravyi_kitaev(fermi_operator_1)]
+
         if {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[0], *self.complement_qubits[1]} and \
            {*self.qubits[0], *self.qubits[1]} != {*self.complement_qubits[1], *self.complement_qubits[0]}:
 
             fermi_operator_2 = FermionOperator('[{1}^ {0}] - [{0}^ {1}]'.format(self.complement_qubits[1][0],
                                                                                 self.complement_qubits[0][0]))
-            excitations_generators.append(jordan_wigner(fermi_operator_2))
+            if encoding == 'jw':
+                excitations_generators = [jordan_wigner(fermi_operator_2)]
+            else:
+                assert encoding == 'bk'
+                excitations_generators = [bravyi_kitaev(fermi_operator_2)]
 
         super(SpinCompSFExc, self).\
             __init__(element='spin_s_f_exc_{}_{}'.format(qubit_2, qubit_1), order=1, n_var_parameters=1,
@@ -272,7 +290,7 @@ class SpinCompSFExc(AnsatzElement):
 
 
 class SpinCompDFExc(AnsatzElement):
-    def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None):
+    def __init__(self, qubit_pair_1, qubit_pair_2, system_n_qubits=None, encoding='jw'):
         self.spin_complement = True
 
         assert len(qubit_pair_1) == 2
@@ -281,14 +299,24 @@ class SpinCompDFExc(AnsatzElement):
         self.complement_qubits = [self.spin_complement_orbitals(qubit_pair_1), self.spin_complement_orbitals(qubit_pair_2)]
 
         fermi_operator_1 = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'.format(*self.qubits[0], *self.qubits[1]))
-        excitations_generators = [jordan_wigner(fermi_operator_1)]
+
+        if encoding == 'jw':
+            excitations_generators = [jordan_wigner(fermi_operator_1)]
+        else:
+            assert encoding == 'bk'
+            excitations_generators = [bravyi_kitaev(fermi_operator_1)]
 
         if [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[0]), set(self.complement_qubits[1])] and \
            [set(self.qubits[0]), set(self.qubits[1])] != [set(self.complement_qubits[1]), set(self.complement_qubits[0])]:
 
             fermi_operator_2 = FermionOperator('[{2}^ {3}^ {0} {1}] - [{0}^ {1}^ {2} {3}]'
                                                .format(*self.complement_qubits[0], *self.complement_qubits[1]))
-            excitations_generators.append(jordan_wigner(fermi_operator_2))
+
+            if encoding == 'jw':
+                excitations_generators = [jordan_wigner(fermi_operator_2)]
+            else:
+                assert encoding == 'bk'
+                excitations_generators = [bravyi_kitaev(fermi_operator_2)]
 
         super(SpinCompDFExc, self).\
             __init__(element='spin_d_f_exc_{}_{}'.format(qubit_pair_1, qubit_pair_2), order=2, n_var_parameters=1,

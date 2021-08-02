@@ -24,21 +24,22 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
-    r = 1
+    r = 1.5
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
-    molecule = H4(r=r)  # (frozen_els=frozen_els)
+    molecule = H6(r=r)  # (frozen_els=frozen_els)
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
-    # ansatz_element_type = 'q_exc'
-    # ansatz_element_type = 'f_exc'
     ansatz_element_type = 'q_exc'
+    # ansatz_element_type = 'f_exc'
+    # ansatz_element_type = 'pauli_str_exc'
+    q_encoding = 'jw'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 
     # <<<<<<<<<< TERMINATION PARAMETERS >>>>>>>>>>>>>>>>>
     delta_e_threshold = 1e-12  # 1e-3 for chemical accuracy
-    max_ansatz_elements = 350
+    max_ansatz_elements = 600
 
     # <<<<<<<<<<<< DEFINE BACKEND >>>>>>>>>>>>>>>>>
     backend = backends.MatrixCacheBackend
@@ -59,9 +60,9 @@ if __name__ == "__main__":
     # create the pool of ansatz elements
     if spin_complement:
         ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                     element_type=ansatz_element_type).get_excitations()
+                                                     element_type=ansatz_element_type, encoding=q_encoding).get_excitations()
     else:
-        ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
+        ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
                                             ansatz_element_type=ansatz_element_type).get_excitations()
 
     # create simulation cache
@@ -81,7 +82,7 @@ if __name__ == "__main__":
                                                    'cnot_depth', 'u1_depth', 'element', 'element_qubits',
                                                    'var_parameters'])
     # <<<<<<<<<<<< LOAD PAUSED SIMULATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    init_db = None #pandas.read_csv("../../results/iter_vqe_results/vip/BeH2_g_adapt_gsdpwe_17_Nov-2020.csv")
+    init_db = pandas.read_csv("../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=15_no_comps_02-June-2021.csv")
 
     if init_db is None:
         ansatz_elements = []
