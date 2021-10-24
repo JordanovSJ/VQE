@@ -1,4 +1,4 @@
-from src import q_system
+from src import molecular_system
 from src.backends import QiskitSimBackend, ExcStateSim
 from src.ansatz_element_lists import UCCSD
 
@@ -97,7 +97,7 @@ class QiskitSimulationTest(unittest.TestCase):
         fermion_ham = openfermion.transforms.get_fermion_operator(molecule_ham)
         h = openfermion.transforms.jordan_wigner(fermion_ham)
 
-        ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_excitations()
+        ansatz_elements = UCCSD(molecule.n_orbitals, molecule.n_electrons).get_all_elements()
         var_parameters = numpy.zeros(len(ansatz_elements))
         var_parameters[-1] = 0.11
         energy_qiskit_sim = QiskitSimBackend.ham_expectation_value(h, ansatz_elements, var_parameters, molecule.n_orbitals,

@@ -1,5 +1,5 @@
 from src.vqe_runner import VQERunner
-from src.q_system import *
+from src.molecular_system import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
@@ -29,14 +29,15 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     # Create a UCCSD ansatz for the specified molecule
-    ansatz = UCCSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'f_exc').get_excitations()
+    ansatz = UCCSDExcitations(q_system.n_orbitals, q_system.n_electrons, 'f_exc').get_all_elements()
 
     # choose a backend to calculate expectation values
     backend = MatrixCacheBackend
 
     # create a cache of precomputed values to accelerate the simulation (optional)
-    global_cache = GlobalCache(q_system)
-    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+    # global_cache = GlobalCache(q_system)
+    global_cache = None
+    # global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
     # global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
 
     # Create a VQE runner, and specify the minimizer

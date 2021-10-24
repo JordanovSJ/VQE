@@ -4,7 +4,7 @@ import sys
 sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
-from src.q_system import *
+from src.molecular_system import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend
 from src.utils import *
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     # create the pool of ansatz elements
     ansatz_element_pool = SDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                        ansatz_element_type=ansatz_element_type).get_excitations()
+                                        ansatz_element_type=ansatz_element_type).get_all_elements()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:

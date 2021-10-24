@@ -11,7 +11,7 @@ import ast
 sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
-from src.q_system import *
+from src.molecular_system import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend
 from src.utils import LogUtils
@@ -60,10 +60,10 @@ if __name__ == "__main__":
     # create the pool of ansatz elements
     if spin_complement:
         ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                     element_type=ansatz_element_type, encoding=q_encoding).get_excitations()
+                                                     element_type=ansatz_element_type, encoding=q_encoding).get_all_elements()
     else:
         ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                            ansatz_element_type=ansatz_element_type).get_excitations()
+                                            ansatz_element_type=ansatz_element_type).get_all_elements()
 
     # create simulation cache
     if backend == backends.MatrixCacheBackend:

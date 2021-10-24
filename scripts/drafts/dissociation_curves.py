@@ -29,7 +29,7 @@ if __name__ == "__main__":
     LogUtils.log_config()
 
     # ansatz = ansatz[:74]  # 74 for 1e-8
-    ansatz = UCCSDExcitations(molecule.n_qubits, molecule.n_electrons, ansatz_element_type='q_exc').get_excitations()
+    ansatz = UCCSDExcitations(molecule.n_qubits, molecule.n_electrons, ansatz_element_type='q_exc').get_all_elements()
     var_parameters = list(numpy.zeros(len(ansatz)))
 
     optimizer = 'BFGS'

@@ -64,10 +64,10 @@ if __name__ == "__main__":
     # create the pool of ansatz elements
     if spin_complement:
         ansatz_element_pool = SpinCompGSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                                     element_type=ansatz_element_type).get_excitations()
+                                                     element_type=ansatz_element_type).get_all_elements()
     else:
         ansatz_element_pool = GSDExcitations(molecule.n_orbitals, molecule.n_electrons,
-                                             ansatz_element_type=ansatz_element_type).get_excitations()
+                                             ansatz_element_type=ansatz_element_type).get_all_elements()
 
     message = 'Length of new pool', len(ansatz_element_pool)
     logging.info(message)
