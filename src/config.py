@@ -9,3 +9,6 @@ floating_point_accuracy = 10e-15
 floating_point_accuracy_digits = 15
 matrix_size_threshold = 1e7  # in bytes
 
+# optimizer options
+default_optimizer = 'BFGS'
+default_optimizer_options = {'gtol': 10e-8}
