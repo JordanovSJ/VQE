@@ -12,3 +12,6 @@ matrix_size_threshold = 1e7  # in bytes
 # optimizer options
 default_optimizer = 'BFGS'
 default_optimizer_options = {'gtol': 10e-8}
+optimizer_tol = 1e-10
+optimizer_bounds = None
+

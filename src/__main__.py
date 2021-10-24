@@ -23,7 +23,7 @@ if __name__ == "__main__":
     r = 0.75
     # frozen electronic orbitals
     frozen_els = None  # {'occupied': [0, 1], 'unoccupied': [6, 7]}
-    q_system = BeH2(r=r, frozen_els=frozen_els)
+    q_system = H2(r=r, frozen_els=frozen_els)
 
     # init logging
     LogUtils.log_config()
