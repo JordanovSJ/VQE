@@ -1,5 +1,5 @@
 # VQE
-### This repository contains a code used to perform classical numerical simulations of molecules with the variational quantum eigensolver (VQE).The purpose of this repository is to be used as a benchmark to test and design iterative VQE protocols (see Ref. 1).
+### This repository contains a code used to perform classical numerical simulations of molecules with the variational quantum eigensolver (VQE).The purpose of this repository is to be used as a benchmark to test and design ADAPT-VQE protocols (see Ref. 1).
 
 
 * An implementation of the VQE is contained in src/vqe_runner.py
@@ -16,23 +16,37 @@
 
 ### References:
 
-1. https://arxiv.org/abs/2011.10540
-2. https://doi.org/10.1038/s41467-019-10988-2
+1. https://www.nature.com/articles/s42005-021-00730-0
+2. https://www.nature.com/articles/s41467-019-10988-2
 3. https://arxiv.org/abs/2106.06296
 4. https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.020310
 
-## Installation:
+## Installation (Linux):
 
-1. Install using the environment.yml file.
- - note that this option might not work for some dependencies
+i. Install using the environment.yml file.
+ - note that this option may not work for some dependencies
 
-2. Manual installation:
- i. Create a new conda environment
- ii. Install the following libraries:
+ii. If using the environment.yml file does not work, install manually:
+
+1. Create a new conda environment
+
+
+3. Install the following libraries:
   - qiskit 0.23.5 (or newer version)
-  - openfermion 1.0.0 (or newer version)
-  - openfermionpsi4 0.5
   - numpy 1.20.0 (or newer version)
   - scipy 1.6.0
   - ray
-  - pandas 
+  - pandas
+
+    (The next three libraries install in the given order. I recommend isntalling psi4
+and openfermionpsi4 as given at https://github.com/quantumlib/OpenFermion-Psi4 )
+  - psi4
+  - openfermionpsi4 0.5 (or newer version)
+  - openfermion 1.0.0 (or newer version)
+
+c) Make sure that the following directories are added to PYTHONPATH:
+ - "/home/ .. path/to .. /VQE"
+ - "/home/ .. path/to .. /VQE/src"
+
+(To add these paths permanently you can use the following command:
+"conda develop '/home/ .. path/ to  .. /VQE/'")
