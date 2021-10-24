@@ -1,6 +1,7 @@
-name: vqe_3
+name: vqe_test
 channels:
   - psi4
+  - http://conda.anaconda.org/psi4
   - defaults
 dependencies:
   - _anaconda_depends=2019.03=py37_0
@@ -145,7 +146,6 @@ dependencies:
   - libxslt=1.1.33=h7d1a2b0_0
   - llvmlite=0.30.0=py37hd408876_0
   - locket=0.2.0=py37_1
-  - lxml=4.4.2=py37hefd8a0e_0
   - lz4-c=1.8.1.2=h14c3975_0
   - lzo=2.10=h49e0be7_2
   - markupsafe=1.1.1=py37h7b6447c_0
@@ -173,20 +173,15 @@ dependencies:
   - notebook=6.0.2=py37_0
   - numba=0.46.0=py37h962f231_0
   - numexpr=2.7.0=py37h9e4a6bb_0
-  - numpy=1.17.4=py37hc1035e2_0
-  - numpy-base=1.17.4=py37hde5b4d6_0
   - numpydoc=0.9.1=py_0
   - olefile=0.46=py37_0
-  - openfermion=0.9=py37hd763080_1
-  - openfermionpsi4=0.4=py37h934b37d_0
   - openpyxl=3.0.2=py_0
   - openssl=1.1.1d=h7b6447c_3
   - packaging=19.2=py_0
-  - pandas=0.25.3=py37he6710b0_0
   - pandoc=2.2.3.2=0
   - pandocfilters=1.4.2=py37_1
   - pango=1.42.4=h049681c_0
-  - parso=0.5.1=py_0
+  - parso=0.5.2=py_0
   - partd=1.1.0=py_0
   - patchelf=0.10=he6710b0_0
   - path.py=12.0.2=py_0
@@ -260,7 +255,6 @@ dependencies:
   - ruamel_yaml=0.15.46=py37h14c3975_0
   - scikit-image=0.15.0=py37he6710b0_0
   - scikit-learn=0.21.3=py37hd81dba3_0
-  - scipy=1.2.1=py37h7c811a0_0
   - seaborn=0.9.0=pyh91ea838_1
   - secretstorage=3.1.1=py37_0
   - send2trash=1.5.0=py37_0
@@ -326,33 +320,56 @@ dependencies:
   - pip:
     - aiohttp==3.6.2
     - async-timeout==3.0.1
+    - cachetools==4.2.1
+    - cirq==0.9.1
+    - deprecation==2.1.0
     - dill==0.3.1.1
     - dlx==1.0.4
     - docloud==1.0.375
-    - docplex==2.12.182
+    - docplex==2.15.194
     - fastdtw==0.3.4
+    - fastjsonschema==2.15.0
+    - freezegun==0.3.15
     - funcsigs==1.0.2
-    - grpcio==1.26.0
+    - google-api-core==1.26.0
+    - google-auth==1.26.1
+    - googleapis-common-protos==1.52.0
+    - grpcio==1.35.0
     - inflection==0.3.1
+    - lxml==4.6.2
     - marshmallow==3.3.0
     - marshmallow-polyfield==5.7
     - multidict==4.7.4
+    - multitasking==0.0.9
     - nest-asyncio==1.2.2
     - ntlm-auth==1.4.0
-    - protobuf==3.11.3
+    - numpy==1.20.0
+    - openfermion==1.0.0
+    - openfermionpsi4==0.5
+    - pandas==1.2.1
+    - protobuf==3.12.4
+    - pyasn1==0.4.8
+    - pyasn1-modules==0.2.8
+    - pybind11==2.6.2
     - pyscf==1.7.0
-    - qiskit==0.14.1
-    - qiskit-aer==0.3.4
-    - qiskit-aqua==0.6.2
-    - qiskit-ibmq-provider==0.4.5
-    - qiskit-ignis==0.2.0
-    - qiskit-terra==0.11.1
+    - python-constraint==1.4.0
+    - qiskit==0.23.5
+    - qiskit-aer==0.7.4
+    - qiskit-aqua==0.8.2
+    - qiskit-ibmq-provider==0.11.1
+    - qiskit-ignis==0.5.2
+    - qiskit-terra==0.16.4
     - quandl==3.5.0
     - ray==0.8.1
     - redis==3.4.1
     - requests-ntlm==1.1.0
+    - retworkx==0.7.2
+    - rsa==4.7
+    - scipy==1.6.0
     - setproctitle==1.1.10
-    - websockets==7.0
+    - typing-extensions==3.7.4.3
+    - websockets==8.1
     - yarl==1.4.2
-prefix: /home/jordan/anaconda3/envs/vqe_3
+    - yfinance==0.1.55
+prefix: /home/jordan/anaconda3/envs/vqe_test
 

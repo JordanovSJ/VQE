@@ -20,3 +20,19 @@
 2. https://doi.org/10.1038/s41467-019-10988-2
 3. https://arxiv.org/abs/2106.06296
 4. https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.020310
+
+## Installation:
+
+1. Install using the environment.yml file.
+ - note that this option might not work for some dependencies
+
+2. Manual installation:
+ i. Create a new conda environment
+ ii. Install the following libraries:
+  - qiskit 0.23.5 (or newer version)
+  - openfermion 1.0.0 (or newer version)
+  - openfermionpsi4 0.5
+  - numpy 1.20.0 (or newer version)
+  - scipy 1.6.0
+  - ray
+  - pandas 
