@@ -1,11 +1,5 @@
-from openfermion import QubitOperator, FermionOperator
-from openfermion.transforms import jordan_wigner
-
-from src.utils import QasmUtils, MatrixUtils
 from src.ansatz_elements import*
-
 import itertools
-import numpy
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Lists of ansatz elements>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -15,52 +9,52 @@ class UCCSDExcitations:
         self.n_electrons = n_electrons
         self.element_type = ansatz_element_type
 
-    def get_single_excitations(self):
+    def get_single_excitation_elements(self):
         single_excitations = []
         for i in range(self.n_electrons):
             for j in range(self.n_electrons, self.n_orbitals):
-                if i % 2 == j % 2:
-                    if self.element_type == 'f_exc':
-                        single_excitations.append(SFExc(i, j, system_n_qubits=self.n_orbitals))
-                    elif self.element_type == 'q_exc':
-                        single_excitations.append(SQExc(i, j, system_n_qubits=self.n_orbitals))
-                    elif self.element_type == 'eff_f_exc':
-                        single_excitations.append(EffSFExc(i, j, system_n_qubits=self.n_orbitals))
-                    elif self.element_type == 'pauli_str_exc':
-                        qubit_excitation = SQExc(i, j).excitations_generators
-                        single_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals)
-                                               for term in qubit_excitation.terms]
-                    else:
-                        raise Exception('Invalid single excitation type.')
+                # if i % 2 == j % 2:
+                if self.element_type == 'f_exc':
+                    single_excitations.append(SFExc(i, j, system_n_qubits=self.n_orbitals))
+                elif self.element_type == 'q_exc':
+                    single_excitations.append(SQExc(i, j, system_n_qubits=self.n_orbitals))
+                elif self.element_type == 'eff_f_exc':
+                    single_excitations.append(EffSFExc(i, j, system_n_qubits=self.n_orbitals))
+                elif self.element_type == 'pauli_str_exc':
+                    qubit_excitation = SQExc(i, j).excitations_generators
+                    single_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals)
+                                           for term in qubit_excitation.terms]
+                else:
+                    raise Exception('Invalid single excitation type.')
 
         return single_excitations
 
-    def get_double_excitations(self):
+    def get_double_excitation_elements(self):
         double_excitations = []
         for i in range(self.n_electrons - 1):
             for j in range(i + 1, self.n_electrons):
                 for k in range(self.n_electrons, self.n_orbitals - 1):
                     for l in range(k + 1, self.n_orbitals):
-                        if i % 2 + j % 2 == k % 2 + l % 2:
-                            if self.element_type == 'f_exc':
-                                double_excitations.append(DFExc([i, j], [k, l],
-                                                                system_n_qubits=self.n_orbitals))
-                            elif self.element_type == 'q_exc':
-                                double_excitations.append(DQExc([i, j], [k, l],
-                                                                system_n_qubits=self.n_orbitals))
-                            elif self.element_type == 'eff_f_exc':
-                                double_excitations.append(EffDFExc([i, j], [k, l]))
-                            elif self.element_type == 'pauli_str_exc':
-                                qubit_excitation = DQExc([i, j], [k, l]).excitations_generators
-                                double_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals) for term in
-                                                       qubit_excitation.terms]
-                            else:
-                                raise Exception('invalid double excitation type.')
+                        # if i % 2 + j % 2 == k % 2 + l % 2:
+                        if self.element_type == 'f_exc':
+                            double_excitations.append(DFExc([i, j], [k, l],
+                                                            system_n_qubits=self.n_orbitals))
+                        elif self.element_type == 'q_exc':
+                            double_excitations.append(DQExc([i, j], [k, l],
+                                                            system_n_qubits=self.n_orbitals))
+                        elif self.element_type == 'eff_f_exc':
+                            double_excitations.append(EffDFExc([i, j], [k, l]))
+                        elif self.element_type == 'pauli_str_exc':
+                            qubit_excitation = DQExc([i, j], [k, l]).excitations_generators
+                            double_excitations += [PauliStringExc(1j * QubitOperator(term), system_n_qubits=self.n_orbitals) for term in
+                                                   qubit_excitation.terms]
+                        else:
+                            raise Exception('invalid double excitation type.')
 
         return double_excitations
 
-    def get_excitations(self):
-        return self.get_single_excitations() + self.get_double_excitations()
+    def get_all_elements(self):
+        return self.get_single_excitation_elements() + self.get_double_excitation_elements()
 
 
 class SDExcitations:
@@ -74,7 +68,7 @@ class SDExcitations:
             assert encoding == 'bk'
             assert ansatz_element_type == 'f_exc'
 
-    def get_single_excitations(self):
+    def get_single_excitation_elements(self):
         single_excitations = []
         for i, j in itertools.combinations(range(self.n_orbitals), 2):
             # # test
@@ -95,7 +89,7 @@ class SDExcitations:
 
         return single_excitations
 
-    def get_double_excitations(self):
+    def get_double_excitation_elements(self):
         double_excitations = []
         for i, j, k, l in itertools.combinations(range(self.n_orbitals), 4):
             if self.ansatz_element_type == 'f_exc':
@@ -133,8 +127,8 @@ class SDExcitations:
 
         return double_excitations
 
-    def get_excitations(self):
-        return self.get_single_excitations() + self.get_double_excitations()
+    def get_all_elements(self):
+        return self.get_single_excitation_elements() + self.get_double_excitation_elements()
 
 
 class GSDExcitations:
@@ -143,7 +137,7 @@ class GSDExcitations:
         self.n_electrons = n_electrons
         self.ansatz_element_type = ansatz_element_type
 
-    def get_single_excitations(self):
+    def get_single_excitation_elements(self):
         single_excitations = []
         for i, j in itertools.combinations(range(self.n_orbitals), 2):
             # # test
@@ -164,7 +158,7 @@ class GSDExcitations:
 
         return single_excitations
 
-    def get_double_excitations(self):
+    def get_double_excitation_elements(self):
         double_excitations = []
         for i, j, k, l in itertools.combinations(range(self.n_orbitals), 4):
             if self.ansatz_element_type == 'f_exc':
@@ -189,8 +183,8 @@ class GSDExcitations:
 
         return double_excitations
 
-    def get_excitations(self):
-        return self.get_single_excitations() + self.get_double_excitations()
+    def get_all_elements(self):
+        return self.get_single_excitation_elements() + self.get_double_excitation_elements()
 
 
 # Only for fermionic and qubit excitations, use for spin zero systems only
@@ -207,7 +201,7 @@ class SpinCompGSDExcitations:
         self.n_electrons = n_electrons
         self.element_type = element_type
 
-    def get_single_excitations(self):
+    def get_single_excitation_elements(self):
         single_excitations = []
         for i, j in itertools.combinations(range(int(self.n_orbitals)), 2):
             if self.element_type == 'eff_f_exc':
@@ -231,7 +225,7 @@ class SpinCompGSDExcitations:
 
         return single_excitations
 
-    def get_double_excitations(self):
+    def get_double_excitation_elements(self):
         double_excitations = []
 
         for i, j, k, l in itertools.combinations(range(self.n_orbitals), 4):
@@ -301,32 +295,27 @@ class SpinCompGSDExcitations:
 
         return double_excitations
 
-    def get_excitations(self):
-        return self.get_single_excitations() + self.get_double_excitations()
+    def get_all_elements(self):
+        return self.get_single_excitation_elements() + self.get_double_excitation_elements()
 
 
-class UCCSD:
+# NOT USED. Does not work..
+class MinPSExcPool:
     def __init__(self, n_orbitals, n_electrons):
         self.n_orbitals = n_orbitals
         self.n_electrons = n_electrons
 
-    def get_single_excitations(self):
-        single_excitations = []
-        for i in range(self.n_electrons):
-            for j in range(self.n_electrons, self.n_orbitals):
-                if i % 2 == j % 2:
-                    single_excitations.append(EffSFExc(i, j, system_n_qubits=self.n_orbitals))
-        return single_excitations
+    def get_s_p_str_excitations(self):
+        s_p_str_excitations = []
+        for i in range(1, self.n_orbitals):
+            s_p_str_excitations.append(PauliStringExc(1j*QubitOperator('Y{}'.format(i)), system_n_qubits=self.n_orbitals))
+        return s_p_str_excitations
 
-    def get_double_excitations(self):
-        double_excitations = []
-        for i in range(self.n_electrons-1):
-            for j in range(i+1, self.n_electrons):
-                for k in range(self.n_electrons, self.n_orbitals-1):
-                    for l in range(k+1, self.n_orbitals):
-                        if i % 2 + j % 2 == k % 2 + l % 2:
-                            double_excitations.append(EffDFExc([i, j], [k, l], system_n_qubits=self.n_orbitals))
-        return double_excitations
+    def get_d_p_str_excitations(self):
+        d_p_str_excitations = []
+        for i in range(self.n_orbitals-1):
+            d_p_str_excitations.append(PauliStringExc(1j*QubitOperator('Z{} Y{}'.format(i + 1, i)), system_n_qubits=self.n_orbitals))
+        return d_p_str_excitations
 
-    def get_excitations(self):
-        return self.get_single_excitations() + self.get_double_excitations()
+    def get_all_elements(self):
+        return self.get_s_p_str_excitations() + self.get_d_p_str_excitations()

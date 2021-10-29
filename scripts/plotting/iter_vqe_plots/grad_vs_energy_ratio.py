@@ -24,7 +24,12 @@ if __name__ == "__main__":
     db_n_30_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_n=30_gsdqe_r=3-03-Dec-2020.csv')
     # db_n_30_lih = pandas.read_csv('../../../results/iter_vqe_results/LiH_iqeb_q_exc_n=30_r=3_17-Mar-2021.csv')
 
-    df_col = 'n'
+    db_n_1_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=1_r=3_30-May-2021.csv')
+    db_n_10_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=10_r=3_SDEexc_27-May-2021.csv')
+    db_n_5_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=5_r=3_03-Jun-2021.csv')
+    db_n_30_h6 = pandas.read_csv('../../../results/iter_vqe_results/H6_iqeb_q_exc_n=30_r=3_03-Jun-2021.csv')
+
+    df_col = 'cnot_count'
 
     dEs = numpy.logspace(-9, 0, 50)
     interp_bh2_1 = numpy.interp(dEs, numpy.flip(db_n_1_bh2['error'].values), numpy.flip(db_n_1_bh2[df_col].values))
@@ -36,6 +41,11 @@ if __name__ == "__main__":
     interp_lih_5 = numpy.interp(dEs, numpy.flip(db_n_5_lih['error'].values), numpy.flip(db_n_5_lih[df_col].values))
     interp_lih_10 = numpy.interp(dEs, numpy.flip(db_n_10_lih['error'].values), numpy.flip(db_n_10_lih[df_col].values))
     interp_lih_30 = numpy.interp(dEs, numpy.flip(db_n_30_lih['error'].values), numpy.flip(db_n_30_lih[df_col].values))
+
+    interp_h6_1 = numpy.interp(dEs, numpy.flip(db_n_1_h6['error'].values), numpy.flip(db_n_1_h6[df_col].values))
+    interp_h6_5 = numpy.interp(dEs, numpy.flip(db_n_5_h6['error'].values), numpy.flip(db_n_5_h6[df_col].values))
+    interp_h6_10 = numpy.interp(dEs, numpy.flip(db_n_10_h6['error'].values), numpy.flip(db_n_10_h6[df_col].values))
+    interp_h6_30 = numpy.interp(dEs, numpy.flip(db_n_30_h6['error'].values), numpy.flip(db_n_30_h6[df_col].values))
 
     fig, ax = plt.subplots()
 
@@ -49,6 +59,10 @@ if __name__ == "__main__":
     print(sum(1 - interp_bh2_5 / interp_bh2_1) / len(1 - interp_bh2_5 / interp_bh2_1))
     print(sum(1 - interp_bh2_10 / interp_bh2_1) / len(1 - interp_bh2_10 / interp_bh2_1))
     print(sum(1 - interp_bh2_30 / interp_bh2_1) / len(1 - interp_bh2_30 / interp_bh2_1))
+
+    print(sum(1 - interp_h6_5 / interp_h6_1) / len(1 - interp_h6_5 / interp_h6_1))
+    print(sum(1 - interp_h6_10 / interp_h6_1) / len(1 - interp_h6_10 / interp_bh2_1))
+    print(sum(1 - interp_h6_30 / interp_h6_1) / len(1 - interp_h6_30 / interp_h6_1))
 
     ax.plot(dEs, 1 - interp_bh2_10/interp_bh2_1, label=r'BeH$_2$, n=10', linewidth=linewidth, color='dodgerblue')
     ax.plot(dEs, 1 - interp_bh2_30/interp_bh2_1, label=r'BeH$_2$, n=30', linewidth=linewidth, color='tomato')

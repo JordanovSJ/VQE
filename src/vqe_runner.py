@@ -15,8 +15,8 @@ import ray
 # TODO make this class entirely static?
 class VQERunner:
     # Works for a single geometry
-    def __init__(self, q_system, backend=QiskitSimBackend, optimizer=config.optimizer,
-                 optimizer_options=config.optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
+    def __init__(self, q_system, backend=QiskitSimBackend, optimizer=config.default_optimizer,
+                 optimizer_options=config.default_optimizer_options, print_var_parameters=False, use_ansatz_gradient=False):
 
         self.backend = backend
         self.optimizer = optimizer

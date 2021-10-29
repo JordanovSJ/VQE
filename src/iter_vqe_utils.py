@@ -154,7 +154,7 @@ class EnergyUtils:
                                                                                  global_cache=global_cache)
         elements_results.sort(key=lambda x: x[1].fun)
         if n == 1:
-            return min(elements_results, key=lambda x: x[1].fun)
+            return [min(elements_results, key=lambda x: x[1].fun)]
         else:
             return elements_results[:n]  # TODO check
 

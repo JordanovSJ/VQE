@@ -22,8 +22,8 @@ if __name__ == "__main__":
     plt.plot(lih_exc_uccsd_df['r'], lih_exc_uccsd_df[col], label=r'$1^{st}$ excited, UCCSD', marker='+', linewidth=0.5, color='red')
     plt.plot(lih_exc_guccsd_df['r'], lih_exc_guccsd_df[col], label=r'$1^{st}$ excited, GUCCSD', marker='+', linewidth=0.5, color='magenta', alpha=0.5)
     plt.plot(lih_exc_08_df['r'], lih_exc_08_df['fci_E'], label=r'$1^{st}$ excited, FCI energy', marker='+', linewidth=0.5, color='darkblue')
-    plt.plot(lih_exc_06_df['r'], lih_exc_06_df[col], label=r'$1^{st}$ excited, IQEB-VQE $\epsilon=10^{-6}$ Hartree', marker='+', linewidth=0.5, color='green')
-    plt.plot(lih_exc_08_df['r'], lih_exc_08_df[col], label=r'$1^{st}$ excited, IQEB-VQE $\epsilon=10^{-8}$ Hartree', marker='+', linewidth=0.2, color='orange')
+    plt.plot(lih_exc_06_df['r'], lih_exc_06_df[col], label=r'$1^{st}$ excited, QEB-ADAPT $\epsilon=10^{-6}$', marker='+', linewidth=0.5, color='green')
+    plt.plot(lih_exc_08_df['r'], lih_exc_08_df[col], label=r'$1^{st}$ excited, QEB-ADAPT $\epsilon=10^{-8}$', marker='+', linewidth=0.2, color='orange')
 
     plt.plot(lih_g_06_df['r'], lih_g_06_df['fci_E'], label=r'Ground state FCI energy', marker='+', linewidth=0.5, color='blue')
     # plt.plot(lih_g_08_df['r'], lih_g_08_df[col], label=r'Ground state, IQEB-VQE $\epsilon=10^{-8}$ Hartree', marker='+', linewidth=0.5, color='red', alpha=0.5)
@@ -31,8 +31,8 @@ if __name__ == "__main__":
     plt.vlines([1.546], ymax=200, ymin=-100, linewidth=0.75, color='black', label='Equilibrium configuration')
     plt.fill_between([0.5, 3.75], 1e-12, 1e-3, color='lavender', label='chemical accuracy')
 
-    plt.xlabel(r'Li-H bond distance, $\AA$')
-    plt.ylabel('Energy, Hartree')
+    # plt.xlabel(r'Li-H bond distance, $\AA$')
+    plt.ylabel('Energy, Hartree', fontsize=15)
     plt.ylim(-7.9, -7.65)
     # plt.ylim(1e-12, 1e-0)
     # plt.yscale('log')

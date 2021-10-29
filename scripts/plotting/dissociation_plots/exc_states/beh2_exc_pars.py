@@ -16,7 +16,7 @@ if __name__ == "__main__":
     exc_guccsd_df = pandas.read_csv('../../../../results/dissociation_curves/BeH2_exc_1_guccsd_04-Apr-2021.csv')
     exc_uccsd_df = pandas.read_csv('../../../../results/dissociation_curves/BeH2_exc_1_uccsd_04-Apr-2021.csv')
 
-    plt.hlines([205], xmax=0.75, xmin=3, linewidth=0.75, color='red', label=r'$1^{st}$ excited, UCCSD')
+    plt.hlines([468], xmax=0.75, xmin=3, linewidth=0.75, color='red', label=r'$1^{st}$ excited, UCCSD')
     plt.hlines([3094], xmax=0.75, xmin=3, linewidth=0.75, color='magenta', label=r'$1^{st}$ excited, GUCCSD')
 
     col = 'n_iters'
@@ -28,8 +28,8 @@ if __name__ == "__main__":
     plt.vlines([1.316], ymax=10000, ymin=-100, linewidth=0.5, color='black', label='Equilibrium configuration')
     plt.fill_between([0.5, 3.75], 1e-12, 1e-3, color='lavender', label='chemical accuracy')
 
-    plt.xlabel(r'Be-H bond distance, $\AA$')
-    plt.ylabel('Number of parameters')
+    plt.xlabel(r'Be-H bond distance, $\AA$', fontsize=15)
+    # plt.ylabel('Number of parameters')
     # plt.ylim(-7.9, -7.65)
     plt.ylim(10, 2500)
     plt.yscale('symlog')
