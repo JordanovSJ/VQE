@@ -47,10 +47,7 @@ class H4(MolecularSystem):
           ]
 
 
-<<<<<<< HEAD
-class LiH(MolecularSystem):
-=======
-class H6(QSystem):
+class H6(MolecularSystem):
 
     def __init__(self, r=0.735, basis='sto-3g', frozen_els=None):
         super(H6, self).__init__(name='H6', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
@@ -68,8 +65,7 @@ class H6(QSystem):
           ]
 
 
-class LiH(QSystem):
->>>>>>> master
+class LiH(MolecularSystem):
     # frozen_els = {'occupied': [0,1], 'unoccupied': []}
     def __init__(self, r=1.546, basis='sto-3g', frozen_els=None):
         super(LiH, self).__init__(name='LiH', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
