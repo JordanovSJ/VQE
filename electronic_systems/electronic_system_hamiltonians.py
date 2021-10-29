@@ -1,6 +1,6 @@
 import openfermion
 from openfermion import FermionOperator as FO
-from src.molecular_system import MolecularSystem
+from src.q_systems import MolecularSystem
 
 
 def ham_16_qubits():
@@ -95,18 +95,18 @@ def ham_14_qubits(U):
     return H
 
 
-class ElectronicSystem:
-    def __init__(self, fermi_ham, n_orbitals, n_electrons):
-        self.name = 'Pizza'
-        self.n_electrons = n_electrons
-
-        self.n_orbitals = n_orbitals
-        self.n_qubits = self.n_orbitals
-        self.fermi_ham = fermi_ham
-        self.qubit_ham = openfermion.jordan_wigner(self.fermi_ham)
-
-        self.hf_energy = 0  # wild guess
-
-        self.H_lower_state_terms = None
+# class ElectronicSystem:
+#     def __init__(self, fermi_ham, n_orbitals, n_electrons):
+#         self.name = 'Pizza'
+#         self.n_electrons = n_electrons
+#
+#         self.n_orbitals = n_orbitals
+#         self.n_qubits = self.n_orbitals
+#         self.fermi_ham = fermi_ham
+#         self.qubit_ham = openfermion.jordan_wigner(self.fermi_ham)
+#
+#         self.hf_energy = 0  # wild guess
+#
+#         self.H_lower_state_terms = None
 
 

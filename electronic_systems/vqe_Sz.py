@@ -1,6 +1,6 @@
 import openfermion
-
-from electronic_systems import ElectronicSystem, ham_14_qubits, ham_16_qubits
+from src.q_systems import ElectronicSystem
+from electronic_system_hamiltonians import  ham_14_qubits, ham_16_qubits
 import numpy
 from src.vqe_runner import VQERunner
 from src.ansatz_elements import *
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     n_electrons = 10
 
     LogUtils.log_config()
-    backend = QiskitSimBackend
+    backend = MatrixCacheBackend
 
     S_values, U_values = [], []
 
@@ -54,9 +54,8 @@ if __name__ == "__main__":
         # init_qasm = SFExc(1, 12).get_qasm(numpy.pi/2)
 
         init_qasm = None
-        #
-        # global_cache = GlobalCache(e_system, excited_state=0)
-        # global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+        global_cache = GlobalCache(e_system, excited_state=0)
+        global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
 
         optimizer = 'BFGS'
         optimizer_options = {'gtol': 10e-8, 'maxiter': 10}
@@ -64,7 +63,7 @@ if __name__ == "__main__":
                                optimizer=optimizer, optimizer_options=optimizer_options)
 
         # result = vqe_runner.vqe_run(ansatz=ansatz,  cache=global_cache, init_state_qasm=init_qasm)
-        result = vqe_runner.vqe_run(ansatz=ansatz, init_state_qasm=init_qasm)
+        result = vqe_runner.vqe_run(ansatz=ansatz, init_state_qasm=init_qasm, cache=global_cache)
 
         parameters = list(result.x)
         statevector = global_cache.get_statevector(ansatz, parameters, init_state_qasm=init_qasm)

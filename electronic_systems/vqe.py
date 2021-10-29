@@ -1,6 +1,6 @@
 import openfermion
-
-from electronic_systems import ElectronicSystem, ham_14_qubits, ham_16_qubits
+from src.q_systems import ElectronicSystem
+from electronic_system_hamiltonians import ham_14_qubits, ham_16_qubits
 import numpy
 from src.vqe_runner import VQERunner
 from src.ansatz_elements import *

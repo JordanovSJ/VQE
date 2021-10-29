@@ -5,7 +5,7 @@ import pandas
 from src.iter_vqe_utils import DataUtils
 from src.ansatz_elements import SQExc, DQExc
 from src.state import State
-from src.molecular_system import MolecularSystem
+from src.q_systems import MolecularSystem
 
 
 class H2(MolecularSystem):

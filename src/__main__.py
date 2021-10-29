@@ -1,5 +1,5 @@
 from src.vqe_runner import VQERunner
-from src.molecular_system import *
+from src.q_systems import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend, MatrixCacheBackend
 from src.utils import LogUtils
@@ -35,9 +35,8 @@ if __name__ == "__main__":
     backend = MatrixCacheBackend
 
     # create a cache of precomputed values to accelerate the simulation (optional)
-    # global_cache = GlobalCache(q_system)
-    global_cache = None
-    # global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
+    global_cache = GlobalCache(q_system)
+    global_cache.calculate_exc_gen_sparse_matrices_dict(ansatz)
     # global_cache.calculate_commutators_sparse_matrices_dict(ansatz)
 
     # Create a VQE runner, and specify the minimizer
