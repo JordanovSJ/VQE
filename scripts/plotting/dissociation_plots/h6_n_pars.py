@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import ast
 import pandas
-from src.molecular_system import *
+from src.q_system import *
 
 if __name__ == "__main__":
 

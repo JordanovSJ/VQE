@@ -1,4 +1,4 @@
-from src import molecular_system
+from src import q_system
 from src.backends import QiskitSimBackend, ExcStateSim
 from src.ansatz_element_lists import UCCSD
 
