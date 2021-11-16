@@ -1,4 +1,5 @@
-from setuptools import setup, find_packages
+from setuptools import setup
+# TODO: update
 setup(
     name="VQE",
     version="0.1",

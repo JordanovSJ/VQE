@@ -11,7 +11,7 @@ import ast
 sys.path.append('../../')
 
 from src.vqe_runner import VQERunner
-from src.q_system import *
+from src.q_systems import *
 from src.ansatz_element_sets import *
 from src.backends import QiskitSimBackend
 from src.utils import LogUtils
@@ -24,16 +24,27 @@ if __name__ == "__main__":
     # <<<<<<<<<ITER VQE PARAMETERS>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<< MOLECULE PARAMETERS >>>>>>>>>>>>>
+<<<<<<< HEAD:scripts/iter_vqe/adapt_vqe.py
+    r = 1.316
+    # theta = 0.538*numpy.pi # for H20
+    frozen_els = {'occupied': [], 'unoccupied': []}
+    molecule = BeH2(r=r)  # (frozen_els=frozen_els)
+=======
     r = 1.5
     # theta = 0.538*numpy.pi # for H20
     frozen_els = {'occupied': [], 'unoccupied': []}
     molecule = H6(r=r)  # (frozen_els=frozen_els)
+>>>>>>> master:scripts/adapt_vqes/adapt_vqe.py
 
     # <<<<<<<<<< ANSATZ ELEMENT POOL PARAMETERS >>>>>>>>>>>>.
     # ansatz_element_type = 'eff_f_exc'
     ansatz_element_type = 'q_exc'
     # ansatz_element_type = 'f_exc'
+<<<<<<< HEAD:scripts/iter_vqe/adapt_vqe.py
+    ansatz_element_type = 'pauli_str_exc'
+=======
     # ansatz_element_type = 'pauli_str_exc'
+>>>>>>> master:scripts/adapt_vqes/adapt_vqe.py
     q_encoding = 'jw'
     spin_complement = False  # only for fermionic and qubit excitations (not for PWEs)
 

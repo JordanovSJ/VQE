@@ -12,6 +12,25 @@ from src.utils import MatrixUtils
 
 
 class QSystem:
+    pass
+
+
+class ElectronicSystem(QSystem):
+    def __init__(self, fermion_ham, n_orbitals, n_electrons):
+        self.name = '{}_e_{}_orb'.format(n_electrons, n_orbitals)
+        self.n_electrons = n_electrons
+
+        self.n_orbitals = n_orbitals
+        self.n_qubits = self.n_orbitals
+        self.fermion_ham = fermion_ham
+        self.qubit_ham = jordan_wigner(self.fermion_ham)
+
+        self.hf_energy = 0  # wild guess
+
+        self.H_lower_state_terms = None
+
+
+class MolecularSystem(QSystem):
 
     def __init__(self, name, geometry, multiplicity, charge, n_orbitals, n_electrons, basis='sto-3g', frozen_els=None,
                  encoding='jw'):
@@ -29,7 +48,7 @@ class QSystem:
         # Hamiltonian transforms
         self.molecule_ham = self.molecule_psi4.get_molecular_hamiltonian()
         self.hf_energy = self.molecule_psi4.hf_energy.item()  # old version of openfermion
-        self.fci_energy = self.molecule_psi4.fci_energy.item() # old version of openfermion
+        self.fci_energy = self.molecule_psi4.fci_energy.item()  # old version of openfermion
 
         # TODO: the code below corresponds to the most recent version in the opefermion documentation.
         #  However it has problems with ray???

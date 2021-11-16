@@ -1,4 +1,4 @@
-from src.q_system import *
+from src.q_systems import *
 from src.molecules.molecules import *
 
 import numpy

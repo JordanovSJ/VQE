@@ -5,10 +5,10 @@ import pandas
 from src.iter_vqe_utils import DataUtils
 from src.ansatz_elements import SQExc, DQExc
 from src.state import State
-from src.q_system import QSystem
+from src.q_systems import MolecularSystem
 
 
-class H2(QSystem):
+class H2(MolecularSystem):
 
     def __init__(self, r=0.735, basis='sto-3g', frozen_els=None):
         super(H2, self).__init__(name='H2', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=4,
@@ -31,7 +31,7 @@ class H2(QSystem):
                 ['H', [0, 0, r]]]
 
 
-class H4(QSystem):
+class H4(MolecularSystem):
 
     def __init__(self, r=0.735, basis='sto-3g', frozen_els=None):
         super(H4, self).__init__(name='H4', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=8,
@@ -47,7 +47,7 @@ class H4(QSystem):
           ]
 
 
-class H6(QSystem):
+class H6(MolecularSystem):
 
     def __init__(self, r=0.735, basis='sto-3g', frozen_els=None):
         super(H6, self).__init__(name='H6', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
@@ -65,7 +65,7 @@ class H6(QSystem):
           ]
 
 
-class LiH(QSystem):
+class LiH(MolecularSystem):
     # frozen_els = {'occupied': [0,1], 'unoccupied': []}
     def __init__(self, r=1.546, basis='sto-3g', frozen_els=None):
         super(LiH, self).__init__(name='LiH', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
@@ -85,7 +85,7 @@ class LiH(QSystem):
                 ['H', [0, 0, r]]]
 
 
-class HF(QSystem):
+class HF(MolecularSystem):
 
     def __init__(self, r=0.995, basis='sto-3g', frozen_els=None,):
         super(HF, self).__init__(name='HF', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=12,
@@ -97,7 +97,7 @@ class HF(QSystem):
                 ['H', [0, 0, r]]]
 
 
-class BeH2(QSystem):
+class BeH2(MolecularSystem):
     # frozen_els = {'occupied': [0,1], 'unoccupied': [6,7]}
     def __init__(self, r=1.316, basis='sto-3g', frozen_els=None,):
         super(BeH2, self).__init__(name='BeH2', geometry=self.get_geometry(r), multiplicity=1, charge=0, n_orbitals=14,
@@ -116,7 +116,7 @@ class BeH2(QSystem):
                 ['H', [0, 0, -r]]]
 
 
-class H2O(QSystem):
+class H2O(MolecularSystem):
 
     def __init__(self, r=1.0285, theta=0.538*numpy.pi, basis='sto-3g', frozen_els=None):
         super(H2O, self).__init__(name='H20', geometry=self.get_geometry(r, theta), multiplicity=1, charge=0, n_orbitals=14,
@@ -131,7 +131,7 @@ class H2O(QSystem):
         ]
 
 
-class NH3(QSystem):
+class NH3(MolecularSystem):
 
     def __init__(self, r=1.0703, theta=(100.107/180) * numpy.pi, basis='sto-3g', frozen_els=None):
         super(NH3, self).__init__(name='NH3', geometry=self.get_geometry(r, theta), multiplicity=1, charge=0, n_orbitals=16,
