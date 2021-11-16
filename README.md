@@ -9,10 +9,10 @@
 
 ### Adapt-VQE protocol (see Refs. 1,2,3,4): 
 
-* An implementation of the QEB-ADAPT-VQE protocol (Ref. 1) is contained in scripts/iter_vqe/iqeb_vqe.py
-* An implementation of the excited-QEB-ADAPT-VQE protocol (Ref. 3) is contained in scripts/iter_vqe/excited_iqeb_vqe.py
-* An implementation of the fermionic-ADAPT-VQE protocol (Ref. 2) is contained in scripts/iter_vqe/adapt_vqe.py
-* An implementation of the qubit-ADAPT-VQE protocol (Ref. 4) is contained in scripts/iter_vqe/qubit_adapt_vqe.py
+* An implementation of the QEB-ADAPT-VQE protocol (Ref. 1) is contained in scripts/adapt_vqes/iqeb_vqe.py
+* An implementation of the excited-QEB-ADAPT-VQE protocol (Ref. 3) is contained in scripts/adapt_vqes/excited_iqeb_vqe.py
+* An implementation of the fermionic-ADAPT-VQE protocol (Ref. 2) is contained in scripts/adapt_vqes/adapt_vqe.py
+* An implementation of the qubit-ADAPT-VQE protocol (Ref. 4) is contained in scripts/adapt_vqes/qubit_adapt_vqe.py
 
 ### References:
 
