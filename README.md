@@ -38,7 +38,7 @@ ii. If using the environment.yml file does not work, install manually:
   - ray
   - pandas
 
-    (The next three libraries install in the given order. I recommend isntalling psi4
+    (Install the next three libraries in the given order. I recommend isntalling psi4
 and openfermionpsi4 as given at https://github.com/quantumlib/OpenFermion-Psi4 )
   - psi4
   - openfermionpsi4 0.5 (or newer version)
