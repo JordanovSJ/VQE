@@ -42,7 +42,7 @@ if __name__ == "__main__":
     S_values, U_values = [], []
 
     count = 0
-    for U in numpy.linspace(0.1, 0.4, 30):
+    for U in [0.294]: #numpy.linspace(0.1, 0.4, 30):
         print(count)
         count += 1
         H = ham_14_qubits(U)
