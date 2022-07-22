@@ -94,6 +94,42 @@ def ham_14_qubits(U):
 
     return H
 
+def ham_10_qubits():
+
+    Vbc = [[-.0581405803899339, -.0152197019657718, -.0286574930007799],
+      [.0428771698717666, .0112241355242806, .0211341577687968]]
+    Eb = [[.2450773129641656, -.2076108906801851, -.5153683045691899],
+     [-.2076108906801851, .8028440471489521, -.0387946570725411],
+     [-.5153683045691899, -.0387946570725411, 1.0028925515641340]]
+    U = 0.2940000
+    eps_1 = -0.284183
+    eps_2 = -0.2632707
+    n_bath = 3
+    n_impurity = 2
+    H = U * FO('[0^ 0 1^ 1]')
+    H += U * FO('[2^ 2 3^ 3]')
+    H += eps_1 * (FO('[0^ 0]') + FO('[1^ 1]'))
+    H += eps_2 * (FO('[2^ 2]') + FO('[3^ 3]'))
+
+    for f in range(2):
+        for d in range(3):
+            factor = Vbc[f][d]
+            # TODO check
+            term_even = FO('[{0}^ {1}] - [{1}^ {0}]'.format(2 * f, 2 * (2 + d)))
+            term_odd = FO('[{0}^ {1}] - [{1}^ {0}]'.format(2 * f + 1, 2 * (2 + d) + 1))
+            H += factor * (term_odd + term_even)
+
+    for d1 in range(3):
+        for d2 in range(3):
+            factor = Eb[d1][d2]
+            # TODO check
+            term_even = FO('[{0}^ {1}] - [{1}^ {0}]'.format(2 * (d1 + 2), 2 * (d2 + 2)))
+            term_odd = FO('[{0}^ {1}] - [{1}^ {0}]'.format(2 * (d1 + 2) + 1, 2 * (d2 + 2) + 1))
+            H += factor * (term_odd + term_even)
+    #E0 = -.751126955551
+
+    return H
+
 
 # class ElectronicSystem:
 #     def __init__(self, fermi_ham, n_orbitals, n_electrons):
